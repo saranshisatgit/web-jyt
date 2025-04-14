@@ -17,7 +17,7 @@ import Paragraph from '@tiptap/extension-paragraph'
 import { Color } from '@tiptap/extension-color'
 import { Heading } from '@tiptap/extension-heading'
 import { Highlight } from '@tiptap/extension-highlight'
-
+import { Link } from '@tiptap/extension-link'
 
 import { useEffect } from 'react'
 
@@ -44,8 +44,8 @@ export function TipTapRenderer({ content, className = '', onHtmlGenerated }: Tip
       OrderedList,
       Color,
       Heading,
-      Highlight
-
+      Highlight,
+      Link
     ],
     content,
     editable: false,

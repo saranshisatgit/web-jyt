@@ -52,6 +52,9 @@ export function BlogPostContent({
   // State to toggle debug view
   const [showDebug, setShowDebug] = useState(false)
   
+  // Check if running in development/local environment
+  const isDevelopment = process.env.NODE_ENV === 'development'
+  
   // Process the content to remove the main image if it's duplicated
   const processedContent = useMemo(() => {
     if (!contentBlock?.content.text) return null
@@ -183,18 +186,20 @@ export function BlogPostContent({
                         dangerouslySetInnerHTML={{ __html: generatedHtml }}
                       />
                       
-                      {/* Debug button */}
-                      <div className="mt-8 flex justify-center">
-                        <Button 
-                          variant="secondary" 
-                          onClick={() => setShowDebug(!showDebug)}
-                        >
-                          {showDebug ? 'Hide Debug Info' : 'Show Debug Info'}
-                        </Button>
-                      </div>
+                      {/* Debug button - only shown in development environment */}
+                      {isDevelopment && (
+                        <div className="mt-8 flex justify-center">
+                          <Button 
+                            variant="secondary" 
+                            onClick={() => setShowDebug(!showDebug)}
+                          >
+                            {showDebug ? 'Hide Debug Info' : 'Show Debug Info'}
+                          </Button>
+                        </div>
+                      )}
                       
-                      {/* Debug view */}
-                      {showDebug && (
+                      {/* Debug view - only shown in development environment */}
+                      {isDevelopment && showDebug && (
                         <div className="mt-8 border-t border-gray-200 pt-8">
                           <h3 className="mb-4 text-lg font-semibold">Debug Information</h3>
                           
