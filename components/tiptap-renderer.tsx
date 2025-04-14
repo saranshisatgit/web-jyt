@@ -6,8 +6,8 @@ import Image from '@tiptap/extension-image'
 import Text from '@tiptap/extension-text'
 
 import TextStyle from '@tiptap/extension-text-style' 
-import { FontFamily } from 'reactjs-tiptap-editor/extension-bundle';
-import { Bold } from 'reactjs-tiptap-editor/extension-bundle'; 
+import FontFamily from '@tiptap/extension-font-family'
+import Bold from '@tiptap/extension-bold'
 
 import BulletList from '@tiptap/extension-bullet-list'
 import Document from '@tiptap/extension-document'
