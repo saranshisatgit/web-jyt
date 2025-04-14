@@ -9,6 +9,10 @@ const nextConfig: NextConfig = {
         hostname: 'jaalyantra.com',
       },
       {
+        protocol: 'https',
+        hostname: 'automatic.jaalyantra.com',
+      },
+      {
         protocol: 'http',
         hostname: 'localhost',
         port: '9000',
