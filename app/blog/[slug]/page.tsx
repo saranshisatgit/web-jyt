@@ -25,6 +25,7 @@ interface BlogPost {
   excerpt?: string;
   blocks?: BlogBlock[];
   [key: string]: unknown;
+  metadata: Record<string, unknown>
 }
 
 // Interface to match the Page type returned by getSinglePost
@@ -36,6 +37,7 @@ interface Page {
   page_type: string;
   publishedAt: string;
   blocks: BlogBlock[];
+  metadata: Record<string, unknown>
 }
 
 type Params = Promise<{ slug: string }>
@@ -66,6 +68,7 @@ export default async function BlogPost({
     slug: postData.slug,
     publishedAt: postData.publishedAt,
     blocks: postData.blocks,
+    metadata: postData.metadata
   };
   
   // Find the first block with text content for the main content

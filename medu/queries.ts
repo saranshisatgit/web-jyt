@@ -52,6 +52,7 @@ export interface Block {
     page_type: string;
     publishedAt: string;
     blocks: Block[];
+    metadata: Record<string, unknown>
   }
   
   // Function to fetch page data from the API
@@ -163,21 +164,25 @@ export interface Block {
   }
     
   
-  export const getCategories = () => {
-    const cats  = [{
-        title: 'category1',
-        slug: 'category1'
-    },
-
-    {
-        title: 'category2',
-        slug: 'category2'
-    }
-
-    ]
-    return  cats
-    
-  }
+  export const getCategories = async (
+    domainName: string = 'jaalyantra.com'
+  ): Promise<{ title: string; slug: string }[]> => {
+    // Fetch all blogs and derive unique categories from metadata
+    const blogs = (await fetchBlogs(domainName, '')) as Array<{
+      metadata?: { category?: string }
+    }>;
+    const categorySet = new Set<string>();
+    blogs.forEach((blog) => {
+      const meta = blog.metadata;
+      if (meta && typeof meta.category === 'string') {
+        categorySet.add(meta.category);
+      }
+    });
+    return Array.from(categorySet).map((category) => ({
+      title: category,
+      slug: category.toLowerCase().replace(/\s+/g, '-'),
+    }));
+  };
 
   export const fetchFooter = (slug: string) => {
     const pageData = fetchPage('jaalyantra.com', slug)

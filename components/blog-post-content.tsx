@@ -33,6 +33,7 @@ interface BlogPost {
   excerpt?: string;
   blocks?: BlogBlock[];
   [key: string]: unknown;
+  metadata: Record<string, unknown>
 }
 
 export function BlogPostContent({ 
@@ -46,6 +47,7 @@ export function BlogPostContent({
   imageBlock?: BlogBlock, 
   authorsBlock?: BlogBlock 
 }) {
+
   // State to store the generated HTML
   const [generatedHtml, setGeneratedHtml] = useState<string>('')
   
@@ -127,7 +129,6 @@ export function BlogPostContent({
   
   // Handler for when HTML is generated
   const handleHtmlGenerated = (html: string) => {
-    console.log('Received HTML from renderer:', html)
     setGeneratedHtml(html)
   }
 
@@ -152,6 +153,11 @@ export function BlogPostContent({
                 </div>
               </div>
             )}
+            <div className="flex items-center gap-3">
+                <div className="rounded-full border border-dotted border-gray-300 bg-gray-50 px-2 text-sm/6 font-medium text-gray-500">
+                  {post.metadata?.category as string}
+                </div>
+              </div>
           </div>
           <div className="text-gray-700">
             <div className="max-w-2xl xl:mx-auto">
