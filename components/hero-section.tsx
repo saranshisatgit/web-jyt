@@ -7,11 +7,18 @@ import { Navbar } from './navbar';
 import { Link } from './link';
 import { ChevronRightIcon } from '@heroicons/react/16/solid';
 
+export interface ButtonDef {
+  text: string;
+  link: string;
+  variant?: 'primary' | 'secondary' | undefined;
+}
+
 interface HeaderBlock {
   content: {
     title: string;
     subtitle: string;
     announcement: string;
+    buttons: ButtonDef[];
   };
 }
 
@@ -22,6 +29,7 @@ export interface AnnouncementBlock {
 }
 
 export function HeroSection({ headerBlock, announcementBlock }: { headerBlock: HeaderBlock, announcementBlock: AnnouncementBlock }) {
+  console.log(headerBlock.content.buttons)
   return (
     <div className="relative">
       <Gradient className="absolute inset-2 bottom-0 rounded-4xl ring-1 ring-black/5 ring-inset" />
@@ -45,10 +53,11 @@ export function HeroSection({ headerBlock, announcementBlock }: { headerBlock: H
             {headerBlock.content.subtitle}
           </p>
           <div className="mt-12 flex flex-col gap-x-6 gap-y-4 sm:flex-row">
-            <Button href="#">Get started</Button>
-            <Button variant="secondary" href="/pricing">
-              See pricing
-            </Button>
+            {headerBlock.content.buttons.map((btn) => (
+              <Button key={btn.text} href={btn.link} variant={btn.variant}>
+                {btn.text}
+              </Button>
+            ))}
           </div>
         </div>
       </Container>

@@ -1,5 +1,5 @@
 import { Container } from "@/components/container";
-import { HeroSection } from "@/components/hero-section";
+import { ButtonDef, HeroSection } from "@/components/hero-section";
 import { LogoCloud } from "@/components/logo-cloud";
 import { FeatureSection } from "../page";
 import { Metadata } from "next";
@@ -13,6 +13,7 @@ interface HeaderBlock {
     title: string;
     subtitle: string;
     announcement: string;
+    buttons: ButtonDef[]
   };
 }
 
@@ -45,14 +46,24 @@ export const metadata: Metadata = {
 export default async function Partner({
    
 }) {
-  
+
     const partnerPage = await fetchPagefromAPI('partner')
-    const headerBlock = getBlockByType(partnerPage.blocks, "Header") as unknown as HeaderBlock
+    console.log(partnerPage)
+    const rawHeaderBlock = getBlockByType(partnerPage.blocks, "Header") as unknown as HeaderBlock
+    const headerBlock = {
+      content: {
+        title: rawHeaderBlock.content.title,
+        subtitle: rawHeaderBlock.content.subtitle,
+        announcement: rawHeaderBlock.content.announcement,
+        buttons: rawHeaderBlock.content.buttons,
+      },
+    }
+    const announcementBlock = { content: { announcement: rawHeaderBlock.content.announcement } }
     const logoBlocks = getBlockByName(partnerPage.blocks, "Feature Section") as unknown as LogoBlocks
     const featureSection = getBlockByName(partnerPage.blocks, "Partner Feature") as unknown as FeatureSectionBlock;
   return (
     <div className="overflow-hidden">
-      <HeroSection headerBlock={headerBlock} announcementBlock={headerBlock} />
+      <HeroSection headerBlock={headerBlock} announcementBlock={announcementBlock} />
       <main>
         <Container className="mt-10">
           <LogoCloud logoBlocks={logoBlocks.content.logos} />

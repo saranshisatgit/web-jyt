@@ -1,6 +1,6 @@
 import { BentoCard } from '@/components/bento-card'
 import { Container } from '@/components/container'
-import { HeroSection } from '@/components/hero-section'
+import { ButtonDef, HeroSection } from '@/components/hero-section'
 import { Keyboard } from '@/components/keyboard'
 import { LinkedAvatars } from '@/components/linked-avatars'
 import { LogoCloud } from '@/components/logo-cloud'
@@ -28,6 +28,7 @@ interface HeroBlock {
     title: string;
     subtitle: string;
     announcement: string;
+    buttons: ButtonDef[]
   };
 }
 
@@ -38,7 +39,15 @@ interface HeaderBlock {
 }
 async function Hero()  {
 const home = await fetchPagefromAPI('home')
-const headerBlock = getBlockByType(home.blocks, "Hero") as unknown as HeroBlock
+const rawHeroBlock = getBlockByType(home.blocks, "Hero") as unknown as HeroBlock
+const headerBlock = {
+  content: {
+    title: rawHeroBlock.content.title,
+    subtitle: rawHeroBlock.content.subtitle,
+    announcement: rawHeroBlock.content.announcement,
+    buttons: rawHeroBlock.content.buttons
+  },
+}
 const announcementBlock = getBlockByType(home.blocks, "Header") as unknown as HeaderBlock
   return (
      <HeroSection headerBlock={headerBlock} announcementBlock={announcementBlock} />
