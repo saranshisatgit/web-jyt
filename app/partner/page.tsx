@@ -45,7 +45,7 @@ export const metadata: Metadata = {
 export default async function Partner({
    
 }) {
-
+  
     const partnerPage = await fetchPagefromAPI('partner')
     const headerBlock = getBlockByType(partnerPage.blocks, "Header") as unknown as HeaderBlock
     const logoBlocks = getBlockByName(partnerPage.blocks, "Feature Section") as unknown as LogoBlocks

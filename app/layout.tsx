@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { ApiQueryClientProvider } from './context/api-context'
 import { getFooter } from './actions'
 import { Footer } from '@/components/footer'
+import { Spinner } from '@/components/spinner'
 
 
 export const metadata: Metadata = {
@@ -19,7 +20,7 @@ export default async function RootLayout({
   children: React.ReactNode
 }>) {
   const footerBlock = await getFooter()
-  if (!footerBlock) return <div>No footer block found</div>
+  if (!footerBlock) return <Spinner size="lg" />
   return (
     <ApiQueryClientProvider>
     <html lang="en">
