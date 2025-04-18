@@ -29,7 +29,6 @@ export interface AnnouncementBlock {
 }
 
 export function HeroSection({ headerBlock, announcementBlock }: { headerBlock: HeaderBlock, announcementBlock: AnnouncementBlock }) {
-  console.log(headerBlock.content.buttons)
   return (
     <div className="relative">
       <Gradient className="absolute inset-2 bottom-0 rounded-4xl ring-1 ring-black/5 ring-inset" />
@@ -52,13 +51,17 @@ export function HeroSection({ headerBlock, announcementBlock }: { headerBlock: H
           <p className="mt-8 max-w-lg text-xl/7 font-medium text-gray-950/75 sm:text-2xl/8">
             {headerBlock.content.subtitle}
           </p>
-          <div className="mt-12 flex flex-col gap-x-6 gap-y-4 sm:flex-row">
-            {headerBlock.content.buttons.map((btn) => (
-              <Button key={btn.text} href={btn.link} variant={btn.variant}>
-                {btn.text}
-              </Button>
-            ))}
-          </div>
+          {headerBlock.content.buttons?.length > 0 && (
+            <div className="mt-12 flex flex-col gap-x-6 gap-y-4 sm:flex-row">
+              {headerBlock.content.buttons.map((btn) => (
+                btn.text && btn.link ? (
+                  <Button key={btn.text} href={btn.link} variant={btn.variant}>
+                    {btn.text}
+                  </Button>
+                ) : null
+              ))}
+            </div>
+          )}
         </div>
       </Container>
     </div>

@@ -5,6 +5,7 @@ import { getFooter } from './actions'
 import { Footer } from '@/components/footer'
 import { Spinner } from '@/components/spinner'
 
+export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: {
@@ -12,7 +13,6 @@ export const metadata: Metadata = {
     default: 'JYT - Close every gap',
   },
 }
-
 
 export default async function RootLayout({
   children,
@@ -23,25 +23,24 @@ export default async function RootLayout({
   if (!footerBlock) return <Spinner size="lg" />
   return (
     <ApiQueryClientProvider>
-    <html lang="en">
-      <head>
-        <link
-          rel="stylesheet"
-          href="https://api.fontshare.com/css?f%5B%5D=switzer@400,500,600,700&amp;display=swap"
-        />
-        <link
-          rel="alternate"
-          type="application/rss+xml"
-          title="The JYT Blog"
-          href="/blog/feed.xml"
-        />
-      </head>
-      <body className="text-gray-950 antialiased">
-        <main>{children}</main>
-        <Footer data={footerBlock.content} />
-      </body>
-     
-    </html>
+      <html lang="en">
+        <head>
+          <link
+            rel="stylesheet"
+            href="https://api.fontshare.com/css?f%5B%5D=switzer@400,500,600,700&amp;display=swap"
+          />
+          <link
+            rel="alternate"
+            type="application/rss+xml"
+            title="The JYT Blog"
+            href="/blog/feed.xml"
+          />
+        </head>
+        <body className="text-gray-950 antialiased">
+          <main>{children}</main>
+          <Footer data={footerBlock.content} />
+        </body>
+      </html>
     </ApiQueryClientProvider>
   )
 }
