@@ -8,6 +8,8 @@ import { getBlockByName, getBlockByType } from "@/medu/queries";
 import { Suspense } from "react";
 import { SectionLoading } from "@/components/section-loading";
 
+export const dynamic = 'force-dynamic'
+
 interface HeaderBlock {
   content: {
     title: string;
@@ -48,7 +50,6 @@ export default async function Partner({
 }) {
 
     const partnerPage = await fetchPagefromAPI('partner')
-    console.log(partnerPage)
     const rawHeaderBlock = getBlockByType(partnerPage.blocks, "Header") as unknown as HeaderBlock
     const headerBlock = {
       content: {
