@@ -11,6 +11,7 @@ import { Link } from './link'
 import { Logo } from './logo'
 import { PlusGrid, PlusGridItem, PlusGridRow } from './plus-grid'
 import { getBlockByType, usePageData } from '@/medu/queries'
+import { Spinner } from './spinner'
 
 
 interface NavBlock {
@@ -83,8 +84,18 @@ function MobileNav({ navBlock }: { navBlock: NavBlock }) {
 }
 
 export function Navbar({ banner }: { banner?: React.ReactNode }) {
-  const { data } = usePageData('jaalyantra.com', "home");
-  
+  const { data, isLoading } = usePageData('jaalyantra.com', "home");
+
+  if (isLoading) {
+    return (
+      <header className="pt-12 sm:pt-16">
+        <div className="flex justify-center py-4">
+          <Spinner size="lg" />
+        </div>
+      </header>
+    );
+  }
+
   const navBlock = getBlockByType(data?.blocks, "Header") as unknown as NavBlock;
   if (!navBlock) return <div>No Nav block found</div>;
 
