@@ -7,16 +7,17 @@ import { LogoCloud } from '@/components/logo-cloud'
 import { LogoCluster } from '@/components/logo-cluster'
 import { LogoTimeline } from '@/components/logo-timeline'
 import { Map } from '@/components/map'
-import { Screenshot } from '@/components/screenshot'
 import { Testimonials } from '@/components/testimonials'
 import { Heading, Subheading } from '@/components/text'
 import type { Metadata } from 'next'
 import { fetchPagefromAPI } from './actions'
-import { getBlockByType, getBlockByName } from '@/medu/queries'
-import { Suspense } from 'react'
+import { getBlockByType, getBlockByName, Block } from '@/medu/queries'
+import React, { Suspense } from 'react'
 import { Spinner } from '@/components/spinner'
-
-
+import FeatureCarousel from '@/components/feature-carousel'
+import SignUpAvailabilitySlide from '@/components/slides/SignUpAvailabilitySlide'
+import TasksListSlide from '@/components/slides/TasksListSlide'
+import PaymentProcessSlide from '@/components/slides/PaymentProcessSlide'
 
 export const metadata: Metadata = {
   description:
@@ -54,33 +55,41 @@ const announcementBlock = getBlockByType(home.blocks, "Header") as unknown as He
   )
 }
 
-interface FeatureSectionBlock {
+interface FeatureSectionBlockWithSlides {
   content: {
     title: string;
     subtitle: string;
-    screenshot: {
-      url: string;
-    };
+    screenshot: { url: string };
+    slideblocks: Block[];
   };
 }
 
-export function FeatureSection({
-  featureSection
-}: {
-  featureSection: FeatureSectionBlock
-}) {
+export function FeatureSection({ featureSection }: { featureSection: FeatureSectionBlockWithSlides }) {
+  console.log(featureSection)
+  const slideBlocks = featureSection.content.slideblocks;
+  const sorted = [...slideBlocks].sort((a, b) => a.order - b.order);
+  const stepNames = sorted.map((b) => (b.content as { title: string }).title);
+  const slides = sorted.map((b) => {
+    const compMap = { SignUpAvailabilitySlide, TasksListSlide, PaymentProcessSlide };
+    const Comp = compMap[b.name as keyof typeof compMap]!;
+    return <Comp key={b.id} />;
+  });
+  const slideProps = sorted.map((b) => b.content as Record<string, unknown>);
+
   return (
     <div className="overflow-hidden">
       <Container className="pb-24">
         <Heading as="h2" className="max-w-3xl">
           {featureSection.content.title}
         </Heading>
-        <Screenshot
-          width={1216}
-          height={768}
-          src={ featureSection.content.screenshot.url ||"/screenshots/app.png" }
-          className="mt-16 h-[36rem] sm:h-auto sm:w-[76rem]"
-        />
+        <div className="mt-16 h-[36rem] w-full">
+          <FeatureCarousel
+            steps={stepNames}
+            slides={slides}
+            slideProps={slideProps}
+            interval={3000}
+          />
+        </div>
       </Container>
     </div>
   )
@@ -261,8 +270,8 @@ export default async function Home() {
     // Fetch home page data
     const home = await fetchPagefromAPI('home');
     
-    // Get feature section data
-    const featureSection = getBlockByName(home.blocks, "Feature Section") as unknown as FeatureSectionBlock;
+    // Get feature section data (with slideBlocks inside content)
+    const featureSection = getBlockByName(home.blocks, "Feature Section") as unknown as FeatureSectionBlockWithSlides;
     
     // Get logo section data
     const logoSection = getBlockByName(home.blocks, "Logo Cloud") as unknown as LogoSectionBlock;

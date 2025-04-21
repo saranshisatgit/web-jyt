@@ -4,7 +4,7 @@ import { LogoCloud } from "@/components/logo-cloud";
 import { FeatureSection } from "../page";
 import { Metadata } from "next";
 import { fetchPagefromAPI } from "../actions";
-import { getBlockByName, getBlockByType } from "@/medu/queries";
+import { getBlockByName, getBlockByType, Block } from "@/medu/queries";
 import { Suspense } from "react";
 import { SectionLoading } from "@/components/section-loading";
 
@@ -31,14 +31,13 @@ interface LogoBlocks {
 }
 
 interface FeatureSectionBlock {
-    content: {
-      title: string;
-      subtitle: string;
-      screenshot: {
-        url: string;
-      };
-    };
-  }
+  content: {
+    title: string;
+    subtitle: string;
+    screenshot: { url: string };
+    slideblocks: Block[];
+  };
+}
 
 export const metadata: Metadata = {
     description:
