@@ -73,6 +73,9 @@ export function BlogPostContent({
         type: string;
         attrs?: {
           src?: string;
+          align?: 'left' | 'center' | 'right';
+          width?: number;
+          class?: string;
           [key: string]: unknown;
         };
         content?: TipTapNode[];
