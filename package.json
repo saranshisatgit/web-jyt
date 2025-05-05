@@ -32,7 +32,8 @@
     "react-dom": "^19.0.0",
     "react-use-measure": "^2.1.7",
     "react-wrap-balancer": "^1.1.1",
-    "reactjs-tiptap-editor": "^0.2.27"
+    "reactjs-tiptap-editor": "^0.2.27",
+    "tailwind-merge": "^3.2.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
