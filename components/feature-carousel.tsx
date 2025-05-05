@@ -52,7 +52,7 @@ const ANIMATION_PRESETS = {
   }
 } as const;
 
-export default function FeatureCarousel({ slides, slideProps = [], steps, interval = 3000, wrapperClassName = "" }: FeatureCarouselProps) {
+export default function FeatureCarousel({ slides, slideProps = [], steps, interval = 2000, wrapperClassName = "" }: FeatureCarouselProps) {
   const { current, advance, goTo } = useNumberCycler(slides.length, interval);
   const stepNames = steps ?? slides.map((_, i) => `Step ${i + 1}`);
   // Inject props into slide elements

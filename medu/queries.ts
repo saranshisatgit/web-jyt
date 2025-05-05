@@ -68,7 +68,12 @@ export interface Block {
       const url = `${apiUrl}/website/${domainName}/blogs/${slug}`;
       console.log('Fetching data from:', url);
       
-      const response = await fetch(url);
+      // Use Next.js cache with revalidation
+      const response = await fetch(url, {
+        // Cache the response for 1 hour (3600 seconds)
+        next: { revalidate: 3600, tags: [`blog-${slug}`] }
+      });
+      
       console.log('Response status:', response.status);
       
       if (!response.ok) {
@@ -77,7 +82,6 @@ export interface Block {
       }
   
       const data = await response.json();
-      console.log('Fetched data:', data);
       return data;
     } catch (error) {
       console.error('Error fetching page data:', error);
@@ -95,7 +99,12 @@ export interface Block {
       const url = `${apiUrl}/website/${domainName}/${slug}`;
       console.log('Fetching data from:', url);
       
-      const response = await fetch(url);
+      // Use Next.js cache with revalidation
+      const response = await fetch(url, {
+        // Cache the response for 1 hour (3600 seconds)
+        next: { revalidate: 3600, tags: [`page-${slug}`] }
+      });
+      
       console.log('Response status:', response.status);
       
       if (!response.ok) {
@@ -148,7 +157,14 @@ export interface Block {
   const fetchBlogs = async (domainName: string, filter: string) => {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL! || 'http://localhost:9000/web';
     const url = `${apiUrl}/website/${domainName}/blogs?${filter}`;
-    const response = await fetch(url);
+    
+    // Use Next.js cache with revalidation
+    const response = await fetch(url, {
+      // Cache the response for 30 minutes (1800 seconds) since blog lists change more frequently
+      next: { revalidate: 1800, tags: ['blogs'] }
+    });
+   
+    
     if (!response.ok) {
       throw new Error(`Failed to fetch blogs for ${domainName}. Status: ${response.status}`);
     }
@@ -184,8 +200,28 @@ export interface Block {
     }));
   };
 
-  export const fetchFooter = (slug: string) => {
-    const pageData = fetchPage('jaalyantra.com', slug)
-    return pageData
+  export const fetchFooter = async (slug: string) => {
+    try {
+      // Fallback to a default API URL if env variable is not available
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL! || 'http://localhost:9000/web';
+      const url = `${apiUrl}/website/jaalyantra.com/${slug}`;
+      
+      // Use Next.js cache with longer revalidation time for footer (rarely changes)
+      const response = await fetch(url, {
+        // Cache the response for 24 hours (86400 seconds) since footer rarely changes
+        next: { revalidate: 86400, tags: ['footer'] }
+      });
+      
+      if (!response.ok) {
+        console.error(`Failed to fetch footer data. Status: ${response.status}`);
+        throw new Error(`Failed to fetch footer data`);
+      }
+  
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error fetching footer data:', error);
+      throw error;
+    }
   }
   

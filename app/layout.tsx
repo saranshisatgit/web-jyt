@@ -4,6 +4,8 @@ import { ApiQueryClientProvider } from './context/api-context'
 import { getFooter } from './actions'
 import { Footer } from '@/components/footer'
 import { Spinner } from '@/components/spinner'
+import { cache } from 'react'
+
 
 export const dynamic = 'force-dynamic'
 
@@ -14,13 +16,20 @@ export const metadata: Metadata = {
   },
 }
 
+// Create a cached version of the data fetching function
+const getCachedFooter = cache(async () => {
+  return await getFooter();
+});
+
 export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const footerBlock = await getFooter()
+  // Use the cached function to fetch footer data
+  const footerBlock = await getCachedFooter();
   if (!footerBlock) return <Spinner size="lg" />
+  
   return (
     <ApiQueryClientProvider>
       <html lang="en">

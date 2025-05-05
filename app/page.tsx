@@ -1,18 +1,15 @@
 import { BentoCard } from '@/components/bento-card'
 import { Container } from '@/components/container'
 import { ButtonDef, HeroSection } from '@/components/hero-section'
-import { Keyboard } from '@/components/keyboard'
 import { LinkedAvatars } from '@/components/linked-avatars'
 import { LogoCloud } from '@/components/logo-cloud'
-import { LogoCluster } from '@/components/logo-cluster'
 import { LogoTimeline } from '@/components/logo-timeline'
-import { Map } from '@/components/map'
 import { Testimonials } from '@/components/testimonials'
 import { Heading, Subheading } from '@/components/text'
 import type { Metadata } from 'next'
-import { fetchPagefromAPI } from './actions'
-import { getBlockByType, getBlockByName, Block } from '@/medu/queries'
-import React, { Suspense } from 'react'
+import { fetchPageAndFooter } from './actions'
+import { getBlockByType, Block, Page } from '@/medu/queries'
+import React, { Suspense, cache } from 'react'
 import { Spinner } from '@/components/spinner'
 import FeatureCarousel from '@/components/feature-carousel'
 import SignUpAvailabilitySlide from '@/components/slides/SignUpAvailabilitySlide'
@@ -38,18 +35,28 @@ interface HeaderBlock {
     announcement: string;
   };
 }
-async function Hero()  {
-const home = await fetchPagefromAPI('home')
-const rawHeroBlock = getBlockByType(home.blocks, "Hero") as unknown as HeroBlock
-const headerBlock = {
-  content: {
-    title: rawHeroBlock.content.title,
-    subtitle: rawHeroBlock.content.subtitle,
-    announcement: rawHeroBlock.content.announcement,
-    buttons: rawHeroBlock.content.buttons
-  },
+// Memoize data fetching with React cache
+const getCachedPageData = cache(async (slug: string) => {
+  return await fetchPageAndFooter(slug);
+});
+
+// Define the type for the shared data
+interface SharedPageData {
+  page: Page;
+  footer: Block | undefined;
 }
-const announcementBlock = getBlockByType(home.blocks, "Header") as unknown as HeaderBlock
+
+async function Hero({ homeData }: { homeData: Page })  {
+  const rawHeroBlock = getBlockByType(homeData.blocks, "Hero") as unknown as HeroBlock
+  const headerBlock = {
+    content: {
+      title: rawHeroBlock.content.title,
+      subtitle: rawHeroBlock.content.subtitle,
+      announcement: rawHeroBlock.content.announcement,
+      buttons: rawHeroBlock.content.buttons
+    },
+  }
+  const announcementBlock = getBlockByType(homeData.blocks, "Header") as unknown as HeaderBlock
   return (
      <HeroSection headerBlock={headerBlock} announcementBlock={announcementBlock} />
   )
@@ -65,7 +72,9 @@ interface FeatureSectionBlockWithSlides {
 }
 
 export function FeatureSection({ featureSection }: { featureSection: FeatureSectionBlockWithSlides }) {
-  console.log(featureSection)
+  if(featureSection == undefined) {
+    return <>Feature Section 404</>
+  }
   const slideBlocks = featureSection.content.slideblocks;
   const sorted = [...slideBlocks].sort((a, b) => a.order - b.order);
   const stepNames = sorted.map((b) => (b.content as { title: string }).title);
@@ -95,63 +104,80 @@ export function FeatureSection({ featureSection }: { featureSection: FeatureSect
   )
 }
 
-function BentoSection({ bentoSection }: { bentoSection?: BentoSectionBlock }) {
+export interface BentoSectionBlock {
+  content: {
+    title: string;
+    subtitle: string;
+    cards: {
+      eyebrow: string;
+      title: string;
+      description: string;
+      graphic_type: string;
+      graphic_url?: string;
+      fade?: ('top' | 'bottom')[];
+      className?: string;
+    }[];
+  };
+}
+
+export function BentoSection({ bentoSection }: { bentoSection: BentoSectionBlock }) {
+
+  if (bentoSection == undefined) {
+    return <>Bento Section 404</>
+  }
+  const { title, subtitle, cards } = bentoSection.content;
+  // default grid spans and fades to mirror original layout
+  const defaultClasses = [
+    "max-lg:rounded-t-4xl lg:col-span-3 lg:rounded-tl-4xl",
+    "lg:col-span-3 lg:rounded-tr-4xl",
+    "lg:col-span-2 lg:rounded-bl-4xl",
+    "lg:col-span-2",
+    "max-lg:rounded-b-4xl lg:col-span-2 lg:rounded-br-4xl",
+  ];
+  const defaultFades: ('top' | 'bottom')[][] = [
+    ['bottom'],
+    ['bottom'],
+    [],
+    [],
+    []
+  ];
   return (
     <Container>
-      <Subheading>Sales</Subheading>
-      <Heading as="h3" className="mt-2 max-w-3xl">
-        {bentoSection?.content?.title || "Know more about your customers than they do."}
-      </Heading>
-
+      <Subheading>{subtitle}</Subheading>
+      <Heading as="h3" className="mt-2 max-w-3xl">{title}</Heading>
       <div className="mt-10 grid grid-cols-1 gap-4 sm:mt-16 lg:grid-cols-6 lg:grid-rows-2">
-        <BentoCard
-          eyebrow="Insight"
-          title="Get perfect clarity"
-          description="Radiant uses social engineering to build a detailed financial picture of your leads. Know their budget, compensation package, social security number, and more."
-          graphic={
-            <div className="h-80 bg-[url(/screenshots/profile.png)] bg-[size:1000px_560px] bg-[left_-109px_top_-112px] bg-no-repeat" />
-          }
-          fade={['bottom']}
-          className="max-lg:rounded-t-4xl lg:col-span-3 lg:rounded-tl-4xl"
-        />
-        <BentoCard
-          eyebrow="Analysis"
-          title="Undercut your competitors"
-          description="With our advanced data mining, you’ll know which companies your leads are talking to and exactly how much they’re being charged."
-          graphic={
-            <div className="absolute inset-0 bg-[url(/screenshots/competitors.png)] bg-[size:1100px_650px] bg-[left_-38px_top_-73px] bg-no-repeat" />
-          }
-          fade={['bottom']}
-          className="lg:col-span-3 lg:rounded-tr-4xl"
-        />
-        <BentoCard
-          eyebrow="Speed"
-          title="Built for power users"
-          description="It’s never been faster to cold email your entire contact list using our streamlined keyboard shortcuts."
-          graphic={
-            <div className="flex size-full pt-10 pl-10">
-              <Keyboard highlighted={['LeftCommand', 'LeftShift', 'D']} />
-            </div>
-          }
-          className="lg:col-span-2 lg:rounded-bl-4xl"
-        />
-        <BentoCard
-          eyebrow="Source"
-          title="Get the furthest reach"
-          description="Bypass those inconvenient privacy laws to source leads from the most unexpected places."
-          graphic={<LogoCluster />}
-          className="lg:col-span-2"
-        />
-        <BentoCard
-          eyebrow="Limitless"
-          title="Sell globally"
-          description="Radiant helps you sell in locations currently under international embargo."
-          graphic={<Map />}
-          className="max-lg:rounded-b-4xl lg:col-span-2 lg:rounded-br-4xl"
-        />
+        {cards.map((card, idx) => (
+          <BentoCard
+            key={idx}
+            eyebrow={card.eyebrow}
+            title={card.title}
+            description={card.description}
+            graphic={
+              card.graphic_type === 'image' && card.graphic_url
+                ? <div className="h-80 bg-cover bg-center" style={{ backgroundImage: `url(${card.graphic_url})` }} />
+                : null
+            }
+            fade={card.fade ?? defaultFades[idx]}
+            className={card.className ?? defaultClasses[idx]}
+          />
+        ))}
       </div>
     </Container>
   )
+}
+
+export interface DarkBentoSectionBlock {
+  content: {
+    title: string;
+    subtitle: string;
+    cards: {
+      eyebrow: string;
+      title: string;
+      description: string;
+      graphic_type: string;
+      graphic_url?: string;
+    }[];
+  };
 }
 
 function DarkBentoSection({ darkBentoSection }: { darkBentoSection?: DarkBentoSectionBlock }) {
@@ -222,38 +248,6 @@ interface LogoSectionBlock {
   };
 }
 
-// Interface for bento section blocks
-interface BentoSectionBlock {
-  content: {
-    title: string;
-    subtitle: string;
-    cards: {
-      eyebrow: string;
-      title: string;
-      description: string;
-      graphic_type: string;
-      graphic_url?: string;
-    }[];
-  };
-}
-
-// Interface for dark bento section blocks
-interface DarkBentoSectionBlock {
-  content: {
-    title: string;
-    subtitle: string;
-    cards: {
-      eyebrow: string;
-      title: string;
-      description: string;
-      graphic_type: string;
-      graphic_url?: string;
-    }[];
-  };
-}
-
-
-
 // Loading component for sections
 function SectionLoading() {
   return (
@@ -263,66 +257,83 @@ function SectionLoading() {
   );
 }
 
+// Define section components that use the shared data
+async function FeaturesSectionComponent({ homeData }: { homeData: SharedPageData }) {
+  const featureSection = getBlockByType(homeData.page.blocks, "FeatureSection") as unknown as FeatureSectionBlockWithSlides;
+  return <FeatureSection featureSection={featureSection} />;
+}
 
+async function BentoGridSectionComponent({ homeData }: { homeData: SharedPageData }) {
+  const bentoSection = getBlockByType(homeData.page.blocks, "BentoSection") as unknown as BentoSectionBlock;
+  return <BentoSection bentoSection={bentoSection} />;
+}
+
+async function DarkBentoGridSectionComponent({ homeData }: { homeData: SharedPageData }) {
+  const darkBentoSection = getBlockByType(homeData.page.blocks, "DarkBentoSection") as unknown as DarkBentoSectionBlock;
+  return <DarkBentoSection darkBentoSection={darkBentoSection} />;
+}
+
+async function TestimonialsSectionComponent({ homeData }: { homeData: SharedPageData }) {
+  const testimonialsSection = getBlockByType(homeData.page.blocks, "TestimonialsSection");
+  // Use proper type casting to avoid 'any'
+  return <Testimonials testimonialsData={testimonialsSection?.content as Record<string, unknown>} />;
+}
+
+async function LogoSectionComponent({ homeData }: { homeData: SharedPageData }) {
+  const logoSection = getBlockByType(homeData.page.blocks, "LogoSection") as unknown as LogoSectionBlock;
+  return <LogoCloud logoBlocks={logoSection?.content?.logos || []} />;
+}
 
 export default async function Home() {
   try {
-    // Fetch home page data
-    const home = await fetchPagefromAPI('home');
-    
-    // Get feature section data (with slideBlocks inside content)
-    const featureSection = getBlockByName(home.blocks, "Feature Section") as unknown as FeatureSectionBlockWithSlides;
-    
-    // Get logo section data
-    const logoSection = getBlockByName(home.blocks, "Logo Cloud") as unknown as LogoSectionBlock;
+    // Fetch data once at the root level using the cached function
+    const homeData = await getCachedPageData('home');
     
     return (
-      <div className="overflow-hidden">
-        <Suspense fallback={<SectionLoading />}>
-          <Hero />
-        </Suspense>
-        
-        <main>
+      <div className="relative">
+        <div className="relative">
           <Suspense fallback={<SectionLoading />}>
-            <Container className="mt-10">
-              {logoSection?.content?.logos ? (
-                <LogoCloud logoBlocks={logoSection.content.logos} />
-              ) : (
-                <LogoCloud logoBlocks={[]} />
-              )}
-            </Container>
+            <Hero homeData={homeData.page} />
           </Suspense>
-          
-          <div className="bg-linear-to-b from-white from-50% to-gray-100 py-32">
-            <Suspense fallback={<SectionLoading />}>
-              {featureSection ? (
-                <FeatureSection featureSection={featureSection} />
-              ) : (
-                <SectionLoading />
-              )}
-            </Suspense>
-            
-            <Suspense fallback={<SectionLoading />}>
-              <BentoSection />
-            </Suspense>
-          </div>
-          
+        </div>
+
+        <div className="mt-32 sm:mt-40 relative">
           <Suspense fallback={<SectionLoading />}>
-            <DarkBentoSection />
+            <FeaturesSectionComponent homeData={homeData} />
           </Suspense>
-        </main>
-        
-        <Suspense fallback={<SectionLoading />}>
-          <Testimonials />
-        </Suspense>
+        </div>
+
+        <div className="mt-32 sm:mt-40 relative">
+          <Suspense fallback={<SectionLoading />}>
+            <BentoGridSectionComponent homeData={homeData} />
+          </Suspense>
+        </div>
+
+        <div className="mt-32 sm:mt-40 relative">
+          <Suspense fallback={<SectionLoading />}>
+            <DarkBentoGridSectionComponent homeData={homeData} />
+          </Suspense>
+        </div>
+
+        <div className="mt-32 sm:mt-40 relative">
+          <Suspense fallback={<SectionLoading />}>
+            <TestimonialsSectionComponent homeData={homeData} />
+          </Suspense>
+        </div>
+
+        <div className="mt-32 sm:mt-40 relative">
+          <Suspense fallback={<SectionLoading />}>
+            <LogoSectionComponent homeData={homeData} />
+          </Suspense>
+        </div>
       </div>
     );
   } catch (error) {
-    console.error("Error fetching home page data:", error);
+    console.error('Error in Home component:', error);
     return (
       <div className="flex flex-col items-center justify-center min-h-screen p-4">
         <h1 className="text-2xl font-bold mb-4">Something went wrong</h1>
-        <p>Were having trouble loading the page. Please try again later.</p>
+        <p>We&apos;re having trouble loading the page. Please try again later.</p>
       </div>
     );
   }

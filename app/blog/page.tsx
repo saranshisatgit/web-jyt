@@ -23,6 +23,8 @@ import Image from 'next/image'
 import { getAllCategories } from '../actions'
 
 
+export const dynamic = 'force-dynamic'
+
 // Define interfaces for blog post structure
 interface BlogBlock {
   id: string;

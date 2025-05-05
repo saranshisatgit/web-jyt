@@ -1,7 +1,8 @@
 import { Container } from "@/components/container";
 import { ButtonDef, HeroSection } from "@/components/hero-section";
 import { LogoCloud } from "@/components/logo-cloud";
-import { FeatureSection } from "../page";
+import { BentoSection, FeatureSection } from "../page";
+import type { BentoSectionBlock } from "../page";
 import { Metadata } from "next";
 import { fetchPagefromAPI } from "../actions";
 import { getBlockByName, getBlockByType, Block } from "@/medu/queries";
@@ -61,6 +62,7 @@ export default async function Partner({
     const announcementBlock = { content: { announcement: rawHeaderBlock.content.announcement } }
     const logoBlocks = getBlockByName(partnerPage.blocks, "Feature Section") as unknown as LogoBlocks
     const featureSection = getBlockByName(partnerPage.blocks, "Partner Feature") as unknown as FeatureSectionBlock;
+    const bentoSection = getBlockByName(partnerPage.blocks, "Bento Section") as unknown as BentoSectionBlock;
   return (
     <div className="overflow-hidden">
       <HeroSection headerBlock={headerBlock} announcementBlock={announcementBlock} />
@@ -76,6 +78,13 @@ export default async function Partner({
                          <SectionLoading />
                        )}
                      </Suspense>
+                      <Suspense fallback={<SectionLoading />}>
+                        {bentoSection ? (
+                          <BentoSection bentoSection={bentoSection} />
+                        ) : (
+                          <SectionLoading />
+                        )}
+                      </Suspense>
         </div>
         
       </main>
