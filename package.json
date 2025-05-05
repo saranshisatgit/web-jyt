@@ -14,6 +14,7 @@
     "@medusajs/icons": "^2.6.1",
     "@sentry/nextjs": "^9.13.0",
     "@tanstack/react-query": "^5.74.3",
+    "@tiptap/extension-code-block": "^2.12.0",
     "@tiptap/extension-color": "^2.11.7",
     "@tiptap/extension-font-family": "^2.11.7",
     "@tiptap/extension-highlight": "^2.11.7",
@@ -32,7 +33,7 @@
     "react-dom": "^19.0.0",
     "react-use-measure": "^2.1.7",
     "react-wrap-balancer": "^1.1.1",
-    "reactjs-tiptap-editor": "^0.2.27",
+    "reactjs-tiptap-editor": "^0.2.29",
     "tailwind-merge": "^3.2.0"
   },
   "devDependencies": {

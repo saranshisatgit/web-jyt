@@ -18,8 +18,11 @@ import { Color } from '@tiptap/extension-color'
 import { Heading } from '@tiptap/extension-heading'
 import { Highlight } from '@tiptap/extension-highlight'
 import { Link } from '@tiptap/extension-link'
+import Code from '@tiptap/extension-code'
+import Underline from '@tiptap/extension-underline'
 
 import { useEffect } from 'react'
+//import { Code } from 'reactjs-tiptap-editor/code'; 
 
 interface TipTapRendererProps {
   content: Record<string, unknown>;
@@ -45,7 +48,9 @@ export function TipTapRenderer({ content, className = '', onHtmlGenerated }: Tip
       Color,
       Heading,
       Highlight,
-      Link
+      Link,
+      Code,
+      Underline
     ],
     content,
     editable: false,
