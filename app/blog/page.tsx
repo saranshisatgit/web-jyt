@@ -46,7 +46,7 @@ interface BlogPost {
   publishedAt: string;
   content?: string;
   blocks?: BlogBlock[];
-  metadata?: { category?: string; [key: string]: unknown };
+  public_metadata?: { category?: string; [key: string]: unknown };
   [key: string]: unknown;
   author?: {
     name: string;
@@ -186,7 +186,7 @@ async function Posts({ page, category }: { page: number; category?: string }) {
   const allPosts: BlogPost[] = await getAllBlogs('jaalyantra.com', '')
   const filteredPosts = category
     ? allPosts.filter((post) => {
-        const cat = post.metadata?.category
+        const cat = post.public_metadata?.category
         if (typeof cat !== 'string') return false
         return cat.toLowerCase().replace(/\s+/g, '-') === category
       })
