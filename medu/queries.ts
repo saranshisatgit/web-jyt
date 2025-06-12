@@ -71,7 +71,7 @@ export interface Block {
       // Use Next.js cache with revalidation
       const response = await fetch(url, {
         // Cache the response for 1 hour (3600 seconds)
-        next: { revalidate: 3600, tags: [`blog-${slug}`] }
+        cache: 'no-store'
       });
       
       console.log('Response status:', response.status);
@@ -240,3 +240,50 @@ export interface Block {
     }
   }
   
+
+export interface SubscriptionPayload {
+  email: string;
+  first_name: string;
+  last_name: string;
+}
+
+// Define this based on your actual API success/error response
+export interface SubscriptionResponse {
+  message?: string;
+  data?: string[];
+  error?: string;
+}
+
+export const subscribeToUpdates = async (
+  domainName: string,
+  payload: SubscriptionPayload
+): Promise<SubscriptionResponse> => {
+  try {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL! || 'http://localhost:9000/web';
+    const url = `${apiUrl}/website/${domainName}/subscribe`;
+    console.log('Subscribing to updates at:', url, 'with payload:', payload);
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    });
+
+    console.log('Subscription response status:', response.status);
+    const responseBody = await response.json();
+
+    if (!response.ok) {
+      console.error(`Failed to subscribe. Status: ${response.status}`, responseBody);
+      return { error: responseBody.message || responseBody.error || `Failed to subscribe. Status: ${response.status}` };
+    }
+
+    console.log('Subscription successful:', responseBody);
+    return responseBody as SubscriptionResponse;
+  } catch (error) {
+    console.error('Error subscribing to updates:', error);
+    const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred during subscription.';
+    return { error: errorMessage };
+  }
+};

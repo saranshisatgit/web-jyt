@@ -12,7 +12,8 @@ import { Heading, Subheading } from '@/components/text'
 import { type HeadingItem } from '@/components/manual-table-of-contents' // Keep for state type for now
 import { PostTableOfContents, type HeadingItem as TocHeadingItem } from '@/components/PostTableOfContents'
 import { PostMetadataSidebar, type BlogBlock } from '@/components/post-metadata-sidebar'
-import { PostMainContentArea } from '@/components/post-main-content-area' // Added import for PostMainContentArea
+import { PostMainContentArea } from '@/components/post-main-content-area'; // Added import for PostMainContentArea
+import SubscribeForm from '@/components/SubscribeForm'; // Added import for SubscribeForm
 import { ChevronLeftIcon } from '@heroicons/react/16/solid'
 import dayjs from 'dayjs'
 // Image import removed as it's now used within PostMainContentArea
@@ -199,12 +200,24 @@ export function BlogPostContent({
             headings={headings}
           />
         </div> {/* Closes the main three-column grid div (mt-16 grid...) */}
+
       <div className="pb-24">
         <Button href="/blog" variant="secondary" className="gap-1">
           <ChevronLeftIcon className="size-4" />
           Back to blog
         </Button>
       </div>
+
+      {/* Subscription Form Section with Gradient Background */}
+      <div className="relative my-16 py-16 sm:py-24"> {/* Increased padding for better effect */}
+        <div className="absolute inset-0 opacity-50">
+          <GradientBackground />
+        </div>
+        <div className="relative z-10 flex flex-col items-center">
+          <SubscribeForm domainName="jaalyantra.com" />
+        </div>
+      </div>
+
     </Container>
   </main>
 )
