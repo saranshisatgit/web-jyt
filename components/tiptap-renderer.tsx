@@ -26,12 +26,13 @@ import { Heading } from '@tiptap/extension-heading'
 import { Highlight } from '@tiptap/extension-highlight'
 import { Link } from '@tiptap/extension-link'
 import Underline from '@tiptap/extension-underline'
-import TextAlign from '@tiptap/extension-text-align'
+//import TextAlign from '@tiptap/extension-text-align'
 import { TaskItem } from '@tiptap/extension-task-item'
 import { TaskList } from '@tiptap/extension-task-list'
 import { Code } from '@tiptap/extension-code'
 import Superscript from '@tiptap/extension-superscript'
 import Subscript from '@tiptap/extension-subscript'
+import { TextAlign } from 'reactjs-tiptap-editor/textalign';
 
 // Define interfaces
 interface TipTapRendererProps {
