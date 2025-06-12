@@ -1,39 +1,51 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useCallback } from 'react'
 import { Button } from '@/components/button'
 import { Container } from '@/components/container'
 import { GradientBackground } from '@/components/gradient'
 import { Navbar } from '@/components/navbar'
 import { Heading, Subheading } from '@/components/text'
-import { TipTapRenderer } from '@/components/tiptap-renderer'
+// TipTapRenderer import removed (now used within PostMainContentArea)
+// ManualDrawer import removed (now used within PostMainContentArea)
+// ManualTableOfContents import removed, HeadingItem might be aliased from PostTableOfContents
+import { type HeadingItem } from '@/components/manual-table-of-contents' // Keep for state type for now
+import { PostTableOfContents, type HeadingItem as TocHeadingItem } from '@/components/PostTableOfContents'
+import { PostMetadataSidebar, type BlogBlock } from '@/components/post-metadata-sidebar'
+import { PostMainContentArea } from '@/components/post-main-content-area' // Added import for PostMainContentArea
 import { ChevronLeftIcon } from '@heroicons/react/16/solid'
 import dayjs from 'dayjs'
-import Image from 'next/image'
+// Image import removed as it's now used within PostMainContentArea
 
-// Define interfaces for blog post structure
-interface BlogBlock {
-  id: string;
+// Define interfaces for TipTap content structure
+export interface TipTapNode {
   type: string;
-  content: {
-    authors?: string[];
-    image?: {
-      content?: string;
-    };
-    text?: Record<string, unknown>;
-    [key: string]: unknown;
-  };
-  order: number;
+  attrs?: Record<string, unknown>; // Changed any to unknown
+  content?: TipTapNode[];
+  text?: string;
+  marks?: Array<Record<string, unknown>>; // Changed any to unknown
+  [key: string]: unknown; // Changed any to unknown, Allow other properties specific to node types
 }
 
-interface BlogPost {
+export interface TipTapJsonStructure {
+  type: 'doc';
+  content: TipTapNode[];
+}
+
+// BlogBlock interface moved to PostMetadataSidebar temporarily
+// TODO: Centralize type definitions (e.g., in types/blog.ts)
+
+export interface BlogPost {
   title: string;
   slug: string;
   publishedAt: string;
   excerpt?: string;
   blocks?: BlogBlock[];
-  [key: string]: unknown;
-  metadata: Record<string, unknown>
+  content?: { // Made content optional
+    json: TipTapJsonStructure;
+  };
+  metadata: Record<string, unknown>;
+  public_metadata?: Record<string, unknown>; // Added public_metadata
 }
 
 export function BlogPostContent({ 
@@ -53,87 +65,98 @@ export function BlogPostContent({
   
   // State to toggle debug view
   const [showDebug, setShowDebug] = useState(false)
+  const [tocHeadingsCount, setTocHeadingsCount] = useState(0)
+  const [headings, setHeadings] = useState<HeadingItem[]>([]) // State for actual heading items
+
+  const hasOriginalTocNode = useMemo(() => {
+    if (!post.content?.json.content) return false;
+    return post.content.json.content.some((node) => node.type === 'tableOfContents');
+  }, [post.content?.json.content]);
   
   // Check if running in development/local environment
   const isDevelopment = process.env.NODE_ENV === 'development'
   
-  // Process the content to remove the main image if it's duplicated
-  const processedContent = useMemo(() => {
-    if (!contentBlock?.content.text) return null
+  // Process the content to remove the main image and extract the drawer
+  const { processedContent, drawerNode } = useMemo(() => {
+    if (!contentBlock?.content.text) return { processedContent: null, drawerNode: null };
+
+    const processedText = JSON.parse(JSON.stringify(contentBlock.content.text));
+
+    interface TipTapNode {
+      type: string;
+      attrs?: { [key: string]: unknown };
+      content?: TipTapNode[];
+      text?: string;
+      marks?: Array<Record<string, unknown>>;
+      [key: string]: unknown; // Add index signature to match exported type
+    }
     
-    // Create a deep copy of the content to avoid mutating the original
-    const processedText = JSON.parse(JSON.stringify(contentBlock.content.text))
-    
-    // Check if we have a main image to filter out
-    if (imageBlock?.content.image?.content) {
-      const mainImageUrl = imageBlock.content.image.content
-      
-      // Define interface for TipTap document structure
-      interface TipTapNode {
-        type: string;
-        attrs?: {
-          src?: string;
-          align?: 'left' | 'center' | 'right';
-          width?: number;
-          class?: string;
-          [key: string]: unknown;
-        };
-        content?: TipTapNode[];
-        [key: string]: unknown;
+    interface DrawerAttrs {
+      src: string;
+      alt: string;
+      width: number;
+      height: number;
+      align: 'left' | 'center' | 'right';
+      title?: string | null;
+      [key: string]: unknown; // Allow other properties to match base type
+    }
+
+    interface DrawerNode extends TipTapNode {
+        type: 'drawer';
+        attrs?: DrawerAttrs; // Make optional to match base interface
+    }
+
+    const tipTapDoc = processedText as { type: string; content: TipTapNode[] };
+    let foundDrawerNode: DrawerNode | null = null;
+
+    if (tipTapDoc.type === 'doc' && Array.isArray(tipTapDoc.content)) {
+      // Find and extract the drawer node
+      const drawer = tipTapDoc.content.find(node => node.type === 'drawer') as DrawerNode | undefined;
+      if (drawer) {
+        foundDrawerNode = drawer;
       }
-      
-      // For TipTap/ProseMirror document structure
-      const tipTapDoc = processedText as { type: string; content: TipTapNode[] };
-      if (tipTapDoc.type === 'doc' && Array.isArray(tipTapDoc.content)) {
+
+      // Filter out both drawer and tableOfContents nodes
+      tipTapDoc.content = tipTapDoc.content.filter(node => node.type !== 'drawer' && node.type !== 'tableOfContents');
+
+      // Remove main image if duplicated
+      if (imageBlock?.content.image?.content) {
+        const mainImageUrl = imageBlock.content.image.content
         let foundMainImage = false
         
-        // Process each paragraph in the document
         tipTapDoc.content = tipTapDoc.content.map((paragraph: TipTapNode) => {
-          // Skip processing if we've already found and removed the main image
           if (foundMainImage) return paragraph
           
-          // If this is a paragraph with content that might contain images
           if (paragraph.type === 'paragraph' && Array.isArray(paragraph.content)) {
-            // Look for image nodes in this paragraph
-            const newContent = paragraph.content.filter((node: TipTapNode) => {
-              // If it's an image node with a src matching our main image
-              if (!foundMainImage && 
-                  node.type === 'image' && 
-                  node.attrs?.src === mainImageUrl) {
+            paragraph.content = paragraph.content.filter((node: TipTapNode) => {
+              if (!foundMainImage && node.type === 'image' && (node.attrs?.src as string) === mainImageUrl) {
                 foundMainImage = true
-                return false // Remove this image node
+                return false
               }
-              return true // Keep all other nodes
+              return true
             })
-            
-            // Return the paragraph with filtered content
-            return {
-              ...paragraph,
-              content: newContent
-            }
           }
-          
           return paragraph
         })
         
-        // Filter out any empty paragraphs (that might have contained only the image)
         tipTapDoc.content = tipTapDoc.content.filter((paragraph: TipTapNode) => {
-          if (paragraph.type === 'paragraph' && 
-              (!paragraph.content || paragraph.content.length === 0)) {
-            return false // Remove empty paragraphs
-          }
-          return true
+          return !(paragraph.type === 'paragraph' && (!paragraph.content || paragraph.content.length === 0));
         })
       }
     }
     
-    return processedText
-  }, [contentBlock?.content.text, imageBlock?.content.image?.content])
+    return { processedContent: processedText, drawerNode: foundDrawerNode };
+  }, [contentBlock?.content.text, imageBlock?.content.image?.content]);
   
   // Handler for when HTML is generated
   const handleHtmlGenerated = (html: string) => {
     setGeneratedHtml(html)
   }
+
+  const handleHeadingsChange = useCallback((newHeadings: TocHeadingItem[], count: number) => {
+    setHeadings(newHeadings as HeadingItem[]); // Cast if TocHeadingItem is structurally same as HeadingItem
+    setTocHeadingsCount(count);
+  }, []); // Dependencies setHeadings & setTocHeadingsCount are stable
 
   return (
     <main className="overflow-hidden">
@@ -147,118 +170,42 @@ export function BlogPostContent({
           {post.title}
         </Heading>
         <div className="mt-16 grid grid-cols-1 gap-8 pb-24 lg:grid-cols-[15rem_1fr] xl:grid-cols-[15rem_1fr_15rem]">
-          <div className="flex flex-wrap items-center gap-8 max-lg:justify-between lg:flex-col lg:items-start">
-            {/* Display authors if available */}
-            {authorsBlock && (
-              <div className="flex items-center gap-3">
-                <div className="text-sm/5 text-gray-700">
-                  {authorsBlock.content.authors?.join(', ')}
-                </div>
-              </div>
-            )}
-            <div className="flex items-center gap-3">
-                <div className="rounded-full border border-dotted border-gray-300 bg-gray-50 px-2 text-sm/6 font-medium text-gray-500">
-                  {post.metadata?.category as string}
-                </div>
-              </div>
-          </div>
+          {/* Left sidebar for post metadata */}
+          <PostMetadataSidebar 
+            authorsBlock={authorsBlock} 
+            category={(post.public_metadata as { category?: string })?.category} 
+          />
           <div className="text-gray-700">
-            <div className="max-w-2xl xl:mx-auto">
-              {/* Display main image if available */}
-              {imageBlock && imageBlock.content.image?.content && (
-                <Image
-                  alt={post.title || ''}
-                  src={imageBlock.content.image.content}
-                  width={2016}
-                  height={1344}
-                  priority={true}
-                  className="mb-10 aspect-3/2 w-full rounded-2xl object-cover shadow-xl"
-                />
-              )}
-              
-              {/* TipTap renderer to generate HTML - hidden by default */}
-              {contentBlock && contentBlock.content.text && (
-                <>
-                  <div style={{ display: showDebug ? 'block' : 'none' }}>
-                    <TipTapRenderer 
-                      content={processedContent || contentBlock.content.text}
-                      onHtmlGenerated={handleHtmlGenerated}
-                      className="mb-8 border border-gray-200 p-4 rounded-md"
-                    />
-                  </div>
-                  
-                  {/* Render the generated HTML directly */}
-                  {generatedHtml ? (
-                    <>
-                      <div 
-                        className="prose prose-gray prose-ol:list-decimal prose-ul:list-disc prose-li:my-1 max-w-none"
-                        dangerouslySetInnerHTML={{ __html: generatedHtml }}
-                      />
-                      
-                      {/* Debug button - only shown in development environment */}
-                      {isDevelopment && (
-                        <div className="mt-8 flex justify-center">
-                          <Button 
-                            variant="secondary" 
-                            onClick={() => setShowDebug(!showDebug)}
-                          >
-                            {showDebug ? 'Hide Debug Info' : 'Show Debug Info'}
-                          </Button>
-                        </div>
-                      )}
-                      
-                      {/* Debug view - only shown in development environment */}
-                      {isDevelopment && showDebug && (
-                        <div className="mt-8 border-t border-gray-200 pt-8">
-                          <h3 className="mb-4 text-lg font-semibold">Debug Information</h3>
-                          
-                          <div className="mb-8">
-                            <h4 className="mb-2 font-medium">TipTap Editor Rendering:</h4>
-                            <div className="border border-blue-200 bg-blue-50 p-4 rounded-md">
-                              <p className="mb-2 text-xs text-blue-700">This is how TipTap renders the content directly:</p>
-                              {/* TipTap renderer is now visible above */}
-                            </div>
-                          </div>
-                          
-                          <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-                            <div>
-                              <h4 className="mb-2 font-medium">Raw Editor Content:</h4>
-                              <pre className="overflow-auto rounded-md bg-gray-100 p-4 text-xs">
-                                {JSON.stringify(contentBlock?.content.text, null, 2)}
-                              </pre>
-                              <h4 className="mt-4 mb-2 font-medium">Processed Content (with main image removed):</h4>
-                              <pre className="overflow-auto rounded-md bg-gray-100 p-4 text-xs">
-                                {JSON.stringify(processedContent, null, 2)}
-                              </pre>
-                            </div>
-                            
-                            <div>
-                              <h4 className="mb-2 font-medium">Generated HTML:</h4>
-                              <pre className="overflow-auto rounded-md bg-gray-100 p-4 text-xs">
-                                {generatedHtml}
-                              </pre>
-                            </div>
-                          </div>
-                        </div>
-                      )}
-                    </>
-                  ) : (
-                    <div className="py-4 text-center text-gray-500">
-                      Loading content...
-                    </div>
-                  )}
-                </>
-              )}
-            </div>
-          </div>
-        </div>
-        <div className="pb-24">
-          <Button href="/blog" variant="secondary" className="gap-1">
-            <ChevronLeftIcon className="size-4" />
-            Back to blog
-          </Button>
-        </div>
-      </Container>
-    </main>
-  )
+            <PostMainContentArea 
+              post={post}
+              imageBlock={imageBlock}
+              processedContent={processedContent}
+              drawerNode={drawerNode}
+              showDebug={showDebug}
+              setShowDebug={setShowDebug}
+              onHtmlGenerated={handleHtmlGenerated}
+              isDevelopment={isDevelopment}
+              initialContentForDebug={contentBlock?.content.text}
+              generatedHtml={generatedHtml} // Pass generatedHtml for debug view
+            />
+          </div> {/* Closes the center content's outer div (text-gray-700) */}
+
+          {/* Right sidebar for Table of Contents - should be the third column of the main grid */}
+          <PostTableOfContents 
+            generatedHtml={generatedHtml}
+            onHeadingsChange={handleHeadingsChange}
+            hasOriginalTocNode={hasOriginalTocNode}
+            tocHeadingsCount={tocHeadingsCount}
+            headings={headings}
+          />
+        </div> {/* Closes the main three-column grid div (mt-16 grid...) */}
+      <div className="pb-24">
+        <Button href="/blog" variant="secondary" className="gap-1">
+          <ChevronLeftIcon className="size-4" />
+          Back to blog
+        </Button>
+      </div>
+    </Container>
+  </main>
+)
 }

@@ -157,14 +157,15 @@ export interface Block {
   const fetchBlogs = async (domainName: string, filter: string) => {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL! || 'http://localhost:9000/web';
     const url = `${apiUrl}/website/${domainName}/blogs?${filter}`;
-    
-    // Use Next.js cache with revalidation
-    const response = await fetch(url, {
-      // Cache the response for 30 minutes (1800 seconds) since blog lists change more frequently
-      next: { revalidate: 1800, tags: ['blogs'] }
-    });
-   
-    
+
+    // Conditionally set fetch options based on the environment
+    const fetchOptions =
+      process.env.NODE_ENV === "development"
+        ? { cache: "no-store" as RequestCache } // Disable cache in development
+        : { next: { revalidate: 1800, tags: ["blogs"] } }; // Cache for 30 mins in production
+
+    const response = await fetch(url, fetchOptions);
+
     if (!response.ok) {
       throw new Error(`Failed to fetch blogs for ${domainName}. Status: ${response.status}`);
     }
@@ -183,21 +184,35 @@ export interface Block {
   export const getCategories = async (
     domainName: string = 'jaalyantra.com'
   ): Promise<{ title: string; slug: string }[]> => {
-    // Fetch all blogs and derive unique categories from metadata
-    const blogs = (await fetchBlogs(domainName, '')) as Array<{
-      metadata?: { category?: string }
-    }>;
-    const categorySet = new Set<string>();
-    blogs.forEach((blog) => {
-      const meta = blog.metadata;
-      if (meta && typeof meta.category === 'string') {
-        categorySet.add(meta.category);
+    try {
+      const apiUrl =
+        process.env.NEXT_PUBLIC_API_URL! || "http://localhost:9000/web"
+      const url = `${apiUrl}/website/${domainName}/blogs/categories`
+
+      const response = await fetch(url, {
+        next: { revalidate: 3600, tags: ["categories"] }, // Cache for 1 hour
+      })
+
+      if (!response.ok) {
+        console.error(`Failed to fetch categories. Status: ${response.status}`)
+        return []
       }
-    });
-    return Array.from(categorySet).map((category) => ({
-      title: category,
-      slug: category.toLowerCase().replace(/\s+/g, '-'),
-    }));
+
+      const { categories } = await response.json()
+
+      if (!Array.isArray(categories)) {
+        console.error("Fetched categories is not an array:", categories)
+        return []
+      }
+
+      return categories.map((category: string) => ({
+        title: category,
+        slug: category.toLowerCase().replace(/\s+/g, "-"),
+      }))
+    } catch (error) {
+      console.error("An error occurred while fetching categories:", error)
+      return []
+    }
   };
 
   export const fetchFooter = async (slug: string) => {
