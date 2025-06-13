@@ -43,7 +43,7 @@ interface BlogBlock {
 interface BlogPost {
   title: string;
   slug: string;
-  publishedAt: string;
+  published_at: string;
   content?: string;
   blocks?: BlogBlock[];
   public_metadata?: { category?: string; [key: string]: unknown };
@@ -98,7 +98,7 @@ async function FeaturedPosts() {
               )}
               <div className="flex flex-1 flex-col p-8">
                 <div className="text-sm/5 text-gray-700">
-                  {dayjs(post.publishedAt).format('dddd, MMMM D, YYYY')}
+                  {dayjs(post.published_at).format('dddd, MMMM D, YYYY')}
                 </div>
                 <div className="mt-2 text-base/7 font-medium">
                   <Link href={`/blog/${post.slug}`}>
@@ -212,7 +212,7 @@ async function Posts({ page, category }: { page: number; category?: string }) {
         >
           <div>
             <div className="text-sm/5 max-sm:text-gray-700 sm:font-medium">
-              {dayjs(post.publishedAt).format('dddd, MMMM D, YYYY')}
+              {dayjs(post.published_at).format('dddd, MMMM D, YYYY')}
             </div>
             {post.author && (
               <div className="mt-2.5 flex items-center gap-3">

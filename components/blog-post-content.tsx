@@ -39,14 +39,14 @@ export interface TipTapJsonStructure {
 export interface BlogPost {
   title: string;
   slug: string;
-  publishedAt: string;
+  published_at: string;
   excerpt?: string;
   blocks?: BlogBlock[];
   content?: { // Made content optional
     json: TipTapJsonStructure;
   };
-  metadata: Record<string, unknown>;
-  public_metadata?: Record<string, unknown>; // Added public_metadata
+  public_metadata?: Record<string, unknown>; // Use public_metadata
+  [key: string]: unknown;
 }
 
 export function BlogPostContent({ 
@@ -165,7 +165,7 @@ export function BlogPostContent({
       <Container>
         <Navbar />
         <Subheading className="mt-16">
-          {dayjs(post.publishedAt).format('dddd, MMMM D, YYYY')}
+          {dayjs(post.published_at).format('dddd, MMMM D, YYYY')}
         </Subheading>
         <Heading as="h1" className="mt-2">
           {post.title}

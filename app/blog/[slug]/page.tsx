@@ -21,11 +21,11 @@ interface BlogBlock {
 interface BlogPost {
   title: string;
   slug: string;
-  publishedAt: string;
+  published_at: string;
   excerpt?: string;
   blocks?: BlogBlock[];
+  public_metadata?: Record<string, unknown>;
   [key: string]: unknown;
-  metadata: Record<string, unknown>
 }
 
 // Interface to match the Page type returned by getSinglePost
@@ -35,9 +35,9 @@ interface Page {
   content: string;
   status: string;
   page_type: string;
-  publishedAt: string;
+  published_at: string;
   blocks: BlogBlock[];
-  metadata: Record<string, unknown>
+  public_metadata: Record<string, unknown>
 }
 
 type Params = Promise<{ slug: string }>
@@ -66,9 +66,9 @@ export default async function BlogPost({
   const post: BlogPost = {
     title: postData.title,
     slug: postData.slug,
-    publishedAt: postData.publishedAt,
+    published_at: postData.published_at,
     blocks: postData.blocks,
-    metadata: postData.metadata
+    public_metadata: postData.public_metadata
   };
   
   // Find the first block with text content for the main content
