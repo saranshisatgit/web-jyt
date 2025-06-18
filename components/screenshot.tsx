@@ -23,6 +23,7 @@ export function Screenshot({
       <div className="absolute -inset-[var(--padding)] rounded-[calc(var(--radius)+var(--padding))] ring-1 shadow-xs ring-black/5 [--padding:--spacing(2)]" />
       <Image
         alt=""
+        objectFit='contain'
         src={src}
         className="h-full rounded-[var(--radius)] ring-1 shadow-2xl ring-black/10"
         width={width}

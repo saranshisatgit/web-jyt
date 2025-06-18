@@ -13,7 +13,7 @@ export interface ButtonDef {
   variant?: 'primary' | 'secondary' | undefined;
 }
 
-interface HeaderBlock {
+export interface HeaderBlock {
   content: {
     title: string;
     subtitle: string;

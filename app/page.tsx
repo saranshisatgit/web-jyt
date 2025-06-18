@@ -1,20 +1,21 @@
 import { BentoCard } from '@/components/bento-card'
 import { Container } from '@/components/container'
 import { ButtonDef, HeroSection } from '@/components/hero-section'
-import { LinkedAvatars } from '@/components/linked-avatars'
+
 import { LogoCloud } from '@/components/logo-cloud'
-import { LogoTimeline } from '@/components/logo-timeline'
-import { Testimonials } from '@/components/testimonials'
+
+import { Testimonials, TestimonialsData } from '@/components/testimonials'
 import { Heading, Subheading } from '@/components/text'
 import type { Metadata } from 'next'
 import { fetchPageAndFooter } from './actions'
-import { getBlockByType, Block, Page } from '@/medu/queries'
+import { getBlockByType, Block, Page, getBlockByName } from '@/medu/queries'
 import React, { Suspense, cache } from 'react'
 import { Spinner } from '@/components/spinner'
 import FeatureCarousel from '@/components/feature-carousel'
 import SignUpAvailabilitySlide from '@/components/slides/SignUpAvailabilitySlide'
 import TasksListSlide from '@/components/slides/TasksListSlide'
-import PaymentProcessSlide from '@/components/slides/PaymentProcessSlide'
+import PaymentProcessSlide from '@/components/slides/PaymentProcessSlide';
+import { Screenshot } from '@/components/screenshot';
 
 export const metadata: Metadata = {
   description:
@@ -71,37 +72,75 @@ interface FeatureSectionBlockWithSlides {
   };
 }
 
+// Sample JSON representation for a Block based on FeatureSection:
+// {
+//   "id": "unique_feature_section_id_123",
+//   "name": "Feature Section with Screenshot",
+//   "type": "feature_section",
+//   "content": {
+//     "heading": "A snapshot of your entire sales pipeline.",
+//     "screenshot": {
+//       "src": "/screenshots/app.png",
+//       "width": 1216,
+//       "height": 768,
+//       "className": "mt-16 h-[36rem] sm:h-auto sm:w-[76rem]"
+//     }
+//   },
+//   "order": 0 // Assuming this is the first block
+// }
+
 export function FeatureSection({ featureSection }: { featureSection: FeatureSectionBlockWithSlides }) {
-  if(featureSection == undefined) {
-    return <>Feature Section 404</>
+  if (featureSection == undefined) {
+    return <>Loading feature section</>;
   }
-  const slideBlocks = featureSection.content.slideblocks;
-  const sorted = [...slideBlocks].sort((a, b) => a.order - b.order);
-  const stepNames = sorted.map((b) => (b.content as { title: string }).title);
-  const slides = sorted.map((b) => {
-    const compMap = { SignUpAvailabilitySlide, TasksListSlide, PaymentProcessSlide };
-    const Comp = compMap[b.name as keyof typeof compMap]!;
-    return <Comp key={b.id} />;
-  });
-  const slideProps = sorted.map((b) => b.content as Record<string, unknown>);
+
+  const { title, screenshot, slideblocks } = featureSection.content;
+
+  // Check if slideblocks exist and have content
+  const hasSlideBlocks = slideblocks && slideblocks.length > 0;
 
   return (
     <div className="overflow-hidden">
       <Container className="pb-24">
         <Heading as="h2" className="max-w-3xl">
-          {featureSection.content.title}
+          {title}
         </Heading>
-        <div className="mt-16 h-[36rem] w-full">
-          <FeatureCarousel
-            steps={stepNames}
-            slides={slides}
-            slideProps={slideProps}
-            interval={3000}
+        {hasSlideBlocks ? (
+          (() => { // IIFE to keep variable scope local for carousel logic
+            const sorted = [...slideblocks].sort((a, b) => a.order - b.order);
+            const stepNames = sorted.map((b) => (b.content as { title: string }).title);
+            const slides = sorted.map((b) => {
+              const compMap = { SignUpAvailabilitySlide, TasksListSlide, PaymentProcessSlide };
+              const Comp = compMap[b.name as keyof typeof compMap]!;
+              return <Comp key={b.id} />;
+            });
+            const slideProps = sorted.map((b) => b.content as Record<string, unknown>);
+            return (
+              <div className="mt-16 h-[36rem] w-full">
+                <FeatureCarousel
+                  steps={stepNames}
+                  slides={slides}
+                  slideProps={slideProps}
+                  interval={3000}
+                />
+              </div>
+            );
+          })()
+        ) : screenshot && screenshot.url ? (
+          <Screenshot
+            width={2784}
+            height={1582}
+            src={screenshot.url}
+            className="mt-16 h-[36rem] sm:h-auto sm:w-[76rem]"
           />
-        </div>
+        ) : (
+          <div className="mt-16 text-center">
+            <p>Feature content is not available.</p>
+          </div>
+        )}
       </Container>
     </div>
-  )
+  );
 }
 
 export interface BentoSectionBlock {
@@ -123,7 +162,7 @@ export interface BentoSectionBlock {
 export function BentoSection({ bentoSection }: { bentoSection: BentoSectionBlock }) {
 
   if (bentoSection == undefined) {
-    return <>Bento Section 404</>
+    return <>Loading section</>
   }
   const { title, subtitle, cards } = bentoSection.content;
   // default grid spans and fades to mirror original layout
@@ -171,6 +210,7 @@ export interface DarkBentoSectionBlock {
     title: string;
     subtitle: string;
     cards: {
+      id?: string;
       eyebrow: string;
       title: string;
       description: string;
@@ -181,58 +221,64 @@ export interface DarkBentoSectionBlock {
 }
 
 function DarkBentoSection({ darkBentoSection }: { darkBentoSection?: DarkBentoSectionBlock }) {
+  const { content } = darkBentoSection || {};
+  const { title, subtitle, cards } = content || {};
+
+  // Define layout classes and fades here for a predictable layout
+  const layoutClasses = [
+    "max-lg:rounded-t-4xl lg:col-span-3 lg:rounded-tl-4xl", // Card 0: Top-left
+    "lg:col-span-3 lg:rounded-tr-4xl",                     // Card 1: Top-right
+    "max-lg:rounded-b-4xl lg:col-span-6 lg:rounded-b-4xl"  // Card 2: Bottom-full
+  ];
+
+  const fadeLayout: (('top' | 'bottom')[] | undefined)[] = [
+    ['bottom'], // Card 0
+    ['bottom'], // Card 1
+    ['top']     // Card 2
+  ];
+
   return (
     <div className="mx-2 mt-2 rounded-4xl bg-gray-900 py-32">
       <Container>
-        <Subheading dark>Outreach</Subheading>
+        <Subheading dark>{subtitle || "Default Subtitle"}</Subheading>
         <Heading as="h3" dark className="mt-2 max-w-3xl">
-          {darkBentoSection?.content?.title || "Customer outreach has never been easier."}
+          {title || "Customer outreach has never been easier."}
         </Heading>
 
-        <div className="mt-10 grid grid-cols-1 gap-4 sm:mt-16 lg:grid-cols-6 lg:grid-rows-2">
-          <BentoCard
-            dark
-            eyebrow="Networking"
-            title="Sell at the speed of light"
-            description="Our RadiantAI chat assistants analyze the sentiment of your conversations in real time, ensuring you're always one step ahead."
-            graphic={
-              <div className="h-80 bg-[url(/screenshots/networking.png)] bg-[size:851px_344px] bg-no-repeat" />
-            }
-            fade={['top']}
-            className="max-lg:rounded-t-4xl lg:col-span-4 lg:rounded-tl-4xl"
-          />
-          <BentoCard
-            dark
-            eyebrow="Integrations"
-            title="Meet leads where they are"
-            description="With thousands of integrations, no one will be able to escape your cold outreach."
-            graphic={<LogoTimeline />}
-            // `overflow-visible!` is needed to work around a Chrome bug that disables the mask on the graphic.
-            className="z-10 overflow-visible! lg:col-span-2 lg:rounded-tr-4xl"
-          />
-          <BentoCard
-            dark
-            eyebrow="Meetings"
-            title="Smart call scheduling"
-            description="Automatically insert intro calls into your leads' calendars without their consent."
-            graphic={<LinkedAvatars />}
-            className="lg:col-span-2 lg:rounded-bl-4xl"
-          />
-          <BentoCard
-            dark
-            eyebrow="Engagement"
-            title="Become a thought leader"
-            description="RadiantAI automatically writes LinkedIn posts that relate current events to B2B sales, helping you build a reputation as a thought leader."
-            graphic={
-              <div className="h-80 bg-[url(/screenshots/engagement.png)] bg-[size:851px_344px] bg-no-repeat" />
-            }
-            fade={['top']}
-            className="max-lg:rounded-b-4xl lg:col-span-4 lg:rounded-br-4xl"
-          />
-        </div>
+        {cards && cards.length > 0 ? (
+          <div className="mt-10 grid grid-cols-1 gap-4 sm:mt-16 lg:grid-cols-6 lg:grid-rows-2">
+            {cards.map((card, idx) => {
+              let graphicElement = null;
+              if (card.graphic_type === 'image' && card.graphic_url) {
+                graphicElement = (
+                  <div 
+                    className="h-80 w-full bg-cover bg-center rounded-md"
+                    style={{ backgroundImage: `url(${card.graphic_url})` }}
+                  />
+                );
+              }
+              // Add more conditions here for other graphic_types if needed
+
+              return (
+                <BentoCard
+                  key={card.id || idx}
+                  dark
+                  eyebrow={card.eyebrow}
+                  title={card.title}
+                  description={card.description}
+                  graphic={graphicElement}
+                  fade={fadeLayout[idx]}
+                  className={layoutClasses[idx] || ''}
+                />
+              );
+            })}
+          </div>
+        ) : (
+          <p className="mt-10 text-center text-gray-400">No cards to display for this section.</p>
+        )}
       </Container>
     </div>
-  )
+  );
 }
 
 // Interface for logo blocks
@@ -259,24 +305,50 @@ function SectionLoading() {
 
 // Define section components that use the shared data
 async function FeaturesSectionComponent({ homeData }: { homeData: SharedPageData }) {
-  const featureSection = getBlockByType(homeData.page.blocks, "FeatureSection") as unknown as FeatureSectionBlockWithSlides;
-  return <FeatureSection featureSection={featureSection} />;
+  const rawFeatureBlock = getBlockByName(homeData.page.blocks, "Feature Section");
+  console.log(homeData);
+  if (!rawFeatureBlock) {
+    return <SectionLoading />; 
+  }
+
+  // Define supported names for FeatureSection blocks this component can render
+  const supportedNames = ["FeatureSectionWithCarousel", "FeatureSectionWithScreenshot", "Feature Section"];
+
+  if (!supportedNames.includes(rawFeatureBlock.name)) {
+    // If the block's name isn't supported, log a warning and don't render it.
+    // You could also choose to render nothing (return null) or a specific fallback UI.
+    console.warn(`FeatureSection block named '${rawFeatureBlock.name}' is not supported by FeaturesSectionComponent and will not be rendered.`);
+    return null; // Or <SectionLoading /> or some other fallback
+  }
+
+  // Prepare the prop for the FeatureSection component
+  // This assumes rawFeatureBlock.content matches the expected structure for FeatureSectionBlockWithSlides.content
+  const featureSectionProp: FeatureSectionBlockWithSlides = {
+    content: rawFeatureBlock.content as {
+      title: string;
+      subtitle: string; // Make sure your backend provides this if it's always expected
+      screenshot: { url: string }; // Ensure this structure is consistent or handled if optional
+      slideblocks: Block[]; // Ensure this is an array, even if empty, or handle if optional
+    }
+  };
+
+  return <FeatureSection featureSection={featureSectionProp} />;
 }
 
 async function BentoGridSectionComponent({ homeData }: { homeData: SharedPageData }) {
-  const bentoSection = getBlockByType(homeData.page.blocks, "BentoSection") as unknown as BentoSectionBlock;
+  const bentoSection = getBlockByName(homeData.page.blocks, "BentoSection") as unknown as BentoSectionBlock;
   return <BentoSection bentoSection={bentoSection} />;
 }
 
 async function DarkBentoGridSectionComponent({ homeData }: { homeData: SharedPageData }) {
-  const darkBentoSection = getBlockByType(homeData.page.blocks, "DarkBentoSection") as unknown as DarkBentoSectionBlock;
+  const darkBentoSection = getBlockByName(homeData.page.blocks, "DarkBentoSection") as unknown as DarkBentoSectionBlock;
   return <DarkBentoSection darkBentoSection={darkBentoSection} />;
 }
 
 async function TestimonialsSectionComponent({ homeData }: { homeData: SharedPageData }) {
-  const testimonialsSection = getBlockByType(homeData.page.blocks, "TestimonialsSection");
-  // Use proper type casting to avoid 'any'
-  return <Testimonials testimonialsData={testimonialsSection?.content as Record<string, unknown>} />;
+  const testimonialsSection = getBlockByName(homeData.page.blocks, "TestimonialsSection");
+  // Pass the entire block, as TestimonialsData expects an object with a 'content' property
+  return <Testimonials testimonialsData={testimonialsSection as unknown as TestimonialsData} />;
 }
 
 async function LogoSectionComponent({ homeData }: { homeData: SharedPageData }) {

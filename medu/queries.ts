@@ -100,10 +100,13 @@ export interface Block {
       console.log('Fetching data from:', url);
       
       // Use Next.js cache with revalidation
-      const response = await fetch(url, {
-        // Cache the response for 1 hour (3600 seconds)
-        next: { revalidate: 3600, tags: [`page-${slug}`] }
-      });
+      // In development, disable caching to see changes immediately.
+      // In production, cache the response for 1 hour (3600 seconds).
+      const fetchOptions = process.env.NODE_ENV === 'development' 
+        ? { cache: 'no-store' as RequestCache } 
+        : { next: { revalidate: 3600, tags: [`page-${slug}`] } };
+
+      const response = await fetch(url, fetchOptions);
       
       console.log('Response status:', response.status);
       

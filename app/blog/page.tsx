@@ -46,14 +46,18 @@ interface BlogPost {
   published_at: string;
   content?: string;
   blocks?: BlogBlock[];
-  public_metadata?: { category?: string; [key: string]: unknown };
-  [key: string]: unknown;
+  public_metadata?: {
+    category?: string;
+    [key: string]: unknown;
+  };
   author?: {
     name: string;
+    role?: string;
     image?: {
       content?: string;
     };
   };
+  [key: string]: unknown;
 }
 
 export const metadata: Metadata = {

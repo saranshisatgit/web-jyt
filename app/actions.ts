@@ -62,4 +62,34 @@ export async function fetchPageAndFooter(slug: string) {
     footer: footerData
   }
 }
-  
+
+export async function handleContactFormSubmission(
+  prevState: { message: string; success: boolean; }, // Previous state
+  formData: FormData // Form data
+) {
+  const name = formData.get('name') as string;
+  const email = formData.get('email') as string;
+  const company = formData.get('company') as string;
+  const role = formData.get('role') as string;
+  const message = formData.get('message') as string;
+
+  console.log('Contact Form Submission:');
+  console.log({ name, email, company, role, message });
+
+  // Here you would typically:
+  // 1. Validate the data
+  // 2. Send an email, save to a database, or call an external API
+  // For now, we'll just simulate a successful submission.
+
+  // Simulate some processing time
+  await new Promise(resolve => setTimeout(resolve, 1000));
+
+  // Check if required fields are present (basic validation)
+  if (!name || !email || !message) {
+    return { success: false, message: 'Name, Email, and Message are required.' };
+  }
+
+  // In a real application, you might want to redirect or return more specific success/error states.
+  // For now, returning a simple object.
+  return { success: true, message: 'Thank you for your message! We will get back to you soon.' };
+}

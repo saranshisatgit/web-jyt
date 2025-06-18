@@ -25,16 +25,21 @@ interface TestimonialItem {
   quote: string;
 }
 
-interface TestimonialsData {
+export interface TestimonialsData {
   content?: {
     title?: string;
     testimonials?: {
       quote: string;
-      author: string;
-      role: string;
-      company: string;
+      name: string;
+      subtitle: string;
+      company: string; // Kept for now, though not directly used in TestimonialItem mapping
       image_url: string;
     }[];
+    callToAction?: {
+      text: string;
+      linkText: string;
+      linkUrl: string;
+    };
   };
 }
 
@@ -176,19 +181,22 @@ function TestimonialCard({
   )
 }
 
-function CallToAction() {
+interface CallToActionProps {
+  text: string;
+  linkText: string;
+  linkUrl: string;
+}
+
+function CallToAction({ text, linkText, linkUrl }: CallToActionProps) {
   return (
     <div>
-      <p className="max-w-sm text-sm/6 text-gray-600">
-        Join the best sellers in the business and start using Radiant to hit
-        your targets today.
-      </p>
+      <p className="max-w-sm text-sm/6 text-gray-600">{text}</p>
       <div className="mt-2">
         <Link
-          href="#"
+          href={linkUrl}
           className="inline-flex items-center gap-2 text-sm/6 font-medium text-pink-600"
         >
-          Get started
+          {linkText}
           <ArrowLongRightIcon className="size-5" />
         </Link>
       </div>
@@ -202,13 +210,13 @@ export function Testimonials({ testimonialsData }: { testimonialsData?: Testimon
   const referenceWindowRef = useRef<HTMLDivElement>(null)
   const [measureRef, bounds] = useMeasure()
   const [activeIndex, setActiveIndex] = useState(0)
-  
+  console.log(testimonialsData)
   // Convert backend data format to component format if available
   const testimonials: TestimonialItem[] = testimonialsData?.content?.testimonials 
     ? testimonialsData.content.testimonials.map(item => ({
         img: item.image_url,
-        name: item.author,
-        title: `${item.role} at ${item.company}`,
+        name: item.name,
+        title: `${item.subtitle}`,
         quote: item.quote
       }))
     : defaultTestimonials
@@ -274,7 +282,7 @@ export function Testimonials({ testimonialsData }: { testimonialsData?: Testimon
         }}>
           <Subheading>What everyone is saying</Subheading>
           <Heading as="h3" className="mt-2">
-            Trusted by professionals.
+            {testimonialsData?.content?.title}
           </Heading>
         </div>
       </Container>
@@ -308,7 +316,11 @@ export function Testimonials({ testimonialsData }: { testimonialsData?: Testimon
       </div>
       <Container className="mt-16">
         <div className="flex justify-between">
-          <CallToAction />
+          <CallToAction 
+            text={testimonialsData?.content?.callToAction?.text || "Join the best sellers in the business and start using Radiant to hit your targets today."}
+            linkText={testimonialsData?.content?.callToAction?.linkText || "Get started"}
+            linkUrl={testimonialsData?.content?.callToAction?.linkUrl || "#"}
+          />
           <div className="hidden sm:flex sm:gap-2">
             {testimonials.map(({ name }, testimonialIndex) => (
               <Headless.Button
