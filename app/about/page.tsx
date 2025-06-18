@@ -39,17 +39,19 @@ interface TeamMember {
   image: string;
 }
 
+interface CtaButton {
+  text: string;
+  link: string;
+}
+
 interface TeamBlockContent {
   heading: string;
   subheading: string;
   description: string;
   story: string[];
-  teamImage: string;
-  ctaButton: {
-    text: string;
-    link: string;
-  };
+  teamImage: string; // Ensure teamImage is preserved
   members: TeamMember[];
+  ctaButton?: CtaButton; // Optional CTA button
 }
 
 interface InvestorGroup {
@@ -102,7 +104,7 @@ export const metadata: Metadata = {
 
 function Header({ data }: { data?: Block }) {
   const content = data?.content as unknown as HeaderBlockContent;
-
+  console.log(content)
   // If no data is provided, return null or a fallback UI
   if (!content) {
     return (
@@ -127,25 +129,25 @@ function Header({ data }: { data?: Block }) {
             </p>
           ))}
         </div>
-        <div className="pt-20 lg:row-span-2 lg:-mr-16 xl:mr-auto">
+        <div className="pt-20 lg:row-span-2">
           <div className="-mx-8 grid grid-cols-2 gap-4 sm:-mx-16 sm:grid-cols-4 lg:mx-0 lg:grid-cols-2 lg:gap-4 xl:gap-8">
             {content.images.map((image, index) => (
               <div 
                 key={index} 
-                className={`${index % 2 === 1 ? '-mt-8 lg:-mt-32' : ''} aspect-square overflow-hidden rounded-xl shadow-xl outline-1 -outline-offset-1 outline-black/10`}
+                className={`${index % 2 === 1 ? '-mt-8 lg:-mt-32' : ''} relative aspect-square overflow-hidden rounded-xl shadow-xl outline-1 -outline-offset-1 outline-black/10`}
               >
                 <Image
-                  alt=""
+                  alt="An image from the Jaal Yantra Textiles company gallery"
                   src={image}
-                  className="block size-full object-cover"
-                  width={'100'}
-                  height={'100'}
+                  className="object-cover"
+                  fill
+                  sizes="(min-width: 640px) 25vw, 50vw"
                 />
               </div>
             ))}
           </div>
         </div>
-        <div className="max-lg:mt-12">
+        <div className="max-lg:mt-12 lg:col-span-1">
           <dl className="grid grid-cols-2 gap-8 sm:grid-cols-4 lg:grid-cols-2">
             {content.stats.map((stat, index) => (
               <div key={index} className={`flex flex-col gap-y-2 ${index < content.stats.length - 1 && index < 3 ? 'max-sm:border-b max-sm:border-dotted max-sm:border-gray-200 max-sm:pb-4' : ''}`}>
@@ -215,11 +217,13 @@ function Team({ data }: { data?: Block }) {
               {paragraph}
             </p>
           ))}
-          <div className="mt-6">
-            <Button className="w-full sm:w-auto" href={content.ctaButton.link}>
-              {content.ctaButton.text}
-            </Button>
-          </div>
+          {content.ctaButton && content.ctaButton.link && content.ctaButton.text && (
+            <div className="mt-8">
+              <Button className="w-full sm:w-auto" href={content.ctaButton.link}>
+                {content.ctaButton.text}
+              </Button>
+            </div>
+          )}
         </div>
         <div className="max-lg:order-first max-lg:max-w-lg">
           <div className="aspect-3/2 overflow-hidden rounded-xl shadow-xl outline-1 -outline-offset-1 outline-black/10">
@@ -320,7 +324,7 @@ function Investors({ data }: { data?: Block }) {
 
 function Careers({ data }: { data?: Block }) {
   const content = data?.content as unknown as CareersBlockContent;
-
+  
   // If no data is provided, return null or a fallback UI
   if (!content) {
     return (
