@@ -231,7 +231,7 @@ function Team({ data }: { data?: Block }) {
               alt="Team photo"
               src={content.teamImage}
               className="block size-full object-cover"
-              width={100}
+              width={450}
               height={100}
             />
           </div>
@@ -282,13 +282,15 @@ function Investors({ data }: { data?: Block }) {
       <div className="mt-16 grid grid-cols-2 gap-x-12 gap-y-16 sm:grid-cols-3 lg:grid-cols-6">
         {content.investorGroups.map((investor, index) => (
           <div key={index} className="flex flex-col gap-y-6">
-            <Image
-              alt={investor.name}
-              src={investor.logo}
-              className="h-14 w-auto"
-              width={100}
-              height={100}
-            />
+            {investor.logo && (
+              <Image
+                alt={investor.name}
+                src={investor.logo}
+                className="h-14 w-auto"
+                width={100}
+                height={100}
+              />
+            )}
             <div className="text-sm/6 text-gray-600">{investor.name}</div>
           </div>
         ))}
@@ -329,7 +331,7 @@ function Careers({ data }: { data?: Block }) {
   if (!content) {
     return (
       <Container className="my-32">
-        <Subheading>Loading career information...</Subheading>
+        <Subheading>Loading career information...or probably no career section created yet</Subheading>
       </Container>
     );
   }
