@@ -104,7 +104,6 @@ export const metadata: Metadata = {
 
 function Header({ data }: { data?: Block }) {
   const content = data?.content as unknown as HeaderBlockContent;
-  console.log(content)
   // If no data is provided, return null or a fallback UI
   if (!content) {
     return (
