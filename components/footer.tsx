@@ -194,7 +194,11 @@ export function Footer({ data }: { data: Record<string, unknown> }) {
             <PlusGridRow className="flex justify-between">
               <div>
                 <PlusGridItem className="py-3">
-                  <Copyright company={'Jaal Yantra Textiles Pvt. Ltd.'} />
+                  <div className="flex items-center gap-x-2 text-sm text-gray-500">
+                    <Copyright company={'Jaal Yantra Textiles Pvt. Ltd.'} />
+                    <span>|</span>
+                    <p>Part of Hatch Digital Ocean</p>
+                  </div>
                 </PlusGridItem>
               </div>
               <div className="flex">

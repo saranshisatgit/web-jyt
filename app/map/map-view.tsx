@@ -24,7 +24,7 @@ interface Person {
   last_name?: string | null;
   addresses: Address[];
   person_type?: { name: string };
-  metadata?: Metadata;
+  public_metadata?: Metadata;
 }
 
 interface MapViewProps {
@@ -35,17 +35,17 @@ type Filters = {
   person_type?: string;
   first_name?: string;
   last_name?: string;
-  metadata?: Record<string, MetadataValue>;
+  public_metadata?: Record<string, MetadataValue>;
 };
 
 type FilterOptions = {
   person_type: string[];
-  metadata: Record<string, Set<MetadataValue>>;
+  public_metadata: Record<string, Set<MetadataValue>>;
 };
 
 // A more specific type for the object used to build filters
 type FilterBuilder = {
-  metadata?: Record<string, MetadataValue>;
+  public_metadata?: Record<string, MetadataValue>;
   [key: string]: string | Record<string, MetadataValue> | undefined;
 };
 
@@ -56,26 +56,26 @@ const MapView = ({ initialPersons }: MapViewProps) => {
   const [loadCount, setLoadCount] = useState(20);
   const [activeFilters, setActiveFilters] = useState<{ field: string; value: string }[]>([]);
   const [newFilter, setNewFilter] = useState<{ field: string; value: string }>({ field: '', value: '' });
-  const [filterOptions, setFilterOptions] = useState<FilterOptions>({ person_type: [], metadata: {} });
+  const [filterOptions, setFilterOptions] = useState<FilterOptions>({ person_type: [], public_metadata: {} });
 
   useEffect(() => {
     // Update the list of persons
     setAllPersons(initialPersons);
 
     // Dynamically derive filter options from the data
-    const newFilterOptions: { person_type: Set<string>, metadata: Record<string, Set<MetadataValue>> } = { person_type: new Set<string>(), metadata: {} };
+    const newFilterOptions: { person_type: Set<string>, public_metadata: Record<string, Set<MetadataValue>> } = { person_type: new Set<string>(), public_metadata: {} };
     initialPersons.forEach(person => {
       if (person.person_type?.name) {
         newFilterOptions.person_type.add(person.person_type.name);
       }
-      if (person.metadata) {
-        Object.keys(person.metadata).forEach(key => {
-          const value = person.metadata![key];
+      if (person.public_metadata) {
+        Object.keys(person.public_metadata).forEach(key => {
+          const value = person.public_metadata![key];
           if (value) {
-            if (!newFilterOptions.metadata[key]) {
-              newFilterOptions.metadata[key] = new Set();
+            if (!newFilterOptions.public_metadata[key]) {
+              newFilterOptions.public_metadata[key] = new Set();
             }
-            newFilterOptions.metadata[key].add(value);
+            newFilterOptions.public_metadata[key].add(value);
           }
         });
       }
@@ -83,10 +83,10 @@ const MapView = ({ initialPersons }: MapViewProps) => {
 
     setFilterOptions(prev => ({
       person_type: Array.from(new Set([...prev.person_type, ...newFilterOptions.person_type])),
-      metadata: {
-        ...prev.metadata,
-        ...Object.keys(newFilterOptions.metadata).reduce((acc, key) => {
-          acc[key] = new Set([...(prev.metadata[key] || []), ...newFilterOptions.metadata[key]]);
+      public_metadata: {
+        ...prev.public_metadata,
+        ...Object.keys(newFilterOptions.public_metadata).reduce((acc, key) => {
+          acc[key] = new Set([...(prev.public_metadata[key] || []), ...newFilterOptions.public_metadata[key]]);
           return acc;
         }, {} as Record<string, Set<MetadataValue>>)
       }
@@ -94,21 +94,21 @@ const MapView = ({ initialPersons }: MapViewProps) => {
   }, [initialPersons]);
 
   const applyFilters = async (filtersToApply: { field: string; value: string }[]) => {
-    const constructedFilters: FilterBuilder = { metadata: {} };
+    const constructedFilters: FilterBuilder = { public_metadata: {} };
     const topLevelFields = ['person_type', 'first_name', 'last_name'];
 
     filtersToApply.forEach(({ field, value }) => {
       if (topLevelFields.includes(field)) {
         constructedFilters[field] = value;
       } else {
-        if (constructedFilters.metadata) {
-          constructedFilters.metadata[field] = value;
+        if (constructedFilters.public_metadata) {
+          constructedFilters.public_metadata[field] = value;
         }
       }
     });
 
-    if (constructedFilters.metadata && Object.keys(constructedFilters.metadata).length === 0) {
-      delete constructedFilters.metadata;
+    if (constructedFilters.public_metadata && Object.keys(constructedFilters.public_metadata).length === 0) {
+      delete constructedFilters.public_metadata;
     }
 
     setIsLoading(true);
@@ -132,21 +132,21 @@ const MapView = ({ initialPersons }: MapViewProps) => {
   };
 
   const handleLoadMore = async () => {
-    const constructedFilters: FilterBuilder = { metadata: {} };
+    const constructedFilters: FilterBuilder = { public_metadata: {} };
     const topLevelFields = ['person_type', 'first_name', 'last_name'];
 
     activeFilters.forEach(({ field, value }) => {
       if (topLevelFields.includes(field)) {
         constructedFilters[field] = value;
       } else {
-        if (constructedFilters.metadata) {
-          constructedFilters.metadata[field] = value;
+        if (constructedFilters.public_metadata) {
+          constructedFilters.public_metadata[field] = value;
         }
       }
     });
 
-    if (constructedFilters.metadata && Object.keys(constructedFilters.metadata).length === 0) {
-      delete constructedFilters.metadata;
+    if (constructedFilters.public_metadata && Object.keys(constructedFilters.public_metadata).length === 0) {
+      delete constructedFilters.public_metadata;
     }
 
     setIsLoading(true);
@@ -192,7 +192,7 @@ const MapView = ({ initialPersons }: MapViewProps) => {
               {selectedPerson.person_type?.name && <p><span className="font-semibold">Type:</span> {selectedPerson.person_type.name}</p>}
               {selectedPerson.addresses[0]?.city && <p><span className="font-semibold">City:</span> {selectedPerson.addresses[0].city}</p>}
               {selectedPerson.addresses[0]?.postal_code && <p><span className="font-semibold">Postal Code:</span> {selectedPerson.addresses[0].postal_code}</p>}
-              {selectedPerson.metadata && Object.entries(selectedPerson.metadata).map(([key, value]) => (
+              {selectedPerson.public_metadata && Object.entries(selectedPerson.public_metadata).map(([key, value]) => (
                 <p key={key}><span className="font-semibold capitalize">{key.replace(/_/g, ' ')}:</span> {String(value)}</p>
               ))}
             </div>
@@ -216,12 +216,12 @@ const MapView = ({ initialPersons }: MapViewProps) => {
               <select className="w-full p-1 border rounded-md" value={newFilter.field} onChange={(e) => setNewFilter({ field: e.target.value, value: '' })}>
                 <option value="">Select Field...</option>
                 <option value="person_type">Person Type</option>
-                {Object.keys(filterOptions.metadata).map(key => <option key={key} value={key}>{key}</option>)}
+                {Object.keys(filterOptions.public_metadata).map(key => <option key={key} value={key}>{key}</option>)}
               </select>
               {newFilter.field && (
                 <select className="w-full p-1 border rounded-md" value={newFilter.value} onChange={(e) => setNewFilter({ ...newFilter, value: e.target.value })}>
                   <option value="">Select Value...</option>
-                  {(newFilter.field === 'person_type' ? filterOptions.person_type : Array.from(filterOptions.metadata[newFilter.field] || [])).map(val => (
+                  {(newFilter.field === 'person_type' ? filterOptions.person_type : Array.from(filterOptions.public_metadata[newFilter.field] || [])).map(val => (
                     <option key={String(val)} value={String(val)}>{String(val)}</option>
                   ))}
                 </select>

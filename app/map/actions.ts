@@ -18,12 +18,12 @@ export const getPersons = async (params: GetPersonsParams = {}) => {
   // Append filters to the query string
   if (filters) {
     Object.entries(filters).forEach(([key, value]) => {
-      if (key === 'metadata' && typeof value === 'object' && value !== null) {
-        // Handle nested metadata object, e.g., { metadata: { role: 'artisan' } }
-        // becomes &metadata[role]=artisan
+      if (key === 'public_metadata' && typeof value === 'object' && value !== null) {
+        // Handle nested public_metadata object, e.g., { public_metadata: { role: 'artisan' } }
+        // becomes &public_metadata[role]=artisan
         Object.entries(value).forEach(([metaKey, metaValue]) => {
           if (metaValue !== undefined && metaValue !== null) {
-            url.searchParams.set(`metadata[${metaKey}]`, String(metaValue));
+            url.searchParams.set(`public_metadata[${metaKey}]`, String(metaValue));
           }
         });
       } else if (value !== undefined && value !== null) {
