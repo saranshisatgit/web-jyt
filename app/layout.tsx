@@ -44,6 +44,10 @@ export default async function RootLayout({
             title="The JYT Blog"
             href="/blog/feed.xml"
           />
+          <script defer data-domain="jaalyantra.com" src="https://analytics.jaalyantra.com/js/script.file-downloads.hash.outbound-links.pageview-props.tagged-events.js"></script>
+          <script dangerouslySetInnerHTML={{
+            __html: 'window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }'
+          }} />
         </head>
         <body className="text-gray-950 antialiased">
           <main>{children}</main>
