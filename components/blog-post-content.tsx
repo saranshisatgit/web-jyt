@@ -208,17 +208,18 @@ export function BlogPostContent({
         </Button>
       </div>
 
+    </Container>
+
       {/* Subscription Form Section with Gradient Background */}
-      <div className="relative my-16 py-16 sm:py-24"> {/* Increased padding for better effect */}
-        <div className="absolute inset-0 opacity-50">
+      <div className="relative py-16 sm:py-24">
+        <div className="absolute inset-0">
           <GradientBackground />
         </div>
-        <div className="relative z-10 flex flex-col items-center">
+        <Container className="relative z-10">
           <SubscribeForm domainName="jaalyantra.com" />
-        </div>
+        </Container>
       </div>
 
-    </Container>
   </main>
 )
 }

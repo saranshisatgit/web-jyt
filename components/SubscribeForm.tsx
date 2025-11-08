@@ -53,68 +53,85 @@ const SubscribeForm: React.FC<SubscribeFormProps> = ({ domainName }) => {
     }
   };
 
-  // Basic styling - can be enhanced to match your project's UI
-  const inputStyle = "mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none";
-  const buttonStyle = "mt-4 px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50";
-  const labelStyle = "block text-sm font-medium text-slate-700";
-
   return (
-    <div className="my-8 w-full max-w-lg mx-auto text-center">
-      <h3 className="text-3xl sm:text-4xl font-medium tracking-tight text-gray-950 mb-8">
-        Subscribe to Our Stories and Updates
-      </h3>
-      <form onSubmit={handleSubmit} className="flex flex-col items-center">
-        <div className="mb-4">
-          <label htmlFor="firstName" className={labelStyle}>
-            First Name
+    <div className="w-full max-w-4xl mx-auto">
+      {/* Header Section */}
+      <div className="mb-6">
+        <h3 className="text-lg font-semibold text-gray-950 mb-2">
+          Subscribe to our newsletter
+        </h3>
+        <p className="text-sm text-gray-600 mb-1">
+          Receive updates on our latest products and exclusive offers.
+        </p>
+        <p className="text-xs italic text-gray-500">
+          We need your first name and last name to personalize the emails being sent.
+        </p>
+      </div>
+
+      {/* Form Section */}
+      <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 items-end">
+        {/* First Name Input */}
+        <div className="flex-1 min-w-0">
+          <label htmlFor="firstName" className="block text-xs font-medium text-gray-700 mb-1">
+            First name*
           </label>
           <input
             type="text"
             id="firstName"
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
-            className={`${inputStyle} w-full sm:max-w-sm`}
-            placeholder="Your first name"
+            className="w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-950 focus:border-transparent disabled:bg-gray-50 disabled:text-gray-500"
+            placeholder="First name"
             disabled={isLoading}
+            required
           />
         </div>
-        <div className="mb-4">
-          <label htmlFor="lastName" className={labelStyle}>
-            Last Name
+
+        {/* Last Name Input */}
+        <div className="flex-1 min-w-0">
+          <label htmlFor="lastName" className="block text-xs font-medium text-gray-700 mb-1">
+            Last name*
           </label>
           <input
             type="text"
             id="lastName"
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
-            className={`${inputStyle} w-full sm:max-w-sm`}
-            placeholder="Your last name"
+            className="w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-950 focus:border-transparent disabled:bg-gray-50 disabled:text-gray-500"
+            placeholder="Last name"
             disabled={isLoading}
+            required
           />
         </div>
-        <div className="mb-4">
-          <label htmlFor="email" className={labelStyle}>
-            Email Address
+
+        {/* Email Input */}
+        <div className="flex-1 min-w-0">
+          <label htmlFor="email" className="block text-xs font-medium text-gray-700 mb-1">
+            Email*
           </label>
           <input
             type="email"
             id="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className={`${inputStyle} w-full sm:max-w-sm`}
-            placeholder="you@example.com"
+            className="w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-950 focus:border-transparent disabled:bg-gray-50 disabled:text-gray-500"
+            placeholder="Email"
             disabled={isLoading}
+            required
           />
         </div>
+
+        {/* Submit Button */}
         <Button
           type="submit"
-          variant='primary'
-          className={`${buttonStyle} w-full sm:w-auto sm:max-w-sm`}
+          className="px-6 py-2 bg-gray-950 text-white text-sm font-medium rounded-md hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-950 disabled:opacity-50 disabled:cursor-not-allowed transition-colors whitespace-nowrap"
           disabled={isLoading}
         >
           {isLoading ? 'Subscribing...' : 'Subscribe'}
         </Button>
       </form>
+
+      {/* Message Display */}
       {message && (
         <p className={`mt-4 text-sm ${isError ? 'text-red-600' : 'text-green-600'}`}>
           {message}

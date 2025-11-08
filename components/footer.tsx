@@ -63,16 +63,18 @@ function Sitemap() {
         <SitemapHeading>Product</SitemapHeading>
         <SitemapLinks>
           <SitemapLink href="/pricing">Pricing</SitemapLink>
-          <SitemapLink href="#">Analysis</SitemapLink>
-          <SitemapLink href="#">API</SitemapLink>
+          <SitemapLink href="/analysis">Analysis</SitemapLink>
+          <SitemapLink href="/api">API</SitemapLink>
         </SitemapLinks>
       </div>
       <div>
         <SitemapHeading>Company</SitemapHeading>
         <SitemapLinks>
-          <SitemapLink href="#">Careers</SitemapLink>
+          <SitemapLink href="/careers">Careers(Not yet hiring)</SitemapLink>
           <SitemapLink href="/blog">Blog</SitemapLink>
-          <SitemapLink href="/company">Company</SitemapLink>
+          <SitemapLink href="/about">About</SitemapLink>
+          <SitemapLink href="/terms-of-service">Terms of service</SitemapLink>
+          <SitemapLink href="/privacy-policy">Privacy policy</SitemapLink>
         </SitemapLinks>
       </div>
       <div>
@@ -80,13 +82,6 @@ function Sitemap() {
         <SitemapLinks>
           <SitemapLink href="#">Help center</SitemapLink>
           <SitemapLink href="#">Community</SitemapLink>
-        </SitemapLinks>
-      </div>
-      <div>
-        <SitemapHeading>Company</SitemapHeading>
-        <SitemapLinks>
-          <SitemapLink href="#">Terms of service</SitemapLink>
-          <SitemapLink href="#">Privacy policy</SitemapLink>
         </SitemapLinks>
       </div>
     </>
@@ -125,7 +120,7 @@ function SocialLinks() {
   return (
     <>
       <Link
-        href="https://facebook.com"
+        href="https://facebook.com/cicilabelbyjyt"
         target="_blank"
         aria-label="Visit us on Facebook"
         className="text-gray-950 data-hover:text-gray-950/75"
@@ -181,13 +176,15 @@ export function Footer({ data }: { data: Record<string, unknown> }) {
           <PlusGrid className="pb-16">
             <PlusGridRow>
               <div className="grid grid-cols-2 gap-y-10 pb-6 lg:grid-cols-6 lg:gap-8">
-                <div className="col-span-2 flex">
+                <div className="col-span-2 flex lg:col-span-2">
                   <PlusGridItem className="pt-6 lg:pb-6">
                     <Logo className="h-9" />
                   </PlusGridItem>
                 </div>
-                <div className="col-span-2 grid grid-cols-2 gap-x-8 gap-y-12 lg:col-span-4 lg:grid-cols-subgrid lg:pt-6">
-                  <Sitemap />
+                <div className="col-span-2 lg:col-span-4 lg:col-start-3">
+                  <div className="grid grid-cols-2 gap-x-8 gap-y-12 lg:grid-cols-3 lg:pt-6 lg:ml-auto lg:w-fit">
+                    <Sitemap />
+                  </div>
                 </div>
               </div>
             </PlusGridRow>
@@ -197,7 +194,7 @@ export function Footer({ data }: { data: Record<string, unknown> }) {
                   <div className="flex items-center gap-x-2 text-sm text-gray-500">
                     <Copyright company={'Jaal Yantra Textiles Pvt. Ltd.'} />
                     <span>|</span>
-                    <p>Part of Hatch Digital Ocean</p>
+                    <p>Was Part of Hatch Digital Ocean</p>
                   </div>
                 </PlusGridItem>
               </div>
