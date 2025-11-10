@@ -44,10 +44,12 @@ export default async function RootLayout({
             title="The JYT Blog"
             href="/blog/feed.xml"
           />
-          <script defer data-domain="jaalyantra.com" src="https://analytics.jaalyantra.com/js/script.file-downloads.hash.outbound-links.pageview-props.tagged-events.js"></script>
-          <script dangerouslySetInnerHTML={{
-            __html: 'window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }'
-          }} />
+          {/* JYT Analytics - Production */}
+          <script 
+            src="https://automatic.jaalyantra.com/analytics.min.js" 
+            data-website-id="01JRTP1DETZ58GHJGMZ604PREH"
+            defer
+          />
         </head>
         <body className="text-gray-950 antialiased">
           <main>{children}</main>
