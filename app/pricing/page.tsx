@@ -377,7 +377,7 @@ function PlusIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
 
 function Testimonial() {
   return (
-    <div className="mx-2 my-24 rounded-4xl bg-gray-900 bg-[url(/dot-texture.svg)] pt-72 pb-24 lg:pt-36">
+    <div className="mx-2 my-24 rounded-4xl bg-gray-900 pt-72 pb-24 lg:pt-36" style={{ backgroundImage: 'url(/dot-texture.svg)' }}>
       <Container>
         <div className="grid grid-cols-1 lg:grid-cols-[384px_1fr_1fr]">
           <div className="-mt-96 lg:-mt-52">
@@ -398,9 +398,9 @@ function Testimonial() {
           <div className="flex max-lg:mt-16 lg:col-span-2 lg:px-16">
             <figure className="mx-auto flex max-w-xl flex-col gap-16 max-lg:text-center">
               <blockquote>
-                <p className="relative text-3xl tracking-tight text-white before:absolute before:-translate-x-full before:content-['"'] after:absolute after:content-['"'] lg:text-4xl">
-                  Jaal Yantra has transformed how we bring our textile designs to life. 
-                  The partner network and end-to-end platform made production seamless.
+                <p className="relative text-3xl tracking-tight text-white lg:text-4xl">
+                  &ldquo;Jaal Yantra has transformed how we bring our textile designs to life. 
+                  The partner network and end-to-end platform made production seamless.&rdquo;
                 </p>
               </blockquote>
               <figcaption className="mt-auto">
