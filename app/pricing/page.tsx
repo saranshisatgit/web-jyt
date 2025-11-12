@@ -17,91 +17,100 @@ import Image from 'next/image'
 export const metadata: Metadata = {
   title: 'Pricing',
   description:
-    'Companies all over the world have closed millions of deals with Radiant. Sign up today and start selling smarter.',
+    'Choose the perfect plan for your artisanal business. From marketplace sellers to textile designers, we have a solution that fits your needs.',
 }
 
 const tiers = [
   {
-    name: 'Starter' as const,
-    slug: 'starter',
-    description: 'Everything you need to start selling.',
-    priceMonthly: 99,
+    name: 'Marketplace' as const,
+    slug: 'marketplace',
+    description: 'Perfect for artisans selling handcrafted products.',
+    priceMonthly: 49,
     href: '#',
     highlights: [
-      { description: 'Up to 3 team members' },
-      { description: 'Up to 5 deal progress boards' },
-      { description: 'Source leads from select platforms' },
-      { description: 'RadiantAI integrations', disabled: true },
-      { description: 'Competitor analysis', disabled: true },
+      { description: 'Get customers through our marketplace' },
+      { description: 'Checkout and payment integrations' },
+      { description: 'Sell artisanal products' },
+      { description: 'Modern storefront without lifting a finger' },
+      { description: 'Basic inventory tracking' },
     ],
     features: [
-      { section: 'Features', name: 'Accounts', value: 3 },
-      { section: 'Features', name: 'Deal progress boards', value: 5 },
-      { section: 'Features', name: 'Sourcing platforms', value: 'Select' },
-      { section: 'Features', name: 'Contacts', value: 100 },
-      { section: 'Features', name: 'AI assisted outreach', value: false },
-      { section: 'Analysis', name: 'Competitor analysis', value: false },
-      { section: 'Analysis', name: 'Dashboard reporting', value: false },
-      { section: 'Analysis', name: 'Community insights', value: false },
-      { section: 'Analysis', name: 'Performance analysis', value: false },
+      { section: 'E-Commerce Features', name: 'Customer acquisition', value: true },
+      { section: 'E-Commerce Features', name: 'Payment integrations', value: 'Stripe, PayPal' },
+      { section: 'E-Commerce Features', name: 'Product listings', value: 'Up to 50' },
+      { section: 'E-Commerce Features', name: 'Storefront customization', value: 'Basic' },
+      { section: 'E-Commerce Features', name: 'Order management', value: true },
+      { section: 'Inventory & Tracking', name: 'Inventory tracking', value: 'Basic' },
+      { section: 'Inventory & Tracking', name: 'Sourcing tracking', value: false },
+      { section: 'Inventory & Tracking', name: 'Partner network access', value: false },
+      { section: 'Inventory & Tracking', name: 'Multi-location inventory', value: false },
+      { section: 'Design Tools', name: 'Design platform access', value: false },
+      { section: 'Design Tools', name: 'Partner production network', value: false },
+      { section: 'Design Tools', name: 'End-to-end design workflow', value: false },
       { section: 'Support', name: 'Email support', value: true },
-      { section: 'Support', name: '24 / 7 call center support', value: false },
+      { section: 'Support', name: 'Priority support', value: false },
       { section: 'Support', name: 'Dedicated account manager', value: false },
     ],
   },
   {
-    name: 'Growth' as const,
-    slug: 'growth',
-    description: 'All the extras for your growing team.',
+    name: 'Professional' as const,
+    slug: 'professional',
+    description: 'For growing businesses with advanced needs.',
     priceMonthly: 149,
     href: '#',
     highlights: [
-      { description: 'Up to 10 team members' },
-      { description: 'Unlimited deal progress boards' },
-      { description: 'Source leads from over 50 verified platforms' },
-      { description: 'RadiantAI integrations' },
-      { description: '5 competitor analyses per month' },
+      { description: 'Everything in Marketplace' },
+      { description: 'Fully sourced inventory tracking' },
+      { description: 'Advanced analytics and reporting' },
+      { description: 'Multi-channel selling' },
+      { description: 'Priority customer support' },
     ],
     features: [
-      { section: 'Features', name: 'Accounts', value: 10 },
-      { section: 'Features', name: 'Deal progress boards', value: 'Unlimited' },
-      { section: 'Features', name: 'Sourcing platforms', value: '100+' },
-      { section: 'Features', name: 'Contacts', value: 1000 },
-      { section: 'Features', name: 'AI assisted outreach', value: true },
-      { section: 'Analysis', name: 'Competitor analysis', value: '5 / month' },
-      { section: 'Analysis', name: 'Dashboard reporting', value: true },
-      { section: 'Analysis', name: 'Community insights', value: true },
-      { section: 'Analysis', name: 'Performance analysis', value: true },
+      { section: 'E-Commerce Features', name: 'Customer acquisition', value: true },
+      { section: 'E-Commerce Features', name: 'Payment integrations', value: 'All major gateways' },
+      { section: 'E-Commerce Features', name: 'Product listings', value: 'Up to 500' },
+      { section: 'E-Commerce Features', name: 'Storefront customization', value: 'Advanced' },
+      { section: 'E-Commerce Features', name: 'Order management', value: true },
+      { section: 'Inventory & Tracking', name: 'Inventory tracking', value: 'Advanced' },
+      { section: 'Inventory & Tracking', name: 'Sourcing tracking', value: 'Full tracking' },
+      { section: 'Inventory & Tracking', name: 'Partner network access', value: 'Limited' },
+      { section: 'Inventory & Tracking', name: 'Multi-location inventory', value: true },
+      { section: 'Design Tools', name: 'Design platform access', value: false },
+      { section: 'Design Tools', name: 'Partner production network', value: false },
+      { section: 'Design Tools', name: 'End-to-end design workflow', value: false },
       { section: 'Support', name: 'Email support', value: true },
-      { section: 'Support', name: '24 / 7 call center support', value: true },
+      { section: 'Support', name: 'Priority support', value: true },
       { section: 'Support', name: 'Dedicated account manager', value: false },
     ],
   },
   {
-    name: 'Enterprise' as const,
-    slug: 'enterprise',
-    description: 'Added flexibility to close deals at scale.',
+    name: 'Designer' as const,
+    slug: 'designer',
+    description: 'Complete design and production platform for textile creators.',
     priceMonthly: 299,
     href: '#',
     highlights: [
-      { description: 'Unlimited active team members' },
-      { description: 'Unlimited deal progress boards' },
-      { description: 'Source leads from over 100 verified platforms' },
-      { description: 'RadiantAI integrations' },
-      { description: 'Unlimited competitor analyses' },
+      { description: 'Everything in Professional' },
+      { description: 'End-to-end textile design platform' },
+      { description: 'Access to our partner production network' },
+      { description: 'High-quality manufacturing coordination' },
+      { description: 'Dedicated account manager' },
     ],
     features: [
-      { section: 'Features', name: 'Accounts', value: 'Unlimited' },
-      { section: 'Features', name: 'Deal progress boards', value: 'Unlimited' },
-      { section: 'Features', name: 'Sourcing platforms', value: '100+' },
-      { section: 'Features', name: 'Contacts', value: 'Unlimited' },
-      { section: 'Features', name: 'AI assisted outreach', value: true },
-      { section: 'Analysis', name: 'Competitor analysis', value: 'Unlimited' },
-      { section: 'Analysis', name: 'Dashboard reporting', value: true },
-      { section: 'Analysis', name: 'Community insights', value: true },
-      { section: 'Analysis', name: 'Performance analysis', value: true },
+      { section: 'E-Commerce Features', name: 'Customer acquisition', value: true },
+      { section: 'E-Commerce Features', name: 'Payment integrations', value: 'All major gateways' },
+      { section: 'E-Commerce Features', name: 'Product listings', value: 'Unlimited' },
+      { section: 'E-Commerce Features', name: 'Storefront customization', value: 'Full custom' },
+      { section: 'E-Commerce Features', name: 'Order management', value: true },
+      { section: 'Inventory & Tracking', name: 'Inventory tracking', value: 'Enterprise' },
+      { section: 'Inventory & Tracking', name: 'Sourcing tracking', value: 'Full tracking' },
+      { section: 'Inventory & Tracking', name: 'Partner network access', value: 'Full access' },
+      { section: 'Inventory & Tracking', name: 'Multi-location inventory', value: true },
+      { section: 'Design Tools', name: 'Design platform access', value: 'Full access' },
+      { section: 'Design Tools', name: 'Partner production network', value: 'Full network' },
+      { section: 'Design Tools', name: 'End-to-end design workflow', value: true },
       { section: 'Support', name: 'Email support', value: true },
-      { section: 'Support', name: '24 / 7 call center support', value: true },
+      { section: 'Support', name: 'Priority support', value: true },
       { section: 'Support', name: 'Dedicated account manager', value: true },
     ],
   },
@@ -110,10 +119,11 @@ const tiers = [
 function Header() {
   return (
     <Container className="mt-16">
-      <Heading as="h1">Pricing that grows with your team size.</Heading>
+      <Heading as="h1">Pricing for artisans and designers.</Heading>
       <Lead className="mt-6 max-w-3xl">
-        Companies all over the world have closed millions of deals with Radiant.
-        Sign up today and start selling smarter.
+        Whether you&apos;re selling handcrafted products or designing textiles end-to-end, 
+        we have a plan that fits your needs. Start your journey with our modern marketplace 
+        and production platform.
       </Lead>
     </Container>
   )
@@ -156,7 +166,7 @@ function PricingCard({ tier }: { tier: (typeof tiers)[number] }) {
           </div>
           <div className="mt-8">
             <h3 className="text-sm/6 font-medium text-gray-950">
-              Start selling with:
+              What&apos;s included:
             </h3>
             <ul className="mt-3 space-y-3">
               {tier.highlights.map((props, featureIndex) => (
@@ -373,7 +383,7 @@ function Testimonial() {
           <div className="-mt-96 lg:-mt-52">
             <div className="-m-2 rounded-4xl bg-white/15 ring-1 shadow-[inset_0_0_2px_1px_#ffffff4d] ring-black/5 max-lg:mx-auto max-lg:max-w-xs">
               <div className="rounded-4xl p-2 shadow-md shadow-black/5">
-                <div className="overflow-hidden rounded-3xl shadow-2xl outline outline-1 -outline-offset-1 outline-black/10">
+                <div className="overflow-hidden rounded-3xl shadow-2xl outline-1 -outline-offset-1 outline-black/10">
                   <Image
                     alt=""
                     src="/testimonials/tina-yards.jpg"
@@ -388,16 +398,16 @@ function Testimonial() {
           <div className="flex max-lg:mt-16 lg:col-span-2 lg:px-16">
             <figure className="mx-auto flex max-w-xl flex-col gap-16 max-lg:text-center">
               <blockquote>
-                <p className="relative text-3xl tracking-tight text-white before:absolute before:-translate-x-full before:content-['“'] after:absolute after:content-['”'] lg:text-4xl">
-                  Thanks to Radiant, we&apos;re finding new leads that we never
-                  would have found with legal methods.
+                <p className="relative text-3xl tracking-tight text-white before:absolute before:-translate-x-full before:content-['"'] after:absolute after:content-['"'] lg:text-4xl">
+                  Jaal Yantra has transformed how we bring our textile designs to life. 
+                  The partner network and end-to-end platform made production seamless.
                 </p>
               </blockquote>
               <figcaption className="mt-auto">
-                <p className="text-sm/6 font-medium text-white">Tina Yards</p>
+                <p className="text-sm/6 font-medium text-white">Bismah</p>
                 <p className="text-sm/6 font-medium">
                   <span className="bg-linear-to-r from-[#fff1be] from-28% via-[#ee87cb] via-70% to-[#b060ff] bg-clip-text text-transparent">
-                    VP of Sales, Protocol
+                    Textile Designer & Founder, Artisan Threads
                   </span>
                 </p>
               </figcaption>
