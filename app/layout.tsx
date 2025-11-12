@@ -46,7 +46,7 @@ export default async function RootLayout({
           />
           {/* JYT Analytics - Production */}
           <script 
-            src="https://automatic.jaalyantra.com/analytics.min.js?v=2" 
+            src="https://automatic.jaalyantra.com/analytics.min.js" 
             data-website-id="01JRTP1DETZ58GHJGMZ604PREH"
             defer
           />
