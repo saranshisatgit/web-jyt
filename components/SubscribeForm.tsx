@@ -54,10 +54,10 @@ const SubscribeForm: React.FC<SubscribeFormProps> = ({ domainName }) => {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto">
+    <div className="w-full max-w-4xl mx-auto px-4 sm:px-0">
       {/* Header Section */}
       <div className="mb-6">
-        <h3 className="text-lg font-semibold text-gray-950 mb-2">
+        <h3 className="text-lg sm:text-xl font-semibold text-gray-950 mb-2">
           Subscribe to our newsletter
         </h3>
         <p className="text-sm text-gray-600 mb-1">
@@ -69,73 +69,79 @@ const SubscribeForm: React.FC<SubscribeFormProps> = ({ domainName }) => {
       </div>
 
       {/* Form Section */}
-      <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 items-end">
-        {/* First Name Input */}
-        <div className="flex-1 min-w-0">
-          <label htmlFor="firstName" className="block text-xs font-medium text-gray-700 mb-1">
-            First name*
-          </label>
-          <input
-            type="text"
-            id="firstName"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-            className="w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-950 focus:border-transparent disabled:bg-gray-50 disabled:text-gray-500"
-            placeholder="First name"
-            disabled={isLoading}
-            required
-          />
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        {/* Name Fields Row - Stack on mobile, side-by-side on tablet+ */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {/* First Name Input */}
+          <div className="w-full">
+            <label htmlFor="firstName" className="block text-xs font-medium text-gray-700 mb-1.5">
+              First name*
+            </label>
+            <input
+              type="text"
+              id="firstName"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              className="w-full px-3 py-2.5 text-sm bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-950 focus:border-transparent disabled:bg-gray-50 disabled:text-gray-500"
+              placeholder="First name"
+              disabled={isLoading}
+              required
+            />
+          </div>
+
+          {/* Last Name Input */}
+          <div className="w-full">
+            <label htmlFor="lastName" className="block text-xs font-medium text-gray-700 mb-1.5">
+              Last name*
+            </label>
+            <input
+              type="text"
+              id="lastName"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              className="w-full px-3 py-2.5 text-sm bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-950 focus:border-transparent disabled:bg-gray-50 disabled:text-gray-500"
+              placeholder="Last name"
+              disabled={isLoading}
+              required
+            />
+          </div>
         </div>
 
-        {/* Last Name Input */}
-        <div className="flex-1 min-w-0">
-          <label htmlFor="lastName" className="block text-xs font-medium text-gray-700 mb-1">
-            Last name*
-          </label>
-          <input
-            type="text"
-            id="lastName"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-            className="w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-950 focus:border-transparent disabled:bg-gray-50 disabled:text-gray-500"
-            placeholder="Last name"
-            disabled={isLoading}
-            required
-          />
-        </div>
+        {/* Email and Button Row */}
+        <div className="flex flex-col sm:flex-row gap-3 sm:items-end">
+          {/* Email Input */}
+          <div className="flex-1">
+            <label htmlFor="email" className="block text-xs font-medium text-gray-700 mb-1.5">
+              Email*
+            </label>
+            <input
+              type="email"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full px-3 py-2.5 text-sm bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-950 focus:border-transparent disabled:bg-gray-50 disabled:text-gray-500"
+              placeholder="your@email.com"
+              disabled={isLoading}
+              required
+            />
+          </div>
 
-        {/* Email Input */}
-        <div className="flex-1 min-w-0">
-          <label htmlFor="email" className="block text-xs font-medium text-gray-700 mb-1">
-            Email*
-          </label>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-3 py-2 text-sm bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-950 focus:border-transparent disabled:bg-gray-50 disabled:text-gray-500"
-            placeholder="Email"
+          {/* Submit Button */}
+          <Button
+            type="submit"
+            className="w-full sm:w-auto px-6 py-2.5 bg-gray-950 text-white text-sm font-medium rounded-md hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-950 disabled:opacity-50 disabled:cursor-not-allowed transition-colors whitespace-nowrap"
             disabled={isLoading}
-            required
-          />
+          >
+            {isLoading ? 'Subscribing...' : 'Subscribe'}
+          </Button>
         </div>
-
-        {/* Submit Button */}
-        <Button
-          type="submit"
-          className="px-6 py-2 bg-gray-950 text-white text-sm font-medium rounded-md hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-950 disabled:opacity-50 disabled:cursor-not-allowed transition-colors whitespace-nowrap"
-          disabled={isLoading}
-        >
-          {isLoading ? 'Subscribing...' : 'Subscribe'}
-        </Button>
       </form>
 
       {/* Message Display */}
       {message && (
-        <p className={`mt-4 text-sm ${isError ? 'text-red-600' : 'text-green-600'}`}>
-          {message}
-        </p>
+        <div className={`mt-4 p-3 rounded-md ${isError ? 'bg-red-50 text-red-700' : 'bg-green-50 text-green-700'}`}>
+          <p className="text-sm">{message}</p>
+        </div>
       )}
     </div>
   );
