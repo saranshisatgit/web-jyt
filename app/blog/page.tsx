@@ -36,15 +36,18 @@ export const metadata: Metadata = {
 const postsPerPage = 5
 
 async function FeaturedPosts() {
-  // Use API filtering for featured posts with limit of 3
-  const { data: featuredPosts }: { data: BlogPost[] } = await getBlogsWithMeta('jaalyantra.com', {
-    is_featured: true,
-    limit: 3
-  })
-  
-  if (featuredPosts.length === 0) {
-    return
-  }
+  try {
+    // Use API filtering for featured posts with limit of 3
+    const response = await getBlogsWithMeta('jaalyantra.com', {
+      is_featured: true,
+      limit: 3
+    })
+    
+    const featuredPosts = response?.data || []
+    
+    if (featuredPosts.length === 0) {
+      return
+    }
 
   return (
     <div className="mt-16 bg-linear-to-t from-gray-100 pb-14">
@@ -99,6 +102,10 @@ async function FeaturedPosts() {
       </Container>
     </div>
   )
+  } catch (error) {
+    console.error('Error fetching featured posts:', error)
+    return null
+  }
 }
 
 async function Categories({ selected }: { selected?: string }) {
@@ -153,24 +160,27 @@ async function Categories({ selected }: { selected?: string }) {
 }
 
 async function Posts({ page, category }: { page: number; category?: string }) {
-  // Use API filtering and pagination
-  const { data: posts }: { data: BlogPost[] } = await getBlogsWithMeta('jaalyantra.com', {
-    category,
-    limit: postsPerPage,
-    page
-  })
+  try {
+    // Use API filtering and pagination
+    const response = await getBlogsWithMeta('jaalyantra.com', {
+      category,
+      limit: postsPerPage,
+      page
+    })
 
-  if (posts.length === 0 && page > 1) {
-    notFound()
-  }
+    const posts = response?.data || []
 
-  if (posts.length === 0) {
-    return <p className="mt-6 text-gray-500">No posts found.</p>
-  }
+    if (posts.length === 0 && page > 1) {
+      notFound()
+    }
+
+    if (posts.length === 0) {
+      return <p className="mt-6 text-gray-500">No posts found.</p>
+    }
 
   return (
     <div className="mt-6">
-      {posts.map((post) => (
+      {posts.map((post: BlogPost) => (
         <div
           key={post.slug}
           className="relative grid grid-cols-1 border-b border-b-gray-100 py-10 first:border-t first:border-t-gray-200 max-sm:gap-3 sm:grid-cols-3"
@@ -205,9 +215,11 @@ async function Posts({ page, category }: { page: number; category?: string }) {
       ))}
     </div>
   )
+  } catch (error) {
+    console.error('Error fetching posts:', error)
+    return <p className="mt-6 text-gray-500">Error loading posts. Please try again later.</p>
+  }
 }
-
-
 
 async function Pagination({
   page,
@@ -225,22 +237,25 @@ async function Pagination({
     return params.size !== 0 ? `/blog?${params.toString()}` : '/blog'
   }
 
-  // Get metadata from API
-  const { meta } = await getBlogsWithMeta('jaalyantra.com', {
-    category,
-    limit: postsPerPage,
-    page
-  })
-  
-  const hasPreviousPage = page - 1
-  const previousPageUrl = hasPreviousPage ? url(page - 1) : undefined
-  const hasNextPage = page < meta.total_pages
-  const nextPageUrl = hasNextPage ? url(page + 1) : undefined
-  const pageCount = meta.total_pages
+  try {
+    // Get metadata from API
+    const response = await getBlogsWithMeta('jaalyantra.com', {
+      category,
+      limit: postsPerPage,
+      page
+    })
+    
+    const meta = response?.meta || { total: 0, page: 1, limit: postsPerPage, total_pages: 1 }
+    
+    const hasPreviousPage = page - 1
+    const previousPageUrl = hasPreviousPage ? url(page - 1) : undefined
+    const hasNextPage = page < meta.total_pages
+    const nextPageUrl = hasNextPage ? url(page + 1) : undefined
+    const pageCount = meta.total_pages
 
-  if (pageCount < 2) {
-    return
-  }
+    if (pageCount < 2) {
+      return
+    }
 
   return (
     <div className="mt-6 flex items-center justify-between gap-2">
@@ -275,6 +290,10 @@ async function Pagination({
       </Button>
     </div>
   )
+  } catch (error) {
+    console.error('Error fetching pagination metadata:', error)
+    return null
+  }
 }
 
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>
