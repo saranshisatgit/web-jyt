@@ -6,9 +6,8 @@ import { TipTapRenderer } from '@/components/tiptap-renderer'
 import { ManualDrawer, type DrawerAttrs } from '@/components/manual-drawer'
 import { Button } from '@/components/button' // For debug toggle
 
-// Import shared types
-import type { BlogBlock } from '@/components/post-metadata-sidebar' 
-import type { BlogPost, TipTapNode, TipTapJsonStructure } from '@/components/blog-post-content'
+// Import shared types from centralized location
+import type { BlogBlock, BlogPost, TipTapNode, TipTapJsonStructure } from '@/types/blog'
 import React from 'react' // Ensure React is imported for JSX style block if needed
 
 interface PostMainContentAreaProps {
