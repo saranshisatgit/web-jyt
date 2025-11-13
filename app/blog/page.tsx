@@ -5,7 +5,7 @@ import { Link } from '@/components/link'
 import { Navbar } from '@/components/navbar'
 import { Heading, Lead, Subheading } from '@/components/text'
 import {
-  getAllBlogs,
+  getBlogsWithMeta,
 } from '@/medu/queries'
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import {
@@ -21,7 +21,7 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import { getAllCategories } from '../actions'
-import type { BlogPost, BlogBlock } from '@/types/blog'
+import type { BlogPost } from '@/types/blog'
 import { getAuthors, getMainImageUrl } from '@/types/blog'
 
 
@@ -36,7 +36,11 @@ export const metadata: Metadata = {
 const postsPerPage = 5
 
 async function FeaturedPosts() {
-  const featuredPosts: BlogPost[] = await getAllBlogs('jaalyantra.com', '')
+  // Use API filtering for featured posts with limit of 3
+  const { data: featuredPosts }: { data: BlogPost[] } = await getBlogsWithMeta('jaalyantra.com', {
+    is_featured: true,
+    limit: 3
+  })
   
   if (featuredPosts.length === 0) {
     return
@@ -79,15 +83,11 @@ async function FeaturedPosts() {
                 <div className="mt-2 flex-1 text-sm/6 text-gray-500">
                   {post.content}
                 </div>
-                {/* Find the first block with authors array */}
-                {post.blocks && post.blocks.some((block: BlogBlock) => 
-                  block.content && Array.isArray(block.content.authors) && block.content.authors.length > 0
-                ) && (
+                {/* Display authors if available */}
+                {getAuthors(post).length > 0 && (
                   <div className="mt-6 flex items-center gap-3">
                     <div className="text-sm/5 text-gray-700">
-                      {post.blocks.find((block: BlogBlock) => 
-                        block.content && Array.isArray(block.content.authors) && block.content.authors.length > 0
-                      )?.content.authors?.join(', ')}
+                      {getAuthors(post).join(', ')}
                     </div>
                   </div>
                 )}
@@ -153,18 +153,12 @@ async function Categories({ selected }: { selected?: string }) {
 }
 
 async function Posts({ page, category }: { page: number; category?: string }) {
-  // Fetch all posts and apply category filter client-side
-  const allPosts: BlogPost[] = await getAllBlogs('jaalyantra.com', '')
-  const filteredPosts = category
-    ? allPosts.filter((post) => {
-        const cat = post.public_metadata?.category
-        if (typeof cat !== 'string') return false
-        return cat.toLowerCase().replace(/\s+/g, '-') === category
-      })
-    : allPosts
-  // Paginate
-  const startIndex = (page - 1) * postsPerPage
-  const posts = filteredPosts.slice(startIndex, startIndex + postsPerPage)
+  // Use API filtering and pagination
+  const { data: posts }: { data: BlogPost[] } = await getBlogsWithMeta('jaalyantra.com', {
+    category,
+    limit: postsPerPage,
+    page
+  })
 
   if (posts.length === 0 && page > 1) {
     notFound()
@@ -228,15 +222,21 @@ async function Pagination({
     if (category) params.set('category', category)
     if (page > 1) params.set('page', page.toString())
 
-    return params.size !== 0 ? `/blogs?${params.toString()}` : '/blogs'
+    return params.size !== 0 ? `/blog?${params.toString()}` : '/blog'
   }
 
-  const totalPosts = 2
+  // Get metadata from API
+  const { meta } = await getBlogsWithMeta('jaalyantra.com', {
+    category,
+    limit: postsPerPage,
+    page
+  })
+  
   const hasPreviousPage = page - 1
   const previousPageUrl = hasPreviousPage ? url(page - 1) : undefined
-  const hasNextPage = page * postsPerPage < totalPosts
+  const hasNextPage = page < meta.total_pages
   const nextPageUrl = hasNextPage ? url(page + 1) : undefined
-  const pageCount = Math.ceil(totalPosts / postsPerPage)
+  const pageCount = meta.total_pages
 
   if (pageCount < 2) {
     return

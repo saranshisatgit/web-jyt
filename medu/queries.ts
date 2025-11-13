@@ -172,11 +172,63 @@ export interface Block {
     if (!response.ok) {
       throw new Error(`Failed to fetch blogs for ${domainName}. Status: ${response.status}`);
     }
-    return response.json();
+    
+    const result = await response.json();
+    
+    // Handle both old format (array) and new format (object with data and meta)
+    if (Array.isArray(result)) {
+      return result; // Old format
+    }
+    
+    return result.data || []; // New format - return just the data array
   }
 
   export const getAllBlogs = (domainName: string, filter: string) => {
     return fetchBlogs(domainName, filter)
+  }
+
+  // New function to fetch blogs with metadata
+  export const getBlogsWithMeta = async (
+    domainName: string, 
+    params: {
+      is_featured?: boolean;
+      category?: string;
+      limit?: number;
+      page?: number;
+    } = {}
+  ) => {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL! || 'http://localhost:9000/web';
+    
+    // Build query string from params
+    const queryParams = new URLSearchParams();
+    if (params.is_featured !== undefined) {
+      queryParams.append('is_featured', params.is_featured.toString());
+    }
+    if (params.category) {
+      queryParams.append('category', params.category);
+    }
+    if (params.limit) {
+      queryParams.append('limit', params.limit.toString());
+    }
+    if (params.page) {
+      queryParams.append('page', params.page.toString());
+    }
+    
+    const url = `${apiUrl}/website/${domainName}/blogs${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
+
+    // Conditionally set fetch options based on the environment
+    const fetchOptions =
+      process.env.NODE_ENV === "development"
+        ? { cache: "no-store" as RequestCache }
+        : { next: { revalidate: 1800, tags: ["blogs"] } };
+
+    const response = await fetch(url, fetchOptions);
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch blogs for ${domainName}. Status: ${response.status}`);
+    }
+    
+    return response.json(); // Returns { data: Page[], meta: { total, page, limit, total_pages } }
   }
 
   export const getAPost = (slug: string) => {
