@@ -228,7 +228,25 @@ export interface Block {
       throw new Error(`Failed to fetch blogs for ${domainName}. Status: ${response.status}`);
     }
     
-    return response.json(); // Returns { data: Page[], meta: { total, page, limit, total_pages } }
+    const result = await response.json();
+    
+    // Handle both old format (array) and new format (object with data and meta)
+    if (Array.isArray(result)) {
+      // Old format - convert to new format
+      const total = result.length;
+      const limitNum = params.limit || total;
+      return {
+        data: result,
+        meta: {
+          total,
+          page: params.page || 1,
+          limit: limitNum,
+          total_pages: Math.ceil(total / limitNum)
+        }
+      };
+    }
+    
+    return result; // New format - return as is
   }
 
   export const getAPost = (slug: string) => {
