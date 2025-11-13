@@ -210,7 +210,7 @@ export function Testimonials({ testimonialsData }: { testimonialsData?: Testimon
   const referenceWindowRef = useRef<HTMLDivElement>(null)
   const [measureRef, bounds] = useMeasure()
   const [activeIndex, setActiveIndex] = useState(0)
-  console.log(testimonialsData)
+  
   // Convert backend data format to component format if available
   const testimonials: TestimonialItem[] = testimonialsData?.content?.testimonials 
     ? testimonialsData.content.testimonials.map(item => ({
@@ -220,26 +220,47 @@ export function Testimonials({ testimonialsData }: { testimonialsData?: Testimon
         quote: item.quote
       }))
     : defaultTestimonials
-
+  
   // Calculate the card width and gap once to ensure consistency
   const cardWidth = useRef(0)
-  const cardGap = 8 // Fixed gap size to ensure consistent calculations
+  const cardGap = 32 // gap-8 in Tailwind = 2rem = 32px
+  const [visibleCardsAtOnce, setVisibleCardsAtOnce] = useState(3)
+  
+  // Calculate number of scroll pages based on visible cards
+  const totalScrollPages = Math.max(1, testimonials.length - visibleCardsAtOnce + 1)
+  
+  // Map testimonial index to scroll page for dot navigation
+  const getScrollPage = (index: number) => {
+    // Each scroll position is one page
+    return Math.min(index, totalScrollPages - 1)
+  }
   
   // More accurate index calculation based on scroll position
   useMotionValueEvent(scrollX, 'change', (x) => {
-    if (scrollRef.current?.children[0]) {
+    if (scrollRef.current && scrollRef.current.children.length > 0) {
       // Get the actual width of a testimonial card
       const firstCard = scrollRef.current.children[0] as HTMLElement
       const cardFullWidth = firstCard.offsetWidth + cardGap
       cardWidth.current = cardFullWidth
       
-      // Calculate the index more precisely
-      const rawIndex = x / cardFullWidth
-      const index = Math.round(rawIndex)
+      // Calculate how many cards are visible in the viewport
+      const containerWidth = scrollRef.current.offsetWidth
+      const calculatedVisibleCards = Math.floor(containerWidth / cardFullWidth)
+      if (calculatedVisibleCards !== visibleCardsAtOnce) {
+        setVisibleCardsAtOnce(calculatedVisibleCards)
+      }
+      
+      // Calculate index based on scroll position with proper rounding
+      // Add half a card width to center the calculation
+      const scrollWithOffset = x + (cardFullWidth / 2)
+      const calculatedIndex = Math.floor(scrollWithOffset / cardFullWidth)
+      
+      // Clamp the index to valid range
+      const clampedIndex = Math.max(0, Math.min(calculatedIndex, testimonials.length - 1))
       
       // Only update if the index has actually changed
-      if (index !== activeIndex && index >= 0 && index < testimonials.length) {
-        setActiveIndex(index)
+      if (clampedIndex !== activeIndex) {
+        setActiveIndex(clampedIndex)
       }
     }
   })
@@ -322,21 +343,27 @@ export function Testimonials({ testimonialsData }: { testimonialsData?: Testimon
             linkUrl={testimonialsData?.content?.callToAction?.linkUrl || "#"}
           />
           <div className="hidden sm:flex sm:gap-2">
-            {testimonials.map(({ name }, testimonialIndex) => (
-              <Headless.Button
-                key={testimonialIndex}
-                onClick={() => scrollTo(testimonialIndex)}
-                data-active={
-                  activeIndex === testimonialIndex ? true : undefined
-                }
-                aria-label={`Scroll to testimonial from ${name}`}
-                className={clsx(
-                  'size-2.5 rounded-full border border-transparent bg-gray-300 transition',
-                  'data-active:bg-gray-400 data-hover:bg-gray-400',
-                  'forced-colors:data-active:bg-[Highlight] forced-colors:data-focus:outline-offset-4',
-                )}
-              />
-            ))}
+            {Array.from({ length: totalScrollPages }).map((_, pageIndex) => {
+              // Each page represents one scroll position
+              const targetIndex = pageIndex
+              const currentPage = getScrollPage(activeIndex)
+              
+              return (
+                <Headless.Button
+                  key={pageIndex}
+                  onClick={() => scrollTo(targetIndex)}
+                  data-active={
+                    currentPage === pageIndex ? true : undefined
+                  }
+                  aria-label={`Scroll to page ${pageIndex + 1}`}
+                  className={clsx(
+                    'size-2.5 rounded-full border border-transparent bg-gray-300 transition',
+                    'data-active:bg-gray-400 data-hover:bg-gray-400',
+                    'forced-colors:data-active:bg-[Highlight] forced-colors:data-focus:outline-offset-4',
+                  )}
+                />
+              )
+            })}
           </div>
         </div>
       </Container>

@@ -6,48 +6,14 @@ import { Container } from '@/components/container'
 import { GradientBackground } from '@/components/gradient'
 import { Navbar } from '@/components/navbar'
 import { Heading, Subheading } from '@/components/text'
-// TipTapRenderer import removed (now used within PostMainContentArea)
-// ManualDrawer import removed (now used within PostMainContentArea)
-// ManualTableOfContents import removed, HeadingItem might be aliased from PostTableOfContents
-import { type HeadingItem } from '@/components/manual-table-of-contents' // Keep for state type for now
+import { type HeadingItem } from '@/components/manual-table-of-contents'
 import { PostTableOfContents, type HeadingItem as TocHeadingItem } from '@/components/PostTableOfContents'
-import { PostMetadataSidebar, type BlogBlock } from '@/components/post-metadata-sidebar'
-import { PostMainContentArea } from '@/components/post-main-content-area'; // Added import for PostMainContentArea
-import SubscribeForm from '@/components/SubscribeForm'; // Added import for SubscribeForm
+import { PostMetadataSidebar } from '@/components/post-metadata-sidebar'
+import { PostMainContentArea } from '@/components/post-main-content-area'
+import SubscribeForm from '@/components/SubscribeForm'
 import { ChevronLeftIcon } from '@heroicons/react/16/solid'
 import dayjs from 'dayjs'
-// Image import removed as it's now used within PostMainContentArea
-
-// Define interfaces for TipTap content structure
-export interface TipTapNode {
-  type: string;
-  attrs?: Record<string, unknown>; // Changed any to unknown
-  content?: TipTapNode[];
-  text?: string;
-  marks?: Array<Record<string, unknown>>; // Changed any to unknown
-  [key: string]: unknown; // Changed any to unknown, Allow other properties specific to node types
-}
-
-export interface TipTapJsonStructure {
-  type: 'doc';
-  content: TipTapNode[];
-}
-
-// BlogBlock interface moved to PostMetadataSidebar temporarily
-// TODO: Centralize type definitions (e.g., in types/blog.ts)
-
-export interface BlogPost {
-  title: string;
-  slug: string;
-  published_at: string;
-  excerpt?: string;
-  blocks?: BlogBlock[];
-  content?: { // Made content optional
-    json: TipTapJsonStructure;
-  };
-  public_metadata?: Record<string, unknown>; // Use public_metadata
-  [key: string]: unknown;
-}
+import type { BlogPost, BlogBlock, TipTapNode } from '@/types/blog'
 
 export function BlogPostContent({ 
   post, 
@@ -70,9 +36,9 @@ export function BlogPostContent({
   const [headings, setHeadings] = useState<HeadingItem[]>([]) // State for actual heading items
 
   const hasOriginalTocNode = useMemo(() => {
-    if (!post.content?.json.content) return false;
-    return post.content.json.content.some((node) => node.type === 'tableOfContents');
-  }, [post.content?.json.content]);
+    if (!contentBlock?.content.text?.content) return false;
+    return contentBlock.content.text.content.some((node: TipTapNode) => node.type === 'tableOfContents');
+  }, [contentBlock?.content.text]);
   
   // Check if running in development/local environment
   const isDevelopment = process.env.NODE_ENV === 'development'

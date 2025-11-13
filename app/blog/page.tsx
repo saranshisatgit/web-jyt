@@ -21,44 +21,11 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import { getAllCategories } from '../actions'
+import type { BlogPost, BlogBlock } from '@/types/blog'
+import { getAuthors, getMainImageUrl } from '@/types/blog'
 
 
 export const dynamic = 'force-dynamic'
-
-// Define interfaces for blog post structure
-interface BlogBlock {
-  id: string;
-  type: 'doc';
-  content: {
-    authors?: string[];
-    image?: {
-      content?: string;
-    };
-    text?: string;
-    [key: string]: unknown;
-  };
-  order: number;
-}
-
-interface BlogPost {
-  title: string;
-  slug: string;
-  published_at: string;
-  content?: string;
-  blocks?: BlogBlock[];
-  public_metadata?: {
-    category?: string;
-    [key: string]: unknown;
-  };
-  author?: {
-    name: string;
-    role?: string;
-    image?: {
-      content?: string;
-    };
-  };
-  [key: string]: unknown;
-}
 
 export const metadata: Metadata = {
   title: 'Blog',
@@ -80,20 +47,19 @@ async function FeaturedPosts() {
       <Container>
         <h2 className="text-2xl font-medium tracking-tight">Featured</h2>
         <div className="mt-6 grid grid-cols-1 gap-8 lg:grid-cols-3">
-          {featuredPosts.map((post: BlogPost) => (
+          {featuredPosts.map((post: BlogPost) => {
+            const imageUrl = getMainImageUrl(post);
+            
+            return (
             <div
               key={post.slug}
               className="relative flex flex-col rounded-3xl bg-white p-2 ring-1 shadow-md shadow-black/5 ring-black/5"
             >
-              {/* Find the first block with image content */}
-              {post.blocks && post.blocks.some((block: BlogBlock) => 
-                block.content && block.content.image && block.content.image.content
-              ) && (
+              {/* Display main image if available */}
+              {imageUrl && (
                 <Image
                   alt={post.title || ''}
-                  src={post.blocks.find((block: BlogBlock) => 
-                    block.content && block.content.image && block.content.image.content
-                  )?.content.image?.content || ''}
+                  src={imageUrl}
                   width={1170}
                   height={780}
                   priority={true}
@@ -127,7 +93,8 @@ async function FeaturedPosts() {
                 )}
               </div>
             </div>
-          ))}
+          );
+          })}
         </div>
       </Container>
     </div>
@@ -218,19 +185,10 @@ async function Posts({ page, category }: { page: number; category?: string }) {
             <div className="text-sm/5 max-sm:text-gray-700 sm:font-medium">
               {dayjs(post.published_at).format('dddd, MMMM D, YYYY')}
             </div>
-            {post.author && (
+            {getAuthors(post).length > 0 && (
               <div className="mt-2.5 flex items-center gap-3">
-                {(post.author.image?.content || 'https://i.pravatar.cc/300') && (
-                  <Image
-                    alt=""
-                    src={post.author.image?.content || 'https://i.pravatar.cc/300'}
-                    className="aspect-square size-6 rounded-full object-cover"
-                    width={24}
-                    height={24}
-                  />
-                )}
                 <div className="text-sm/5 text-gray-700">
-                  {post.author.name}
+                  {getAuthors(post).join(', ')}
                 </div>
               </div>
             )}

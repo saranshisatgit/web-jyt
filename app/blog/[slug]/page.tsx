@@ -2,43 +2,7 @@ import { getSinglePost } from '@/app/actions'
 import { BlogPostContent } from '@/components/blog-post-content'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-
-// Define interfaces for blog post structure
-interface BlogBlock {
-  id: string;
-  type: string;
-  content: {
-    authors?: string[];
-    image?: {
-      content?: string;
-    };
-    text?: Record<string, unknown>;
-    [key: string]: unknown;
-  };
-  order: number;
-}
-
-interface BlogPost {
-  title: string;
-  slug: string;
-  published_at: string;
-  excerpt?: string;
-  blocks?: BlogBlock[];
-  public_metadata?: Record<string, unknown>;
-  [key: string]: unknown;
-}
-
-// Interface to match the Page type returned by getSinglePost
-interface Page {
-  title: string;
-  slug: string;
-  content: string;
-  status: string;
-  page_type: string;
-  published_at: string;
-  blocks: BlogBlock[];
-  public_metadata: Record<string, unknown>
-}
+import type { BlogPost } from '@/types/blog'
 
 type Params = Promise<{ slug: string }>
 
@@ -58,18 +22,9 @@ export default async function BlogPost({
 }: {
   params: Params
 }) {
-  // Get the post and convert it to our BlogPost type
-  const postData = await getSinglePost((await params).slug) as unknown as Page;
-  if (!postData) notFound();
-  
-  // Convert to our BlogPost type
-  const post: BlogPost = {
-    title: postData.title,
-    slug: postData.slug,
-    published_at: postData.published_at,
-    blocks: postData.blocks,
-    public_metadata: postData.public_metadata
-  };
+  // Get the post - it already matches our BlogPost type from the API
+  const post = await getSinglePost((await params).slug) as unknown as BlogPost;
+  if (!post) notFound();
   
   // Find the first block with text content for the main content
   const contentBlock = post.blocks?.find(block => 

@@ -1,6 +1,8 @@
-import { Block, getAllBlogs } from '@/medu/queries'
+import { getAllBlogs } from '@/medu/queries'
 import { Feed } from 'feed'
 import assert from 'node:assert'
+import type { BlogPost } from '@/types/blog'
+import { getAuthors } from '@/types/blog'
 
 export const dynamic = 'force-dynamic'
 
@@ -27,25 +29,7 @@ export async function GET() {
       rss2: `${siteUrl}/feed.xml`,
     },
   })
-  interface Author {
-    name: string;
-    [key: string]: unknown;
-  }
-
-  interface BlockContent {
-    authors?: (string | Author)[];
-    author?: string | { name: string; [key: string]: unknown };
-    [key: string]: unknown;
-  }
-
-  interface BlogPost {
-    title: string;
-    slug: string;
-    content: string;
-    published_at: string;
-    author: string;
-    blocks: Block[];
-  }
+  
   const posts: BlogPost[] = await getAllBlogs('jaalyantra.com','')
 
  
@@ -64,54 +48,13 @@ export async function GET() {
     // Create a simple excerpt from the content if it doesn't exist
     const excerpt = post.content
 
-    // Add a default author if available in the post
-    let authorNames: string[] = [];
+    // Get authors using helper function
+    const authorNames = getAuthors(post);
     
-    // First check if post has a direct author property
-    if (post.author && typeof post.author === 'string' && post.author.trim() !== '') {
-      authorNames.push(post.author);
-    }
-    
-    // Then try to find authors in blocks
-    if (authorNames.length === 0 && post.blocks) {
-      // Log all blocks to debug
-      console.log('Checking blocks for authors:', post.blocks.map(b => ({ name: b.name, type: b.type, content: b.content })));
-      
-      // Try to find authors block
-      for (const block of post.blocks) {
-        try {
-          const content = block.content as BlockContent;
-          
-          // Check for authors array
-          if (content && Array.isArray(content.authors) && content.authors.length > 0) {
-            const blockAuthors = content.authors.map(author => 
-              typeof author === 'string' ? author : (author.name || 'Unknown Author')
-            );
-            authorNames = [...authorNames, ...blockAuthors];
-            break;
-          }
-          
-          // Check for author field (singular)
-          if (content && content.author) {
-            if (typeof content.author === 'string') {
-              authorNames.push(content.author);
-            } else if (typeof content.author === 'object' && content.author.name) {
-              authorNames.push(content.author.name);
-            }
-            break;
-          }
-        } catch (error) {
-          console.log('Error processing block:', error);
-        }
-      }
-    }
-    
-    // If still no authors found, add a default author
+    // If no authors found, add a default author
     if (authorNames.length === 0) {
       authorNames.push('Jaal Yantra Textiles');
     }
-    
-    console.log('Final author names:', authorNames)
     
     feed.addItem({
       title: post.title,

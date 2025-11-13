@@ -1,20 +1,7 @@
 // components/post-metadata-sidebar.tsx
 'use client'
 
-// TODO: Move BlogBlock to a shared types file (e.g., types/blog.ts)
-export interface BlogBlock { // Added export
-  id: string;
-  type: string;
-  content: {
-    authors?: string[];
-    image?: {
-      content?: string;
-    };
-    text?: Record<string, unknown>;
-    [key: string]: unknown; 
-  };
-  order: number;
-}
+import type { BlogBlock } from '@/types/blog'
 
 interface PostMetadataSidebarProps {
   authorsBlock?: BlogBlock;
