@@ -116,6 +116,16 @@ function SocialIconLinkedIn(props: React.ComponentPropsWithoutRef<'svg'>) {
   )
 }
 
+
+function SocialIconInstagram(props: React.ComponentPropsWithoutRef<'svg'>) {
+  return (
+    <svg viewBox="0 0 16 16" fill="currentColor" {...props}>
+      <path d="M10.5 2.5c.61 0 1.1 0.5 1.1 1.1v10.3c0 .61-.5 1.1-1.1 1.1H5.5c-.61 0-1.1-.5-1.1-1.1V3.6c0-.61.5-1.1 1.1-1.1h5.077c.73 0 1.37.5 1.37 1.11 0 .49-.43 1.1-1.13 1.11h-.077V2.5zM15.9 13.667c0 .61-.5 1.1-1.1 1.1H5.5c-.61 0-1.1-.5-1.1-1.1V3.667c0-.61.5-1.1 1.1-1.1h10.3c.61 0 1.1.5 1.1 1.1V13.667zM13.6 8.333c0 .49-.43 1.1-1.1 1.1h-5.077c-.73 0-1.37-.5-1.37-1.11 0-.49.43-1.1 1.13-1.11h5.077c.61 0 1.1.5 1.1 1.1v2.667z" />
+    </svg>
+  )
+}
+
+
 function SocialLinks() {
   return (
     <>
@@ -128,12 +138,20 @@ function SocialLinks() {
         <SocialIconFacebook className="size-4" />
       </Link>
       <Link
-        href="https://x.com"
+        href="https://x.com/cici_label"
         target="_blank"
         aria-label="Visit us on X"
         className="text-gray-950 data-hover:text-gray-950/75"
       >
         <SocialIconX className="size-4" />
+      </Link>
+      <Link
+        href="https://instagram.com/cici_label"
+        target="_blank"
+        aria-label="Visit us on instagram"
+        className="text-gray-950 data-hover:text-gray-950/75"
+      >
+        <SocialIconInstagram className="size-4" />
       </Link>
       <Link
         href="https://linkedin.com"
