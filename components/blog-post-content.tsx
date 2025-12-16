@@ -76,6 +76,31 @@ export function BlogPostContent({
     const tipTapDoc = processedText as { type: string; content: TipTapNode[] };
     let foundDrawerNode: DrawerNode | null = null;
 
+    const removeFirstImageNode = (nodes: TipTapNode[], matchSrc?: string): boolean => {
+      for (let i = 0; i < nodes.length; i++) {
+        const node = nodes[i]
+        if (node?.type === 'image') {
+          const src = node.attrs?.src as string | undefined
+          if (!matchSrc || (src && src === matchSrc)) {
+            nodes.splice(i, 1)
+            return true
+          }
+        }
+
+        if (Array.isArray(node?.content)) {
+          const removed = removeFirstImageNode(node.content, matchSrc)
+          if (removed) {
+            if (node.type === 'paragraph' && (!node.content || node.content.length === 0)) {
+              nodes.splice(i, 1)
+            }
+            return true
+          }
+        }
+      }
+
+      return false
+    }
+
     if (tipTapDoc.type === 'doc' && Array.isArray(tipTapDoc.content)) {
       // Find and extract the drawer node
       const drawer = tipTapDoc.content.find(node => node.type === 'drawer') as DrawerNode | undefined;
@@ -89,22 +114,11 @@ export function BlogPostContent({
       // Remove main image if duplicated
       if (imageBlock?.content.image?.content) {
         const mainImageUrl = imageBlock.content.image.content
-        let foundMainImage = false
-        
-        tipTapDoc.content = tipTapDoc.content.map((paragraph: TipTapNode) => {
-          if (foundMainImage) return paragraph
-          
-          if (paragraph.type === 'paragraph' && Array.isArray(paragraph.content)) {
-            paragraph.content = paragraph.content.filter((node: TipTapNode) => {
-              if (!foundMainImage && node.type === 'image' && (node.attrs?.src as string) === mainImageUrl) {
-                foundMainImage = true
-                return false
-              }
-              return true
-            })
-          }
-          return paragraph
-        })
+
+        const removedMatching = removeFirstImageNode(tipTapDoc.content, mainImageUrl)
+        if (!removedMatching) {
+          removeFirstImageNode(tipTapDoc.content)
+        }
         
         tipTapDoc.content = tipTapDoc.content.filter((paragraph: TipTapNode) => {
           return !(paragraph.type === 'paragraph' && (!paragraph.content || paragraph.content.length === 0));
