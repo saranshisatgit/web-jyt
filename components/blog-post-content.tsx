@@ -76,6 +76,23 @@ export function BlogPostContent({
     const tipTapDoc = processedText as { type: string; content: TipTapNode[] };
     let foundDrawerNode: DrawerNode | null = null;
 
+    const countImageOccurrences = (nodes: TipTapNode[], matchSrc?: string): number => {
+      let count = 0
+      for (const node of nodes) {
+        if (node?.type === 'image') {
+          const src = node.attrs?.src as string | undefined
+          if (!matchSrc || (src && src === matchSrc)) {
+            count++
+          }
+        }
+
+        if (Array.isArray(node?.content)) {
+          count += countImageOccurrences(node.content, matchSrc)
+        }
+      }
+      return count
+    }
+
     const removeFirstImageNode = (nodes: TipTapNode[], matchSrc?: string): boolean => {
       for (let i = 0; i < nodes.length; i++) {
         const node = nodes[i]
@@ -111,13 +128,14 @@ export function BlogPostContent({
       // Filter out both drawer and tableOfContents nodes
       tipTapDoc.content = tipTapDoc.content.filter(node => node.type !== 'drawer' && node.type !== 'tableOfContents');
 
-      // Remove main image if duplicated
+      // Remove main image only if duplicated within the rich text content
       if (imageBlock?.content.image?.content) {
         const mainImageUrl = imageBlock.content.image.content
 
-        const removedMatching = removeFirstImageNode(tipTapDoc.content, mainImageUrl)
-        if (!removedMatching) {
-          removeFirstImageNode(tipTapDoc.content)
+        const matchingCount = countImageOccurrences(tipTapDoc.content, mainImageUrl)
+
+        if (matchingCount > 1) {
+          removeFirstImageNode(tipTapDoc.content, mainImageUrl)
         }
         
         tipTapDoc.content = tipTapDoc.content.filter((paragraph: TipTapNode) => {
