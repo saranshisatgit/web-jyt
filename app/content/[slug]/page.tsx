@@ -3,7 +3,7 @@ import { Container } from '@/components/container'
 import { GradientBackground } from '@/components/gradient'
 import { HeroSection, type HeaderBlock, type AnnouncementBlock } from '@/components/hero-section'
 import { MainContent, type MainContentBlock } from '@/components/main-content'
-import { fetchPageAndFooter } from '@/app/actions'
+import { fetchPagefromAPI } from '@/app/actions'
 import { getBlockByName, type Block } from '@/medu/queries'
 import { notFound } from 'next/navigation'
 
@@ -18,8 +18,8 @@ export async function generateMetadata({ params }: { params: PageParams }): Prom
   const { slug } = await params
   
   try {
-    const pageData = await fetchPageAndFooter(slug)
-    const headerBlock = getBlockByName(pageData.page?.blocks, 'Header') as Block | undefined
+    const pageData = await fetchPagefromAPI(slug)
+    const headerBlock = getBlockByName(pageData?.blocks, 'Header') as Block | undefined
 
     const title = (headerBlock?.content?.title as string) || 'Content Page'
     const description = (headerBlock?.content?.subtitle as string) || 'Jaal Yantra Textiles content page'
@@ -63,14 +63,11 @@ export default async function ContentPage({ params }: { params: PageParams }) {
   const { slug } = await params
 
   try {
-    // Fetch page data and footer in parallel
-    const commonData = await fetchPageAndFooter(slug)
+    const pageData = await fetchPagefromAPI(slug)
 
-    if (!commonData || !commonData.page) {
+    if (!pageData) {
       notFound()
     }
-
-    const pageData = commonData.page
 
     // Extract blocks from CMS
     const cmsHeaderBlock = getBlockByName(pageData.blocks, 'Header') as Block | undefined

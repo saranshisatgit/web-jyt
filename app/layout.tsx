@@ -1,11 +1,11 @@
 import '@/styles/globals.css'
 import type { Metadata } from 'next'
 import { ApiQueryClientProvider } from './context/api-context'
-import { getFooter } from './actions'
+import { SiteDataProvider } from './context/site-data-context'
+import { getSiteData } from './site-data'
 import { Footer } from '@/components/footer'
 import { Spinner } from '@/components/spinner'
 import { cache } from 'react'
-
 
 export const dynamic = 'force-dynamic'
 
@@ -17,18 +17,17 @@ export const metadata: Metadata = {
 }
 
 // Create a cached version of the data fetching function
-const getCachedFooter = cache(async () => {
-  return await getFooter();
-});
+const getCachedSiteData = cache(async () => {
+  return await getSiteData()
+})
 
 export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  // Use the cached function to fetch footer data
-  const footerBlock = await getCachedFooter();
-  if (!footerBlock) return <Spinner size="lg" />
+  const siteData = await getCachedSiteData()
+  if (!siteData.footerBlock) return <Spinner size="lg" />
   
   return (
     <ApiQueryClientProvider>
@@ -52,8 +51,10 @@ export default async function RootLayout({
           />
         </head>
         <body className="text-gray-950 antialiased">
-          <main>{children}</main>
-          <Footer data={footerBlock.content} />
+          <SiteDataProvider value={{ navBlock: siteData.navBlock }}>
+            <main>{children}</main>
+            <Footer data={siteData.footerBlock.content} />
+          </SiteDataProvider>
         </body>
       </html>
     </ApiQueryClientProvider>

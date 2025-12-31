@@ -10,8 +10,8 @@ import { motion } from 'framer-motion'
 import { Link } from './link'
 import { Logo } from './logo'
 import { PlusGrid, PlusGridItem, PlusGridRow } from './plus-grid'
-import { getBlockByType, usePageData } from '@/medu/queries'
 import { Spinner } from './spinner'
+import { useSiteData } from '@/app/context/site-data-context'
 
 
 interface NavBlock {
@@ -33,7 +33,7 @@ function DesktopNav({ navBlock }: { navBlock: NavBlock }) {
         <PlusGridItem key={link} className="relative flex">
           <Link
             href={link}
-            className="flex items-center px-4 py-3 text-base font-medium text-gray-950 bg-blend-multiply data-hover:bg-black/[2.5%]"
+            className="flex items-center px-4 py-3 text-base font-medium text-gray-950 bg-blend-multiply data-hover:bg-black/2.5"
           >
             {text}
           </Link>
@@ -84,9 +84,9 @@ function MobileNav({ navBlock }: { navBlock: NavBlock }) {
 }
 
 export function Navbar({ banner }: { banner?: React.ReactNode }) {
-  const { data, isLoading } = usePageData('jaalyantra.com', "home");
+  const { navBlock } = useSiteData()
 
-  if (isLoading) {
+  if (!navBlock) {
     return (
       <header className="pt-12 sm:pt-16">
         <div className="flex justify-center py-4">
@@ -96,8 +96,7 @@ export function Navbar({ banner }: { banner?: React.ReactNode }) {
     );
   }
 
-  const navBlock = getBlockByType(data?.blocks, "Header") as unknown as NavBlock;
-  if (!navBlock) return <div>No Nav block found</div>;
+  const typedNavBlock = navBlock as unknown as NavBlock
 
   return (
     <Disclosure as="header" className="pt-12 sm:pt-16">
@@ -115,11 +114,11 @@ export function Navbar({ banner }: { banner?: React.ReactNode }) {
               </div>
             )}
           </div>
-          <DesktopNav navBlock={navBlock} />
+          <DesktopNav navBlock={typedNavBlock} />
           <MobileNavButton />
         </PlusGridRow>
       </PlusGrid>
-      <MobileNav navBlock={navBlock} />
+      <MobileNav navBlock={typedNavBlock} />
     </Disclosure>
   )
 }

@@ -2,7 +2,7 @@ import { type Metadata } from 'next';
 import { Container } from '@/components/container';
 import { GradientBackground } from '@/components/gradient';
 import { HeroSection, type HeaderBlock, type AnnouncementBlock, type ButtonDef } from '@/components/hero-section';
-import { fetchPageAndFooter } from '../actions';
+import { fetchPagefromAPI } from '../actions';
 import { type Block, getBlockByName } from '@/medu/queries';
 import { SectionLoading } from '@/components/section-loading';
 import { Link } from '@/components/link';
@@ -40,9 +40,9 @@ export const metadata: Metadata = {
 
 
 export default async function ContactPage() {
-  const commonData = await fetchPageAndFooter('contact');
+  const pageData = await fetchPagefromAPI('contact');
 
-  if (!commonData || !commonData.page) {
+  if (!pageData) {
     return (
       <div className="flex h-screen flex-col items-center justify-center">
         <p className="mb-4 text-xl">Could not load contact page information.</p>
@@ -51,7 +51,6 @@ export default async function ContactPage() {
     );
   }
 
-  const pageData = commonData.page;
   const cmsHeaderBlock = getBlockByName(pageData.blocks, 'Header') as Block | undefined;
   const cmsContactInfoBlock = getBlockByName(pageData.blocks, 'ContactInfo') as ContactInfoBlock | undefined;
   const specificContactContent = cmsContactInfoBlock?.content as ContactInfoContent | undefined;

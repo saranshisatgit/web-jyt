@@ -1,6 +1,7 @@
 'use server'
 
-import { getAllBlogs, getCategories, getAPost, getBlockByType, fetchFooter, fetchPage } from "@/medu/queries"
+import { getAllBlogs, getCategories, getAPost, fetchPage } from "@/medu/queries"
+import { getSiteData } from "./site-data"
 
 /**
  * Fetch all blogs with caching
@@ -31,10 +32,8 @@ export async function getSinglePost(slug: string) {
  * This data changes infrequently, so we can cache it for longer periods
  */
 export async function getFooter() {
-  const footer = await fetchFooter('home')
-  const footerBlock = getBlockByType(footer?.blocks, "Footer")
-  
-  return footerBlock
+  const siteData = await getSiteData()
+  return siteData.footerBlock
 }
 
 /**
@@ -52,14 +51,14 @@ export async function fetchPagefromAPI(slug: string) {
  * @param slug - The page slug to fetch
  */
 export async function fetchPageAndFooter(slug: string) {
-  const [pageData, footerData] = await Promise.all([
+  const [pageData, siteData] = await Promise.all([
     fetchPagefromAPI(slug),
-    getFooter()
+    getSiteData(),
   ])
-  
+
   return {
     page: pageData,
-    footer: footerData
+    footer: siteData.footerBlock,
   }
 }
 

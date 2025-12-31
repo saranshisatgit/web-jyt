@@ -1,12 +1,12 @@
 'use client'
 
 import { clsx } from 'clsx'
-import { motion } from 'framer-motion'
+import { easeInOut, motion, type Transition } from 'framer-motion'
 
 export function Logo({ className }: { className?: string }) {
-  const transition = {
+  const transition: Transition = {
     duration: 0.5,
-    ease: 'easeInOut',
+    ease: easeInOut,
   }
 
   return (

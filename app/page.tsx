@@ -7,7 +7,7 @@ import { LogoCloud } from '@/components/logo-cloud'
 import { Testimonials, TestimonialsData } from '@/components/testimonials'
 import { Heading, Subheading } from '@/components/text'
 import type { Metadata } from 'next'
-import { fetchPageAndFooter } from './actions'
+import { getSiteData } from './site-data'
 import { getBlockByType, Block, Page, getBlockByName } from '@/medu/queries'
 import React, { Suspense, cache } from 'react'
 import { Spinner } from '@/components/spinner'
@@ -38,7 +38,19 @@ interface HeaderBlock {
 }
 // Memoize data fetching with React cache
 const getCachedPageData = cache(async (slug: string) => {
-  return await fetchPageAndFooter(slug);
+  if (slug === 'home') {
+    const siteData = await getSiteData()
+    return {
+      page: siteData.homePage,
+      footer: siteData.footerBlock,
+    }
+  }
+
+  const page = await getSiteData().then((d) => d.homePage)
+  return {
+    page,
+    footer: undefined,
+  }
 });
 
 // Define the type for the shared data
