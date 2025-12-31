@@ -27,7 +27,7 @@ const nextConfig: NextConfig = {
   turbopack: {},
 };
 
-export default withSentryConfig(nextConfig, {
+const sentryNextConfig = withSentryConfig(nextConfig, {
 // For all available options, see:
 // https://www.npmjs.com/package/@sentry/webpack-plugin#options
 
@@ -58,3 +58,8 @@ disableLogger: true,
 // https://vercel.com/docs/cron-jobs
 automaticVercelMonitors: true,
 });
+
+export default {
+  ...sentryNextConfig,
+  turbopack: nextConfig.turbopack,
+} satisfies NextConfig;
