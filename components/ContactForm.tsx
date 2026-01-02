@@ -17,7 +17,7 @@ function SubmitButton() {
       type="submit"
       aria-disabled={pending}
       disabled={pending}
-      className="w-full rounded-full बनावट bg-pink-600 px-4 py-[calc(var(--spacing-2,8px)-1px)] text-base font-medium whitespace-nowrap text-white shadow-md hover:bg-pink-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pink-600 disabled:opacity-50"
+      className="w-full rounded-full bg-pink-600 px-4 py-[calc(var(--spacing-2,8px)-1px)] text-base font-medium whitespace-nowrap text-white shadow-md hover:bg-pink-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pink-600 disabled:opacity-50"
     >
       {pending ? 'Sending...' : 'Send Message'}
     </button>

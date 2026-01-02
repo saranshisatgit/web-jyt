@@ -1,6 +1,7 @@
 'use server'
 
 import { getAllBlogs, getCategories, getAPost, fetchPage } from "@/medu/queries"
+import { headers } from "next/headers"
 import { getSiteData } from "./site-data"
 
 /**
@@ -83,12 +84,77 @@ export async function handleContactFormSubmission(
   // Simulate some processing time
   await new Promise(resolve => setTimeout(resolve, 1000));
 
-  // Check if required fields are present (basic validation)
   if (!name || !email || !message) {
     return { success: false, message: 'Name, Email, and Message are required.' };
   }
 
-  // In a real application, you might want to redirect or return more specific success/error states.
-  // For now, returning a simple object.
-  return { success: true, message: 'Thank you for your message! We will get back to you soon.' };
+  const apiBase =
+    (process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, '') ||
+      'http://localhost:9000/web') ?? 'http://localhost:9000/web';
+  const formDomain =
+    process.env.NEXT_PUBLIC_CONTACT_FORM_DOMAIN ||
+    process.env.CONTACT_FORM_DOMAIN ||
+    'jaalyantra.com';
+  const formHandle =
+    process.env.NEXT_PUBLIC_CONTACT_FORM_HANDLE ||
+    process.env.CONTACT_FORM_HANDLE ||
+    'contact';
+
+  if (!formDomain || !formHandle) {
+    return {
+      success: false,
+      message: 'Contact form configuration is missing. Please contact support.',
+    };
+  }
+
+  const endpoint = `${apiBase}/website/${formDomain}/forms/${formHandle}`;
+  const hdrs = headers();
+  const referer = (await hdrs).get('referer') || undefined;
+
+  try {
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      cache: 'no-store',
+      body: JSON.stringify({
+        email,
+        data: {
+          name,
+          company: company || '',
+          role: role || '',
+          message,
+        },
+        page_url: referer,
+        metadata: {
+          source: 'contact-page',
+        },
+      }),
+    });
+
+    if (!response.ok) {
+      const errorPayload = await response.json().catch(() => null);
+      const errorMessage =
+        errorPayload?.message ||
+        errorPayload?.error ||
+        'Something went wrong while submitting the form.';
+
+      return {
+        success: false,
+        message: errorMessage,
+      };
+    }
+
+    return {
+      success: true,
+      message: 'Thank you for your message! We will get back to you soon.',
+    };
+  } catch (error) {
+    console.error('Failed to submit contact form:', error);
+    return {
+      success: false,
+      message: 'Unable to submit the form right now. Please try again later.',
+    };
+  }
 }
