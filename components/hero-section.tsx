@@ -1,16 +1,16 @@
 'use client';
 
 import { Container } from './container';
-import { Gradient } from './gradient';
 import { Button } from './button';
 import { Navbar } from './navbar';
 import { Link } from './link';
 import { ChevronRightIcon } from '@heroicons/react/16/solid';
+import { Eyebrow, Heading, Lead } from './text';
 
 export interface ButtonDef {
   text: string;
   link: string;
-  variant?: 'primary' | 'secondary' | undefined;
+  variant?: 'primary' | 'secondary' | 'soft' | undefined;
 }
 
 export interface HeaderBlock {
@@ -30,14 +30,13 @@ export interface AnnouncementBlock {
 
 export function HeroSection({ headerBlock, announcementBlock }: { headerBlock: HeaderBlock, announcementBlock: AnnouncementBlock }) {
   return (
-    <div className="relative">
-      <Gradient className="absolute inset-2 bottom-0 rounded-4xl ring-1 ring-black/5 ring-inset" />
+    <section className="py-16 sm:py-24 lg:py-32">
       <Container className="relative">
         <Navbar
           banner={
             <Link
               href="/blog"
-              className="flex items-center gap-1 rounded-full bg-fuchsia-950/35 px-3 py-0.5 text-sm/6 font-medium text-white data-hover:bg-fuchsia-950/30"
+              className="group relative inline-flex max-w-full gap-x-3 overflow-hidden rounded-md px-3.5 py-2 text-sm/6 max-sm:flex-col sm:items-center sm:rounded-full sm:px-3 sm:py-0.5 bg-olive-950/5 text-olive-950 hover:bg-olive-950/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/10"
             >
               {announcementBlock?.content?.announcement}
               <ChevronRightIcon className="size-4" />
@@ -45,25 +44,28 @@ export function HeroSection({ headerBlock, announcementBlock }: { headerBlock: H
           }
         />
         <div className="pt-16 pb-24 sm:pt-24 sm:pb-32 md:pt-32 md:pb-48">
-          <h1 className="font-display text-6xl/[0.9] font-medium tracking-tight text-balance text-gray-950 sm:text-8xl/[0.8] md:text-9xl/[0.8]">
-            {headerBlock.content.title}
-          </h1>
-          <p className="mt-8 max-w-lg text-xl/7 font-medium text-gray-950/75 sm:text-2xl/8">
-            {headerBlock.content.subtitle}
-          </p>
-          {headerBlock.content.buttons?.length > 0 && (
-            <div className="mt-12 flex flex-col gap-x-6 gap-y-4 sm:flex-row">
-              {headerBlock.content.buttons.map((btn) => (
-                btn.text && btn.link ? (
-                  <Button key={btn.text} href={btn.link} variant={btn.variant}>
-                    {btn.text}
-                  </Button>
-                ) : null
-              ))}
-            </div>
-          )}
+          <div className="flex flex-col items-center gap-6 text-center">
+            <Eyebrow>Welcome to Jaal Yantra</Eyebrow>
+            <Heading className="max-w-5xl">
+              {headerBlock.content.title}
+            </Heading>
+            <Lead className="flex max-w-3xl flex-col gap-4">
+              {headerBlock.content.subtitle}
+            </Lead>
+            {headerBlock.content.buttons?.length > 0 && (
+              <div className="mt-12 flex flex-col gap-x-6 gap-y-4 sm:flex-row">
+                {headerBlock.content.buttons.map((btn) => (
+                  btn.text && btn.link ? (
+                    <Button key={btn.text} href={btn.link} variant={btn.variant || 'primary'}>
+                      {btn.text}
+                    </Button>
+                  ) : null
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </Container>
-    </div>
+    </section>
   );
 }

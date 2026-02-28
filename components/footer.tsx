@@ -1,36 +1,33 @@
-
 import { PlusGrid, PlusGridItem, PlusGridRow } from '@/components/plus-grid'
 import { Button } from './button'
 import { Container } from './container'
-import { Gradient } from './gradient'
 import { Link } from './link'
 import { Logo } from './logo'
-import { Subheading } from './text'
-
+import { Subheading, Text } from './text'
 
 function CallToAction({
   subheading,
   content,
   actionline,
   button
-  }: { subheading: string; content: string; actionline: string; button: string }) {
-    const [beforeQuestion, afterQuestion] = content.split('?');
+}: { subheading: string; content: string; actionline: string; button: string }) {
+  const [beforeQuestion, afterQuestion] = content.split('?');
   return (
     <div className="relative pt-20 pb-16 text-center sm:py-24">
       <hgroup>
         <Subheading>{subheading}</Subheading>
-        <p className="mt-6 text-3xl font-medium tracking-tight text-gray-950 sm:text-5xl">
-         {beforeQuestion}?
+        <p className="mt-6 font-display text-3xl font-medium tracking-tight text-olive-950 sm:text-5xl dark:text-white">
+          {beforeQuestion}?
           <br />
           {afterQuestion}
         </p>
       </hgroup>
-      <p className="mx-auto mt-6 max-w-xs text-sm/6 text-gray-500">
-       {actionline}
-      </p>
+      <Text size="md" className="mx-auto mt-6 max-w-xs text-pretty">
+        {actionline}
+      </Text>
       <div className="mt-6">
         <Button className="w-full sm:w-auto" href="#">
-         {button}
+          {button}
         </Button>
       </div>
     </div>
@@ -38,7 +35,7 @@ function CallToAction({
 }
 
 function SitemapHeading({ children }: { children: React.ReactNode }) {
-  return <h3 className="text-sm/6 font-medium text-gray-950/50">{children}</h3>
+  return <h3 className="text-sm/6 font-medium text-olive-950/50 dark:text-white/50">{children}</h3>
 }
 
 function SitemapLinks({ children }: { children: React.ReactNode }) {
@@ -50,7 +47,7 @@ function SitemapLink(props: React.ComponentPropsWithoutRef<typeof Link>) {
     <li>
       <Link
         {...props}
-        className="font-medium text-gray-950 data-hover:text-gray-950/75"
+        className="font-medium text-olive-950 hover:text-olive-950/75 dark:text-white dark:hover:text-white/75"
       />
     </li>
   )
@@ -116,15 +113,13 @@ function SocialIconLinkedIn(props: React.ComponentPropsWithoutRef<'svg'>) {
   )
 }
 
-
 function SocialIconInstagram(props: React.ComponentPropsWithoutRef<'svg'>) {
   return (
     <svg viewBox="0 0 16 16" fill="currentColor" {...props}>
-      <path d="M10.5 2.5c.61 0 1.1 0.5 1.1 1.1v10.3c0 .61-.5 1.1-1.1 1.1H5.5c-.61 0-1.1-.5-1.1-1.1V3.6c0-.61.5-1.1 1.1-1.1h5.077c.73 0 1.37.5 1.37 1.11 0 .49-.43 1.1-1.13 1.11h-.077V2.5zM15.9 13.667c0 .61-.5 1.1-1.1 1.1H5.5c-.61 0-1.1-.5-1.1-1.1V3.667c0-.61.5-1.1 1.1-1.1h10.3c.61 0 1.1.5 1.1 1.1V13.667zM13.6 8.333c0 .49-.43 1.1-1.1 1.1h-5.077c-.73 0-1.37-.5-1.37-1.11 0-.49.43-1.1 1.13-1.11h5.077c.61 0 1.1.5 1.1 1.1v2.667z" />
+      <path d="M8 0C5.829 0 5.556.01 4.702.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.908 3.908 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.931 3.931 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.282.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z" />
     </svg>
   )
 }
-
 
 function SocialLinks() {
   return (
@@ -133,7 +128,7 @@ function SocialLinks() {
         href="https://facebook.com/cicilabelbyjyt"
         target="_blank"
         aria-label="Visit us on Facebook"
-        className="text-gray-950 data-hover:text-gray-950/75"
+        className="text-olive-950 hover:text-olive-950/75 dark:text-white dark:hover:text-white/75"
       >
         <SocialIconFacebook className="size-4" />
       </Link>
@@ -141,7 +136,7 @@ function SocialLinks() {
         href="https://x.com/cici_label"
         target="_blank"
         aria-label="Visit us on X"
-        className="text-gray-950 data-hover:text-gray-950/75"
+        className="text-olive-950 hover:text-olive-950/75 dark:text-white dark:hover:text-white/75"
       >
         <SocialIconX className="size-4" />
       </Link>
@@ -149,7 +144,7 @@ function SocialLinks() {
         href="https://instagram.com/cici_label"
         target="_blank"
         aria-label="Visit us on instagram"
-        className="text-gray-950 data-hover:text-gray-950/75"
+        className="text-olive-950 hover:text-olive-950/75 dark:text-white dark:hover:text-white/75"
       >
         <SocialIconInstagram className="size-4" />
       </Link>
@@ -157,7 +152,7 @@ function SocialLinks() {
         href="https://linkedin.com"
         target="_blank"
         aria-label="Visit us on LinkedIn"
-        className="text-gray-950 data-hover:text-gray-950/75"
+        className="text-olive-950 hover:text-olive-950/75 dark:text-white dark:hover:text-white/75"
       >
         <SocialIconLinkedIn className="size-4" />
       </Link>
@@ -167,7 +162,7 @@ function SocialLinks() {
 
 function Copyright({ company }: { company: string }) {
   return (
-    <div className="text-sm/6 text-gray-950">
+    <div className="text-sm/6 text-olive-950 dark:text-white">
       &copy; {new Date().getFullYear()} {company}
     </div>
   )
@@ -180,15 +175,14 @@ interface FooterBlockCta {
   button: string
 }
 
-
 export function Footer({ data }: { data: Record<string, unknown> }) {
   if (!data) return null
   const { subheading, content, actionline, button } = data.cta as FooterBlockCta
   
   return (
-    <footer>
-      <Gradient className="relative">
-        <div className="absolute inset-2 rounded-4xl bg-white/80" />
+    <footer className="border-t border-olive-950/10 dark:border-white/10">
+      <div className="relative">
+        <div className="absolute inset-2 rounded-4xl bg-white/80 dark:bg-olive-900/30" />
         <Container>
           <CallToAction subheading={subheading} content={content} actionline={actionline} button={button} />
           <PlusGrid className="pb-16">
@@ -206,10 +200,11 @@ export function Footer({ data }: { data: Record<string, unknown> }) {
                 </div>
               </div>
             </PlusGridRow>
+            
             <PlusGridRow className="flex justify-between">
               <div>
                 <PlusGridItem className="py-3">
-                  <div className="flex items-center gap-x-2 text-sm text-gray-500">
+                  <div className="flex items-center gap-x-2 text-sm text-olive-600 dark:text-olive-400">
                     <Copyright company={'Jaal Yantra Textiles Pvt. Ltd.'} />
                     <span>|</span>
                     <p>Was Part of Hatch Digital Ocean</p>
@@ -224,7 +219,7 @@ export function Footer({ data }: { data: Record<string, unknown> }) {
             </PlusGridRow>
           </PlusGrid>
         </Container>
-      </Gradient>
+      </div>
     </footer>
   )
 }
