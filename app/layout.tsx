@@ -2,6 +2,7 @@ import '@/styles/globals.css'
 import type { Metadata } from 'next'
 import { ApiQueryClientProvider } from './context/api-context'
 import { SiteDataProvider } from './context/site-data-context'
+import { VisualEditorProvider } from './context/visual-editor-context'
 import { getSiteData } from './site-data'
 import { Footer } from '@/components/footer'
 import { Spinner } from '@/components/spinner'
@@ -50,10 +51,12 @@ export default async function RootLayout({
             defer
           />
         </head>
-        <body className="text-gray-950 antialiased">
+        <body className="text-[var(--color-text-primary)] bg-[var(--color-bg-primary)] antialiased transition-colors duration-normal">
           <SiteDataProvider value={{ navBlock: siteData.navBlock }}>
-            <main>{children}</main>
-            <Footer data={siteData.footerBlock.content} />
+            <VisualEditorProvider>
+              <main>{children}</main>
+              <Footer data={siteData.footerBlock.content} />
+            </VisualEditorProvider>
           </SiteDataProvider>
         </body>
       </html>

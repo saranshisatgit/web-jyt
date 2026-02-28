@@ -2,15 +2,180 @@
 
 @plugin "@tailwindcss/typography";
 
+/* ========================================
+   LAYER ORGANIZATION
+   ======================================== */
+@layer theme, base, components, utilities;
 
+/* ========================================
+   THEME CONFIGURATION
+   ======================================== */
 @theme {
-  --font-sans: Switzer, system-ui, sans-serif;
-
+  /* Font Family */
+  --font-sans: Switzer, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
+  
+  /* Border Radius */
   --radius-4xl: 2rem;
-
+  --radius-5xl: 2.5rem;
+  
+  /* Custom Spacing */
+  --spacing-18: 4.5rem;
+  --spacing-22: 5.5rem;
+  --spacing-30: 7.5rem;
+  --spacing-128: 32rem;
+  
+  /* Animation Durations */
+  --duration-instant: 0ms;
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --duration-slow: 350ms;
+  --duration-slower: 500ms;
 }
 
+/* ========================================
+   COLOR SYSTEM
+   ======================================== */
+@layer theme {
+  :root {
+    /* Primary Brand Colors */
+    --color-primary-50: #fdf2f8;
+    --color-primary-100: #fce7f3;
+    --color-primary-200: #fbcfe8;
+    --color-primary-300: #f9a8d4;
+    --color-primary-400: #f472b6;
+    --color-primary-500: #ec4899;
+    --color-primary-600: #db2777;
+    --color-primary-700: #be185d;
+    --color-primary-800: #9d174d;
+    --color-primary-900: #831843;
+    
+    /* Gray Scale */
+    --color-gray-50: #f9fafb;
+    --color-gray-100: #f3f4f6;
+    --color-gray-200: #e5e7eb;
+    --color-gray-300: #d1d5db;
+    --color-gray-400: #9ca3af;
+    --color-gray-500: #6b7280;
+    --color-gray-600: #4b5563;
+    --color-gray-700: #374151;
+    --color-gray-800: #1f2937;
+    --color-gray-900: #111827;
+    --color-gray-950: #030712;
+    
+    /* Accent Colors */
+    --color-accent-lime: #c9ee80;
+    --color-accent-pink: #eebbe2;
+    --color-accent-blue: #adc0ec;
+    
+    /* Semantic Colors - Light Mode */
+    --color-bg-primary: #ffffff;
+    --color-bg-secondary: #f9fafb;
+    --color-bg-tertiary: #f3f4f6;
+    --color-bg-inverse: #111827;
+    
+    --color-text-primary: #030712;
+    --color-text-secondary: #4b5563;
+    --color-text-tertiary: #6b7280;
+    --color-text-inverse: #ffffff;
+    --color-text-muted: #9ca3af;
+    
+    --color-border-primary: #e5e7eb;
+    --color-border-secondary: #d1d5db;
+    --color-border-inverse: #374151;
+    
+    --color-link: #db2777;
+    --color-link-hover: #be185d;
+    
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+    
+    /* Container Query Breakpoints */
+    --container-xs: 20rem;
+    --container-sm: 24rem;
+    --container-md: 28rem;
+    --container-lg: 32rem;
+    --container-xl: 36rem;
+    --container-2xl: 42rem;
+    --container-3xl: 48rem;
+    --container-4xl: 56rem;
+    --container-5xl: 64rem;
+    --container-6xl: 72rem;
+    --container-7xl: 80rem;
+  }
+  
+  /* Dark Mode Colors */
+  .dark {
+    --color-bg-primary: #030712;
+    --color-bg-secondary: #111827;
+    --color-bg-tertiary: #1f2937;
+    --color-bg-inverse: #f9fafb;
+    
+    --color-text-primary: #f9fafb;
+    --color-text-secondary: #d1d5db;
+    --color-text-tertiary: #9ca3af;
+    --color-text-inverse: #030712;
+    --color-text-muted: #6b7280;
+    
+    --color-border-primary: #374151;
+    --color-border-secondary: #4b5563;
+    --color-border-inverse: #e5e7eb;
+    
+    --color-link: #f472b6;
+    --color-link-hover: #f9a8d4;
+    
+    /* Dark Mode Shadows */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.4);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.4);
+    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.5), 0 8px 10px -6px rgb(0 0 0 / 0.5);
+  }
+}
 
+/* ========================================
+   BASE STYLES
+   ======================================== */
+@layer base {
+  html {
+    color-scheme: light dark;
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  
+  /* Selection styling */
+  ::selection {
+    @apply bg-pink-200 text-pink-900;
+  }
+  
+  .dark ::selection {
+    @apply bg-pink-900 text-pink-200;
+  }
+  
+  /* Focus visible styles */
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-pink-600;
+  }
+  
+  /* Link base styles */
+  a {
+    @apply text-[var(--color-link)] transition-colors duration-fast;
+  }
+  
+  a:hover {
+    @apply text-[var(--color-link-hover)];
+  }
+}
+
+/* ========================================
+   KEYFRAME ANIMATIONS
+   ======================================== */
 @keyframes move-x {
   0% {
     transform: translateX(var(--move-x-from));
@@ -20,22 +185,188 @@
   }
 }
 
-.animated-cards::before {
-  @apply pointer-events-none absolute select-none rounded-3xl opacity-0 transition-opacity duration-300;
-  background: radial-gradient(
-    1000px circle at var(--x) var(--y),
-    #c9ee80 0,
-    #eebbe2 10%,
-    #adc0ec 25%,
-    #c9ee80 35%,
-    rgba(255, 255, 255, 0) 50%,
-    transparent 80%
-  );
-  content: "";
-  inset: -1px;
-  z-index: -1;
-}
-.animated-cards:hover::before {
-  @apply opacity-100;
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
+@keyframes fade-in-up {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scale-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slide-in-right {
+  0% {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulse-soft {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* ========================================
+   UTILITY CLASSES
+   ======================================== */
+@layer utilities {
+  /* Animation utilities */
+  .animate-fade-in {
+    animation: fade-in var(--duration-normal) ease-out forwards;
+  }
+  
+  .animate-fade-in-up {
+    animation: fade-in-up var(--duration-slow) ease-out forwards;
+  }
+  
+  .animate-scale-in {
+    animation: scale-in var(--duration-normal) ease-out forwards;
+  }
+  
+  .animate-slide-in-right {
+    animation: slide-in-right var(--duration-normal) ease-out forwards;
+  }
+  
+  .animate-pulse-soft {
+    animation: pulse-soft 2s ease-in-out infinite;
+  }
+  
+  /* Stagger animation delays */
+  .stagger-1 { animation-delay: 0.1s; }
+  .stagger-2 { animation-delay: 0.2s; }
+  .stagger-3 { animation-delay: 0.3s; }
+  .stagger-4 { animation-delay: 0.4s; }
+  .stagger-5 { animation-delay: 0.5s; }
+  
+  /* Container query utilities */
+  .container-query {
+    container-type: inline-size;
+  }
+  
+  /* Text utilities */
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  /* Gradient text */
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-600;
+  }
+  
+  /* Glass effect */
+  .glass {
+    @apply bg-white/80 backdrop-blur-md dark:bg-gray-900/80;
+  }
+  
+  /* Card hover effect */
+  .card-hover {
+    @apply transition-all duration-normal hover:shadow-lg hover:-translate-y-0.5;
+  }
+  
+  /* Button press effect */
+  .btn-press {
+    @apply active:scale-95 transition-transform duration-fast;
+  }
+  
+  /* Focus ring */
+  .focus-ring {
+    @apply focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pink-600;
+  }
+  
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* ========================================
+   COMPONENT STYLES
+   ======================================== */
+@layer components {
+  /* Animated cards effect */
+  .animated-cards::before {
+    @apply pointer-events-none absolute select-none rounded-3xl opacity-0 transition-opacity duration-300;
+    background: radial-gradient(
+      1000px circle at var(--x) var(--y),
+      var(--color-accent-lime) 0,
+      var(--color-accent-pink) 10%,
+      var(--color-accent-blue) 25%,
+      var(--color-accent-lime) 35%,
+      rgba(255, 255, 255, 0) 50%,
+      transparent 80%
+    );
+    content: "";
+    inset: -1px;
+    z-index: -1;
+  }
+  
+  .animated-cards:hover::before {
+    @apply opacity-100;
+  }
+  
+  /* Prose customization */
+  .prose-custom {
+    @apply prose prose-lg max-w-none;
+    @apply prose-headings:text-[var(--color-text-primary)];
+    @apply prose-p:text-[var(--color-text-secondary)];
+    @apply prose-a:text-[var(--color-link)] prose-a:no-underline hover:prose-a:text-[var(--color-link-hover)];
+    @apply prose-strong:text-[var(--color-text-primary)];
+    @apply prose-code:text-[var(--color-text-primary)] prose-code:bg-[var(--color-bg-tertiary)] prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded;
+    @apply prose-pre:bg-[var(--color-bg-tertiary)] prose-pre:text-[var(--color-text-primary)];
+    @apply prose-blockquote:border-l-pink-500 prose-blockquote:text-[var(--color-text-secondary)];
+    @apply prose-ul:text-[var(--color-text-secondary)];
+    @apply prose-ol:text-[var(--color-text-secondary)];
+  }
+  
+  /* Section spacing */
+  .section-padding {
+    @apply py-16 sm:py-20 lg:py-24;
+  }
+  
+  /* Container variants */
+  .container-narrow {
+    @apply max-w-3xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+  
+  .container-wide {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+}

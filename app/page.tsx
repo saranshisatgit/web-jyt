@@ -16,6 +16,7 @@ import SignUpAvailabilitySlide from '@/components/slides/SignUpAvailabilitySlide
 import TasksListSlide from '@/components/slides/TasksListSlide'
 import PaymentProcessSlide from '@/components/slides/PaymentProcessSlide';
 import { Screenshot } from '@/components/screenshot';
+import { BlockWrapper } from '@/components/visual-editor/BlockWrapper';
 
 export const metadata: Metadata = {
   description:
@@ -60,7 +61,7 @@ interface SharedPageData {
 }
 
 async function Hero({ homeData }: { homeData: Page })  {
-  const rawHeroBlock = getBlockByType(homeData.blocks, "Hero") as unknown as HeroBlock
+  const rawHeroBlock = getBlockByType(homeData.blocks, "Hero") as unknown as (HeroBlock & { id: string; name: string })
   const headerBlock = {
     content: {
       title: rawHeroBlock.content.title,
@@ -71,7 +72,9 @@ async function Hero({ homeData }: { homeData: Page })  {
   }
   const announcementBlock = getBlockByType(homeData.blocks, "Header") as unknown as HeaderBlock
   return (
-     <HeroSection headerBlock={headerBlock} announcementBlock={announcementBlock} />
+    <BlockWrapper blockId={rawHeroBlock?.id || 'hero'} blockType="Hero" blockName={rawHeroBlock?.name || 'Hero Section'}>
+      <HeroSection headerBlock={headerBlock} announcementBlock={announcementBlock} />
+    </BlockWrapper>
   )
 }
 
@@ -320,52 +323,70 @@ async function FeaturesSectionComponent({ homeData }: { homeData: SharedPageData
   const rawFeatureBlock = getBlockByName(homeData.page.blocks, "Feature Section");
   console.log(homeData);
   if (!rawFeatureBlock) {
-    return <SectionLoading />; 
+    return <SectionLoading />;
   }
 
   // Define supported names for FeatureSection blocks this component can render
   const supportedNames = ["FeatureSectionWithCarousel", "FeatureSectionWithScreenshot", "Feature Section"];
 
   if (!supportedNames.includes(rawFeatureBlock.name)) {
-    // If the block's name isn't supported, log a warning and don't render it.
-    // You could also choose to render nothing (return null) or a specific fallback UI.
     console.warn(`FeatureSection block named '${rawFeatureBlock.name}' is not supported by FeaturesSectionComponent and will not be rendered.`);
-    return null; // Or <SectionLoading /> or some other fallback
+    return null;
   }
 
-  // Prepare the prop for the FeatureSection component
-  // This assumes rawFeatureBlock.content matches the expected structure for FeatureSectionBlockWithSlides.content
   const featureSectionProp: FeatureSectionBlockWithSlides = {
     content: rawFeatureBlock.content as {
       title: string;
-      subtitle: string; // Make sure your backend provides this if it's always expected
-      screenshot: { url: string }; // Ensure this structure is consistent or handled if optional
-      slideblocks: Block[]; // Ensure this is an array, even if empty, or handle if optional
+      subtitle: string;
+      screenshot: { url: string };
+      slideblocks: Block[];
     }
   };
 
-  return <FeatureSection featureSection={featureSectionProp} />;
+  return (
+    <BlockWrapper blockId={rawFeatureBlock.id} blockType="Feature" blockName={rawFeatureBlock.name}>
+      <FeatureSection featureSection={featureSectionProp} />
+    </BlockWrapper>
+  );
 }
 
 async function BentoGridSectionComponent({ homeData }: { homeData: SharedPageData }) {
-  const bentoSection = getBlockByName(homeData.page.blocks, "BentoSection") as unknown as BentoSectionBlock;
-  return <BentoSection bentoSection={bentoSection} />;
+  const rawBlock = getBlockByName(homeData.page.blocks, "BentoSection");
+  const bentoSection = rawBlock as unknown as BentoSectionBlock;
+  return (
+    <BlockWrapper blockId={rawBlock?.id || 'bento'} blockType="Section" blockName="BentoSection">
+      <BentoSection bentoSection={bentoSection} />
+    </BlockWrapper>
+  );
 }
 
 async function DarkBentoGridSectionComponent({ homeData }: { homeData: SharedPageData }) {
-  const darkBentoSection = getBlockByName(homeData.page.blocks, "DarkBentoSection") as unknown as DarkBentoSectionBlock;
-  return <DarkBentoSection darkBentoSection={darkBentoSection} />;
+  const rawBlock = getBlockByName(homeData.page.blocks, "DarkBentoSection");
+  const darkBentoSection = rawBlock as unknown as DarkBentoSectionBlock;
+  return (
+    <BlockWrapper blockId={rawBlock?.id || 'dark-bento'} blockType="Section" blockName="DarkBentoSection">
+      <DarkBentoSection darkBentoSection={darkBentoSection} />
+    </BlockWrapper>
+  );
 }
 
 async function TestimonialsSectionComponent({ homeData }: { homeData: SharedPageData }) {
-  const testimonialsSection = getBlockByName(homeData.page.blocks, "TestimonialsSection");
-  // Pass the entire block, as TestimonialsData expects an object with a 'content' property
-  return <Testimonials testimonialsData={testimonialsSection as unknown as TestimonialsData} />;
+  const rawBlock = getBlockByName(homeData.page.blocks, "TestimonialsSection");
+  return (
+    <BlockWrapper blockId={rawBlock?.id || 'testimonials'} blockType="Testimonial" blockName="TestimonialsSection">
+      <Testimonials testimonialsData={rawBlock as unknown as TestimonialsData} />
+    </BlockWrapper>
+  );
 }
 
 async function LogoSectionComponent({ homeData }: { homeData: SharedPageData }) {
-  const logoSection = getBlockByType(homeData.page.blocks, "LogoSection") as unknown as LogoSectionBlock;
-  return <LogoCloud logoBlocks={logoSection?.content?.logos || []} />;
+  const rawBlock = getBlockByType(homeData.page.blocks, "LogoSection");
+  const logoSection = rawBlock as unknown as LogoSectionBlock;
+  return (
+    <BlockWrapper blockId={rawBlock?.id || 'logos'} blockType="Gallery" blockName="LogoSection">
+      <LogoCloud logoBlocks={logoSection?.content?.logos || []} />
+    </BlockWrapper>
+  );
 }
 
 export default async function Home() {
