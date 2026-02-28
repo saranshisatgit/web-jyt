@@ -3,16 +3,15 @@ import { clsx } from 'clsx'
 type HeadingProps = {
   as?: 'div' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
   dark?: boolean
-  gradient?: boolean
 } & React.ComponentPropsWithoutRef<
   'div' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
 >
 
+// Display heading - Large serif style
 export function Heading({
   className,
-  as: Element = 'h2',
+  as: Element = 'h1',
   dark = false,
-  gradient = false,
   ...props
 }: HeadingProps) {
   return (
@@ -21,16 +20,14 @@ export function Heading({
       data-dark={dark ? 'true' : undefined}
       className={clsx(
         className,
-        'text-4xl font-semibold tracking-tight text-balance sm:text-5xl lg:text-6xl',
-        gradient 
-          ? 'bg-clip-text text-transparent bg-gradient-to-r from-violet-600 via-purple-600 to-violet-500'
-          : 'text-[var(--color-text-primary)]',
-        'data-dark:text-[var(--color-text-inverse)]',
+        'font-display text-5xl/12 tracking-tight text-balance sm:text-[5rem]/20',
+        'text-olive-950 dark:text-white',
       )}
     />
   )
 }
 
+// Subheading - Medium serif style
 export function Subheading({
   className,
   as: Element = 'h2',
@@ -43,14 +40,30 @@ export function Subheading({
       data-dark={dark ? 'true' : undefined}
       className={clsx(
         className,
-        'font-mono text-xs/5 font-semibold tracking-widest uppercase',
-        'text-violet-600',
-        'data-dark:text-violet-400',
+        'font-display text-[2rem]/10 tracking-tight text-pretty sm:text-5xl/14',
+        'text-olive-950 dark:text-white',
       )}
     />
   )
 }
 
+// Eyebrow - Small label text
+export function Eyebrow({
+  className,
+  ...props
+}: React.ComponentPropsWithoutRef<'div'>) {
+  return (
+    <div
+      className={clsx(
+        className,
+        'text-sm/7 font-semibold text-olive-700 dark:text-olive-400',
+      )}
+      {...props}
+    />
+  )
+}
+
+// Lead text - Large body text
 export function Lead({
   className,
   ...props
@@ -58,15 +71,15 @@ export function Lead({
   return (
     <p
       className={clsx(
-        className, 
-        'text-xl sm:text-2xl font-medium leading-relaxed',
-        'text-[var(--color-text-secondary)]'
+        className,
+        'text-lg/8 text-olive-700 dark:text-olive-400',
       )}
       {...props}
     />
   )
 }
 
+// Body text - Default size
 export function Paragraph({
   className,
   ...props
@@ -74,15 +87,15 @@ export function Paragraph({
   return (
     <p
       className={clsx(
-        className, 
-        'text-base/7 leading-relaxed',
-        'text-[var(--color-text-secondary)]'
+        className,
+        'text-base/7 text-olive-700 dark:text-olive-400',
       )}
       {...props}
     />
   )
 }
 
+// Small text
 export function Small({
   className,
   ...props
@@ -90,45 +103,27 @@ export function Small({
   return (
     <span
       className={clsx(
-        className, 
-        'text-sm',
-        'text-[var(--color-text-tertiary)]'
+        className,
+        'text-sm text-olive-600 dark:text-olive-500',
       )}
       {...props}
     />
   )
 }
 
-// New Label component
-export function Label({
+// Text wrapper with size options
+export function Text({
   className,
+  size = 'md',
   ...props
-}: React.ComponentPropsWithoutRef<'span'>) {
+}: React.ComponentPropsWithoutRef<'div'> & { size?: 'md' | 'lg' }) {
   return (
-    <span
+    <div
       className={clsx(
         className,
-        'inline-flex items-center px-3 py-1 rounded-full',
-        'bg-violet-100 text-violet-700 text-sm font-medium',
-        'dark:bg-violet-900/30 dark:text-violet-300'
-      )}
-      {...props}
-    />
-  )
-}
-
-// New Eyebrow component for section headers
-export function Eyebrow({
-  className,
-  ...props
-}: React.ComponentPropsWithoutRef<'span'>) {
-  return (
-    <span
-      className={clsx(
-        className,
-        'inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-wider',
-        'text-violet-600',
-        'dark:text-violet-400'
+        size === 'md' && 'text-base/7',
+        size === 'lg' && 'text-lg/8',
+        'text-olive-700 dark:text-olive-400',
       )}
       {...props}
     />

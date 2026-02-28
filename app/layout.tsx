@@ -39,6 +39,10 @@ export default async function RootLayout({
             href="https://api.fontshare.com/css?f%5B%5D=switzer@400,500,600,700&amp;display=swap"
           />
           <link
+            href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap"
+            rel="stylesheet"
+          />
+          <link
             rel="alternate"
             type="application/rss+xml"
             title="The JYT Blog"
@@ -51,7 +55,7 @@ export default async function RootLayout({
             defer
           />
         </head>
-        <body className="text-[var(--color-text-primary)] bg-[var(--color-bg-primary)] antialiased transition-colors duration-300">
+        <body className="text-olive-950 bg-olive-100 antialiased dark:text-white dark:bg-olive-950">
           <SiteDataProvider value={{ navBlock: siteData.navBlock }}>
             <VisualEditorProvider>
               <main>{children}</main>
