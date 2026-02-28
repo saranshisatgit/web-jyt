@@ -13,7 +13,6 @@ import { PlusGrid, PlusGridItem, PlusGridRow } from './plus-grid'
 import { Spinner } from './spinner'
 import { useSiteData } from '@/app/context/site-data-context'
 
-
 interface NavBlock {
   content: {
     navigation: {
@@ -24,16 +23,14 @@ interface NavBlock {
   };
 }
 
-
 function DesktopNav({ navBlock }: { navBlock: NavBlock }) {
- 
   return (
     <nav className="relative hidden lg:flex">
       {navBlock.content.navigation.map(({ link, text }) => (
         <PlusGridItem key={link} className="relative flex">
           <Link
             href={link}
-            className="flex items-center px-4 py-3 text-base font-medium text-gray-950 bg-blend-multiply data-hover:bg-black/2.5"
+            className="flex items-center px-4 py-3 text-base font-medium text-olive-950 hover:bg-olive-950/5 dark:text-white dark:hover:bg-white/10"
           >
             {text}
           </Link>
@@ -46,10 +43,10 @@ function DesktopNav({ navBlock }: { navBlock: NavBlock }) {
 function MobileNavButton() {
   return (
     <DisclosureButton
-      className="flex size-12 items-center justify-center self-center rounded-lg data-hover:bg-black/5 lg:hidden"
+      className="flex size-12 items-center justify-center self-center rounded-lg hover:bg-olive-950/5 dark:hover:bg-white/10 lg:hidden"
       aria-label="Open main menu"
     >
-      <Bars2Icon className="size-6" />
+      <Bars2Icon className="size-6 text-olive-950 dark:text-white" />
     </DisclosureButton>
   )
 }
@@ -69,15 +66,15 @@ function MobileNav({ navBlock }: { navBlock: NavBlock }) {
             }}
             key={link}
           >
-            <Link href={link} className="text-base font-medium text-gray-950">
+            <Link href={link} className="text-base font-medium text-olive-950 dark:text-white">
               {text}
             </Link>
           </motion.div>
         ))}
       </div>
       <div className="absolute left-1/2 w-screen -translate-x-1/2">
-        <div className="absolute inset-x-0 top-0 border-t border-black/5" />
-        <div className="absolute inset-x-0 top-2 border-t border-black/5" />
+        <div className="absolute inset-x-0 top-0 border-t border-olive-950/10 dark:border-white/10" />
+        <div className="absolute inset-x-0 top-2 border-t border-olive-950/10 dark:border-white/10" />
       </div>
     </DisclosurePanel>
   )
