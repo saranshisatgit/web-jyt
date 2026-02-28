@@ -165,7 +165,7 @@
   
   /* Link base styles */
   a {
-    @apply text-[var(--color-link)] transition-colors duration-fast;
+    @apply text-[var(--color-link)] transition-colors duration-150;
   }
   
   a:hover {
@@ -292,12 +292,12 @@
   
   /* Card hover effect */
   .card-hover {
-    @apply transition-all duration-normal hover:shadow-lg hover:-translate-y-0.5;
+    @apply transition-all duration-250 hover:shadow-lg hover:-translate-y-0.5;
   }
-  
+
   /* Button press effect */
   .btn-press {
-    @apply active:scale-95 transition-transform duration-fast;
+    @apply active:scale-95 transition-transform duration-150;
   }
   
   /* Focus ring */
