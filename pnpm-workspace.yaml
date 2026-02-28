@@ -1,4 +1,0 @@
-ignoredBuiltDependencies:
-  - '@sentry/cli'
-  - sharp
-  - unrs-resolver
