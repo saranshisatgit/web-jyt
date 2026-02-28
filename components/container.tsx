@@ -8,8 +8,8 @@ type ContainerProps = {
 
 const sizeClasses = {
   narrow: 'max-w-3xl',
-  default: 'max-w-2xl lg:max-w-7xl',
-  wide: 'max-w-2xl lg:max-w-[90rem]',
+  default: 'max-w-7xl',
+  wide: 'max-w-[90rem]',
   full: 'max-w-none',
 }
 
@@ -19,8 +19,8 @@ export function Container({
   size = 'default',
 }: ContainerProps) {
   return (
-    <div className={clsx(className, 'px-4 sm:px-6 lg:px-8')}>
-      <div className={clsx('mx-auto', sizeClasses[size])}>{children}</div>
+    <div className={clsx('mx-auto w-full px-6 md:px-10', sizeClasses[size], className)}>
+      {children}
     </div>
   )
 }

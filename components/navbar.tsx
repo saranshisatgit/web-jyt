@@ -9,7 +9,6 @@ import { Bars2Icon } from '@heroicons/react/24/solid'
 import { motion } from 'framer-motion'
 import { Link } from './link'
 import { Logo } from './logo'
-import { PlusGrid, PlusGridItem, PlusGridRow } from './plus-grid'
 import { Spinner } from './spinner'
 import { useSiteData } from '@/app/context/site-data-context'
 
@@ -25,16 +24,15 @@ interface NavBlock {
 
 function DesktopNav({ navBlock }: { navBlock: NavBlock }) {
   return (
-    <nav className="relative hidden lg:flex">
+    <nav className="hidden lg:flex lg:gap-8">
       {navBlock.content.navigation.map(({ link, text }) => (
-        <PlusGridItem key={link} className="relative flex">
-          <Link
-            href={link}
-            className="flex items-center px-4 py-3 text-base font-medium text-olive-950 hover:bg-olive-950/5 dark:text-white dark:hover:bg-white/10"
-          >
-            {text}
-          </Link>
-        </PlusGridItem>
+        <Link
+          key={link}
+          href={link}
+          className="text-sm/7 font-medium text-olive-950 hover:text-olive-700 dark:text-white dark:hover:text-olive-300"
+        >
+          {text}
+        </Link>
       ))}
     </nav>
   )
@@ -43,10 +41,10 @@ function DesktopNav({ navBlock }: { navBlock: NavBlock }) {
 function MobileNavButton() {
   return (
     <DisclosureButton
-      className="flex size-12 items-center justify-center self-center rounded-lg hover:bg-olive-950/5 dark:hover:bg-white/10 lg:hidden"
+      className="inline-flex rounded-full p-1.5 text-olive-950 hover:bg-olive-950/10 lg:hidden dark:text-white dark:hover:bg-white/10"
       aria-label="Open main menu"
     >
-      <Bars2Icon className="size-6 text-olive-950 dark:text-white" />
+      <Bars2Icon className="size-6" />
     </DisclosureButton>
   )
 }
@@ -54,7 +52,7 @@ function MobileNavButton() {
 function MobileNav({ navBlock }: { navBlock: NavBlock }) {
   return (
     <DisclosurePanel className="lg:hidden">
-      <div className="flex flex-col gap-6 py-4">
+      <div className="mt-6 flex flex-col gap-6">
         {navBlock.content.navigation.map(({ link, text }, linkIndex) => (
           <motion.div
             initial={{ opacity: 0, rotateX: -90 }}
@@ -66,15 +64,19 @@ function MobileNav({ navBlock }: { navBlock: NavBlock }) {
             }}
             key={link}
           >
-            <Link href={link} className="text-base font-medium text-olive-950 dark:text-white">
+            <Link 
+              href={link} 
+              className="group inline-flex items-center justify-between gap-2 text-3xl/10 font-medium text-olive-950 dark:text-white"
+            >
               {text}
+              <span className="inline-flex p-1.5 opacity-0 group-hover:opacity-100" aria-hidden="true">
+                <svg fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                </svg>
+              </span>
             </Link>
           </motion.div>
         ))}
-      </div>
-      <div className="absolute left-1/2 w-screen -translate-x-1/2">
-        <div className="absolute inset-x-0 top-0 border-t border-olive-950/10 dark:border-white/10" />
-        <div className="absolute inset-x-0 top-2 border-t border-olive-950/10 dark:border-white/10" />
       </div>
     </DisclosurePanel>
   )
@@ -85,9 +87,11 @@ export function Navbar({ banner }: { banner?: React.ReactNode }) {
 
   if (!navBlock) {
     return (
-      <header className="pt-12 sm:pt-16">
-        <div className="flex justify-center py-4">
-          <Spinner size="lg" />
+      <header className="sticky top-0 z-10 bg-olive-100 dark:bg-olive-950">
+        <div className="mx-auto flex h-21 max-w-7xl items-center px-6 lg:px-10">
+          <div className="flex flex-1 items-center justify-center py-4">
+            <Spinner size="lg" />
+          </div>
         </div>
       </header>
     );
@@ -96,25 +100,27 @@ export function Navbar({ banner }: { banner?: React.ReactNode }) {
   const typedNavBlock = navBlock as unknown as NavBlock
 
   return (
-    <Disclosure as="header" className="pt-12 sm:pt-16">
-      <PlusGrid>
-        <PlusGridRow className="relative flex justify-between">
-          <div className="relative flex gap-6">
-            <PlusGridItem className="py-3">
-              <Link href="/" title="Home">
-                <Logo className="h-9" />
-              </Link>
-            </PlusGridItem>
-            {banner && (
-              <div className="relative hidden items-center py-3 lg:flex">
-                {banner}
-              </div>
-            )}
+    <Disclosure as="header" className="sticky top-0 z-10 bg-olive-100 dark:bg-olive-950">
+      <div className="mx-auto flex h-21 max-w-7xl items-center gap-4 px-6 lg:px-10">
+        <div className="flex flex-1 items-center gap-12">
+          <div className="flex items-center">
+            <Link href="/" title="Home">
+              <Logo className="h-9" />
+            </Link>
           </div>
           <DesktopNav navBlock={typedNavBlock} />
+        </div>
+        
+        <div className="flex flex-1 items-center justify-end gap-4">
+          <div className="flex shrink-0 items-center gap-5">
+            {banner && (
+              <div className="hidden lg:flex">{banner}</div>
+            )}
+          </div>
           <MobileNavButton />
-        </PlusGridRow>
-      </PlusGrid>
+        </div>
+      </div>
+      
       <MobileNav navBlock={typedNavBlock} />
     </Disclosure>
   )
