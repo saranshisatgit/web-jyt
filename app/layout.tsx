@@ -51,7 +51,7 @@ export default async function RootLayout({
             defer
           />
         </head>
-        <body className="text-[var(--color-text-primary)] bg-[var(--color-bg-primary)] antialiased transition-colors duration-normal">
+        <body className="text-[var(--color-text-primary)] bg-[var(--color-bg-primary)] antialiased transition-colors duration-300">
           <SiteDataProvider value={{ navBlock: siteData.navBlock }}>
             <VisualEditorProvider>
               <main>{children}</main>
