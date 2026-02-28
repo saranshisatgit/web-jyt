@@ -1,73 +1,25 @@
 import { clsx } from 'clsx'
+import type { ComponentProps } from 'react'
 
-type HeadingProps = {
-  as?: 'div' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
-  dark?: boolean
-} & React.ComponentPropsWithoutRef<
-  'div' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
->
-
-// Display heading - Large serif style
-export function Heading({
-  className,
-  as: Element = 'h1',
-  dark = false,
-  ...props
-}: HeadingProps) {
-  return (
-    <Element
-      {...props}
-      data-dark={dark ? 'true' : undefined}
-      className={clsx(
-        className,
-        'font-display text-5xl/12 tracking-tight text-balance sm:text-[5rem]/20',
-        'text-olive-950 dark:text-white',
-      )}
-    />
-  )
-}
-
-// Subheading - Medium serif style
-export function Subheading({
-  className,
-  as: Element = 'h2',
-  dark = false,
-  ...props
-}: HeadingProps) {
-  return (
-    <Element
-      {...props}
-      data-dark={dark ? 'true' : undefined}
-      className={clsx(
-        className,
-        'font-display text-[2rem]/10 tracking-tight text-pretty sm:text-5xl/14',
-        'text-olive-950 dark:text-white',
-      )}
-    />
-  )
-}
-
-// Eyebrow - Small label text
-export function Eyebrow({
-  className,
-  ...props
-}: React.ComponentPropsWithoutRef<'div'>) {
+// Text component from template
+export function Text({ children, className, size = 'md', ...props }: ComponentProps<'div'> & { size?: 'md' | 'lg' }) {
   return (
     <div
       className={clsx(
+        size === 'md' && 'text-base/7',
+        size === 'lg' && 'text-lg/8',
+        'text-olive-700 dark:text-olive-400',
         className,
-        'text-sm/7 font-semibold text-olive-700 dark:text-olive-400',
       )}
       {...props}
-    />
+    >
+      {children}
+    </div>
   )
 }
 
-// Lead text - Large body text
-export function Lead({
-  className,
-  ...props
-}: React.ComponentPropsWithoutRef<'p'>) {
+// Lead component (large text)
+export function Lead({ className, ...props }: ComponentProps<'p'>) {
   return (
     <p
       className={clsx(
@@ -79,11 +31,8 @@ export function Lead({
   )
 }
 
-// Body text - Default size
-export function Paragraph({
-  className,
-  ...props
-}: React.ComponentPropsWithoutRef<'p'>) {
+// Paragraph component
+export function Paragraph({ className, ...props }: ComponentProps<'p'>) {
   return (
     <p
       className={clsx(
@@ -95,11 +44,8 @@ export function Paragraph({
   )
 }
 
-// Small text
-export function Small({
-  className,
-  ...props
-}: React.ComponentPropsWithoutRef<'span'>) {
+// Small text component
+export function Small({ className, ...props }: ComponentProps<'span'>) {
   return (
     <span
       className={clsx(
@@ -111,21 +57,43 @@ export function Small({
   )
 }
 
-// Text wrapper with size options
-export function Text({
-  className,
-  size = 'md',
-  ...props
-}: React.ComponentPropsWithoutRef<'div'> & { size?: 'md' | 'lg' }) {
+// Heading component (using Instrument Serif)
+export function Heading({ children, className, as: Component = 'h1', dark, ...props }: ComponentProps<'h1'> & { as?: 'h1' | 'h2' | 'h3' | 'div'; dark?: boolean }) {
   return (
-    <div
+    <Component
+      data-dark={dark ? 'true' : undefined}
       className={clsx(
+        'font-display text-5xl/12 tracking-tight text-balance sm:text-[5rem]/20 text-olive-950 dark:text-white',
         className,
-        size === 'md' && 'text-base/7',
-        size === 'lg' && 'text-lg/8',
-        'text-olive-700 dark:text-olive-400',
       )}
       {...props}
-    />
+    >
+      {children}
+    </Component>
+  )
+}
+
+// Subheading component
+export function Subheading({ children, className, as: Component = 'h2', dark, ...props }: ComponentProps<'h2'> & { as?: 'h2' | 'h3' | 'div'; dark?: boolean }) {
+  return (
+    <Component
+      data-dark={dark ? 'true' : undefined}
+      className={clsx(
+        'font-display text-[2rem]/10 tracking-tight text-pretty text-olive-950 sm:text-5xl/14 dark:text-white',
+        className,
+      )}
+      {...props}
+    >
+      {children}
+    </Component>
+  )
+}
+
+// Eyebrow component
+export function Eyebrow({ children, className, ...props }: ComponentProps<'div'>) {
+  return (
+    <div className={clsx('text-sm/7 font-semibold text-olive-700 dark:text-olive-400', className)} {...props}>
+      {children}
+    </div>
   )
 }

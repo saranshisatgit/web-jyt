@@ -2,15 +2,10 @@
 
 @plugin "@tailwindcss/typography";
 
-/* ========================================
-   THEME CONFIGURATION - OATMEAL OLIVE
-   ======================================== */
 @theme {
-  /* Font Family */
   --font-display: 'Instrument Serif', serif;
   --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  
-  /* Olive Color Scale - Using oklch for perceptual uniformity */
+
   --color-olive-50: oklch(98.8% 0.003 106.5);
   --color-olive-100: oklch(96.6% 0.005 106.5);
   --color-olive-200: oklch(93% 0.007 106.5);
@@ -24,9 +19,6 @@
   --color-olive-950: oklch(15.3% 0.006 107.1);
 }
 
-/* ========================================
-   BASE STYLES
-   ======================================== */
 @layer base {
   html {
     -webkit-font-smoothing: antialiased;
@@ -34,7 +26,9 @@
     background-color: var(--color-olive-100);
     color-scheme: light dark;
     scroll-behavior: smooth;
-    
+    --scroll-padding-top: 0;
+    scroll-padding-top: var(--scroll-padding-top);
+
     @variant dark {
       background-color: var(--color-olive-950);
     }
@@ -50,167 +44,14 @@
       @apply text-white;
     }
   }
-  
-  /* Selection styling */
-  ::selection {
-    @apply bg-olive-200 text-olive-900;
-  }
-  
-  @variant dark {
-    ::selection {
-      @apply bg-olive-800 text-olive-100;
-    }
-  }
-  
-  /* Focus visible styles */
-  :focus-visible {
-    @apply outline-2 outline-offset-2 outline-olive-600;
-  }
 }
 
-/* ========================================
-   KEYFRAME ANIMATIONS
-   ======================================== */
-@keyframes fade-in {
-  0% { opacity: 0; transform: translateY(10px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes fade-in-up {
-  0% { opacity: 0; transform: translateY(20px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes scale-in {
-  0% { opacity: 0; transform: scale(0.95); }
-  100% { opacity: 1; transform: scale(1); }
-}
-
-/* ========================================
-   UTILITY CLASSES
-   ======================================== */
 @layer utilities {
-  .animate-fade-in {
-    animation: fade-in 250ms ease-out forwards;
-  }
-  
-  .animate-fade-in-up {
-    animation: fade-in-up 350ms ease-out forwards;
-  }
-  
-  .animate-scale-in {
-    animation: scale-in 250ms ease-out forwards;
+  .font-display {
+    font-family: var(--font-display);
   }
   
   .text-balance {
     text-wrap: balance;
-  }
-  
-  /* Font display utility */
-  .font-display {
-    font-family: var(--font-display);
-  }
-}
-
-/* ========================================
-   COMPONENT STYLES
-   ======================================== */
-@layer components {
-  /* Container */
-  .container-oatmeal {
-    @apply mx-auto w-full max-w-2xl px-6 md:max-w-3xl lg:max-w-7xl lg:px-10;
-  }
-  
-  /* Section spacing */
-  .section-oatmeal {
-    @apply py-16;
-  }
-  
-  /* Button Primary - Dark/Light */
-  .btn-primary {
-    @apply inline-flex shrink-0 items-center justify-center gap-1 rounded-full text-sm/7 font-medium;
-    @apply bg-olive-950 text-white hover:bg-olive-800;
-    @apply px-4 py-2;
-    @apply transition-colors duration-200;
-    @apply dark:bg-olive-300 dark:text-olive-950 dark:hover:bg-olive-200;
-  }
-  
-  /* Button Secondary - Light */
-  .btn-secondary {
-    @apply inline-flex shrink-0 items-center justify-center gap-1 rounded-full text-sm/7 font-medium;
-    @apply bg-white text-olive-950 hover:bg-olive-100;
-    @apply px-4 py-2;
-    @apply transition-colors duration-200;
-    @apply dark:bg-olive-100 dark:hover:bg-white;
-  }
-  
-  /* Button Soft */
-  .btn-soft {
-    @apply inline-flex shrink-0 items-center justify-center gap-1 rounded-full text-sm/7 font-medium;
-    @apply bg-olive-950/10 text-olive-950 hover:bg-olive-950/15;
-    @apply px-4 py-2;
-    @apply transition-colors duration-200;
-    @apply dark:bg-white/10 dark:text-white dark:hover:bg-white/20;
-  }
-  
-  /* Button Plain */
-  .btn-plain {
-    @apply inline-flex shrink-0 items-center justify-center gap-2 rounded-full text-sm/7 font-medium;
-    @apply text-olive-950 hover:bg-olive-950/10;
-    @apply px-3 py-1;
-    @apply transition-colors duration-200;
-    @apply dark:text-white dark:hover:bg-white/10;
-  }
-  
-  /* Heading Display */
-  .heading-display {
-    @apply font-display text-5xl/12 tracking-tight text-balance sm:text-[5rem]/20;
-    @apply text-olive-950 dark:text-white;
-  }
-  
-  /* Subheading */
-  .subheading {
-    @apply font-display text-[2rem]/10 tracking-tight text-pretty text-olive-950 sm:text-5xl/14;
-    @apply dark:text-white;
-  }
-  
-  /* Eyebrow */
-  .eyebrow {
-    @apply text-sm/7 font-semibold text-olive-700 dark:text-olive-400;
-  }
-  
-  /* Body Text */
-  .text-body {
-    @apply text-base/7 text-olive-700 dark:text-olive-400;
-  }
-  
-  .text-body-lg {
-    @apply text-lg/8 text-olive-700 dark:text-olive-400;
-  }
-  
-  /* Announcement Badge */
-  .announcement-badge {
-    @apply relative inline-flex max-w-full gap-x-3 overflow-hidden rounded-md px-3.5 py-2 text-sm/6 max-sm:flex-col sm:items-center sm:rounded-full sm:px-3 sm:py-0.5;
-    @apply bg-olive-950/5 text-olive-950 hover:bg-olive-950/10;
-    @apply dark:bg-white/5 dark:text-white dark:hover:bg-white/10;
-  }
-  
-  /* Card */
-  .card-oatmeal {
-    @apply rounded-2xl bg-white p-6 shadow-sm;
-    @apply dark:bg-olive-900/50;
-  }
-  
-  /* Prose customization */
-  .prose-oatmeal {
-    @apply prose prose-lg max-w-none;
-    @apply prose-headings:text-olive-950 prose-headings:font-semibold dark:prose-headings:text-white;
-    @apply prose-p:text-olive-700 dark:prose-p:text-olive-400;
-    @apply prose-a:text-olive-950 prose-a:no-underline prose-a:font-semibold hover:prose-a:underline dark:prose-a:text-white;
-    @apply prose-strong:text-olive-950 dark:prose-strong:text-white;
-    @apply prose-code:text-olive-700 prose-code:bg-olive-100 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded;
-    @apply prose-pre:bg-olive-100 prose-pre:text-olive-950;
-    @apply prose-blockquote:border-l-olive-400 prose-blockquote:text-olive-700;
-    @apply prose-hr:border-olive-200 dark:prose-hr:border-olive-800;
   }
 }
