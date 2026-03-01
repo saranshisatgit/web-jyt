@@ -255,7 +255,7 @@ function DarkBentoSection({ darkBentoSection }: { darkBentoSection?: DarkBentoSe
   ];
 
   return (
-    <div className="mx-2 mt-2 rounded-4xl bg-gray-900 py-32">
+    <div className="mx-2 mt-2 rounded-4xl bg-olive-950 py-32">
       <Container>
         <Subheading dark>{subtitle || "Default Subtitle"}</Subheading>
         <Heading as="h3" dark className="mt-2 max-w-3xl">
