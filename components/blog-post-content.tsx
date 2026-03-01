@@ -15,21 +15,21 @@ import { ChevronLeftIcon } from '@heroicons/react/16/solid'
 import dayjs from 'dayjs'
 import type { BlogPost, BlogBlock, TipTapNode } from '@/types/blog'
 
-export function BlogPostContent({ 
-  post, 
-  contentBlock, 
-  imageBlock, 
-  authorsBlock 
-}: { 
-  post: BlogPost, 
-  contentBlock?: BlogBlock, 
-  imageBlock?: BlogBlock, 
-  authorsBlock?: BlogBlock 
+export function BlogPostContent({
+  post,
+  contentBlock,
+  imageBlock,
+  authorsBlock
+}: {
+  post: BlogPost,
+  contentBlock?: BlogBlock,
+  imageBlock?: BlogBlock,
+  authorsBlock?: BlogBlock
 }) {
 
   // State to store the generated HTML
   const [generatedHtml, setGeneratedHtml] = useState<string>('')
-  
+
   // State to toggle debug view
   const [showDebug, setShowDebug] = useState(false)
   const [tocHeadingsCount, setTocHeadingsCount] = useState(0)
@@ -39,10 +39,10 @@ export function BlogPostContent({
     if (!contentBlock?.content.text?.content) return false;
     return contentBlock.content.text.content.some((node: TipTapNode) => node.type === 'tableOfContents');
   }, [contentBlock?.content.text]);
-  
+
   // Check if running in development/local environment
   const isDevelopment = process.env.NODE_ENV === 'development'
-  
+
   // Process the content to remove the main image and extract the drawer
   const { processedContent, drawerNode } = useMemo(() => {
     if (!contentBlock?.content.text) return { processedContent: null, drawerNode: null };
@@ -57,7 +57,7 @@ export function BlogPostContent({
       marks?: Array<Record<string, unknown>>;
       [key: string]: unknown; // Add index signature to match exported type
     }
-    
+
     interface DrawerAttrs {
       src: string;
       alt: string;
@@ -69,8 +69,8 @@ export function BlogPostContent({
     }
 
     interface DrawerNode extends TipTapNode {
-        type: 'drawer';
-        attrs?: DrawerAttrs; // Make optional to match base interface
+      type: 'drawer';
+      attrs?: DrawerAttrs; // Make optional to match base interface
     }
 
     const tipTapDoc = processedText as { type: string; content: TipTapNode[] };
@@ -137,16 +137,16 @@ export function BlogPostContent({
         if (matchingCount > 1) {
           removeFirstImageNode(tipTapDoc.content, mainImageUrl)
         }
-        
+
         tipTapDoc.content = tipTapDoc.content.filter((paragraph: TipTapNode) => {
           return !(paragraph.type === 'paragraph' && (!paragraph.content || paragraph.content.length === 0));
         })
       }
     }
-    
+
     return { processedContent: processedText, drawerNode: foundDrawerNode };
   }, [contentBlock?.content.text, imageBlock?.content.image?.content]);
-  
+
   // Handler for when HTML is generated
   const handleHtmlGenerated = (html: string) => {
     setGeneratedHtml(html)
@@ -160,8 +160,8 @@ export function BlogPostContent({
   return (
     <main className="overflow-hidden">
       <GradientBackground />
+      <Navbar />
       <Container>
-        <Navbar />
         <Subheading className="mt-16">
           {dayjs(post.published_at).format('dddd, MMMM D, YYYY')}
         </Subheading>
@@ -170,12 +170,12 @@ export function BlogPostContent({
         </Heading>
         <div className="mt-16 grid grid-cols-1 gap-8 pb-24 lg:grid-cols-[15rem_1fr] xl:grid-cols-[15rem_1fr_15rem]">
           {/* Left sidebar for post metadata */}
-          <PostMetadataSidebar 
-            authorsBlock={authorsBlock} 
-            category={(post.public_metadata as { category?: string })?.category} 
+          <PostMetadataSidebar
+            authorsBlock={authorsBlock}
+            category={(post.public_metadata as { category?: string })?.category}
           />
           <div className="text-olive-700">
-            <PostMainContentArea 
+            <PostMainContentArea
               post={post}
               imageBlock={imageBlock}
               processedContent={processedContent}
@@ -190,7 +190,7 @@ export function BlogPostContent({
           </div> {/* Closes the center content's outer div (text-olive-700) */}
 
           {/* Right sidebar for Table of Contents - should be the third column of the main grid */}
-          <PostTableOfContents 
+          <PostTableOfContents
             generatedHtml={generatedHtml}
             onHeadingsChange={handleHeadingsChange}
             hasOriginalTocNode={hasOriginalTocNode}
@@ -199,14 +199,14 @@ export function BlogPostContent({
           />
         </div> {/* Closes the main three-column grid div (mt-16 grid...) */}
 
-      <div className="pb-24">
-        <Button href="/blog" variant="secondary" className="gap-1">
-          <ChevronLeftIcon className="size-4" />
-          Back to blog
-        </Button>
-      </div>
+        <div className="pb-24">
+          <Button href="/blog" variant="secondary" className="gap-1">
+            <ChevronLeftIcon className="size-4" />
+            Back to blog
+          </Button>
+        </div>
 
-    </Container>
+      </Container>
 
       {/* Subscription Form Section with Gradient Background */}
       <div className="relative py-16 sm:py-24">
@@ -218,6 +218,6 @@ export function BlogPostContent({
         </Container>
       </div>
 
-  </main>
-)
+    </main>
+  )
 }

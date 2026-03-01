@@ -89,7 +89,7 @@ export function Navbar({ banner }: { banner?: React.ReactNode }) {
 
   if (!navBlock) {
     return (
-      <header className="sticky top-0 z-10 bg-olive-100 dark:bg-olive-950">
+      <header className="sticky top-0 z-10 bg-olive-100/60 backdrop-blur-md dark:bg-olive-950/60">
         <div className="mx-auto flex h-21 max-w-7xl items-center px-6 lg:px-10">
           <div className="flex flex-1 items-center justify-center py-4">
             <Spinner size="lg" />
@@ -102,7 +102,7 @@ export function Navbar({ banner }: { banner?: React.ReactNode }) {
   const typedNavBlock = navBlock as unknown as NavBlock
 
   return (
-    <Disclosure as="header" className="sticky top-0 z-10 bg-olive-100 dark:bg-olive-950">
+    <Disclosure as="header" className="sticky top-0 z-10 bg-olive-100/60 backdrop-blur-md dark:bg-olive-950/60">
       <div className="mx-auto flex h-21 max-w-7xl items-center gap-4 px-6 lg:px-10">
         <div className="flex flex-1 items-center gap-12">
           <div className="flex items-center">
