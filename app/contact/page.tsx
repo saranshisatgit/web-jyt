@@ -1,7 +1,7 @@
 import { type Metadata } from 'next';
 import { Container } from '@/components/container';
 import { GradientBackground } from '@/components/gradient';
-import { HeroSection, type HeaderBlock, type AnnouncementBlock, type ButtonDef } from '@/components/hero-section';
+import { HeroSection, type HeaderBlock, type ButtonDef } from '@/components/hero-section';
 import { fetchPagefromAPI } from '../actions';
 import { type Block, getBlockByName } from '@/medu/queries';
 import { SectionLoading } from '@/components/section-loading';
@@ -79,22 +79,16 @@ export default async function ContactPage() {
     },
   };
 
-  const heroAnnouncementBlock: AnnouncementBlock = {
-    content: {
-      announcement: (cmsHeaderBlock?.content?.announcement as string) || '',
-    },
-  };
-
   return (
     <>
       <main className="overflow-hidden">
         <GradientBackground />
         {/* HeroSection includes Navbar and uses the fetched header data */}
-        <HeroSection headerBlock={heroHeaderBlock} announcementBlock={heroAnnouncementBlock} />
-        
+        <HeroSection headerBlock={heroHeaderBlock} />
+
         <Container className="py-16 sm:py-24">
           <div className="grid grid-cols-1 gap-x-12 gap-y-16 md:grid-cols-2">
-            
+
             {/* Left Column: Dynamic Contact Information */}
             <div className="prose prose-lg max-w-none lg:prose-xl बनावट">
               <h2 className="text-3xl font-bold tracking-tight बनावट text-gray-900 sm:text-4xl">
@@ -108,7 +102,7 @@ export default async function ContactPage() {
                   {/* Basic heuristic to add prefix for the cicilabel link, can be refined or made data-driven */}
                   {link.url.includes('cicilabel.com') ? 'Buy from our bespoke label: ' : ''}
                   <Link href={link.url} target={link.target || '_self'} rel={link.target === '_blank' ? 'noopener noreferrer' : undefined} className="text-pink-600 hover:text-pink-500">
-                    {link.text} 
+                    {link.text}
                   </Link>
                 </p>
               ))}

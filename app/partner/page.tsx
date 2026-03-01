@@ -59,13 +59,12 @@ export default async function Partner({
         buttons: rawHeaderBlock.content.buttons,
       },
     }
-    const announcementBlock = { content: { announcement: rawHeaderBlock.content.announcement } }
     const logoBlocks = getBlockByName(partnerPage.blocks, "Feature Section") as unknown as LogoBlocks
     const featureSection = getBlockByName(partnerPage.blocks, "Partner Feature") as unknown as FeatureSectionBlock;
     const bentoSection = getBlockByName(partnerPage.blocks, "Bento Section") as unknown as BentoSectionBlock;
   return (
     <div className="overflow-hidden">
-      <HeroSection headerBlock={headerBlock} announcementBlock={announcementBlock} />
+      <HeroSection headerBlock={headerBlock} />
       <main>
         <Container className="mt-10">
           <LogoCloud logoBlocks={logoBlocks.content.logos} />

@@ -17,6 +17,9 @@ import TasksListSlide from '@/components/slides/TasksListSlide'
 import PaymentProcessSlide from '@/components/slides/PaymentProcessSlide';
 import { Screenshot } from '@/components/screenshot';
 import { BlockWrapper } from '@/components/visual-editor/BlockWrapper';
+import { Navbar } from '@/components/navbar';
+import { Link } from '@/components/link';
+import { ChevronRightIcon } from '@heroicons/react/16/solid';
 
 export const metadata: Metadata = {
   description:
@@ -60,7 +63,7 @@ interface SharedPageData {
   footer: Block | undefined;
 }
 
-async function Hero({ homeData }: { homeData: Page })  {
+async function Hero({ homeData }: { homeData: Page }) {
   const rawHeroBlock = getBlockByType(homeData.blocks, "Hero") as unknown as (HeroBlock & { id: string; name: string })
   const headerBlock = {
     content: {
@@ -70,10 +73,9 @@ async function Hero({ homeData }: { homeData: Page })  {
       buttons: rawHeroBlock.content.buttons
     },
   }
-  const announcementBlock = getBlockByType(homeData.blocks, "Header") as unknown as HeaderBlock
   return (
     <BlockWrapper blockId={rawHeroBlock?.id || 'hero'} blockType="Hero" blockName={rawHeroBlock?.name || 'Hero Section'}>
-      <HeroSection headerBlock={headerBlock} announcementBlock={announcementBlock} />
+      <HeroSection headerBlock={headerBlock} />
     </BlockWrapper>
   )
 }
@@ -266,7 +268,7 @@ function DarkBentoSection({ darkBentoSection }: { darkBentoSection?: DarkBentoSe
               let graphicElement = null;
               if (card.graphic_type === 'image' && card.graphic_url) {
                 graphicElement = (
-                  <div 
+                  <div
                     className="h-80 w-full bg-cover bg-center rounded-md"
                     style={{ backgroundImage: `url(${card.graphic_url})` }}
                   />
@@ -393,40 +395,57 @@ export default async function Home() {
   try {
     // Fetch data once at the root level using the cached function
     const homeData = await getCachedPageData('home');
-    
+    const announcementBlock = getBlockByType(homeData.page.blocks, "Header") as unknown as HeaderBlock;
+
     return (
       <div className="relative">
+        <style>{`:root { --scroll-padding-top: 5.25rem }`}</style>
+        <Navbar
+          banner={
+            announcementBlock?.content?.announcement && (
+              <Link
+                href="/blog"
+                className="group relative inline-flex max-w-full gap-x-3 overflow-hidden rounded-md px-3.5 py-2 text-sm/6 max-sm:flex-col sm:items-center sm:rounded-full sm:px-3 sm:py-0.5 bg-olive-950/5 text-olive-950 hover:bg-olive-950/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/10"
+              >
+                <span className="text-pretty sm:truncate">{announcementBlock.content.announcement}</span>
+                <span className="inline-flex shrink-0 items-center gap-2 font-semibold text-olive-950 dark:text-white">
+                  Learn more <ChevronRightIcon className="size-4" />
+                </span>
+              </Link>
+            )
+          }
+        />
         <div className="relative">
           <Suspense fallback={<SectionLoading />}>
             <Hero homeData={homeData.page} />
           </Suspense>
         </div>
 
-        <div className="mt-32 sm:mt-40 relative">
+        <div className="relative">
           <Suspense fallback={<SectionLoading />}>
             <FeaturesSectionComponent homeData={homeData} />
           </Suspense>
         </div>
 
-        <div className="mt-32 sm:mt-40 relative">
+        <div className="relative">
           <Suspense fallback={<SectionLoading />}>
             <BentoGridSectionComponent homeData={homeData} />
           </Suspense>
         </div>
 
-        <div className="mt-32 sm:mt-40 relative">
+        <div className="relative">
           <Suspense fallback={<SectionLoading />}>
             <DarkBentoGridSectionComponent homeData={homeData} />
           </Suspense>
         </div>
 
-        <div className="mt-32 sm:mt-40 relative">
+        <div className="relative">
           <Suspense fallback={<SectionLoading />}>
             <TestimonialsSectionComponent homeData={homeData} />
           </Suspense>
         </div>
 
-        <div className="mt-32 sm:mt-40 relative">
+        <div className="relative">
           <Suspense fallback={<SectionLoading />}>
             <LogoSectionComponent homeData={homeData} />
           </Suspense>

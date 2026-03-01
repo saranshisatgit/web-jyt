@@ -1,7 +1,7 @@
 import { type Metadata } from 'next'
 import { Container } from '@/components/container'
 import { GradientBackground } from '@/components/gradient'
-import { HeroSection, type HeaderBlock, type AnnouncementBlock } from '@/components/hero-section'
+import { HeroSection, type HeaderBlock } from '@/components/hero-section'
 import { MainContent, type MainContentBlock } from '@/components/main-content'
 import { fetchPagefromAPI } from '@/app/actions'
 import { getBlockByName, type Block } from '@/medu/queries'
@@ -100,11 +100,6 @@ export default async function ContentPage({ params }: { params: PageParams }) {
       },
     }
 
-    const heroAnnouncementBlock: AnnouncementBlock = {
-      content: {
-        announcement: (cmsHeaderBlock?.content?.announcement as string) || '',
-      },
-    }
 
     return (
       <main className="overflow-hidden">
@@ -113,7 +108,7 @@ export default async function ContentPage({ params }: { params: PageParams }) {
         {/* Hero Section with Navbar */}
         <HeroSection 
           headerBlock={heroHeaderBlock} 
-          announcementBlock={heroAnnouncementBlock} 
+          
         />
 
         {/* Main Content Section */}

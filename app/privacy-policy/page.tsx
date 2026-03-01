@@ -1,6 +1,6 @@
 import { type Metadata } from 'next'
 import { GradientBackground } from '@/components/gradient'
-import { HeroSection, type HeaderBlock, type AnnouncementBlock } from '@/components/hero-section'
+import { HeroSection, type HeaderBlock } from '@/components/hero-section'
 import { SimpleMainContent } from '@/components/main-content'
 
 export const metadata: Metadata = {
@@ -27,11 +27,6 @@ export default function PrivacyPolicyPage() {
     },
   }
 
-  const heroAnnouncementBlock: AnnouncementBlock = {
-    content: {
-      announcement: '',
-    },
-  }
 
   // HTML content for the privacy policy
   const privacyPolicyContent = `
@@ -192,7 +187,7 @@ export default function PrivacyPolicyPage() {
       {/* Hero Section with Navbar */}
       <HeroSection 
         headerBlock={heroHeaderBlock} 
-        announcementBlock={heroAnnouncementBlock} 
+        
       />
 
       {/* Main Content */}

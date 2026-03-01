@@ -23,7 +23,7 @@ const AgreementView = ({ responseId, accessToken }: AgreementViewProps) => {
     const fetchAgreement = async () => {
       setIsLoading(true);
       setError(null);
-      
+
       try {
         const data = await getAgreement(responseId, accessToken);
         if (data) {
@@ -125,7 +125,7 @@ const AgreementView = ({ responseId, accessToken }: AgreementViewProps) => {
   if (isLoading) {
     return (
       <div className="overflow-hidden">
-        <HeroSection headerBlock={defaultHeaderBlock} announcementBlock={announcementBlock} />
+        <HeroSection headerBlock={defaultHeaderBlock} />
         <main>
           <Container>
             <section className="mt-8">
@@ -145,7 +145,7 @@ const AgreementView = ({ responseId, accessToken }: AgreementViewProps) => {
   if (error) {
     return (
       <div className="overflow-hidden">
-        <HeroSection headerBlock={defaultHeaderBlock} announcementBlock={announcementBlock} />
+        <HeroSection headerBlock={defaultHeaderBlock} />
         <main>
           <Container>
             <section className="mt-8">
@@ -167,7 +167,7 @@ const AgreementView = ({ responseId, accessToken }: AgreementViewProps) => {
   if (!agreementData) {
     return (
       <div className="overflow-hidden">
-        <HeroSection headerBlock={defaultHeaderBlock} announcementBlock={announcementBlock} />
+        <HeroSection headerBlock={defaultHeaderBlock} />
         <main>
           <Container>
             <section className="mt-8">
@@ -198,144 +198,144 @@ const AgreementView = ({ responseId, accessToken }: AgreementViewProps) => {
 
   return (
     <div className="overflow-hidden">
-      <HeroSection headerBlock={headerBlock} announcementBlock={announcementBlock} />
+      <HeroSection headerBlock={headerBlock} />
       <main>
         <Container>
           <section className="mt-8 mb-24 min-h-[60vh]">
             <div className="max-w-4xl mx-auto">
-        {/* Agreement Info */}
-        <div className="bg-white rounded-lg shadow-lg mb-6 animate-fade-in">
-          <div className="px-6 py-4 border-b border-gray-200">
-            <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-gray-900">Agreement Details</h2>
-              {getStatusBadge(response.status)}
-            </div>
-          </div>
-          
-          {/* Agreement Info */}
-          <div className="px-6 py-4 bg-gray-50">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-              <div>
-                <span className="font-medium text-gray-700">Sent to:</span>
-                <p className="text-gray-900">{response.email_sent_to}</p>
-              </div>
-              <div>
-                <span className="font-medium text-gray-700">Sent on:</span>
-                <p className="text-gray-900">{formatDate(response.sent_at)}</p>
-              </div>
-              <div>
-                <span className="font-medium text-gray-700">Valid until:</span>
-                <p className="text-gray-900">{formatDate(agreement.valid_until)}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Agreement Content */}
-        <div className="bg-white rounded-lg shadow-lg mb-6 animate-fade-in">
-          <div className="px-6 py-4 border-b border-gray-200">
-            <h2 className="text-lg font-semibold text-gray-900">Agreement Content</h2>
-          </div>
-          <div className="px-6 py-6">
-            <div 
-              className="prose max-w-none text-gray-700 leading-relaxed"
-              dangerouslySetInnerHTML={{ __html: agreement.content }}
-            />
-          </div>
-        </div>
-
-        {/* Response Section */}
-        {hasResponded ? (
-          <div className="bg-white rounded-lg shadow-lg animate-fade-in">
-            <div className="px-6 py-4 border-b border-gray-200">
-              <h2 className="text-lg font-semibold text-gray-900">Response Status</h2>
-            </div>
-            <div className="px-6 py-6">
-              <div className="text-center py-8">
-                <div className={`text-6xl mb-4 ${response.agreed ? '✅' : '❌'}`}>
-                  {response.agreed ? '✅' : '❌'}
+              {/* Agreement Info */}
+              <div className="bg-white rounded-lg shadow-lg mb-6 animate-fade-in">
+                <div className="px-6 py-4 border-b border-gray-200">
+                  <div className="flex items-center justify-between">
+                    <h2 className="text-lg font-semibold text-gray-900">Agreement Details</h2>
+                    {getStatusBadge(response.status)}
+                  </div>
                 </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                  Agreement {response.agreed ? 'Accepted' : 'Declined'}
-                </h3>
-                <p className="text-lg text-gray-600 mb-4">
-                  You {response.agreed ? 'accepted' : 'declined'} this agreement
-                </p>
-                <div className="bg-gray-50 rounded-lg p-4 inline-block">
-                  <p className="text-sm font-medium text-gray-700">
-                    Response submitted on:
-                  </p>
-                  <p className="text-sm text-gray-900">
-                    {formatDate(response.responded_at)}
-                  </p>
+
+                {/* Agreement Info */}
+                <div className="px-6 py-4 bg-gray-50">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                    <div>
+                      <span className="font-medium text-gray-700">Sent to:</span>
+                      <p className="text-gray-900">{response.email_sent_to}</p>
+                    </div>
+                    <div>
+                      <span className="font-medium text-gray-700">Sent on:</span>
+                      <p className="text-gray-900">{formatDate(response.sent_at)}</p>
+                    </div>
+                    <div>
+                      <span className="font-medium text-gray-700">Valid until:</span>
+                      <p className="text-gray-900">{formatDate(agreement.valid_until)}</p>
+                    </div>
+                  </div>
                 </div>
               </div>
-              {responseMessage && (
-                <div className="bg-green-50 border border-green-200 rounded-lg p-4 mt-6">
-                  <p className="text-green-800 text-center">{responseMessage}</p>
+
+              {/* Agreement Content */}
+              <div className="bg-white rounded-lg shadow-lg mb-6 animate-fade-in">
+                <div className="px-6 py-4 border-b border-gray-200">
+                  <h2 className="text-lg font-semibold text-gray-900">Agreement Content</h2>
+                </div>
+                <div className="px-6 py-6">
+                  <div
+                    className="prose max-w-none text-gray-700 leading-relaxed"
+                    dangerouslySetInnerHTML={{ __html: agreement.content }}
+                  />
+                </div>
+              </div>
+
+              {/* Response Section */}
+              {hasResponded ? (
+                <div className="bg-white rounded-lg shadow-lg animate-fade-in">
+                  <div className="px-6 py-4 border-b border-gray-200">
+                    <h2 className="text-lg font-semibold text-gray-900">Response Status</h2>
+                  </div>
+                  <div className="px-6 py-6">
+                    <div className="text-center py-8">
+                      <div className={`text-6xl mb-4 ${response.agreed ? '✅' : '❌'}`}>
+                        {response.agreed ? '✅' : '❌'}
+                      </div>
+                      <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                        Agreement {response.agreed ? 'Accepted' : 'Declined'}
+                      </h3>
+                      <p className="text-lg text-gray-600 mb-4">
+                        You {response.agreed ? 'accepted' : 'declined'} this agreement
+                      </p>
+                      <div className="bg-gray-50 rounded-lg p-4 inline-block">
+                        <p className="text-sm font-medium text-gray-700">
+                          Response submitted on:
+                        </p>
+                        <p className="text-sm text-gray-900">
+                          {formatDate(response.responded_at)}
+                        </p>
+                      </div>
+                    </div>
+                    {responseMessage && (
+                      <div className="bg-green-50 border border-green-200 rounded-lg p-4 mt-6">
+                        <p className="text-green-800 text-center">{responseMessage}</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ) : can_respond ? (
+                <div className="bg-white rounded-lg shadow-lg animate-fade-in">
+                  <div className="px-6 py-4 border-b border-gray-200">
+                    <h2 className="text-lg font-semibold text-gray-900">Your Response</h2>
+                    <p className="text-sm text-gray-600 mt-1">
+                      Please review the agreement above and provide your response.
+                    </p>
+                  </div>
+                  <div className="px-6 py-6">
+                    {error && (
+                      <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+                        <p className="text-red-800">{error}</p>
+                      </div>
+                    )}
+
+                    <div className="mb-6">
+                      <label htmlFor="response-notes" className="block text-sm font-medium text-gray-700 mb-2">
+                        Additional Notes (Optional)
+                      </label>
+                      <textarea
+                        id="response-notes"
+                        rows={4}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        placeholder="Add any comments or notes about your decision..."
+                        value={responseNotes}
+                        onChange={(e) => setResponseNotes(e.target.value)}
+                        disabled={isSubmitting}
+                      />
+                    </div>
+
+                    <div className="flex space-x-4">
+                      <button
+                        onClick={() => handleResponse(true)}
+                        disabled={isSubmitting}
+                        className="flex-1 bg-green-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-green-700 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+                      >
+                        {isSubmitting ? 'Submitting...' : '✅ Accept Agreement'}
+                      </button>
+                      <button
+                        onClick={() => handleResponse(false)}
+                        disabled={isSubmitting}
+                        className="flex-1 bg-red-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-red-700 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+                      >
+                        {isSubmitting ? 'Submitting...' : '❌ Decline Agreement'}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="bg-white rounded-lg shadow-lg animate-fade-in">
+                  <div className="px-6 py-6 text-center">
+                    <div className="text-gray-400 text-4xl mb-4">⏰</div>
+                    <h2 className="text-lg font-semibold text-gray-900 mb-2">Response Period Ended</h2>
+                    <p className="text-gray-600">
+                      The response period for this agreement has ended or you have already responded.
+                    </p>
+                  </div>
                 </div>
               )}
-            </div>
-          </div>
-        ) : can_respond ? (
-          <div className="bg-white rounded-lg shadow-lg animate-fade-in">
-            <div className="px-6 py-4 border-b border-gray-200">
-              <h2 className="text-lg font-semibold text-gray-900">Your Response</h2>
-              <p className="text-sm text-gray-600 mt-1">
-                Please review the agreement above and provide your response.
-              </p>
-            </div>
-            <div className="px-6 py-6">
-              {error && (
-                <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
-                  <p className="text-red-800">{error}</p>
-                </div>
-              )}
-              
-              <div className="mb-6">
-                <label htmlFor="response-notes" className="block text-sm font-medium text-gray-700 mb-2">
-                  Additional Notes (Optional)
-                </label>
-                <textarea
-                  id="response-notes"
-                  rows={4}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Add any comments or notes about your decision..."
-                  value={responseNotes}
-                  onChange={(e) => setResponseNotes(e.target.value)}
-                  disabled={isSubmitting}
-                />
-              </div>
-
-              <div className="flex space-x-4">
-                <button
-                  onClick={() => handleResponse(true)}
-                  disabled={isSubmitting}
-                  className="flex-1 bg-green-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-green-700 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
-                >
-                  {isSubmitting ? 'Submitting...' : '✅ Accept Agreement'}
-                </button>
-                <button
-                  onClick={() => handleResponse(false)}
-                  disabled={isSubmitting}
-                  className="flex-1 bg-red-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-red-700 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
-                >
-                  {isSubmitting ? 'Submitting...' : '❌ Decline Agreement'}
-                </button>
-              </div>
-            </div>
-          </div>
-        ) : (
-          <div className="bg-white rounded-lg shadow-lg animate-fade-in">
-            <div className="px-6 py-6 text-center">
-              <div className="text-gray-400 text-4xl mb-4">⏰</div>
-              <h2 className="text-lg font-semibold text-gray-900 mb-2">Response Period Ended</h2>
-              <p className="text-gray-600">
-                The response period for this agreement has ended or you have already responded.
-              </p>
-            </div>
-          </div>
-        )}
             </div>
           </section>
         </Container>

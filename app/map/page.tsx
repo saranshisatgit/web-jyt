@@ -21,11 +21,10 @@ const MapPage = async () => {
       buttons: [],
     },
   }
-  const announcementBlock = { content: { announcement: '' } };
 
   return (
     <div className="overflow-hidden">
-      <HeroSection headerBlock={headerBlock} announcementBlock={announcementBlock} />
+      <HeroSection headerBlock={headerBlock} />
       <main>
         <Container>
           <section className="mt-8">
