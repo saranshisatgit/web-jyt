@@ -12,6 +12,8 @@ import { Logo } from './logo'
 import { Spinner } from './spinner'
 import { useSiteData } from '@/app/context/site-data-context'
 
+import { ButtonLink, PlainButtonLink } from './button'
+
 interface NavBlock {
   content: {
     navigation: {
@@ -64,8 +66,8 @@ function MobileNav({ navBlock }: { navBlock: NavBlock }) {
             }}
             key={link}
           >
-            <Link 
-              href={link} 
+            <Link
+              href={link}
               className="group inline-flex items-center justify-between gap-2 text-3xl/10 font-medium text-olive-950 dark:text-white"
             >
               {text}
@@ -110,17 +112,21 @@ export function Navbar({ banner }: { banner?: React.ReactNode }) {
           </div>
           <DesktopNav navBlock={typedNavBlock} />
         </div>
-        
+
         <div className="flex flex-1 items-center justify-end gap-4">
           <div className="flex shrink-0 items-center gap-5">
             {banner && (
               <div className="hidden lg:flex">{banner}</div>
             )}
+            <PlainButtonLink href="/login" className="max-sm:hidden">
+              Log in
+            </PlainButtonLink>
+            <ButtonLink href="/contact" className="max-sm:hidden">Get started</ButtonLink>
           </div>
           <MobileNavButton />
         </div>
       </div>
-      
+
       <MobileNav navBlock={typedNavBlock} />
     </Disclosure>
   )

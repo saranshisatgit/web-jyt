@@ -2,6 +2,7 @@ import { type Metadata } from 'next'
 import { GradientBackground } from '@/components/gradient'
 import { HeroSection, type HeaderBlock } from '@/components/hero-section'
 import { SimpleMainContent } from '@/components/main-content'
+import { Navbar } from '@/components/navbar'
 
 export const metadata: Metadata = {
   title: 'Privacy Policy',
@@ -183,17 +184,18 @@ export default function PrivacyPolicyPage() {
   return (
     <main className="overflow-hidden">
       <GradientBackground />
-      
+      <Navbar />
+
       {/* Hero Section with Navbar */}
-      <HeroSection 
-        headerBlock={heroHeaderBlock} 
-        
+      <HeroSection
+        headerBlock={heroHeaderBlock}
+
       />
 
       {/* Main Content */}
-      <SimpleMainContent 
-        html={privacyPolicyContent} 
-        maxWidth="medium" 
+      <SimpleMainContent
+        html={privacyPolicyContent}
+        maxWidth="medium"
       />
     </main>
   )

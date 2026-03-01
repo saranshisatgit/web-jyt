@@ -2,6 +2,7 @@ import { type Metadata } from 'next'
 import { GradientBackground } from '@/components/gradient'
 import { HeroSection, type HeaderBlock } from '@/components/hero-section'
 import { SimpleMainContent } from '@/components/main-content'
+import { Navbar } from '@/components/navbar'
 
 export const metadata: Metadata = {
   title: 'Terms and Conditions',
@@ -267,17 +268,18 @@ export default function TermsOfServicePage() {
   return (
     <main className="overflow-hidden">
       <GradientBackground />
-      
+      <Navbar />
+
       {/* Hero Section with Navbar */}
-      <HeroSection 
-        headerBlock={heroHeaderBlock} 
-        
+      <HeroSection
+        headerBlock={heroHeaderBlock}
+
       />
 
       {/* Main Content */}
-      <SimpleMainContent 
-        html={termsContent} 
-        maxWidth="medium" 
+      <SimpleMainContent
+        html={termsContent}
+        maxWidth="medium"
       />
     </main>
   )

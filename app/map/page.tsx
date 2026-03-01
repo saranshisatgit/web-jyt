@@ -2,6 +2,7 @@ import React from 'react';
 import { type Metadata } from 'next'
 import { HeroSection } from "@/components/hero-section";
 import { Container } from "@/components/container";
+import { Navbar } from '@/components/navbar';
 import MapView from './map-view';
 import { getPersons } from './actions';
 
@@ -24,13 +25,14 @@ const MapPage = async () => {
 
   return (
     <div className="overflow-hidden">
+      <Navbar />
       <HeroSection headerBlock={headerBlock} />
       <main>
         <Container>
           <section className="mt-8">
-              <div className="h-[600px] w-full overflow-hidden rounded-lg shadow-lg">
-                  <MapView initialPersons={persons} />
-              </div>
+            <div className="h-[600px] w-full overflow-hidden rounded-lg shadow-lg">
+              <MapView initialPersons={persons} />
+            </div>
           </section>
         </Container>
       </main>

@@ -5,6 +5,7 @@ import { HeroSection, type HeaderBlock } from '@/components/hero-section'
 import { MainContent, type MainContentBlock } from '@/components/main-content'
 import { fetchPagefromAPI } from '@/app/actions'
 import { getBlockByName, type Block } from '@/medu/queries'
+import { Navbar } from '@/components/navbar'
 import { notFound } from 'next/navigation'
 
 export const dynamic = 'force-dynamic'
@@ -16,7 +17,7 @@ type PageParams = Promise<{ slug: string }>
  */
 export async function generateMetadata({ params }: { params: PageParams }): Promise<Metadata> {
   const { slug } = await params
-  
+
   try {
     const pageData = await fetchPagefromAPI(slug)
     const headerBlock = getBlockByName(pageData?.blocks, 'Header') as Block | undefined
@@ -78,6 +79,7 @@ export default async function ContentPage({ params }: { params: PageParams }) {
       return (
         <main className="overflow-hidden">
           <GradientBackground />
+          <Navbar />
           <Container className="py-16">
             <div className="text-center">
               <h1 className="text-3xl font-bold text-olive-900">Content Not Found</h1>
@@ -104,11 +106,12 @@ export default async function ContentPage({ params }: { params: PageParams }) {
     return (
       <main className="overflow-hidden">
         <GradientBackground />
-        
+        <Navbar />
+
         {/* Hero Section with Navbar */}
-        <HeroSection 
-          headerBlock={heroHeaderBlock} 
-          
+        <HeroSection
+          headerBlock={heroHeaderBlock}
+
         />
 
         {/* Main Content Section */}
@@ -117,10 +120,11 @@ export default async function ContentPage({ params }: { params: PageParams }) {
     )
   } catch (error) {
     console.error('Error loading content page:', error)
-    
+
     return (
       <main className="overflow-hidden">
         <GradientBackground />
+        <Navbar />
         <Container className="py-16">
           <div className="text-center">
             <h1 className="text-3xl font-bold text-olive-900">Error Loading Page</h1>

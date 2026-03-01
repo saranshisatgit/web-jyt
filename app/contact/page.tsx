@@ -6,6 +6,7 @@ import { fetchPagefromAPI } from '../actions';
 import { type Block, getBlockByName } from '@/medu/queries';
 import { SectionLoading } from '@/components/section-loading';
 import { Link } from '@/components/link';
+import { Navbar } from '@/components/navbar';
 import ContactForm from '@/components/ContactForm';
 
 // Types for the new ContactInfoBlock
@@ -83,6 +84,7 @@ export default async function ContactPage() {
     <>
       <main className="overflow-hidden">
         <GradientBackground />
+        <Navbar />
         {/* HeroSection includes Navbar and uses the fetched header data */}
         <HeroSection headerBlock={heroHeaderBlock} />
 

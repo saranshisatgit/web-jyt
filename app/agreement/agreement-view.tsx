@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { getAgreement, submitAgreementResponse, type AgreementData } from './actions';
 import { Container } from '@/components/container';
 import { HeroSection } from '@/components/hero-section';
+import { Navbar } from '@/components/navbar';
 
 interface AgreementViewProps {
   responseId: string;
@@ -125,6 +126,7 @@ const AgreementView = ({ responseId, accessToken }: AgreementViewProps) => {
   if (isLoading) {
     return (
       <div className="overflow-hidden">
+        <Navbar />
         <HeroSection headerBlock={defaultHeaderBlock} />
         <main>
           <Container>
@@ -145,6 +147,7 @@ const AgreementView = ({ responseId, accessToken }: AgreementViewProps) => {
   if (error) {
     return (
       <div className="overflow-hidden">
+        <Navbar />
         <HeroSection headerBlock={defaultHeaderBlock} />
         <main>
           <Container>
@@ -167,6 +170,7 @@ const AgreementView = ({ responseId, accessToken }: AgreementViewProps) => {
   if (!agreementData) {
     return (
       <div className="overflow-hidden">
+        <Navbar />
         <HeroSection headerBlock={defaultHeaderBlock} />
         <main>
           <Container>
@@ -198,6 +202,7 @@ const AgreementView = ({ responseId, accessToken }: AgreementViewProps) => {
 
   return (
     <div className="overflow-hidden">
+      <Navbar />
       <HeroSection headerBlock={headerBlock} />
       <main>
         <Container>
