@@ -158,7 +158,7 @@ export function BlogPostContent({
   }, []); // Dependencies setHeadings & setTocHeadingsCount are stable
 
   return (
-    <main className="overflow-hidden">
+    <main>
       <GradientBackground />
       <Navbar />
       <Container>

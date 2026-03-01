@@ -436,7 +436,7 @@ export default async function Company() {
   const investors = getBlockByName(headerBlock.blocks, "Investors");
   const careers = getBlockByName(headerBlock.blocks, "Careers");
   return (
-    <main className="overflow-hidden">
+    <main>
       <GradientBackground />
       <Navbar />
       <Suspense fallback={<SectionLoading />}>

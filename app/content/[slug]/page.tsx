@@ -77,7 +77,7 @@ export default async function ContentPage({ params }: { params: PageParams }) {
     // If no content block found, show error
     if (!cmsMainContentBlock) {
       return (
-        <main className="overflow-hidden">
+        <main>
           <GradientBackground />
           <Navbar />
           <Container className="py-16">
@@ -104,7 +104,7 @@ export default async function ContentPage({ params }: { params: PageParams }) {
 
 
     return (
-      <main className="overflow-hidden">
+      <main>
         <GradientBackground />
         <Navbar />
 
@@ -122,7 +122,7 @@ export default async function ContentPage({ params }: { params: PageParams }) {
     console.error('Error loading content page:', error)
 
     return (
-      <main className="overflow-hidden">
+      <main>
         <GradientBackground />
         <Navbar />
         <Container className="py-16">

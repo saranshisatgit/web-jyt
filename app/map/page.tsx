@@ -24,7 +24,7 @@ const MapPage = async () => {
   }
 
   return (
-    <div className="overflow-hidden">
+    <div>
       <Navbar />
       <HeroSection headerBlock={headerBlock} />
       <main>

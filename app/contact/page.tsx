@@ -82,7 +82,7 @@ export default async function ContactPage() {
 
   return (
     <>
-      <main className="overflow-hidden">
+      <main>
         <GradientBackground />
         <Navbar />
         {/* HeroSection includes Navbar and uses the fetched header data */}

@@ -182,7 +182,7 @@ export default function PrivacyPolicyPage() {
   `
 
   return (
-    <main className="overflow-hidden">
+    <main>
       <GradientBackground />
       <Navbar />
 

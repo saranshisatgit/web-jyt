@@ -319,7 +319,7 @@ export default async function Blog({
       : undefined
 
   return (
-    <main className="overflow-hidden">
+    <main>
       <GradientBackground />
       <Navbar />
       <Container>

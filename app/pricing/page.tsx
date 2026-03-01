@@ -514,7 +514,7 @@ export default async function Pricing({
       : tiers[0]
 
   return (
-    <main className="overflow-hidden">
+    <main>
       <GradientBackground />
       <Navbar />
       <Header />

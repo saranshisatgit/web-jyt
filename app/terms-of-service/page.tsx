@@ -266,7 +266,7 @@ export default function TermsOfServicePage() {
   `
 
   return (
-    <main className="overflow-hidden">
+    <main>
       <GradientBackground />
       <Navbar />
 

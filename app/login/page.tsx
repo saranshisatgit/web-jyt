@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 
 export default function Login() {
   return (
-    <main className="overflow-hidden bg-olive-50">
+    <main className="bg-olive-50">
       <GradientBackground />
       <div className="isolate flex min-h-dvh items-center justify-center p-6 lg:p-8">
         <div className="w-full max-w-md rounded-xl bg-white ring-1 shadow-md ring-black/5">

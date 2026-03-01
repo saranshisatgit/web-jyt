@@ -64,7 +64,7 @@ export default async function Partner({
   const featureSection = getBlockByName(partnerPage.blocks, "Partner Feature") as unknown as FeatureSectionBlock;
   const bentoSection = getBlockByName(partnerPage.blocks, "Bento Section") as unknown as BentoSectionBlock;
   return (
-    <div className="overflow-hidden">
+    <div>
       <Navbar />
       <HeroSection headerBlock={headerBlock} />
       <main>

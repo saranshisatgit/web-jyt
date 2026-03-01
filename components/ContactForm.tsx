@@ -17,7 +17,7 @@ function SubmitButton() {
       type="submit"
       aria-disabled={pending}
       disabled={pending}
-      className="w-full rounded-full bg-pink-600 px-4 py-[calc(var(--spacing-2,8px)-1px)] text-base font-medium whitespace-nowrap text-white shadow-md hover:bg-pink-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-pink-600 disabled:opacity-50"
+      className="w-full rounded-full bg-olive-950 px-4 py-[calc(var(--spacing-2,8px)-1px)] text-base font-medium whitespace-nowrap text-white shadow-md hover:bg-olive-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-olive-950 disabled:opacity-50"
     >
       {pending ? 'Sending...' : 'Send Message'}
     </button>
@@ -88,7 +88,7 @@ const ContactForm = () => {
           className="mt-1 block w-full बनावट rounded-lg border-transparent ring-1 ring-black/10 shadow-sm px-[calc(var(--spacing-2,8px)-1px)] py-[calc(var(--spacing-1-5,6px)-1px)] text-base/6 sm:text-sm/6 focus:outline-2 focus:-outline-offset-1 focus:outline-black focus:ring-0 focus:border-transparent"
         />
       </div>
-      
+
       {/* Submit Button and Message Area */}
       <div>
         <SubmitButton />

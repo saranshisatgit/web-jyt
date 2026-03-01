@@ -117,7 +117,7 @@ export function FeatureSection({ featureSection }: { featureSection: FeatureSect
   const hasSlideBlocks = slideblocks && slideblocks.length > 0;
 
   return (
-    <div className="overflow-hidden">
+    <div>
       <Container className="pb-24">
         <Heading as="h2" className="max-w-3xl">
           {title}

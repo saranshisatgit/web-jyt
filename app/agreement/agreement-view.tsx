@@ -125,7 +125,7 @@ const AgreementView = ({ responseId, accessToken }: AgreementViewProps) => {
 
   if (isLoading) {
     return (
-      <div className="overflow-hidden">
+      <div>
         <Navbar />
         <HeroSection headerBlock={defaultHeaderBlock} />
         <main>
@@ -146,7 +146,7 @@ const AgreementView = ({ responseId, accessToken }: AgreementViewProps) => {
 
   if (error) {
     return (
-      <div className="overflow-hidden">
+      <div>
         <Navbar />
         <HeroSection headerBlock={defaultHeaderBlock} />
         <main>
@@ -169,7 +169,7 @@ const AgreementView = ({ responseId, accessToken }: AgreementViewProps) => {
 
   if (!agreementData) {
     return (
-      <div className="overflow-hidden">
+      <div>
         <Navbar />
         <HeroSection headerBlock={defaultHeaderBlock} />
         <main>
@@ -201,7 +201,7 @@ const AgreementView = ({ responseId, accessToken }: AgreementViewProps) => {
   };
 
   return (
-    <div className="overflow-hidden">
+    <div>
       <Navbar />
       <HeroSection headerBlock={headerBlock} />
       <main>
