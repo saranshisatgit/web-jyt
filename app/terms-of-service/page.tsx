@@ -259,7 +259,7 @@ export default function TermsOfServicePage() {
       immediately cease using our website and services.
     </p>
 
-    <p className="text-sm text-gray-500 mt-8">
+    <p className="text-sm text-olive-500 mt-8">
       <strong>Last Updated:</strong> January 2025
     </p>
   `

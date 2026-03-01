@@ -291,7 +291,7 @@ function DarkBentoSection({ darkBentoSection }: { darkBentoSection?: DarkBentoSe
             })}
           </div>
         ) : (
-          <p className="mt-10 text-center text-gray-400">No cards to display for this section.</p>
+          <p className="mt-10 text-center text-olive-400">No cards to display for this section.</p>
         )}
       </Container>
     </div>

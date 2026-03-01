@@ -17,15 +17,15 @@ export default function PaymentProcessSlide({
   return (
     <div className="flex flex-col md:flex-row items-start justify-center gap-8 h-full relative">
       <div className="w-full md:w-1/2 pt-16">
-        <h3 className="text-3xl font-bold mb-4 text-gray-900 dark:text-white">{title}</h3>
+        <h3 className="text-3xl font-bold mb-4 text-olive-900 dark:text-white">{title}</h3>
         {Array.isArray(description) ? (
           <ul className="list-disc pl-5 mb-4 space-y-2">
             {description.map((d, idx) => (
-              <li key={idx} className="text-base text-gray-600 dark:text-gray-300">{d}</li>
+              <li key={idx} className="text-base text-olive-600 dark:text-olive-300">{d}</li>
             ))}
           </ul>
         ) : (
-          <p className="text-base text-gray-600 dark:text-gray-300 mb-2">{description}</p>
+          <p className="text-base text-olive-600 dark:text-olive-300 mb-2">{description}</p>
         )}
       </div>
       <div className="-m-2 grid grid-cols-1 rounded-4xl ring-1 shadow-[inset_0_0_2px_1px_#ffffff4d] ring-black/5 max-lg:mx-auto max-lg:max-w-md self-end relative mt-4 md:mt-16 overflow-visible">

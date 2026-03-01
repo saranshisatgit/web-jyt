@@ -42,7 +42,7 @@ export function PostTableOfContents({
 
   return (
     <div className="sticky top-24 hidden xl:block">
-      <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-gray-500">
+      <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide text-olive-500">
         On this page ({tocHeadingsCount})
       </h3>
       <ManualTableOfContents headings={headings} />

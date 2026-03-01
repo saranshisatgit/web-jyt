@@ -69,7 +69,7 @@ export default async function Partner({
         <Container className="mt-10">
           <LogoCloud logoBlocks={logoBlocks.content.logos} />
         </Container>
-        <div className="bg-linear-to-b from-white from-50% to-gray-100 py-32">
+        <div className="bg-linear-to-b from-white from-50% to-olive-100 py-32">
          <Suspense fallback={<SectionLoading />}>
                        {featureSection ? (
                          <FeatureSection featureSection={featureSection} />

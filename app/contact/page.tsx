@@ -91,14 +91,14 @@ export default async function ContactPage() {
 
             {/* Left Column: Dynamic Contact Information */}
             <div className="prose prose-lg max-w-none lg:prose-xl बनावट">
-              <h2 className="text-3xl font-bold tracking-tight बनावट text-gray-900 sm:text-4xl">
+              <h2 className="text-3xl font-bold tracking-tight बनावट text-olive-900 sm:text-4xl">
                 {contactInfoData.title}
               </h2>
-              <p className="mt-4 text-lg leading-8 बनावट text-gray-600">
+              <p className="mt-4 text-lg leading-8 बनावट text-olive-600">
                 {contactInfoData.introParagraph}
               </p>
               {contactInfoData.links && contactInfoData.links.map((link, index) => (
-                <p key={index} className="mt-4 text-base text-gray-600 बनावट">
+                <p key={index} className="mt-4 text-base text-olive-600 बनावट">
                   {/* Basic heuristic to add prefix for the cicilabel link, can be refined or made data-driven */}
                   {link.url.includes('cicilabel.com') ? 'Buy from our bespoke label: ' : ''}
                   <Link href={link.url} target={link.target || '_self'} rel={link.target === '_blank' ? 'noopener noreferrer' : undefined} className="text-pink-600 hover:text-pink-500">
@@ -107,33 +107,33 @@ export default async function ContactPage() {
                 </p>
               ))}
               {contactInfoData.wholesaleInquiryText && (
-                <p className="mt-4 text-base text-gray-600 बनावट">
+                <p className="mt-4 text-base text-olive-600 बनावट">
                   {contactInfoData.wholesaleInquiryText}
                 </p>
               )}
               {contactInfoData.mainContentParagraph && (
-                <p className="mt-6 text-base text-gray-600 बनावट">
+                <p className="mt-6 text-base text-olive-600 बनावट">
                   {contactInfoData.mainContentParagraph}
                 </p>
               )}
               <address className="mt-6 not-italic">
-                <strong className="block text-gray-900 बनावट">Jaal Yantra Textiles HQ</strong>
+                <strong className="block text-olive-900 बनावट">Jaal Yantra Textiles HQ</strong>
                 {contactInfoData.address?.split(',').map((line, index) => (
                   <span key={index}>{line.trim()}<br /></span>
                 ))}
               </address>
               <div className="mt-8">
-                <h3 className="text-xl font-semibold बनावट text-gray-900">Why Choose Jaal Yantra?</h3>
-                <ul className="mt-4 list-disc space-y-2 pl-5 बनावट text-gray-600">
+                <h3 className="text-xl font-semibold बनावट text-olive-900">Why Choose Jaal Yantra?</h3>
+                <ul className="mt-4 list-disc space-y-2 pl-5 बनावट text-olive-600">
                   <li>Innovative and sustainable textile solutions.</li>
                   <li>Commitment to quality and craftsmanship.</li>
                   <li>Global reach with personalized local support.</li>
                   <li>Competitive pricing and flexible MOQs.</li>
                 </ul>
               </div>
-              <div className="mt-8 border-t border-gray-200 pt-8">
-                <h3 className="text-xl font-semibold बनावट text-gray-900">Get In Touch</h3>
-                <p className="mt-1 text-base text-gray-600 बनावट">
+              <div className="mt-8 border-t border-olive-200 pt-8">
+                <h3 className="text-xl font-semibold बनावट text-olive-900">Get In Touch</h3>
+                <p className="mt-1 text-base text-olive-600 बनावट">
                   For inquiries, please use the form or reach out to us via phone at <a href={`tel:${contactInfoData.phone?.replace(/\s|\(|\)/g, '')}`} className="text-pink-600 hover:text-pink-500">{contactInfoData.phone}</a> or email at <a href={`mailto:${contactInfoData.email}`} className="text-pink-600 hover:text-pink-500">{contactInfoData.email}</a>.
                 </p>
               </div>

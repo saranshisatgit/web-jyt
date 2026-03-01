@@ -35,7 +35,7 @@ export function PostMainContentArea({
   generatedHtml,
 }: PostMainContentAreaProps) {
   return (
-    <div className="text-gray-700">
+    <div className="text-olive-700">
       <div className="max-w-2xl xl:mx-auto">
         {/* Display main image if available */}
         {imageBlock && imageBlock.content.image?.content && (
@@ -58,13 +58,13 @@ export function PostMainContentArea({
 
         {/* Main Content Area: Handles TipTap rendering and final HTML display */}
         {!processedContent ? (
-          <div className="py-4 text-center text-gray-500">
+          <div className="py-4 text-center text-olive-500">
             Content not available or being processed...
           </div>
         ) : !generatedHtml ? (
           <div className="flex flex-col items-center justify-center py-10">
-            <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-12 w-12 mb-4"></div>
-            <p className="loading-text text-gray-500 text-lg">
+            <div className="loader ease-linear rounded-full border-4 border-t-4 border-olive-200 h-12 w-12 mb-4"></div>
+            <p className="loading-text text-olive-500 text-lg">
               Loading content...
             </p>
           </div>
@@ -110,30 +110,30 @@ export function PostMainContentArea({
               {showDebug ? 'Hide' : 'Show'} Debug Info
             </Button>
             {showDebug && (
-              <div className="mt-4 space-y-4 rounded-md border border-dashed border-gray-300 bg-gray-50 p-4 text-xs">
+              <div className="mt-4 space-y-4 rounded-md border border-dashed border-olive-300 bg-olive-50 p-4 text-xs">
                 <div>
                   <h4 className="mb-2 font-medium">Post Object:</h4>
-                  <pre className="overflow-auto rounded-md bg-gray-100 p-4">
+                  <pre className="overflow-auto rounded-md bg-olive-100 p-4">
                     {JSON.stringify(post, null, 2)}
                   </pre>
                 </div>
                 <div>
                   <h4 className="mb-2 font-medium">Processed Content (JSON for TipTapRenderer):</h4>
-                  <pre className="overflow-auto rounded-md bg-gray-100 p-4">
+                  <pre className="overflow-auto rounded-md bg-olive-100 p-4">
                     {JSON.stringify(processedContent, null, 2)}
                   </pre>
                 </div>
                 {drawerNode && (
                   <div>
                     <h4 className="mb-2 font-medium">Extracted Drawer Node:</h4>
-                    <pre className="overflow-auto rounded-md bg-gray-100 p-4">
+                    <pre className="overflow-auto rounded-md bg-olive-100 p-4">
                       {JSON.stringify(drawerNode, null, 2)}
                     </pre>
                   </div>
                 )}
                 <div>
                   <h4 className="mb-2 font-medium">Generated HTML:</h4>
-                  <pre className="overflow-auto rounded-md bg-gray-100 p-4 text-xs">
+                  <pre className="overflow-auto rounded-md bg-olive-100 p-4 text-xs">
                     {generatedHtml}
                   </pre>
                 </div>

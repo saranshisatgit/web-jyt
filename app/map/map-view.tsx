@@ -186,9 +186,9 @@ const MapView = ({ initialPersons }: MapViewProps) => {
         {selectedPerson ? (
           // Details Panel
           <div className="bg-white/80 backdrop-blur-sm p-4 rounded-lg shadow-lg relative animate-fade-in">
-            <button onClick={() => setSelectedPerson(null)} className="absolute top-2 right-2 text-gray-600 hover:text-gray-900 font-bold text-xl">&times;</button>
+            <button onClick={() => setSelectedPerson(null)} className="absolute top-2 right-2 text-olive-600 hover:text-olive-900 font-bold text-xl">&times;</button>
             <h3 className="font-bold text-lg mb-2 border-b pb-2">{getFullName(selectedPerson)}</h3>
-            <div className="space-y-1 text-sm text-gray-700 max-h-80 overflow-y-auto pr-2">
+            <div className="space-y-1 text-sm text-olive-700 max-h-80 overflow-y-auto pr-2">
               {selectedPerson.person_type?.name && <p><span className="font-semibold">Type:</span> {selectedPerson.person_type.name}</p>}
               {selectedPerson.addresses[0]?.city && <p><span className="font-semibold">City:</span> {selectedPerson.addresses[0].city}</p>}
               {selectedPerson.addresses[0]?.postal_code && <p><span className="font-semibold">Postal Code:</span> {selectedPerson.addresses[0].postal_code}</p>}
@@ -206,7 +206,7 @@ const MapView = ({ initialPersons }: MapViewProps) => {
             <h2 className="text-lg font-bold mb-2">Filters</h2>
             <div className="space-y-1 mb-3">
               {activeFilters.map((filter, index) => (
-                <div key={index} className="flex items-center justify-between bg-gray-200 px-2 py-1 rounded-md text-sm">
+                <div key={index} className="flex items-center justify-between bg-olive-200 px-2 py-1 rounded-md text-sm">
                   <span>{filter.field}: <strong>{filter.value}</strong></span>
                   <button onClick={() => removeFilter(index)} className="text-red-500 hover:text-red-700">✖</button>
                 </div>
@@ -227,13 +227,13 @@ const MapView = ({ initialPersons }: MapViewProps) => {
                 </select>
               )}
               <button onClick={addFilter} className="w-full bg-green-500 text-white px-3 py-1 rounded-md hover:bg-green-600">Add Filter</button>
-              <button onClick={resetFilters} className="w-full bg-gray-300 px-3 py-1 rounded-md hover:bg-gray-400 mt-1">Reset All Filters</button>
+              <button onClick={resetFilters} className="w-full bg-olive-300 px-3 py-1 rounded-md hover:bg-olive-400 mt-1">Reset All Filters</button>
             </div>
             <h2 className="text-lg font-bold mt-4 mb-2">Pagination</h2>
-            <p className="text-sm text-gray-700 mb-3">Showing <span className="font-semibold">{allPersons.length}</span> locations.</p>
+            <p className="text-sm text-olive-700 mb-3">Showing <span className="font-semibold">{allPersons.length}</span> locations.</p>
             <div className="flex items-center space-x-2">
               <input type="number" value={loadCount} onChange={(e) => setLoadCount(Number(e.target.value))} className="w-16 p-1 border rounded-md text-sm" />
-              <button onClick={handleLoadMore} disabled={isLoading} className="flex-1 bg-blue-500 text-white px-3 py-1 rounded-md text-sm hover:bg-blue-600 disabled:bg-gray-400">
+              <button onClick={handleLoadMore} disabled={isLoading} className="flex-1 bg-blue-500 text-white px-3 py-1 rounded-md text-sm hover:bg-blue-600 disabled:bg-olive-400">
                 {isLoading ? 'Loading...' : 'Load More'}
               </button>
             </div>

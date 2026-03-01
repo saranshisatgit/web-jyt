@@ -58,7 +58,7 @@ function Key({
         className,
         'flex flex-col items-center justify-center gap-0.5 px-1 py-px',
         'rounded-sm bg-white bg-linear-to-t from-black/[3%] ring-1 shadow-[0_1px_rgb(0_0_0_/_0.05)] ring-black/10',
-        '[:where(&_svg)]:h-3.5 [:where(&_svg)]:fill-gray-600',
+        '[:where(&_svg)]:h-3.5 [:where(&_svg)]:fill-olive-600',
       )}
     >
       {children}
@@ -582,7 +582,7 @@ function BackSlashKey() {
 function CapsLockKey() {
   return (
     <Key name="CapsLock" width={72}>
-      <svg viewBox="0 0 3 3" className="mt-1 mr-auto h-[3px] fill-gray-500">
+      <svg viewBox="0 0 3 3" className="mt-1 mr-auto h-[3px] fill-olive-500">
         <path d="M3 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />
       </svg>
       <svg viewBox="0 0 35 14" className="mt-auto mr-auto">

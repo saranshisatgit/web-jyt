@@ -175,7 +175,7 @@ export default function PrivacyPolicyPage() {
       <li><strong>Address:</strong> Kotwali Bazaar Road, Dharamshala, HP 176215, INDIA</li>
     </ul>
 
-    <p className="text-sm text-gray-500 mt-8">
+    <p className="text-sm text-olive-500 mt-8">
       <strong>Last Updated:</strong> January 2025
     </p>
   `

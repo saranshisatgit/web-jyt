@@ -31,7 +31,7 @@ const ContactForm = () => {
     <form action={formAction} className="space-y-6 rounded-xl bg-white p-7 sm:p-11 shadow-md ring-1 ring-black/5">
       {/* Input fields (unchanged) */}
       <div>
-        <label htmlFor="name" className="block text-sm/5 font-medium बनावट text-gray-900">
+        <label htmlFor="name" className="block text-sm/5 font-medium बनावट text-olive-900">
           Full Name
         </label>
         <input
@@ -43,7 +43,7 @@ const ContactForm = () => {
         />
       </div>
       <div>
-        <label htmlFor="email" className="block text-sm/5 font-medium बनावट text-gray-900">
+        <label htmlFor="email" className="block text-sm/5 font-medium बनावट text-olive-900">
           Email Address
         </label>
         <input
@@ -55,7 +55,7 @@ const ContactForm = () => {
         />
       </div>
       <div>
-        <label htmlFor="company" className="block text-sm/5 font-medium बनावट text-gray-900">
+        <label htmlFor="company" className="block text-sm/5 font-medium बनावट text-olive-900">
           Company
         </label>
         <input
@@ -66,7 +66,7 @@ const ContactForm = () => {
         />
       </div>
       <div>
-        <label htmlFor="role" className="block text-sm/5 font-medium बनावट text-gray-900">
+        <label htmlFor="role" className="block text-sm/5 font-medium बनावट text-olive-900">
           Role
         </label>
         <input
@@ -77,7 +77,7 @@ const ContactForm = () => {
         />
       </div>
       <div>
-        <label htmlFor="message" className="block text-sm/5 font-medium बनावट text-gray-900">
+        <label htmlFor="message" className="block text-sm/5 font-medium बनावट text-olive-900">
           Message
         </label>
         <textarea

@@ -37,7 +37,7 @@ export function ManualDrawer({ attrs }: ManualDrawerProps) {
         variant='secondary'
           
           onClick={() => setIsOpen(!isOpen)}
-          //className="bg-gray-200 text-gray-800 font-semibold py-2 px-4 rounded-md shadow-md hover:bg-gray-300 transition-colors duration-200"
+          //className="bg-olive-200 text-olive-800 font-semibold py-2 px-4 rounded-md shadow-md hover:bg-olive-300 transition-colors duration-200"
         >
           {isOpen ? 'Hide Drawing' : 'Show Drawing'}
         </Button>
@@ -49,7 +49,7 @@ export function ManualDrawer({ attrs }: ManualDrawerProps) {
               alt={attrs.title || 'User-created drawing'}
               width={attrs.width}
               height={attrs.height}
-              className="rounded-md border border-gray-200"
+              className="rounded-md border border-olive-200"
             />
         </div>
       )}

@@ -39,7 +39,7 @@ export function MainContent({ block, className = '' }: MainContentProps) {
   if (!block || !block.content) {
     return (
       <Container className="py-16 sm:py-24">
-        <div className="text-center text-gray-500">
+        <div className="text-center text-olive-500">
           <p>Content not available</p>
         </div>
       </Container>

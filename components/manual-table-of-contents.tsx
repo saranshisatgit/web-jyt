@@ -36,7 +36,7 @@ export function ManualTableOfContents({ headings }: ManualTableOfContentsProps) 
             <a
               href={`#${heading.id}`}
               onClick={(e) => handleClick(e, heading.id)}
-              className="block text-gray-500 transition-colors hover:text-gray-900"
+              className="block text-olive-500 transition-colors hover:text-olive-900"
               style={{ paddingLeft: `${(heading.level - 1) * 1}rem` }}
             >
               {heading.text}

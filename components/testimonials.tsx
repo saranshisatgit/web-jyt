@@ -154,7 +154,7 @@ function TestimonialCard({
       />
       <div
         aria-hidden="true"
-        className="absolute inset-0 rounded-3xl bg-linear-to-t from-black from-[calc(7/16*100%)] ring-1 ring-gray-950/10 ring-inset sm:from-25%"
+        className="absolute inset-0 rounded-3xl bg-linear-to-t from-black from-[calc(7/16*100%)] ring-1 ring-olive-950/10 ring-inset sm:from-25%"
       />
       <figure className="relative p-10">
         <blockquote>
@@ -190,7 +190,7 @@ interface CallToActionProps {
 function CallToAction({ text, linkText, linkUrl }: CallToActionProps) {
   return (
     <div>
-      <p className="max-w-sm text-sm/6 text-gray-600">{text}</p>
+      <p className="max-w-sm text-sm/6 text-olive-600">{text}</p>
       <div className="mt-2">
         <Link
           href={linkUrl}
@@ -357,8 +357,8 @@ export function Testimonials({ testimonialsData }: { testimonialsData?: Testimon
                   }
                   aria-label={`Scroll to page ${pageIndex + 1}`}
                   className={clsx(
-                    'size-2.5 rounded-full border border-transparent bg-gray-300 transition',
-                    'data-active:bg-gray-400 data-hover:bg-gray-400',
+                    'size-2.5 rounded-full border border-transparent bg-olive-300 transition',
+                    'data-active:bg-olive-400 data-hover:bg-olive-400',
                     'forced-colors:data-active:bg-[Highlight] forced-colors:data-focus:outline-offset-4',
                   )}
                 />

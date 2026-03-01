@@ -123,7 +123,7 @@ function Header({ data }: { data?: Block }) {
         <div className="max-w-lg">
           <h2 className="text-2xl font-medium tracking-tight">{content.mission.title}</h2>
           {content.mission.paragraphs.map((paragraph, index) => (
-            <p key={index} className={`mt-${index === 0 ? '6' : '8'} text-sm/6 text-gray-600`}>
+            <p key={index} className={`mt-${index === 0 ? '6' : '8'} text-sm/6 text-olive-600`}>
               {paragraph}
             </p>
           ))}
@@ -131,8 +131,8 @@ function Header({ data }: { data?: Block }) {
         <div className="pt-20 lg:row-span-2">
           <div className="-mx-8 grid grid-cols-2 gap-4 sm:-mx-16 sm:grid-cols-4 lg:mx-0 lg:grid-cols-2 lg:gap-4 xl:gap-8">
             {content.images.map((image, index) => (
-              <div 
-                key={index} 
+              <div
+                key={index}
                 className={`${index % 2 === 1 ? '-mt-8 lg:-mt-32' : ''} relative aspect-square overflow-hidden rounded-xl shadow-xl outline-1 -outline-offset-1 outline-black/10`}
               >
                 <Image
@@ -149,13 +149,13 @@ function Header({ data }: { data?: Block }) {
         <div className="max-lg:mt-12 lg:col-span-1">
           <dl className="grid grid-cols-2 gap-8 sm:grid-cols-4 lg:grid-cols-2">
             {content.stats.map((stat, index) => (
-              <div key={index} className={`flex flex-col gap-y-2 ${index < content.stats.length - 1 && index < 3 ? 'max-sm:border-b max-sm:border-dotted max-sm:border-gray-200 max-sm:pb-4' : ''}`}>
-                <dt className="text-sm/6 text-gray-600">{stat.label}</dt>
+              <div key={index} className={`flex flex-col gap-y-2 ${index < content.stats.length - 1 && index < 3 ? 'max-sm:border-b max-sm:border-dotted max-sm:border-olive-200 max-sm:pb-4' : ''}`}>
+                <dt className="text-sm/6 text-olive-600">{stat.label}</dt>
                 <dd className="order-first text-6xl font-medium tracking-tight">
-                  <AnimatedNumber 
-                    start={stat.animatedValue.start} 
-                    end={stat.animatedValue.end} 
-                    decimals={stat.animatedValue.decimals} 
+                  <AnimatedNumber
+                    start={stat.animatedValue.start}
+                    end={stat.animatedValue.end}
+                    decimals={stat.animatedValue.decimals}
                   />
                   {stat.value.replace(/[0-9.]+/, '')}
                 </dd>
@@ -182,7 +182,7 @@ function Person({
       <Image alt="" src={img} className="size-12 rounded-full" width={100} height={100} />
       <div className="text-sm/6">
         <h3 className="font-medium">{name}</h3>
-        <p className="text-gray-500">{description}</p>
+        <p className="text-olive-500">{description}</p>
       </div>
     </li>
   )
@@ -212,7 +212,7 @@ function Team({ data }: { data?: Block }) {
       <div className="mt-12 grid grid-cols-1 gap-12 lg:grid-cols-2">
         <div className="max-w-lg">
           {content.story.map((paragraph, index) => (
-            <p key={index} className={`${index > 0 ? 'mt-8 ' : ''}text-sm/6 text-gray-600`}>
+            <p key={index} className={`${index > 0 ? 'mt-8 ' : ''}text-sm/6 text-olive-600`}>
               {paragraph}
             </p>
           ))}
@@ -239,7 +239,7 @@ function Team({ data }: { data?: Block }) {
       <Subheading as="h3" className="mt-24">
         The team
       </Subheading>
-      <hr className="mt-6 border-t border-gray-200" />
+      <hr className="mt-6 border-t border-olive-200" />
       <ul
         role="list"
         className="mx-auto mt-16 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3"
@@ -268,7 +268,7 @@ function Investors({ data }: { data?: Block }) {
       </Container>
     );
   }
-  
+
   return (
     <Container className="mt-32">
       <Subheading>{content.heading}</Subheading>
@@ -290,12 +290,12 @@ function Investors({ data }: { data?: Block }) {
                 height={100}
               />
             )}
-            <div className="text-sm/6 text-gray-600">{investor.name}</div>
+            <div className="text-sm/6 text-olive-600">{investor.name}</div>
           </div>
         ))}
       </div>
-      
-      <div className="mt-16 rounded-4xl bg-gray-950 py-20 sm:mt-32 sm:py-32 lg:mt-56">
+
+      <div className="mt-16 rounded-4xl bg-olive-950 py-20 sm:mt-32 sm:py-32 lg:mt-56">
         <Container>
           <div className="mx-auto max-w-2xl lg:max-w-none">
             <div className="flex flex-col items-center text-center">
@@ -310,7 +310,7 @@ function Investors({ data }: { data?: Block }) {
                 </blockquote>
                 <figcaption className="mt-6 flex flex-col gap-x-4 gap-y-1">
                   <div className="font-semibold text-white">{content.testimonial.author}</div>
-                  <div className="text-sm text-gray-400">
+                  <div className="text-sm text-olive-400">
                     {content.testimonial.role}
                   </div>
                 </figcaption>
@@ -325,7 +325,7 @@ function Investors({ data }: { data?: Block }) {
 
 function Careers({ data }: { data?: Block }) {
   const content = data?.content as unknown as CareersBlockContent;
-  
+
   // If no data is provided, return null or a fallback UI
   if (!content) {
     return (
@@ -334,7 +334,7 @@ function Careers({ data }: { data?: Block }) {
       </Container>
     );
   }
-  
+
   return (
     <Container className="my-32">
       <Subheading>{content.heading}</Subheading>
@@ -366,17 +366,17 @@ function Careers({ data }: { data?: Block }) {
                 {(() => {
                   // Get unique departments
                   const departments = [...new Set(content.openPositions.map(position => position.department))];
-                  
+
                   return departments.map((department, deptIndex) => {
                     const departmentPositions = content.openPositions.filter(
                       position => position.department === department
                     );
-                    
+
                     return (
                       <React.Fragment key={deptIndex}>
                         <tr>
                           <th scope="colgroup" colSpan={3} className="px-0 pt-10 pb-0">
-                            <div className="-mx-4 rounded-lg bg-gray-50 px-4 py-3 text-sm/6 font-semibold">
+                            <div className="-mx-4 rounded-lg bg-olive-50 px-4 py-3 text-sm/6 font-semibold">
                               {department}
                             </div>
                           </th>
@@ -384,12 +384,12 @@ function Careers({ data }: { data?: Block }) {
                         {departmentPositions.map((position, posIndex) => {
                           const isLast = posIndex === departmentPositions.length - 1;
                           return (
-                            <tr 
-                              key={posIndex} 
-                              className={`text-sm/6 font-normal ${!isLast ? 'border-b border-dotted border-gray-200' : ''}`}
+                            <tr
+                              key={posIndex}
+                              className={`text-sm/6 font-normal ${!isLast ? 'border-b border-dotted border-olive-200' : ''}`}
                             >
                               <td className="px-0 py-4">{position.title}</td>
-                              <td className="px-0 py-4 text-gray-600">{position.location}</td>
+                              <td className="px-0 py-4 text-olive-600">{position.location}</td>
                               <td className="px-0 py-4 text-right">
                                 <Button variant="outline" href="#">
                                   View listing
@@ -417,7 +417,7 @@ function Careers({ data }: { data?: Block }) {
             {content.perks.map((perk, index) => (
               <div key={index}>
                 <dt className="font-semibold">{perk.title}</dt>
-                <dd className="mt-2 text-sm/6 text-gray-600">{perk.description}</dd>
+                <dd className="mt-2 text-sm/6 text-olive-600">{perk.description}</dd>
               </div>
             ))}
           </dl>
@@ -438,20 +438,18 @@ export default async function Company() {
   return (
     <main className="overflow-hidden">
       <GradientBackground />
-      <Container>
-        <Navbar />
-      </Container>
+      <Navbar />
       <Suspense fallback={<SectionLoading />}>
         <Header data={headerType} />
       </Suspense>
       <Suspense fallback={<SectionLoading />}>
-        <Team data={team}/>
+        <Team data={team} />
       </Suspense>
-      <Suspense fallback={<SectionLoading />}>  
+      <Suspense fallback={<SectionLoading />}>
         <Investors data={investors} />
       </Suspense>
-      <Suspense fallback={<SectionLoading />}>  
-      <Careers data={careers} />
+      <Suspense fallback={<SectionLoading />}>
+        <Careers data={careers} />
       </Suspense>
     </main>
   )

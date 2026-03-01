@@ -174,7 +174,7 @@ export function BlogPostContent({
             authorsBlock={authorsBlock} 
             category={(post.public_metadata as { category?: string })?.category} 
           />
-          <div className="text-gray-700">
+          <div className="text-olive-700">
             <PostMainContentArea 
               post={post}
               imageBlock={imageBlock}
@@ -187,7 +187,7 @@ export function BlogPostContent({
               initialContentForDebug={contentBlock?.content.text}
               generatedHtml={generatedHtml} // Pass generatedHtml for debug view
             />
-          </div> {/* Closes the center content's outer div (text-gray-700) */}
+          </div> {/* Closes the center content's outer div (text-olive-700) */}
 
           {/* Right sidebar for Table of Contents - should be the third column of the main grid */}
           <PostTableOfContents 
