@@ -118,7 +118,7 @@ export function FeatureSection({ featureSection }: { featureSection: FeatureSect
 
   return (
     <div>
-      <Container className="pb-24">
+      <Container className="mt-16 sm:mt-24 lg:mt-32 pb-24">
         <Heading as="h2" className="max-w-3xl">
           {title}
         </Heading>
