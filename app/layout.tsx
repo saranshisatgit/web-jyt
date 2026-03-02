@@ -29,7 +29,7 @@ export default async function RootLayout({
 }>) {
   const siteData = await getCachedSiteData()
   if (!siteData.footerBlock) return <Spinner size="lg" />
-  
+
   return (
     <ApiQueryClientProvider>
       <html lang="en">
@@ -49,8 +49,8 @@ export default async function RootLayout({
             href="/blog/feed.xml"
           />
           {/* JYT Analytics - Production */}
-          <script 
-            src="https://automatic.jaalyantra.com/analytics.min.js" 
+          <script
+            src="https://automatic.jaalyantra.com/analytics.min.js"
             data-website-id="01JRTP1DETZ58GHJGMZ604PREH"
             defer
           />
@@ -58,7 +58,7 @@ export default async function RootLayout({
         <body className="text-olive-950 bg-olive-100 antialiased dark:text-white dark:bg-olive-950">
           <SiteDataProvider value={{ navBlock: siteData.navBlock }}>
             <VisualEditorProvider>
-              <main>{children}</main>
+              <main className="isolate overflow-clip">{children}</main>
               <Footer data={siteData.footerBlock.content} />
             </VisualEditorProvider>
           </SiteDataProvider>
