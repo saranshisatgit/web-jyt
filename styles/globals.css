@@ -1,6 +1,6 @@
 @import 'tailwindcss';
 
-@plugin "@tailwindcss/typography";
+
 
 @theme {
   --font-display: 'Instrument Serif', serif;
@@ -33,12 +33,12 @@
       background-color: var(--color-olive-950);
     }
   }
-  
+
   body {
     @apply text-olive-950 antialiased;
     font-family: var(--font-sans);
   }
-  
+
   @variant dark {
     body {
       @apply text-white;
@@ -50,7 +50,7 @@
   .font-display {
     font-family: var(--font-display);
   }
-  
+
   .text-balance {
     text-wrap: balance;
   }

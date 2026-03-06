@@ -39,8 +39,8 @@ export function HeroSection({ headerBlock }: { headerBlock: HeaderBlock }) {
   };
 
   return (
-    <section className="py-16 sm:py-24 lg:py-32">
-      <Container>
+    <section className="relative min-h-screen flex flex-col justify-center bg-olive-50">
+      <Container className="py-16 sm:py-24 lg:py-32">
         <motion.div
           className="flex flex-col items-start gap-6"
           variants={container}

@@ -20,6 +20,7 @@ import { BlockWrapper } from '@/components/visual-editor/BlockWrapper';
 import { Navbar } from '@/components/navbar';
 import { Link } from '@/components/link';
 import { ChevronRightIcon } from '@heroicons/react/16/solid';
+import { ProblemStatement } from '@/components/problem-statement';
 
 export const metadata: Metadata = {
   description:
@@ -419,6 +420,10 @@ export default async function Home() {
           <Suspense fallback={<SectionLoading />}>
             <Hero homeData={homeData.page} />
           </Suspense>
+        </div>
+
+        <div className="relative">
+          <ProblemStatement />
         </div>
 
         <div className="relative">
