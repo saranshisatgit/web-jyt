@@ -110,15 +110,27 @@ function ManualChaos({ dark }: { dark?: boolean }) {
 export function ProblemStatement() {
     const [sliderPosition, setSliderPosition] = useState(50)
     const [isDragging, setIsDragging] = useState(false)
+    const [dragDirection, setDragDirection] = useState<'left' | 'right' | null>(null)
     const containerRef = useRef<HTMLDivElement>(null)
     const shouldReduceMotion = useReducedMotion()
+    const prevPositionRef = useRef(50)
 
     const updateSliderPosition = useCallback((clientX: number) => {
         if (!containerRef.current) return
         const rect = containerRef.current.getBoundingClientRect()
         const x = Math.max(0, Math.min(clientX - rect.left, rect.width))
         const clamped = Math.max(rect.width * 0.15, Math.min(x, rect.width * 0.85))
-        setSliderPosition((clamped / rect.width) * 100)
+        const newPosition = (clamped / rect.width) * 100
+        
+        // Track drag direction
+        if (newPosition > prevPositionRef.current) {
+            setDragDirection('right')
+        } else if (newPosition < prevPositionRef.current) {
+            setDragDirection('left')
+        }
+        
+        prevPositionRef.current = newPosition
+        setSliderPosition(newPosition)
     }, [])
 
     const handleMouseDown = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
@@ -431,26 +443,6 @@ export function ProblemStatement() {
                             <div className="hidden dark:block w-full h-full"><JYTFlower dark={true} /></div>
                         </motion.div>
 
-                        {/* Center text - From Chaos to Unification */}
-                        <motion.div
-                            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-20"
-                            initial={{ opacity: 0, scale: 0.8 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ duration: 0.8, delay: 0.5 }}
-                        >
-                            <div className="text-center">
-                                <div className="text-[11px] font-mono uppercase tracking-[0.2em] text-olive-600 dark:text-lime-400 font-semibold whitespace-nowrap">
-                                    From Chaos
-                                </div>
-                                <div className="text-[9px] font-mono uppercase tracking-[0.3em] text-olive-500/70 dark:text-lime-400/70 mt-1 whitespace-nowrap">
-                                    to Unification & Peace
-                                </div>
-                            </div>
-                        </motion.div>
-
-
-
-
                         {/* Pulsing data flow particles - matching icon positions */}
                         <motion.div
                             className="absolute pointer-events-none"
@@ -636,6 +628,62 @@ export function ProblemStatement() {
                             </motion.div>
                         </motion.div>
 
+                        {/* JYT Side - Success Cards */}
+                        <motion.div 
+                            className="absolute pointer-events-none z-20"
+                            style={{ top: '62%', left: '68%' }}
+                            initial={{ opacity: 0, y: 10, scale: 0.9 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            transition={{ duration: 0.5, delay: 0.4 }}
+                        >
+                            <div className="bg-lime-50/95 dark:bg-lime-950/50 border border-lime-400/60 dark:border-lime-400/40 rounded-lg p-2.5 shadow-[0_0_20px_rgba(163,230,53,0.3)] backdrop-blur-sm">
+                                <div className="flex items-center gap-1.5 mb-1">
+                                    <div className="w-2 h-2 rounded-full bg-lime-500 animate-pulse" />
+                                    <span className="text-[9px] font-mono uppercase text-lime-700 dark:text-lime-400 font-bold">Order Sent</span>
+                                </div>
+                                <div className="text-[7px] text-lime-600/80 dark:text-lime-400/70 font-mono">Delivered in 2 hours</div>
+                            </div>
+                        </motion.div>
+
+                        <motion.div 
+                            className="absolute pointer-events-none z-20"
+                            style={{ top: '28%', left: '72%' }}
+                            initial={{ opacity: 0, y: 10, scale: 0.9 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            transition={{ duration: 0.5, delay: 0.7 }}
+                        >
+                            <div className="bg-emerald-50/95 dark:bg-emerald-950/50 border border-emerald-400/60 dark:border-emerald-400/40 rounded-lg p-2.5 shadow-[0_0_20px_rgba(52,211,153,0.3)] backdrop-blur-sm">
+                                <div className="flex items-center gap-1.5 mb-1">
+                                    <div className="w-2 h-2 rounded-full bg-emerald-500" />
+                                    <span className="text-[9px] font-mono uppercase text-emerald-700 dark:text-emerald-400 font-bold">Design Created</span>
+                                </div>
+                                <div className="text-[7px] text-emerald-600/80 dark:text-emerald-400/70 font-mono">Auto-saved to cloud</div>
+                            </div>
+                        </motion.div>
+
+                        <motion.div 
+                            className="absolute pointer-events-none z-20"
+                            style={{ bottom: '38%', left: '70%' }}
+                            initial={{ opacity: 0, y: 10, scale: 0.9 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            transition={{ duration: 0.5, delay: 1.0 }}
+                        >
+                            <div className="bg-blue-50/95 dark:bg-blue-950/50 border border-blue-400/60 dark:border-blue-400/40 rounded-lg p-2.5 shadow-[0_0_20px_rgba(96,165,250,0.3)] backdrop-blur-sm">
+                                <div className="flex items-center gap-1.5 mb-1">
+                                    <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
+                                    <span className="text-[9px] font-mono uppercase text-blue-700 dark:text-blue-400 font-bold">Loading Order...</span>
+                                </div>
+                                <div className="w-16 h-1 bg-blue-200 dark:bg-blue-800 rounded-full overflow-hidden">
+                                    <motion.div 
+                                        className="h-full bg-blue-500"
+                                        initial={{ width: 0 }}
+                                        animate={{ width: '100%' }}
+                                        transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+                                    />
+                                </div>
+                            </div>
+                        </motion.div>
+
                         {/* Animated cursors */}
                         <motion.div
                             className="absolute pointer-events-none flex items-center gap-2 z-30"
@@ -680,6 +728,48 @@ export function ProblemStatement() {
                             <path d="M8 5l-5 7 5 7M16 5l5 7-5 7" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
                     </div>
+
+                    {/* Dynamic Center Text - Changes based on which side is being revealed */}
+                    <motion.div
+                        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-50"
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.3 }}
+                    >
+                        {isDragging && dragDirection === 'right' ? (
+                            // Revealing Manual/Chaos side (dragging right shows more of left/Manual side)
+                            <div className="text-center bg-red-50/90 dark:bg-red-950/70 backdrop-blur-md px-6 py-4 rounded-2xl border border-red-300/60 dark:border-red-500/30 shadow-2xl">
+                                <div className="text-[16px] mb-2">😰</div>
+                                <div className="text-[13px] font-mono uppercase tracking-[0.1em] text-red-700 dark:text-red-400 font-bold whitespace-nowrap">
+                                    Back to chaos?
+                                </div>
+                                <div className="text-[10px] font-mono text-red-600/80 dark:text-red-400/70 mt-1 whitespace-nowrap">
+                                    Bad choice for you
+                                </div>
+                            </div>
+                        ) : isDragging && dragDirection === 'left' ? (
+                            // Revealing JYT side (dragging left shows more of right/JYT side)
+                            <div className="text-center bg-lime-50/90 dark:bg-lime-950/70 backdrop-blur-md px-6 py-4 rounded-2xl border border-lime-400/60 dark:border-lime-400/30 shadow-[0_0_30px_rgba(163,230,53,0.4)]">
+                                <div className="text-[20px] mb-1">☯️</div>
+                                <div className="text-[13px] font-mono uppercase tracking-[0.1em] text-lime-700 dark:text-lime-400 font-bold whitespace-nowrap">
+                                    Good choice!
+                                </div>
+                                <div className="text-[10px] font-mono text-lime-600/80 dark:text-lime-400/70 mt-1 whitespace-nowrap">
+                                    Welcome to zen
+                                </div>
+                            </div>
+                        ) : (
+                            // Not dragging - show default
+                            <div className="text-center bg-white/80 dark:bg-black/60 backdrop-blur-md px-6 py-4 rounded-2xl border border-olive-200/60 dark:border-white/10 shadow-2xl">
+                                <div className="text-[14px] font-mono uppercase tracking-[0.15em] text-olive-700 dark:text-lime-400 font-bold whitespace-nowrap">
+                                    From Chaos
+                                </div>
+                                <div className="text-[11px] font-mono uppercase tracking-[0.2em] text-olive-500 dark:text-lime-300/80 mt-1 whitespace-nowrap">
+                                    to Unification & Peace
+                                </div>
+                            </div>
+                        )}
+                    </motion.div>
 
                     {/* Storytelling labels - positioned outside the clipped areas */}
                     <motion.div 
