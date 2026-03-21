@@ -190,7 +190,7 @@ interface CallToActionProps {
 function CallToAction({ text, linkText, linkUrl }: CallToActionProps) {
   return (
     <div>
-      <p className="max-w-sm text-sm/6 text-olive-600">{text}</p>
+      <p className="max-w-sm text-sm/6 text-olive-600 dark:text-olive-400">{text}</p>
       <div className="mt-2">
         <Link
           href={linkUrl}
@@ -357,8 +357,8 @@ export function Testimonials({ testimonialsData }: { testimonialsData?: Testimon
                   }
                   aria-label={`Scroll to page ${pageIndex + 1}`}
                   className={clsx(
-                    'size-2.5 rounded-full border border-transparent bg-olive-300 transition',
-                    'data-active:bg-olive-400 data-hover:bg-olive-400',
+                    'size-2.5 rounded-full border border-transparent bg-olive-300 transition dark:bg-olive-700',
+                    'data-active:bg-olive-400 data-hover:bg-olive-400 dark:data-active:bg-olive-500 dark:data-hover:bg-olive-500',
                     'forced-colors:data-active:bg-[Highlight] forced-colors:data-focus:outline-offset-4',
                   )}
                 />

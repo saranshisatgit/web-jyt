@@ -121,9 +121,9 @@ function Header({ data }: { data?: Block }) {
       </Lead>
       <section className="mt-16 grid grid-cols-1 lg:grid-cols-2 lg:gap-12">
         <div className="max-w-lg">
-          <h2 className="text-2xl font-medium tracking-tight">{content.mission.title}</h2>
+          <h2 className="text-2xl font-medium tracking-tight text-olive-950 dark:text-white">{content.mission.title}</h2>
           {content.mission.paragraphs.map((paragraph, index) => (
-            <p key={index} className={`mt-${index === 0 ? '6' : '8'} text-sm/6 text-olive-600`}>
+            <p key={index} className={`mt-${index === 0 ? '6' : '8'} text-sm/6 text-olive-600 dark:text-olive-400`}>
               {paragraph}
             </p>
           ))}
@@ -149,9 +149,9 @@ function Header({ data }: { data?: Block }) {
         <div className="max-lg:mt-12 lg:col-span-1">
           <dl className="grid grid-cols-2 gap-8 sm:grid-cols-4 lg:grid-cols-2">
             {content.stats.map((stat, index) => (
-              <div key={index} className={`flex flex-col gap-y-2 ${index < content.stats.length - 1 && index < 3 ? 'max-sm:border-b max-sm:border-dotted max-sm:border-olive-200 max-sm:pb-4' : ''}`}>
-                <dt className="text-sm/6 text-olive-600">{stat.label}</dt>
-                <dd className="order-first text-6xl font-medium tracking-tight">
+              <div key={index} className={`flex flex-col gap-y-2 ${index < content.stats.length - 1 && index < 3 ? 'max-sm:border-b max-sm:border-dotted max-sm:border-olive-200 dark:max-sm:border-olive-800 max-sm:pb-4' : ''}`}>
+                <dt className="text-sm/6 text-olive-600 dark:text-olive-400">{stat.label}</dt>
+                <dd className="order-first text-6xl font-medium tracking-tight text-olive-950 dark:text-white">
                   <AnimatedNumber
                     start={stat.animatedValue.start}
                     end={stat.animatedValue.end}
@@ -181,8 +181,8 @@ function Person({
     <li className="flex items-center gap-4">
       <Image alt="" src={img} className="size-12 rounded-full" width={100} height={100} />
       <div className="text-sm/6">
-        <h3 className="font-medium">{name}</h3>
-        <p className="text-olive-500">{description}</p>
+        <h3 className="font-medium text-olive-950 dark:text-white">{name}</h3>
+        <p className="text-olive-500 dark:text-olive-400">{description}</p>
       </div>
     </li>
   )
@@ -212,7 +212,7 @@ function Team({ data }: { data?: Block }) {
       <div className="mt-12 grid grid-cols-1 gap-12 lg:grid-cols-2">
         <div className="max-w-lg">
           {content.story.map((paragraph, index) => (
-            <p key={index} className={`${index > 0 ? 'mt-8 ' : ''}text-sm/6 text-olive-600`}>
+            <p key={index} className={`${index > 0 ? 'mt-8 ' : ''}text-sm/6 text-olive-600 dark:text-olive-400`}>
               {paragraph}
             </p>
           ))}
@@ -239,7 +239,7 @@ function Team({ data }: { data?: Block }) {
       <Subheading as="h3" className="mt-24">
         The team
       </Subheading>
-      <hr className="mt-6 border-t border-olive-200" />
+      <hr className="mt-6 border-t border-olive-200 dark:border-olive-800" />
       <ul
         role="list"
         className="mx-auto mt-16 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3"
@@ -290,7 +290,7 @@ function Investors({ data }: { data?: Block }) {
                 height={100}
               />
             )}
-            <div className="text-sm/6 text-olive-600">{investor.name}</div>
+            <div className="text-sm/6 text-olive-600 dark:text-olive-400">{investor.name}</div>
           </div>
         ))}
       </div>
@@ -376,7 +376,7 @@ function Careers({ data }: { data?: Block }) {
                       <React.Fragment key={deptIndex}>
                         <tr>
                           <th scope="colgroup" colSpan={3} className="px-0 pt-10 pb-0">
-                            <div className="-mx-4 rounded-lg bg-olive-50 px-4 py-3 text-sm/6 font-semibold">
+                            <div className="-mx-4 rounded-lg bg-olive-50 px-4 py-3 text-sm/6 font-semibold dark:bg-olive-800 dark:text-white">
                               {department}
                             </div>
                           </th>
@@ -386,10 +386,10 @@ function Careers({ data }: { data?: Block }) {
                           return (
                             <tr
                               key={posIndex}
-                              className={`text-sm/6 font-normal ${!isLast ? 'border-b border-dotted border-olive-200' : ''}`}
+                              className={`text-sm/6 font-normal dark:text-olive-300 ${!isLast ? 'border-b border-dotted border-olive-200 dark:border-olive-800' : ''}`}
                             >
                               <td className="px-0 py-4">{position.title}</td>
-                              <td className="px-0 py-4 text-olive-600">{position.location}</td>
+                              <td className="px-0 py-4 text-olive-600 dark:text-olive-400">{position.location}</td>
                               <td className="px-0 py-4 text-right">
                                 <Button variant="outline" href="#">
                                   View listing
@@ -416,8 +416,8 @@ function Careers({ data }: { data?: Block }) {
           <dl className="mt-6 grid grid-cols-1 gap-8">
             {content.perks.map((perk, index) => (
               <div key={index}>
-                <dt className="font-semibold">{perk.title}</dt>
-                <dd className="mt-2 text-sm/6 text-olive-600">{perk.description}</dd>
+                <dt className="font-semibold text-olive-950 dark:text-white">{perk.title}</dt>
+                <dd className="mt-2 text-sm/6 text-olive-600 dark:text-olive-400">{perk.description}</dd>
               </div>
             ))}
           </dl>

@@ -147,16 +147,16 @@ function PricingCards() {
 
 function PricingCard({ tier }: { tier: (typeof tiers)[number] }) {
   return (
-    <div className="-m-2 grid grid-cols-1 rounded-4xl ring-1 shadow-[inset_0_0_2px_1px_#ffffff4d] ring-black/5 max-lg:mx-auto max-lg:w-full max-lg:max-w-md">
-      <div className="grid grid-cols-1 rounded-4xl p-2 shadow-md shadow-black/5">
-        <div className="rounded-3xl bg-white p-10 pb-9 ring-1 shadow-2xl ring-black/5">
+    <div className="-m-2 grid grid-cols-1 rounded-4xl ring-1 shadow-[inset_0_0_2px_1px_#ffffff4d] ring-black/5 max-lg:mx-auto max-lg:w-full max-lg:max-w-md dark:ring-white/10">
+      <div className="grid grid-cols-1 rounded-4xl p-2 shadow-md shadow-black/5 dark:shadow-white/5">
+        <div className="rounded-3xl bg-white p-10 pb-9 ring-1 shadow-2xl ring-black/5 dark:bg-olive-900 dark:ring-white/10">
           <Subheading>{tier.name}</Subheading>
-          <p className="mt-2 text-sm/6 text-olive-950/75">{tier.description}</p>
+          <p className="mt-2 text-sm/6 text-olive-950/75 dark:text-olive-400">{tier.description}</p>
           <div className="mt-8 flex items-center gap-4">
-            <div className="text-5xl font-medium text-olive-950">
+            <div className="text-5xl font-medium text-olive-950 dark:text-white">
               ${tier.priceMonthly}
             </div>
-            <div className="text-sm/5 text-olive-950/75">
+            <div className="text-sm/5 text-olive-950/75 dark:text-olive-400">
               <p>USD</p>
               <p>per month</p>
             </div>
@@ -165,7 +165,7 @@ function PricingCard({ tier }: { tier: (typeof tiers)[number] }) {
             <Button href={tier.href}>Start a free trial</Button>
           </div>
           <div className="mt-8">
-            <h3 className="text-sm/6 font-medium text-olive-950">
+            <h3 className="text-sm/6 font-medium text-olive-950 dark:text-white">
               What&apos;s included:
             </h3>
             <ul className="mt-3 space-y-3">
@@ -224,11 +224,11 @@ function PricingTable({
                 <Menu>
                   <MenuButton className="flex items-center justify-between gap-2 font-medium">
                     {selectedTier.name}
-                    <ChevronUpDownIcon className="size-4 fill-olive-900" />
+                    <ChevronUpDownIcon className="size-4 fill-olive-900 dark:fill-white" />
                   </MenuButton>
                   <MenuItems
                     anchor="bottom start"
-                    className="min-w-(--button-width) rounded-lg bg-white p-1 ring-1 shadow-lg ring-olive-200 [--anchor-gap:6px] [--anchor-offset:-4px] [--anchor-padding:10px]"
+                    className="min-w-(--button-width) rounded-lg bg-white p-1 ring-1 shadow-lg ring-olive-200 [--anchor-gap:6px] [--anchor-offset:-4px] [--anchor-padding:10px] dark:bg-olive-900 dark:ring-olive-700"
                   >
                     {tiers.map((tier) => (
                       <MenuItem key={tier.slug}>
@@ -238,7 +238,7 @@ function PricingTable({
                           data-selected={
                             tier === selectedTier ? true : undefined
                           }
-                          className="group flex items-center gap-2 rounded-md px-2 py-1 data-focus:bg-olive-200"
+                          className="group flex items-center gap-2 rounded-md px-2 py-1 data-focus:bg-olive-200 dark:text-white dark:data-focus:bg-olive-800"
                         >
                           {tier.name}
                           <CheckIcon className="hidden size-4 group-data-selected:block" />
@@ -284,7 +284,7 @@ function PricingTable({
                   colSpan={4}
                   className="px-0 pt-10 pb-0 group-first-of-type:pt-5"
                 >
-                  <div className="-mx-4 rounded-lg bg-olive-50 px-4 py-3 text-sm/6 font-semibold">
+                  <div className="-mx-4 rounded-lg bg-olive-50 px-4 py-3 text-sm/6 font-semibold dark:bg-olive-800 dark:text-white">
                     {section}
                   </div>
                 </th>
@@ -294,11 +294,11 @@ function PricingTable({
                 .map(({ name }) => (
                   <tr
                     key={name}
-                    className="border-b border-olive-100 last:border-none"
+                    className="border-b border-olive-100 last:border-none dark:border-olive-800"
                   >
                     <th
                       scope="row"
-                      className="px-0 py-4 text-sm/6 font-normal text-olive-600"
+                      className="px-0 py-4 text-sm/6 font-normal text-olive-600 dark:text-olive-400"
                     >
                       {name}
                     </th>
@@ -356,10 +356,10 @@ function FeatureItem({
   return (
     <li
       data-disabled={disabled ? true : undefined}
-      className="flex items-start gap-4 text-sm/6 text-olive-950/75 data-disabled:text-olive-950/25"
+      className="flex items-start gap-4 text-sm/6 text-olive-950/75 data-disabled:text-olive-950/25 dark:text-olive-400 dark:data-disabled:text-olive-600"
     >
       <span className="inline-flex h-6 items-center">
-        <PlusIcon className="size-[0.9375rem] shrink-0 fill-olive-950/25" />
+        <PlusIcon className="size-[0.9375rem] shrink-0 fill-olive-950/25 dark:fill-olive-500" />
       </span>
       {disabled && <span className="sr-only">Not included:</span>}
       {description}
@@ -431,10 +431,10 @@ function FrequentlyAskedQuestions() {
         </Heading>
         <div className="mx-auto mt-16 mb-32 max-w-xl space-y-12">
           <dl>
-            <dt className="text-sm font-semibold">
+            <dt className="text-sm font-semibold text-olive-950 dark:text-white">
               What measures are in place to ensure the security of our data?
             </dt>
-            <dd className="mt-4 text-sm/6 text-olive-600">
+            <dd className="mt-4 text-sm/6 text-olive-600 dark:text-olive-400">
               Data security is a top priority for us, which is ironic given that
               our business depends on others not taking it very seriously. We
               understand that any breach could put both us and most of our
@@ -444,10 +444,10 @@ function FrequentlyAskedQuestions() {
             </dd>
           </dl>
           <dl>
-            <dt className="text-sm font-semibold">
+            <dt className="text-sm font-semibold text-olive-950 dark:text-white">
               Is there a mobile app available for your platform?
             </dt>
-            <dd className="mt-4 text-sm/6 text-olive-600">
+            <dd className="mt-4 text-sm/6 text-olive-600 dark:text-olive-400">
               Yes, we offer a mobile app that provides all the key
               functionalities of our desktop platform, allowing sales reps to
               manage deals on the go. Additionally, we have another app
@@ -458,10 +458,10 @@ function FrequentlyAskedQuestions() {
             </dd>
           </dl>
           <dl>
-            <dt className="text-sm font-semibold">
+            <dt className="text-sm font-semibold text-olive-950 dark:text-white">
               Can I customize the workflow to match our company’s deal process?
             </dt>
-            <dd className="mt-4 text-sm/6 text-olive-600">
+            <dd className="mt-4 text-sm/6 text-olive-600 dark:text-olive-400">
               Yes, our platform is highly customizable, although there should be
               no need. Before you sign up, we discreetly gather information
               about your company and its processes from a variety of sources. We
@@ -472,10 +472,10 @@ function FrequentlyAskedQuestions() {
             </dd>
           </dl>
           <dl>
-            <dt className="text-sm font-semibold">
+            <dt className="text-sm font-semibold text-olive-950 dark:text-white">
               What kind of support do you offer?
             </dt>
-            <dd className="mt-4 text-sm/6 text-olive-600">
+            <dd className="mt-4 text-sm/6 text-olive-600 dark:text-olive-400">
               We offer comprehensive support through multiple channels,
               including 24/7 live chat, email, and phone support. However, since
               we have full access to your internal network, we will know if
@@ -483,10 +483,10 @@ function FrequentlyAskedQuestions() {
             </dd>
           </dl>
           <dl>
-            <dt className="text-sm font-semibold">
+            <dt className="text-sm font-semibold text-olive-950 dark:text-white">
               Can I integrate the CRM with other sales intelligence tools?
             </dt>
-            <dd className="mt-4 text-sm/6 text-olive-600">
+            <dd className="mt-4 text-sm/6 text-olive-600 dark:text-olive-400">
               Yes, our solution integrates seamlessly with a variety of other
               systems. However, be warned that most of these integrations are
               short-lived. We have a dedicated team of engineers who

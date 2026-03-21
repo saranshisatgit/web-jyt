@@ -461,8 +461,8 @@ export default async function Home() {
     console.error('Error in Home component:', error);
     return (
       <div className="flex flex-col items-center justify-center min-h-screen p-4">
-        <h1 className="text-2xl font-bold mb-4">Something went wrong</h1>
-        <p>We&apos;re having trouble loading the page. Please try again later.</p>
+        <h1 className="text-2xl font-bold mb-4 text-olive-950 dark:text-white">Something went wrong</h1>
+        <p className="text-olive-600 dark:text-olive-400">We&apos;re having trouble loading the page. Please try again later.</p>
       </div>
     );
   }

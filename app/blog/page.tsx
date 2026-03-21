@@ -50,9 +50,9 @@ async function FeaturedPosts() {
     }
 
     return (
-      <div className="mt-16 bg-linear-to-t from-olive-100 pb-14">
+      <div className="mt-16 bg-linear-to-t from-olive-100 pb-14 dark:from-olive-900">
         <Container>
-          <h2 className="text-2xl font-medium tracking-tight">Featured</h2>
+          <h2 className="text-2xl font-medium tracking-tight text-olive-950 dark:text-white">Featured</h2>
           <div className="mt-6 grid grid-cols-1 gap-8 lg:grid-cols-3">
             {featuredPosts.map((post: BlogPost) => {
               const imageUrl = getMainImageUrl(post);
@@ -60,7 +60,7 @@ async function FeaturedPosts() {
               return (
                 <div
                   key={post.slug}
-                  className="relative flex flex-col rounded-3xl bg-white p-2 ring-1 shadow-md shadow-black/5 ring-black/5"
+                  className="relative flex flex-col rounded-3xl bg-white p-2 ring-1 shadow-md shadow-black/5 ring-black/5 dark:bg-olive-900 dark:ring-white/10 dark:shadow-white/5"
                 >
                   {/* Display main image if available */}
                   {imageUrl && (
@@ -74,22 +74,22 @@ async function FeaturedPosts() {
                     />
                   )}
                   <div className="flex flex-1 flex-col p-8">
-                    <div className="text-sm/5 text-olive-700">
+                    <div className="text-sm/5 text-olive-700 dark:text-olive-400">
                       {dayjs(post.published_at).format('dddd, MMMM D, YYYY')}
                     </div>
-                    <div className="mt-2 text-base/7 font-medium">
+                    <div className="mt-2 text-base/7 font-medium text-olive-950 dark:text-white">
                       <Link href={`/blog/${post.slug}`}>
                         <span className="absolute inset-0" />
                         {post.title}
                       </Link>
                     </div>
-                    <div className="mt-2 flex-1 text-sm/6 text-olive-500">
+                    <div className="mt-2 flex-1 text-sm/6 text-olive-500 dark:text-olive-400">
                       {post.content}
                     </div>
                     {/* Display authors if available */}
                     {getAuthors(post).length > 0 && (
                       <div className="mt-6 flex items-center gap-3">
-                        <div className="text-sm/5 text-olive-700">
+                        <div className="text-sm/5 text-olive-700 dark:text-olive-400">
                           {getAuthors(post).join(', ')}
                         </div>
                       </div>
@@ -121,17 +121,17 @@ async function Categories({ selected }: { selected?: string }) {
         <MenuButton className="flex items-center justify-between gap-2 font-medium">
           {categories.find(({ slug }) => slug === selected)?.title ||
             'All categories'}
-          <ChevronUpDownIcon className="size-4 fill-olive-900" />
+          <ChevronUpDownIcon className="size-4 fill-olive-900 dark:fill-white" />
         </MenuButton>
         <MenuItems
           anchor="bottom start"
-          className="min-w-40 rounded-lg bg-white p-1 ring-1 shadow-lg ring-olive-200 [--anchor-gap:6px] [--anchor-offset:-4px] [--anchor-padding:10px]"
+          className="min-w-40 rounded-lg bg-white p-1 ring-1 shadow-lg ring-olive-200 [--anchor-gap:6px] [--anchor-offset:-4px] [--anchor-padding:10px] dark:bg-olive-900 dark:ring-olive-700"
         >
           <MenuItem>
             <Link
               href="/blog"
               data-selected={selected === undefined ? true : undefined}
-              className="group grid grid-cols-[1rem_1fr] items-center gap-2 rounded-md px-2 py-1 data-focus:bg-olive-950/5"
+              className="group grid grid-cols-[1rem_1fr] items-center gap-2 rounded-md px-2 py-1 data-focus:bg-olive-950/5 dark:text-white dark:data-focus:bg-olive-800"
             >
               <CheckIcon className="hidden size-4 group-data-selected:block" />
               <p className="col-start-2 text-sm/6">All categories</p>
@@ -142,7 +142,7 @@ async function Categories({ selected }: { selected?: string }) {
               <Link
                 href={`/blog?category=${category.slug}`}
                 data-selected={category.slug === selected ? true : undefined}
-                className="group grid grid-cols-[16px_1fr] items-center gap-2 rounded-md px-2 py-1 data-focus:bg-olive-950/5"
+                className="group grid grid-cols-[16px_1fr] items-center gap-2 rounded-md px-2 py-1 data-focus:bg-olive-950/5 dark:text-white dark:data-focus:bg-olive-800"
               >
                 <CheckIcon className="hidden size-4 group-data-selected:block" />
                 <p className="col-start-2 text-sm/6">{category.title}</p>
@@ -183,23 +183,23 @@ async function Posts({ page, category }: { page: number; category?: string }) {
         {posts.map((post: BlogPost) => (
           <div
             key={post.slug}
-            className="relative grid grid-cols-1 border-b border-b-olive-100 py-10 first:border-t first:border-t-olive-200 max-sm:gap-3 sm:grid-cols-3"
+            className="relative grid grid-cols-1 border-b border-b-olive-100 py-10 first:border-t first:border-t-olive-200 max-sm:gap-3 sm:grid-cols-3 dark:border-b-olive-800 dark:first:border-t-olive-700"
           >
             <div>
-              <div className="text-sm/5 max-sm:text-olive-700 sm:font-medium">
+              <div className="text-sm/5 max-sm:text-olive-700 sm:font-medium dark:text-olive-400">
                 {dayjs(post.published_at).format('dddd, MMMM D, YYYY')}
               </div>
               {getAuthors(post).length > 0 && (
                 <div className="mt-2.5 flex items-center gap-3">
-                  <div className="text-sm/5 text-olive-700">
+                  <div className="text-sm/5 text-olive-700 dark:text-olive-400">
                     {getAuthors(post).join(', ')}
                   </div>
                 </div>
               )}
             </div>
             <div className="sm:col-span-2 sm:max-w-2xl">
-              <h2 className="text-sm/5 font-medium">{post.title}</h2>
-              <p className="mt-3 text-sm/6 text-olive-500">{post.content}</p>
+              <h2 className="text-sm/5 font-medium text-olive-950 dark:text-white">{post.title}</h2>
+              <p className="mt-3 text-sm/6 text-olive-500 dark:text-olive-400">{post.content}</p>
               <div className="mt-4">
                 <Link
                   href={`/blog/${post.slug}`}
@@ -274,10 +274,10 @@ async function Pagination({
               href={url(i + 1)}
               data-active={i + 1 === page ? true : undefined}
               className={clsx(
-                'size-7 rounded-lg text-center text-sm/7 font-medium',
-                'data-hover:bg-olive-100',
-                'data-active:ring-1 data-active:shadow-sm data-active:ring-black/10',
-                'data-active:data-hover:bg-olive-50',
+                'size-7 rounded-lg text-center text-sm/7 font-medium text-olive-950 dark:text-white',
+                'data-hover:bg-olive-100 dark:data-hover:bg-olive-800',
+                'data-active:ring-1 data-active:shadow-sm data-active:ring-black/10 dark:data-active:ring-white/10',
+                'data-active:data-hover:bg-olive-50 dark:data-active:data-hover:bg-olive-900',
               )}
             >
               {i + 1}

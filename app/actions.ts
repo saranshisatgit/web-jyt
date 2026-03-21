@@ -64,25 +64,14 @@ export async function fetchPageAndFooter(slug: string) {
 }
 
 export async function handleContactFormSubmission(
-  prevState: { message: string; success: boolean; }, // Previous state
-  formData: FormData // Form data
+  prevState: { message: string; success: boolean; needsVerification?: boolean; responseId?: string },
+  formData: FormData
 ) {
   const name = formData.get('name') as string;
   const email = formData.get('email') as string;
   const company = formData.get('company') as string;
   const role = formData.get('role') as string;
   const message = formData.get('message') as string;
-
-  console.log('Contact Form Submission:');
-  console.log({ name, email, company, role, message });
-
-  // Here you would typically:
-  // 1. Validate the data
-  // 2. Send an email, save to a database, or call an external API
-  // For now, we'll just simulate a successful submission.
-
-  // Simulate some processing time
-  await new Promise(resolve => setTimeout(resolve, 1000));
 
   if (!name || !email || !message) {
     return { success: false, message: 'Name, Email, and Message are required.' };
@@ -146,6 +135,17 @@ export async function handleContactFormSubmission(
       };
     }
 
+    const body = await response.json();
+
+    if (body.response?.status === 'pending_verification') {
+      return {
+        success: true,
+        needsVerification: true,
+        responseId: body.response.id,
+        message: 'Check your email for a verification code.',
+      };
+    }
+
     return {
       success: true,
       message: 'Thank you for your message! We will get back to you soon.',
@@ -155,6 +155,70 @@ export async function handleContactFormSubmission(
     return {
       success: false,
       message: 'Unable to submit the form right now. Please try again later.',
+    };
+  }
+}
+
+export async function handleVerifyCode(
+  prevState: { message: string; success: boolean },
+  formData: FormData
+) {
+  const responseId = formData.get('response_id') as string;
+  const code = formData.get('code') as string;
+
+  if (!responseId || !code) {
+    return { success: false, message: 'Verification code is required.' };
+  }
+
+  const apiBase =
+    (process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, '') ||
+      'http://localhost:9000/web') ?? 'http://localhost:9000/web';
+  const formDomain =
+    process.env.NEXT_PUBLIC_CONTACT_FORM_DOMAIN ||
+    process.env.CONTACT_FORM_DOMAIN ||
+    'jaalyantra.com';
+  const formHandle =
+    process.env.NEXT_PUBLIC_CONTACT_FORM_HANDLE ||
+    process.env.CONTACT_FORM_HANDLE ||
+    'contact';
+
+  const endpoint = `${apiBase}/website/${formDomain}/forms/${formHandle}/verify`;
+
+  try {
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      cache: 'no-store',
+      body: JSON.stringify({
+        response_id: responseId,
+        code,
+      }),
+    });
+
+    if (!response.ok) {
+      const errorPayload = await response.json().catch(() => null);
+      const errorMessage =
+        errorPayload?.message ||
+        errorPayload?.error ||
+        'Verification failed. Please try again.';
+
+      return {
+        success: false,
+        message: errorMessage,
+      };
+    }
+
+    return {
+      success: true,
+      message: 'Thank you! Your message has been verified.',
+    };
+  } catch (error) {
+    console.error('Failed to verify code:', error);
+    return {
+      success: false,
+      message: 'Unable to verify right now. Please try again later.',
     };
   }
 }

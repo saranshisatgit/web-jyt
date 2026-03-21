@@ -82,8 +82,8 @@ export default async function ContentPage({ params }: { params: PageParams }) {
           <Navbar />
           <Container className="py-16">
             <div className="text-center">
-              <h1 className="text-3xl font-bold text-olive-900">Content Not Found</h1>
-              <p className="mt-4 text-olive-600">
+              <h1 className="text-3xl font-bold text-olive-900 dark:text-white">Content Not Found</h1>
+              <p className="mt-4 text-olive-600 dark:text-olive-400">
                 The content for this page is not available. Please check back later.
               </p>
             </div>
@@ -127,8 +127,8 @@ export default async function ContentPage({ params }: { params: PageParams }) {
         <Navbar />
         <Container className="py-16">
           <div className="text-center">
-            <h1 className="text-3xl font-bold text-olive-900">Error Loading Page</h1>
-            <p className="mt-4 text-olive-600">
+            <h1 className="text-3xl font-bold text-olive-900 dark:text-white">Error Loading Page</h1>
+            <p className="mt-4 text-olive-600 dark:text-olive-400">
               We encountered an error while loading this page. Please try again later.
             </p>
           </div>

@@ -35,7 +35,7 @@ export function PostMainContentArea({
   generatedHtml,
 }: PostMainContentAreaProps) {
   return (
-    <div className="text-olive-700">
+    <div className="text-olive-700 dark:text-olive-400">
       <div className="max-w-2xl xl:mx-auto">
         {/* Display main image if available */}
         {imageBlock && imageBlock.content.image?.content && (
@@ -70,7 +70,7 @@ export function PostMainContentArea({
           </div>
         ) : (
           <div 
-            className="prose prose-gray prose-ol:list-decimal prose-ul:list-disc prose-li:my-1 max-w-none"
+            className="prose prose-gray dark:prose-invert prose-ol:list-decimal prose-ul:list-disc prose-li:my-1 prose-p:my-4 prose-headings:mt-8 prose-headings:mb-4 prose-img:my-6 prose-img:rounded-lg max-w-none"
             dangerouslySetInnerHTML={{ __html: generatedHtml }}
           />
         )}

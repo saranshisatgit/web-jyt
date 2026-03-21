@@ -36,19 +36,19 @@ export default function TasksListSlide({
           <p className="text-base text-olive-600 dark:text-olive-300 mb-2">{description}</p>
         )}
       </div>
-      <div className="-m-2 grid grid-cols-1 rounded-4xl ring-1 shadow-[inset_0_0_2px_1px_#ffffff4d] ring-black/5 max-lg:mx-auto max-lg:max-w-md self-end relative mt-4 md:mt-16 overflow-visible">
-        <div className="grid grid-cols-1 rounded-4xl p-2 shadow-md shadow-black/5">
-          <div className="rounded-3xl bg-white p-10 ring-1 shadow-2xl ring-black/5">
+      <div className="-m-2 grid grid-cols-1 rounded-4xl ring-1 shadow-[inset_0_0_2px_1px_#ffffff4d] ring-black/5 dark:ring-white/10 max-lg:mx-auto max-lg:max-w-md self-end relative mt-4 md:mt-16 overflow-visible">
+        <div className="grid grid-cols-1 rounded-4xl p-2 shadow-md shadow-black/5 dark:shadow-white/5">
+          <div className="rounded-3xl bg-white p-10 ring-1 shadow-2xl ring-black/5 dark:bg-olive-900 dark:ring-white/10">
             <ul className="space-y-4 w-full">
               {pendingTasks.map((task) => (
                 <li key={task.id} className="flex items-center justify-between p-4 bg-yellow-100 rounded-2xl">
-                  <span className="font-medium text-olive-800">{task.title}</span>
-                  <ClockIcon className="h-6 w-6 text-olive-500" />
+                  <span className="font-medium text-olive-800 dark:text-white">{task.title}</span>
+                  <ClockIcon className="h-6 w-6 text-olive-500 dark:text-olive-400" />
                 </li>
               ))}
               {completedTasks.map((task) => (
                 <li key={task.id} className="flex items-center justify-between p-4 bg-green-100 rounded-2xl">
-                  <span className="font-medium text-olive-800 line-through">{task.title}</span>
+                  <span className="font-medium text-olive-800 dark:text-white line-through">{task.title}</span>
                   <CheckIcon className="h-6 w-6 text-green-500" />
                 </li>
               ))}
