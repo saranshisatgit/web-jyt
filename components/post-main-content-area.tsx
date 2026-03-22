@@ -7,12 +7,12 @@ import { ManualDrawer, type DrawerAttrs } from '@/components/manual-drawer'
 import { Button } from '@/components/button' // For debug toggle
 
 // Import shared types from centralized location
-import type { BlogBlock, BlogPost, TipTapNode, TipTapJsonStructure } from '@/types/blog'
+import type { BlogPost, TipTapNode, TipTapJsonStructure } from '@/types/blog'
 import React from 'react' // Ensure React is imported for JSX style block if needed
 
 interface PostMainContentAreaProps {
   post: BlogPost;
-  imageBlock?: BlogBlock;
+  featuredImageUrl?: string | null;
   processedContent: TipTapJsonStructure | null; // From useMemo in parent
   drawerNode: TipTapNode | null; // From useMemo in parent
   onHtmlGenerated: (html: string) => void;
@@ -20,12 +20,12 @@ interface PostMainContentAreaProps {
   setShowDebug: (show: boolean) => void;
   isDevelopment: boolean;
   generatedHtml: string;
-  initialContentForDebug?: TipTapJsonStructure | Record<string, unknown> | string | null; // Prop for raw content debug (can be object or raw JSON string)
+  initialContentForDebug?: TipTapJsonStructure | Record<string, unknown> | string | null;
 }
 
 export function PostMainContentArea({
   post,
-  imageBlock,
+  featuredImageUrl,
   processedContent,
   drawerNode,
   onHtmlGenerated,
@@ -37,11 +37,11 @@ export function PostMainContentArea({
   return (
     <div className="text-olive-700 dark:text-olive-400">
       <div className="max-w-2xl xl:mx-auto">
-        {/* Display main image if available */}
-        {imageBlock && imageBlock.content.image?.content && (
+        {/* Display featured image if available */}
+        {featuredImageUrl && (
           <Image
             alt={post.title || ''}
-            src={imageBlock.content.image.content}
+            src={featuredImageUrl}
             width={2016}
             height={1344}
             priority={true}

@@ -44,8 +44,8 @@ export function BlogPostContent({
   const isDevelopment = process.env.NODE_ENV === 'development'
 
   // Process the content to remove the main image and extract the drawer
-  const { processedContent, drawerNode } = useMemo(() => {
-    if (!contentBlock?.content.text) return { processedContent: null, drawerNode: null };
+  const { processedContent, drawerNode, featuredImageUrl } = useMemo(() => {
+    if (!contentBlock?.content.text) return { processedContent: null, drawerNode: null, featuredImageUrl: null };
 
     const processedText = JSON.parse(JSON.stringify(contentBlock.content.text));
 
@@ -76,21 +76,17 @@ export function BlogPostContent({
     const tipTapDoc = processedText as { type: string; content: TipTapNode[] };
     let foundDrawerNode: DrawerNode | null = null;
 
-    const countImageOccurrences = (nodes: TipTapNode[], matchSrc?: string): number => {
-      let count = 0
+    const findFirstImageSrc = (nodes: TipTapNode[]): string | null => {
       for (const node of nodes) {
-        if (node?.type === 'image') {
-          const src = node.attrs?.src as string | undefined
-          if (!matchSrc || (src && src === matchSrc)) {
-            count++
-          }
+        if (node?.type === 'image' && node.attrs?.src) {
+          return node.attrs.src as string
         }
-
         if (Array.isArray(node?.content)) {
-          count += countImageOccurrences(node.content, matchSrc)
+          const found = findFirstImageSrc(node.content)
+          if (found) return found
         }
       }
-      return count
+      return null
     }
 
     const removeFirstImageNode = (nodes: TipTapNode[], matchSrc?: string): boolean => {
@@ -128,23 +124,31 @@ export function BlogPostContent({
       // Filter out both drawer and tableOfContents nodes
       tipTapDoc.content = tipTapDoc.content.filter(node => node.type !== 'drawer' && node.type !== 'tableOfContents');
 
-      // Remove main image only if duplicated within the rich text content
+      // Determine the featured image URL: explicit imageBlock takes priority,
+      // otherwise the first image in the content is the featured photo.
+      let resolvedFeaturedUrl: string | null = null;
+
       if (imageBlock?.content.image?.content) {
-        const mainImageUrl = imageBlock.content.image.content
-
-        const matchingCount = countImageOccurrences(tipTapDoc.content, mainImageUrl)
-
-        if (matchingCount > 1) {
-          removeFirstImageNode(tipTapDoc.content, mainImageUrl)
+        resolvedFeaturedUrl = imageBlock.content.image.content;
+        // Remove the featured image's first occurrence from rich text
+        removeFirstImageNode(tipTapDoc.content, resolvedFeaturedUrl)
+      } else {
+        // No explicit imageBlock — first image in content IS the featured photo
+        resolvedFeaturedUrl = findFirstImageSrc(tipTapDoc.content)
+        if (resolvedFeaturedUrl) {
+          removeFirstImageNode(tipTapDoc.content, resolvedFeaturedUrl)
         }
-
-        tipTapDoc.content = tipTapDoc.content.filter((paragraph: TipTapNode) => {
-          return !(paragraph.type === 'paragraph' && (!paragraph.content || paragraph.content.length === 0));
-        })
       }
+
+      // Clean up empty paragraphs left after image removal
+      tipTapDoc.content = tipTapDoc.content.filter((paragraph: TipTapNode) => {
+        return !(paragraph.type === 'paragraph' && (!paragraph.content || paragraph.content.length === 0));
+      })
+
+      return { processedContent: processedText, drawerNode: foundDrawerNode, featuredImageUrl: resolvedFeaturedUrl };
     }
 
-    return { processedContent: processedText, drawerNode: foundDrawerNode };
+    return { processedContent: processedText, drawerNode: foundDrawerNode, featuredImageUrl: null };
   }, [contentBlock?.content.text, imageBlock?.content.image?.content]);
 
   // Handler for when HTML is generated
@@ -177,7 +181,7 @@ export function BlogPostContent({
           <div className="text-olive-700 dark:text-olive-400">
             <PostMainContentArea
               post={post}
-              imageBlock={imageBlock}
+              featuredImageUrl={featuredImageUrl}
               processedContent={processedContent}
               drawerNode={drawerNode}
               showDebug={showDebug}
@@ -185,7 +189,7 @@ export function BlogPostContent({
               onHtmlGenerated={handleHtmlGenerated}
               isDevelopment={isDevelopment}
               initialContentForDebug={contentBlock?.content.text}
-              generatedHtml={generatedHtml} // Pass generatedHtml for debug view
+              generatedHtml={generatedHtml}
             />
           </div> {/* Closes the center content's outer div (text-olive-700) */}
 
