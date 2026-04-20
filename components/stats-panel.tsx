@@ -317,6 +317,180 @@ export const StatsPanelNodeView: React.FC<NodeViewProps> = ({ node }) => {
   )
 }
 
+type RenderSpec = any
+
+const CONTAINER_CLASS =
+  'stats-panel my-6 border border-gray-200 dark:border-gray-800 rounded-lg overflow-hidden bg-white dark:bg-gray-900'
+
+function buildMetricSpec(data: PanelData, display: Display): RenderSpec {
+  const field = display.valueField ?? 'value'
+  const value = (data as any)[field] ?? data.value
+  return [
+    'div',
+    { class: 'p-6' },
+    [
+      'div',
+      { class: 'text-4xl font-semibold text-gray-900 dark:text-gray-100' },
+      formatValue(value, display),
+    ],
+    ...(display.label
+      ? [['div', { class: 'mt-1 text-sm text-gray-500 dark:text-gray-400' }, display.label]]
+      : []),
+  ]
+}
+
+function buildListSpec(data: PanelData, display: Display): RenderSpec {
+  const items = data.groups ?? data.records ?? []
+  const labelField = display.labelField ?? 'key'
+  const valueField = display.valueField ?? 'value'
+  const limit = display.limit ?? 20
+  if (!items.length) {
+    return ['div', { class: 'p-4 text-sm text-gray-500' }, 'No results']
+  }
+  const rows = items.slice(0, limit).map((item: any) => {
+    const label = item?.keys?.[labelField] ?? item?.[labelField] ?? item?.key
+    const value = item?.[valueField]
+    return [
+      'li',
+      { class: 'flex justify-between items-center px-4 py-2 text-sm' },
+      ['span', { class: 'truncate' }, label !== undefined ? String(label) : '—'],
+      ['span', { class: 'font-medium tabular-nums' }, formatValue(value, display)],
+    ]
+  })
+  return ['ul', { class: 'divide-y divide-gray-200 dark:divide-gray-700' }, ...rows]
+}
+
+function buildTableSpec(data: PanelData, display: Display): RenderSpec {
+  const rows = data.groups ?? data.records ?? []
+  if (!rows.length) {
+    return ['div', { class: 'p-4 text-sm text-gray-500' }, 'No results']
+  }
+  const columns = display.columns ?? Object.keys(rows[0] as object)
+  const head = [
+    'thead',
+    { class: 'bg-gray-50 dark:bg-gray-800' },
+    [
+      'tr',
+      {},
+      ...columns.map((c) => [
+        'th',
+        { class: 'px-3 py-2 font-medium text-gray-600 dark:text-gray-300' },
+        c,
+      ]),
+    ],
+  ]
+  const body = [
+    'tbody',
+    { class: 'divide-y divide-gray-200 dark:divide-gray-700' },
+    ...rows.slice(0, display.limit ?? 50).map((row: any) => [
+      'tr',
+      {},
+      ...columns.map((c) => {
+        const v = (row as any)?.keys?.[c] ?? (row as any)?.[c]
+        const text = typeof v === 'object' && v !== null ? JSON.stringify(v) : String(v ?? '—')
+        return ['td', { class: 'px-3 py-2 truncate max-w-[200px]' }, text]
+      }),
+    ]),
+  ]
+  return [
+    'div',
+    { class: 'overflow-x-auto' },
+    ['table', { class: 'w-full text-sm text-left' }, head, body],
+  ]
+}
+
+function buildBarSpec(data: PanelData, display: Display): RenderSpec {
+  const items = data.groups ?? []
+  if (!items.length) {
+    return ['div', { class: 'p-4 text-sm text-gray-500' }, 'No data']
+  }
+  const labelField = display.labelField ?? 'key'
+  const max = items.reduce((m, i) => Math.max(m, i.value ?? 0), 0) || 1
+  const rows = items.slice(0, display.limit ?? 20).map((item: any) => {
+    const label = item?.keys?.[labelField] ?? item?.[labelField] ?? item?.key
+    const value = item?.value ?? 0
+    const pct = Math.max(2, Math.round((value / max) * 100))
+    return [
+      'div',
+      { class: 'flex items-center gap-3 text-sm' },
+      ['div', { class: 'w-32 truncate text-gray-600 dark:text-gray-400' }, String(label ?? '—')],
+      [
+        'div',
+        { class: 'flex-1 bg-gray-100 dark:bg-gray-800 rounded h-5 overflow-hidden' },
+        [
+          'div',
+          {
+            class: 'h-full bg-gradient-to-r from-indigo-500 to-indigo-400',
+            style: `width: ${pct}%`,
+          },
+        ],
+      ],
+      ['div', { class: 'w-16 text-right tabular-nums font-medium' }, formatValue(value, display)],
+    ]
+  })
+  return ['div', { class: 'flex flex-col gap-2 p-4' }, ...rows]
+}
+
+function buildLabelSpec(display: Display): RenderSpec {
+  const children: RenderSpec[] = []
+  if (display.title) {
+    children.push([
+      'div',
+      { class: 'text-lg font-semibold text-gray-900 dark:text-gray-100' },
+      display.title,
+    ])
+  }
+  if (display.text) {
+    children.push([
+      'div',
+      { class: 'mt-1 text-sm text-gray-600 dark:text-gray-400 whitespace-pre-wrap' },
+      display.text,
+    ])
+  }
+  return ['div', { class: 'p-4' }, ...children]
+}
+
+function buildSparkFallbackSpec(data: PanelData, display: Display): RenderSpec {
+  const buckets = data.buckets ?? []
+  if (!buckets.length) {
+    return ['div', { class: 'p-4 text-sm text-gray-500' }, 'No data']
+  }
+  const limit = display.limit ?? 50
+  const rows = buckets.slice(0, limit).map((b) => [
+    'li',
+    { class: 'flex justify-between items-center px-4 py-2 text-sm' },
+    ['span', { class: 'truncate text-gray-600 dark:text-gray-400' }, b.date],
+    ['span', { class: 'font-medium tabular-nums' }, formatValue(b.value, display)],
+  ])
+  return ['ul', { class: 'divide-y divide-gray-200 dark:divide-gray-700' }, ...rows]
+}
+
+function buildPanelBodySpec(
+  type: PanelType,
+  data: PanelData | null,
+  display: Display
+): RenderSpec {
+  if (type === 'label') return buildLabelSpec(display)
+  if (!data) {
+    return ['div', { class: 'p-4 text-sm text-gray-500' }, 'Panel data unavailable.']
+  }
+  switch (type) {
+    case 'metric':
+      return buildMetricSpec(data, display)
+    case 'list':
+      return buildListSpec(data, display)
+    case 'table':
+      return buildTableSpec(data, display)
+    case 'bar':
+      return buildBarSpec(data, display)
+    case 'line':
+    case 'area':
+      return buildSparkFallbackSpec(data, display)
+    default:
+      return ['div', { class: 'p-4 text-sm text-gray-500' }, `Unknown panel type: ${type}`]
+  }
+}
+
 export const StatsPanelExtension = Node.create({
   name: 'statsPanel',
   group: 'block',
@@ -338,8 +512,40 @@ export const StatsPanelExtension = Node.create({
     return [{ tag: 'div[data-stats-panel]' }]
   },
 
-  renderHTML({ HTMLAttributes }) {
-    return ['div', mergeAttributes(HTMLAttributes, { 'data-stats-panel': '' })]
+  renderHTML({ node, HTMLAttributes }) {
+    const attrs = node.attrs as {
+      panelId?: string | null
+      title?: string | null
+      data?: PanelData | null
+      display?: Display | null
+      panelType?: PanelType | null
+    }
+    const type: PanelType = (attrs.panelType as PanelType) ?? 'metric'
+    const display: Display = attrs.display ?? {}
+    const data: PanelData | null = attrs.data ?? null
+
+    const children: RenderSpec[] = []
+    if (attrs.title) {
+      children.push([
+        'div',
+        {
+          class:
+            'px-4 py-2 border-b border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50',
+        },
+        ['div', { class: 'text-sm font-medium text-gray-700 dark:text-gray-300' }, attrs.title],
+      ])
+    }
+    children.push(buildPanelBodySpec(type, data, display))
+
+    return [
+      'div',
+      mergeAttributes(HTMLAttributes, {
+        'data-stats-panel': '',
+        'data-panel-id': attrs.panelId ?? '',
+        class: CONTAINER_CLASS,
+      }),
+      ...children,
+    ]
   },
 
   addNodeView() {
