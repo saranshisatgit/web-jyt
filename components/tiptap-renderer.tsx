@@ -33,6 +33,7 @@ import { Code } from '@tiptap/extension-code'
 import Superscript from '@tiptap/extension-superscript'
 import Subscript from '@tiptap/extension-subscript'
 import { TextAlign } from 'reactjs-tiptap-editor/textalign';
+import { StatsPanelExtension } from './stats-panel'
 
 // Define interfaces
 interface TipTapRendererProps {
@@ -241,6 +242,7 @@ export function TipTapRenderer({
     HeadingId, // Add our custom extension
     Superscript,
     Subscript,
+    StatsPanelExtension,
   ]
 
   return (
