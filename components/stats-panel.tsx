@@ -339,7 +339,7 @@ export const StatsPanelExtension = Node.create({
   },
 
   renderHTML({ HTMLAttributes }) {
-    return ['div', mergeAttributes(HTMLAttributes, { 'data-stats-panel': '' }), 0]
+    return ['div', mergeAttributes(HTMLAttributes, { 'data-stats-panel': '' })]
   },
 
   addNodeView() {
