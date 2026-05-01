@@ -18,9 +18,9 @@ import PaymentProcessSlide from '@/components/slides/PaymentProcessSlide';
 import { Screenshot } from '@/components/screenshot';
 import { BlockWrapper } from '@/components/visual-editor/BlockWrapper';
 import { Navbar } from '@/components/navbar';
-import { Link } from '@/components/link';
-import { ChevronRightIcon } from '@heroicons/react/16/solid';
 import { ProblemStatement } from '@/components/problem-statement';
+import { ReleaseBanner } from '@/components/release-banner';
+import { ProductTour } from '@/components/product-tour';
 
 export const metadata: Metadata = {
   description:
@@ -401,28 +401,27 @@ export default async function Home() {
     return (
       <div className="relative">
         <style>{`:root { --scroll-padding-top: 5.25rem }`}</style>
-        <Navbar
-          banner={
-            announcementBlock?.content?.announcement && (
-              <Link
-                href="/blog"
-                className="group relative inline-flex max-w-full gap-x-3 overflow-hidden rounded-md px-3.5 py-2 text-sm/6 max-sm:flex-col sm:items-center sm:rounded-full sm:px-3 sm:py-0.5 bg-olive-950/5 text-olive-950 hover:bg-olive-950/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/10"
-              >
-                <span className="text-pretty sm:truncate">{announcementBlock.content.announcement}</span>
-                <span className="inline-flex shrink-0 items-center gap-2 font-semibold text-olive-950 dark:text-white">
-                  Learn more <ChevronRightIcon className="size-4" />
-                </span>
-              </Link>
-            )
-          }
-        />
+        <ReleaseBanner announcement={announcementBlock?.content?.announcement} />
+        <Navbar />
         <div className="relative">
           <Suspense fallback={<SectionLoading />}>
             <Hero homeData={homeData.page} />
           </Suspense>
         </div>
 
-        <div className="relative">
+        {/* Logo strip — Saleor-style monochrome marquee, right below hero. */}
+        <div className="relative border-t border-olive-200/60 py-12 sm:py-16">
+          <Suspense fallback={<SectionLoading />}>
+            <LogoSectionComponent homeData={homeData} />
+          </Suspense>
+        </div>
+
+        {/* Product tour — Medusa-style segmented Admin / Partner / Storefront. */}
+        <div className="relative border-t border-olive-200/60">
+          <ProductTour />
+        </div>
+
+        <div className="relative border-t border-olive-200/60">
           <ProblemStatement />
         </div>
 
@@ -449,20 +448,14 @@ export default async function Home() {
             <TestimonialsSectionComponent homeData={homeData} />
           </Suspense>
         </div>
-
-        <div className="relative">
-          <Suspense fallback={<SectionLoading />}>
-            <LogoSectionComponent homeData={homeData} />
-          </Suspense>
-        </div>
       </div>
     );
   } catch (error) {
     console.error('Error in Home component:', error);
     return (
       <div className="flex flex-col items-center justify-center min-h-screen p-4">
-        <h1 className="text-2xl font-bold mb-4 text-olive-950 dark:text-white">Something went wrong</h1>
-        <p className="text-olive-600 dark:text-olive-400">We&apos;re having trouble loading the page. Please try again later.</p>
+        <h1 className="text-2xl font-bold mb-4 text-olive-950">Something went wrong</h1>
+        <p className="text-olive-600">We&apos;re having trouble loading the page. Please try again later.</p>
       </div>
     );
   }

@@ -62,20 +62,20 @@ export function MainContent({ block, className = '' }: MainContentProps) {
       case 'html':
         return (
           <div
-            className={`prose prose-gray dark:prose-invert prose-sm sm:prose-base max-w-none ${className}`}
+            className={`prose prose-olive prose-sm sm:prose-base max-w-none ${className}`}
             dangerouslySetInnerHTML={{ __html: content }}
           />
         )
       case 'text':
         return (
-          <div className={`prose prose-gray dark:prose-invert prose-sm sm:prose-base max-w-none ${className}`}>
+          <div className={`prose prose-olive prose-sm sm:prose-base max-w-none ${className}`}>
             <p className="whitespace-pre-wrap">{content}</p>
           </div>
         )
       default:
         return (
           <div
-            className={`prose prose-gray dark:prose-invert prose-sm sm:prose-base max-w-none ${className}`}
+            className={`prose prose-olive prose-sm sm:prose-base max-w-none ${className}`}
             dangerouslySetInnerHTML={{ __html: content }}
           />
         )
@@ -122,7 +122,7 @@ export function SimpleMainContent({
     <Container className="py-16 sm:py-24">
       <div className={`mx-auto ${maxWidthClass}`}>
         <div
-          className={`prose prose-gray dark:prose-invert prose-sm sm:prose-base max-w-none ${className}`}
+          className={`prose prose-olive prose-sm sm:prose-base max-w-none ${className}`}
           dangerouslySetInnerHTML={{ __html: html }}
         />
       </div>

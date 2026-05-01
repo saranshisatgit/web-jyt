@@ -4,46 +4,62 @@
 
 
 @theme {
-  --font-display: 'Instrument Serif', serif;
-  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  /* Switzer is loaded via Fontshare in layout.tsx (already present).
+     We use it for both body and display so the type system reads
+     more like Saleor / Medusa — sans-only, tight, editorial. */
+  --font-sans: 'Switzer', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-display: 'Switzer', 'Inter', system-ui, sans-serif;
+  --font-serif: 'Instrument Serif', ui-serif, Georgia, serif;
+  --font-mono: ui-monospace, 'JetBrains Mono', SFMono-Regular, Menlo, monospace;
 
-  --color-olive-50: oklch(98.8% 0.003 106.5);
-  --color-olive-100: oklch(96.6% 0.005 106.5);
-  --color-olive-200: oklch(93% 0.007 106.5);
-  --color-olive-300: oklch(88% 0.011 106.6);
-  --color-olive-400: oklch(73.7% 0.021 106.9);
-  --color-olive-500: oklch(58% 0.031 107.3);
-  --color-olive-600: oklch(46.6% 0.025 107.3);
-  --color-olive-700: oklch(39.4% 0.023 107.4);
-  --color-olive-800: oklch(28.6% 0.016 107.4);
-  --color-olive-900: oklch(22.8% 0.013 107.4);
-  --color-olive-950: oklch(15.3% 0.006 107.1);
+  /* Warm graphite ink. Hue ~70–110 keeps the warmth without the
+     yellow-green of true olive. */
+  --color-olive-50:  oklch(98.5% 0.004 80);
+  --color-olive-100: oklch(96.2% 0.006 78);
+  --color-olive-200: oklch(91.5% 0.009 76);
+  --color-olive-300: oklch(85%   0.012 75);
+  --color-olive-400: oklch(70%   0.014 75);
+  --color-olive-500: oklch(55%   0.016 80);
+  --color-olive-600: oklch(43%   0.013 85);
+  --color-olive-700: oklch(34%   0.011 90);
+  --color-olive-800: oklch(24%   0.009 95);
+  --color-olive-900: oklch(16%   0.007 100);
+  --color-olive-950: oklch(10%   0.005 105);
+
+  /* Clay accent — terracotta. Used for eyebrows, link hovers, accent CTAs. */
+  --color-clay-50:  oklch(98%   0.010 50);
+  --color-clay-100: oklch(95%   0.025 50);
+  --color-clay-200: oklch(88%   0.055 48);
+  --color-clay-300: oklch(80%   0.090 45);
+  --color-clay-400: oklch(72%   0.120 42);
+  --color-clay-500: oklch(63%   0.140 40);
+  --color-clay-600: oklch(54%   0.135 38);
+  --color-clay-700: oklch(45%   0.120 36);
+  --color-clay-800: oklch(35%   0.095 34);
+  --color-clay-900: oklch(26%   0.065 32);
+  --color-clay-950: oklch(17%   0.040 30);
 }
 
 @layer base {
   html {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background-color: var(--color-olive-100);
-    color-scheme: light dark;
+    background-color: var(--color-olive-50);
+    color-scheme: light;
     scroll-behavior: smooth;
     --scroll-padding-top: 0;
     scroll-padding-top: var(--scroll-padding-top);
-
-    @variant dark {
-      background-color: var(--color-olive-950);
-    }
   }
 
   body {
     @apply text-olive-950 antialiased;
     font-family: var(--font-sans);
+    font-feature-settings: 'ss01', 'cv11';
   }
 
-  @variant dark {
-    body {
-      @apply text-white;
-    }
+  ::selection {
+    background-color: var(--color-clay-200);
+    color: var(--color-olive-950);
   }
 }
 
@@ -52,8 +68,32 @@
     font-family: var(--font-display);
   }
 
+  .font-serif {
+    font-family: var(--font-serif);
+  }
+
+  .font-mono {
+    font-family: var(--font-mono);
+  }
+
   .text-balance {
     text-wrap: balance;
+  }
+
+  /* Subtle dot-grid backdrop — used behind hero & section anchors. */
+  .bg-dot-grid {
+    --dot-color: color-mix(in oklch, var(--color-olive-950) 10%, transparent);
+    background-image: radial-gradient(var(--dot-color) 1px, transparent 1px);
+    background-size: 22px 22px;
+    background-position: 0 0;
+  }
+
+  /* Soft warm radial wash for hero / accent surfaces. */
+  .bg-hero-wash {
+    background:
+      radial-gradient(60% 50% at 15% 0%, color-mix(in oklch, var(--color-clay-300) 35%, transparent) 0%, transparent 70%),
+      radial-gradient(50% 40% at 90% 10%, color-mix(in oklch, var(--color-clay-200) 45%, transparent) 0%, transparent 65%),
+      var(--color-olive-50);
   }
 }
 
@@ -62,13 +102,13 @@
   --tw-prose-body: var(--color-olive-700);
   --tw-prose-headings: var(--color-olive-950);
   --tw-prose-lead: var(--color-olive-600);
-  --tw-prose-links: var(--color-olive-950);
+  --tw-prose-links: var(--color-clay-700);
   --tw-prose-bold: var(--color-olive-950);
   --tw-prose-counters: var(--color-olive-500);
   --tw-prose-bullets: var(--color-olive-400);
   --tw-prose-hr: var(--color-olive-200);
   --tw-prose-quotes: var(--color-olive-950);
-  --tw-prose-quote-borders: var(--color-olive-200);
+  --tw-prose-quote-borders: var(--color-clay-300);
   --tw-prose-captions: var(--color-olive-500);
   --tw-prose-kbd: var(--color-olive-950);
   --tw-prose-kbd-shadows: var(--color-olive-950);
@@ -77,35 +117,14 @@
   --tw-prose-pre-bg: var(--color-olive-900);
   --tw-prose-th-borders: var(--color-olive-300);
   --tw-prose-td-borders: var(--color-olive-200);
-
-  --tw-prose-invert-body: var(--color-olive-400);
-  --tw-prose-invert-headings: white;
-  --tw-prose-invert-lead: var(--color-olive-400);
-  --tw-prose-invert-links: white;
-  --tw-prose-invert-bold: white;
-  --tw-prose-invert-counters: var(--color-olive-400);
-  --tw-prose-invert-bullets: var(--color-olive-600);
-  --tw-prose-invert-hr: var(--color-olive-800);
-  --tw-prose-invert-quotes: white;
-  --tw-prose-invert-quote-borders: var(--color-olive-800);
-  --tw-prose-invert-captions: var(--color-olive-500);
-  --tw-prose-invert-kbd: white;
-  --tw-prose-invert-kbd-shadows: white;
-  --tw-prose-invert-code: white;
-  --tw-prose-invert-pre-code: var(--color-olive-300);
-  --tw-prose-invert-pre-bg: var(--color-olive-950);
-  --tw-prose-invert-th-borders: var(--color-olive-700);
-  --tw-prose-invert-td-borders: var(--color-olive-800);
 }
 
-/* Match theme's Document component link styling */
 .prose-olive :where(a):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
   font-weight: 600;
   text-decoration: underline;
   text-underline-offset: 4px;
 }
 
-/* Match theme's Document component list styling — square bullets */
 .prose-olive :where(ul):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
   list-style-type: square;
 }

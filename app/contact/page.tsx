@@ -1,4 +1,5 @@
 import { type Metadata } from 'next';
+import { Suspense } from 'react';
 import { Container } from '@/components/container';
 import { GradientBackground } from '@/components/gradient';
 import { HeroSection, type HeaderBlock, type ButtonDef } from '@/components/hero-section';
@@ -143,7 +144,9 @@ export default async function ContactPage() {
 
             {/* Right Column: Contact Form */}
             <div>
-              <ContactForm />
+              <Suspense fallback={<SectionLoading />}>
+                <ContactForm />
+              </Suspense>
             </div>
           </div>
         </Container>

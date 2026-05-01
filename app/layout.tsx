@@ -6,6 +6,7 @@ import { VisualEditorProvider } from './context/visual-editor-context'
 import { getSiteData } from './site-data'
 import { Footer } from '@/components/footer'
 import { Spinner } from '@/components/spinner'
+import { BlueprintGrid } from '@/components/blueprint-grid'
 import { cache } from 'react'
 
 export const dynamic = 'force-dynamic'
@@ -36,10 +37,10 @@ export default async function RootLayout({
         <head>
           <link
             rel="stylesheet"
-            href="https://api.fontshare.com/css?f%5B%5D=switzer@400,500,600,700&amp;display=swap"
+            href="https://api.fontshare.com/css?f%5B%5D=switzer@300,400,500,600,700,800&amp;display=swap"
           />
           <link
-            href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap"
+            href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap"
             rel="stylesheet"
           />
           <link
@@ -55,11 +56,14 @@ export default async function RootLayout({
             defer
           />
         </head>
-        <body className="text-olive-950 bg-olive-100 antialiased dark:text-white dark:bg-olive-950">
+        <body className="text-olive-950 bg-olive-50 antialiased">
           <SiteDataProvider value={{ navBlock: siteData.navBlock }}>
             <VisualEditorProvider>
-              <main className="isolate overflow-clip">{children}</main>
+              <main className="relative overflow-clip">{children}</main>
               <Footer data={siteData.footerBlock.content} />
+              {/* Sits over everything via fixed + z-50 but pointer-events-none.
+                  Subtle enough not to interfere with content or buttons. */}
+              <BlueprintGrid />
             </VisualEditorProvider>
           </SiteDataProvider>
         </body>

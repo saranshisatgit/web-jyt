@@ -26,14 +26,18 @@ interface NavBlock {
 
 function DesktopNav({ navBlock }: { navBlock: NavBlock }) {
   return (
-    <nav className="hidden lg:flex lg:gap-8">
+    <nav className="hidden lg:flex lg:gap-7">
       {navBlock.content.navigation.map(({ link, text }) => (
         <Link
           key={link}
           href={link}
-          className="text-sm/7 font-medium text-olive-950 hover:text-olive-700 dark:text-white dark:hover:text-olive-300"
+          className="relative text-sm font-medium text-olive-700 transition-colors hover:text-olive-950"
         >
-          {text}
+          <span>{text}</span>
+          <span
+            aria-hidden="true"
+            className="absolute -bottom-1 left-0 h-px w-full origin-left scale-x-0 bg-clay-500 transition-transform duration-300 hover:scale-x-100"
+          />
         </Link>
       ))}
     </nav>
@@ -43,7 +47,7 @@ function DesktopNav({ navBlock }: { navBlock: NavBlock }) {
 function MobileNavButton() {
   return (
     <DisclosureButton
-      className="inline-flex rounded-full p-1.5 text-olive-950 hover:bg-olive-950/10 lg:hidden dark:text-white dark:hover:bg-white/10"
+      className="inline-flex rounded-full p-1.5 text-olive-950 hover:bg-olive-950/10 lg:hidden"
       aria-label="Open main menu"
     >
       <Bars2Icon className="size-6" />
@@ -68,7 +72,7 @@ function MobileNav({ navBlock }: { navBlock: NavBlock }) {
           >
             <Link
               href={link}
-              className="group inline-flex items-center justify-between gap-2 text-3xl/10 font-medium text-olive-950 dark:text-white"
+              className="group inline-flex items-center justify-between gap-2 text-3xl/10 font-medium text-olive-950"
             >
               {text}
               <span className="inline-flex p-1.5 opacity-0 group-hover:opacity-100" aria-hidden="true">
@@ -89,8 +93,8 @@ export function Navbar({ banner }: { banner?: React.ReactNode }) {
 
   if (!navBlock) {
     return (
-      <header className="sticky top-0 z-10 bg-olive-100/60 backdrop-blur-md dark:bg-olive-950/60">
-        <div className="mx-auto flex h-21 max-w-7xl items-center px-6 lg:px-10">
+      <header className="relative border-b border-olive-200/60">
+        <div className="mx-auto flex h-16 max-w-7xl items-center px-6 lg:px-10">
           <div className="flex flex-1 items-center justify-center py-4">
             <Spinner size="lg" />
           </div>
@@ -102,26 +106,31 @@ export function Navbar({ banner }: { banner?: React.ReactNode }) {
   const typedNavBlock = navBlock as unknown as NavBlock
 
   return (
-    <Disclosure as="header" className="sticky top-0 z-10 bg-olive-100/60 backdrop-blur-md dark:bg-olive-950/60">
-      <div className="mx-auto flex h-21 max-w-7xl items-center gap-4 px-6 lg:px-10">
-        <div className="flex flex-1 items-center gap-12">
+    <Disclosure
+      as="header"
+      className="relative border-b border-olive-200/60"
+    >
+      <div className="mx-auto flex h-16 max-w-7xl items-center gap-4 px-6 lg:px-10">
+        <div className="flex flex-1 items-center gap-10">
           <div className="flex items-center">
-            <Link href="/" title="Home">
-              <Logo className="h-9" />
+            <Link href="/" title="Home" className="inline-flex items-center">
+              <Logo className="h-7" />
             </Link>
           </div>
           <DesktopNav navBlock={typedNavBlock} />
         </div>
 
-        <div className="flex flex-1 items-center justify-end gap-4">
-          <div className="flex shrink-0 items-center gap-5">
+        <div className="flex flex-1 items-center justify-end gap-3">
+          <div className="flex shrink-0 items-center gap-3">
             {banner && (
               <div className="hidden lg:flex">{banner}</div>
             )}
             <PlainButtonLink href="/login" className="max-sm:hidden">
               Log in
             </PlainButtonLink>
-            <ButtonLink href="/contact" className="max-sm:hidden">Get started</ButtonLink>
+            <ButtonLink href="/contact" color="accent" className="max-sm:hidden px-4 py-1.5">
+              Get started
+            </ButtonLink>
           </div>
           <MobileNavButton />
         </div>

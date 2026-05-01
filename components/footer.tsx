@@ -1,32 +1,32 @@
-import { PlusGrid, PlusGridItem, PlusGridRow } from '@/components/plus-grid'
 import { Button } from './button'
 import { Container } from './container'
 import { Link } from './link'
 import { Logo } from './logo'
-import { Subheading, Text } from './text'
 
 function CallToAction({
   subheading,
   content,
   actionline,
-  button
+  button,
 }: { subheading: string; content: string; actionline: string; button: string }) {
-  const [beforeQuestion, afterQuestion] = content.split('?');
+  const [beforeQuestion, afterQuestion] = content.split('?')
   return (
-    <div className="relative pt-20 pb-16 text-center sm:py-24">
-      <hgroup>
-        <Subheading>{subheading}</Subheading>
-        <p className="mt-6 font-display text-3xl font-medium tracking-tight text-olive-950 sm:text-5xl dark:text-white">
+    <div className="relative grid gap-10 border-b border-olive-200/60 py-20 sm:py-24 lg:grid-cols-12 lg:gap-12">
+      <div className="lg:col-span-7">
+        <p className="text-xs font-semibold tracking-[0.18em] uppercase text-clay-700">
+          {subheading}
+        </p>
+        <p className="mt-5 font-display text-3xl/[1.05] font-medium tracking-[-0.02em] text-balance text-olive-950 sm:text-5xl/[1.05]">
           {beforeQuestion}?
           <br />
-          {afterQuestion}
+          <span className="text-olive-500">{afterQuestion}</span>
         </p>
-      </hgroup>
-      <Text size="md" className="mx-auto mt-6 max-w-xs text-pretty">
-        {actionline}
-      </Text>
-      <div className="mt-6">
-        <Button className="w-full sm:w-auto" href="#">
+      </div>
+      <div className="flex flex-col items-start gap-5 lg:col-span-5 lg:items-end lg:justify-end">
+        <p className="max-w-sm text-sm/6 text-olive-600 lg:text-right">
+          {actionline}
+        </p>
+        <Button color="dark/light" className="px-5 py-2.5" href="/contact">
           {button}
         </Button>
       </div>
@@ -35,11 +35,15 @@ function CallToAction({
 }
 
 function SitemapHeading({ children }: { children: React.ReactNode }) {
-  return <h3 className="text-sm/6 font-medium text-olive-950/50 dark:text-white/50">{children}</h3>
+  return (
+    <h3 className="text-xs font-semibold tracking-[0.18em] uppercase text-olive-500">
+      {children}
+    </h3>
+  )
 }
 
 function SitemapLinks({ children }: { children: React.ReactNode }) {
-  return <ul className="mt-6 space-y-4 text-sm/6">{children}</ul>
+  return <ul className="mt-5 space-y-3 text-sm">{children}</ul>
 }
 
 function SitemapLink(props: React.ComponentPropsWithoutRef<typeof Link>) {
@@ -47,7 +51,7 @@ function SitemapLink(props: React.ComponentPropsWithoutRef<typeof Link>) {
     <li>
       <Link
         {...props}
-        className="font-medium text-olive-950 hover:text-olive-950/75 dark:text-white dark:hover:text-white/75"
+        className="text-olive-700 transition-colors hover:text-clay-700"
       />
     </li>
   )
@@ -67,7 +71,7 @@ function Sitemap() {
       <div>
         <SitemapHeading>Company</SitemapHeading>
         <SitemapLinks>
-          <SitemapLink href="/careers">Careers(Not yet hiring)</SitemapLink>
+          <SitemapLink href="/careers">Careers</SitemapLink>
           <SitemapLink href="/blog">Blog</SitemapLink>
           <SitemapLink href="/about">About</SitemapLink>
           <SitemapLink href="/terms-of-service">Terms of service</SitemapLink>
@@ -122,48 +126,25 @@ function SocialIconInstagram(props: React.ComponentPropsWithoutRef<'svg'>) {
 }
 
 function SocialLinks() {
+  const items: { href: string; label: string; Icon: (p: React.ComponentPropsWithoutRef<'svg'>) => React.ReactElement }[] = [
+    { href: 'https://facebook.com/cicilabelbyjyt', label: 'Facebook', Icon: SocialIconFacebook },
+    { href: 'https://x.com/cici_label', label: 'X', Icon: SocialIconX },
+    { href: 'https://instagram.com/cici_label', label: 'Instagram', Icon: SocialIconInstagram },
+    { href: 'https://linkedin.com', label: 'LinkedIn', Icon: SocialIconLinkedIn },
+  ]
   return (
-    <>
-      <Link
-        href="https://facebook.com/cicilabelbyjyt"
-        target="_blank"
-        aria-label="Visit us on Facebook"
-        className="text-olive-950 hover:text-olive-950/75 dark:text-white dark:hover:text-white/75"
-      >
-        <SocialIconFacebook className="size-4" />
-      </Link>
-      <Link
-        href="https://x.com/cici_label"
-        target="_blank"
-        aria-label="Visit us on X"
-        className="text-olive-950 hover:text-olive-950/75 dark:text-white dark:hover:text-white/75"
-      >
-        <SocialIconX className="size-4" />
-      </Link>
-      <Link
-        href="https://instagram.com/cici_label"
-        target="_blank"
-        aria-label="Visit us on instagram"
-        className="text-olive-950 hover:text-olive-950/75 dark:text-white dark:hover:text-white/75"
-      >
-        <SocialIconInstagram className="size-4" />
-      </Link>
-      <Link
-        href="https://linkedin.com"
-        target="_blank"
-        aria-label="Visit us on LinkedIn"
-        className="text-olive-950 hover:text-olive-950/75 dark:text-white dark:hover:text-white/75"
-      >
-        <SocialIconLinkedIn className="size-4" />
-      </Link>
-    </>
-  )
-}
-
-function Copyright({ company }: { company: string }) {
-  return (
-    <div className="text-sm/6 text-olive-950 dark:text-white">
-      &copy; {new Date().getFullYear()} {company}
+    <div className="flex items-center gap-3">
+      {items.map(({ href, label, Icon }) => (
+        <Link
+          key={label}
+          href={href}
+          target="_blank"
+          aria-label={`Visit us on ${label}`}
+          className="inline-flex size-9 items-center justify-center rounded-full text-olive-600 ring-1 ring-olive-200/70 transition-colors hover:text-clay-700 hover:ring-clay-300"
+        >
+          <Icon className="size-4" />
+        </Link>
+      ))}
     </div>
   )
 }
@@ -178,48 +159,41 @@ interface FooterBlockCta {
 export function Footer({ data }: { data: Record<string, unknown> }) {
   if (!data) return null
   const { subheading, content, actionline, button } = data.cta as FooterBlockCta
-  
+
   return (
-    <footer className="border-t border-olive-950/10 dark:border-white/10">
-      <div className="relative">
-        <div className="absolute inset-2 rounded-4xl bg-white/80 dark:bg-olive-900/30" />
-        <Container>
-          <CallToAction subheading={subheading} content={content} actionline={actionline} button={button} />
-          <PlusGrid className="pb-16">
-            <PlusGridRow>
-              <div className="grid grid-cols-2 gap-y-10 pb-6 lg:grid-cols-6 lg:gap-8">
-                <div className="col-span-2 flex lg:col-span-2">
-                  <PlusGridItem className="pt-6 lg:pb-6">
-                    <Logo className="h-9" />
-                  </PlusGridItem>
-                </div>
-                <div className="col-span-2 lg:col-span-4 lg:col-start-3">
-                  <div className="grid grid-cols-2 gap-x-8 gap-y-12 lg:grid-cols-3 lg:pt-6 lg:ml-auto lg:w-fit">
-                    <Sitemap />
-                  </div>
-                </div>
-              </div>
-            </PlusGridRow>
-            
-            <PlusGridRow className="flex justify-between">
-              <div>
-                <PlusGridItem className="py-3">
-                  <div className="flex items-center gap-x-2 text-sm text-olive-600 dark:text-olive-400">
-                    <Copyright company={'Jaal Yantra Textiles Pvt. Ltd.'} />
-                    <span>|</span>
-                    <p>Was Part of Hatch Digital Ocean</p>
-                  </div>
-                </PlusGridItem>
-              </div>
-              <div className="flex">
-                <PlusGridItem className="flex items-center gap-8 py-3">
-                  <SocialLinks />
-                </PlusGridItem>
-              </div>
-            </PlusGridRow>
-          </PlusGrid>
-        </Container>
-      </div>
+    <footer className="relative border-t border-olive-200/60">
+      <Container>
+        <CallToAction
+          subheading={subheading}
+          content={content}
+          actionline={actionline}
+          button={button}
+        />
+
+        <div className="grid grid-cols-2 gap-y-10 py-16 lg:grid-cols-6 lg:gap-8">
+          <div className="col-span-2 flex flex-col gap-5 lg:col-span-2">
+            <Logo className="h-7" />
+            <p className="max-w-xs text-sm/6 text-olive-600">
+              Bespoke textiles, woven by independent artisans across India for designers
+              and brands worldwide.
+            </p>
+          </div>
+          <div className="col-span-2 lg:col-span-4 lg:col-start-3">
+            <div className="grid grid-cols-2 gap-x-8 gap-y-12 lg:ml-auto lg:w-fit lg:grid-cols-3">
+              <Sitemap />
+            </div>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-4 border-t border-olive-200/60 py-6 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-olive-500">
+            <span>&copy; {new Date().getFullYear()} Jaal Yantra Textiles Pvt. Ltd.</span>
+            <span aria-hidden="true">·</span>
+            <span>Was Part of Hatch Digital Ocean</span>
+          </div>
+          <SocialLinks />
+        </div>
+      </Container>
     </footer>
   )
 }

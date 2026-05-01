@@ -190,7 +190,7 @@ interface CallToActionProps {
 function CallToAction({ text, linkText, linkUrl }: CallToActionProps) {
   return (
     <div>
-      <p className="max-w-sm text-sm/6 text-olive-600 dark:text-olive-400">{text}</p>
+      <p className="max-w-sm text-sm/6 text-olive-600">{text}</p>
       <div className="mt-2">
         <Link
           href={linkUrl}
@@ -315,7 +315,7 @@ export function Testimonials({ testimonialsData }: { testimonialsData?: Testimon
             '[scrollbar-width:none] [&::-webkit-scrollbar]:hidden',
             'snap-x snap-proximity overflow-x-auto overscroll-x-contain scroll-smooth',
             'touch-pan-x',
-            '[--scroll-padding:max(--spacing(6),calc((100vw-(var(--container-2xl)))/2))] lg:[--scroll-padding:max(--spacing(8),calc((100vw-(var(--container-7xl)))/2))]',
+            '[--scroll-padding:max(--spacing(6),calc((100vw-(var(--container-7xl)))/2))] lg:[--scroll-padding:max(--spacing(10),calc((100vw-(var(--container-7xl)))/2))]',
           ])}
         >
           {testimonials.map(({ img, name, title, quote }, testimonialIndex) => (
@@ -357,8 +357,8 @@ export function Testimonials({ testimonialsData }: { testimonialsData?: Testimon
                   }
                   aria-label={`Scroll to page ${pageIndex + 1}`}
                   className={clsx(
-                    'size-2.5 rounded-full border border-transparent bg-olive-300 transition dark:bg-olive-700',
-                    'data-active:bg-olive-400 data-hover:bg-olive-400 dark:data-active:bg-olive-500 dark:data-hover:bg-olive-500',
+                    'size-2.5 rounded-full border border-transparent bg-olive-300 transition',
+                    'data-active:bg-olive-400 data-hover:bg-olive-400',
                     'forced-colors:data-active:bg-[Highlight] forced-colors:data-focus:outline-offset-4',
                   )}
                 />

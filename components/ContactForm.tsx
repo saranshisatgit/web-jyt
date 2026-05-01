@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { useFormState, useFormStatus } from 'react-dom';
+import { useSearchParams } from 'next/navigation';
 import { handleContactFormSubmission, handleVerifyCode } from '@/app/actions';
 
 const initialFormState = {
@@ -51,6 +52,8 @@ const ContactForm = () => {
   const [responseId, setResponseId] = useState('');
   const [formState, formAction] = useFormState(handleContactFormSubmission, initialFormState);
   const [verifyState, verifyAction] = useFormState(handleVerifyCode, initialVerifyState);
+  const searchParams = useSearchParams();
+  const prefilledMessage = searchParams?.get('prompt') ?? '';
 
   React.useEffect(() => {
     if (formState.success && formState.needsVerification && formState.responseId) {
@@ -172,6 +175,7 @@ const ContactForm = () => {
           id="message"
           rows={4}
           required
+          defaultValue={prefilledMessage}
           className="mt-1 block w-full rounded-lg border-transparent ring-1 ring-black/10 shadow-sm px-[calc(var(--spacing-2,8px)-1px)] py-[calc(var(--spacing-1-5,6px)-1px)] text-base/6 sm:text-sm/6 focus:outline-2 focus:-outline-offset-1 focus:outline-black focus:ring-0 focus:border-transparent dark:bg-olive-800 dark:text-white dark:ring-white/10 dark:focus:outline-white"
         />
       </div>
