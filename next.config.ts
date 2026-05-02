@@ -25,7 +25,17 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: 'images.unsplash.com',
-      }
+      },
+      // Partner-hosted assets (Lisio + Antico Setificio + similar). Swap to
+      // self-hosted copies in your S3 bucket before broad launch.
+      {
+        protocol: 'https',
+        hostname: 'www.datocms-assets.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'anticosetificiofiorentino.com',
+      },
     ],
   },
   turbopack: {},

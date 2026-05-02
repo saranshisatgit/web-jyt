@@ -6,16 +6,23 @@ import type { GuideDashboardPayload, GuideVisit } from './actions';
 
 type Props = { initial: GuideDashboardPayload };
 
+// Tour times always render in Florence local — the guide is in Florence,
+// the customer's tour is in Florence; using the browser tz would be
+// confusing for both.
+const FLORENCE_TZ = 'Europe/Rome';
+
 const formatDateLong = (iso: string | null): string => {
   if (!iso) return 'Date TBD';
   try {
-    return new Date(iso).toLocaleString(undefined, {
+    return new Date(iso).toLocaleString('en-GB', {
       weekday: 'short',
       day: 'numeric',
       month: 'short',
       year: 'numeric',
       hour: 'numeric',
       minute: '2-digit',
+      hour12: false,
+      timeZone: FLORENCE_TZ,
     });
   } catch {
     return iso;
@@ -25,9 +32,10 @@ const formatDateLong = (iso: string | null): string => {
 const formatDateShort = (iso: string | null): string => {
   if (!iso) return '—';
   try {
-    return new Date(iso).toLocaleDateString(undefined, {
+    return new Date(iso).toLocaleDateString('en-GB', {
       day: 'numeric',
       month: 'short',
+      timeZone: FLORENCE_TZ,
     });
   } catch {
     return iso;
@@ -96,11 +104,21 @@ export function GuideDashboard({ initial }: Props) {
     });
   }, [initial.visits, filter]);
 
-  // Group by date for a more useful overview.
+  // Group by date for a more useful overview. We bucket by Florence-local
+  // calendar date so a 22:00 evening tour doesn't get split into the next
+  // UTC day.
   const groupedByDate = useMemo(() => {
     const map = new Map<string, GuideVisit[]>();
+    const localDateKey = (iso: string): string => {
+      try {
+        // en-CA gives YYYY-MM-DD which is naturally sortable.
+        return new Date(iso).toLocaleDateString('en-CA', { timeZone: FLORENCE_TZ });
+      } catch {
+        return iso.slice(0, 10);
+      }
+    };
     for (const v of visits) {
-      const key = v.tour_date ? v.tour_date.slice(0, 10) : '__nodate__';
+      const key = v.tour_date ? localDateKey(v.tour_date) : '__nodate__';
       const arr = map.get(key) || [];
       arr.push(v);
       map.set(key, arr);

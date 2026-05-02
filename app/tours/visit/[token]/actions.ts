@@ -65,6 +65,20 @@ export type TourPracticalGuidance = {
   meeting_point?: string | null;
 };
 
+/**
+ * High-trust signals lifted from the source listing (e.g. GYG): duration,
+ * cancellation window, wheelchair access. Surfaced as chips on the
+ * welcome step so the customer sees them upfront.
+ */
+export type TourTrustSignals = {
+  duration?: string | null;
+  group_cap?: number | null;
+  languages?: string[] | null;
+  wheelchair_accessible?: boolean;
+  free_cancellation_hours?: number | null;
+  pay_later?: boolean;
+};
+
 export type TourFormField = {
   id: string;
   name: string;
@@ -89,6 +103,9 @@ export type TourVisitPayload = {
       story?: TourStory | null;
       guides?: TourGuide[];
       practical_guidance?: TourPracticalGuidance | null;
+      excluded?: string[] | null;
+      highlights?: string[] | null;
+      trust_signals?: TourTrustSignals | null;
       [key: string]: unknown;
     } | null;
     fields: TourFormField[];
@@ -156,6 +173,16 @@ export type TourVisitPayload = {
    * `share` — sibling token, read-only.
    */
   access_mode?: 'owner' | 'share';
+  /**
+   * Active read-only share tokens minted by the owner. Owner sees the
+   * full list (so the wizard can render Revoke buttons); share-mode
+   * viewers always see an empty list.
+   */
+  shares: Array<{
+    token: string;
+    mode: string;
+    created_at: string;
+  }>;
 };
 
 const apiBase = (): string =>
@@ -236,6 +263,39 @@ export async function loadTourVisit(
   }
 }
 
+export async function revokeShareLink(
+  token: string,
+  shareToken: string
+): Promise<
+  | { ok: true; data: { shares: Array<{ token: string; mode: string; created_at: string }> } }
+  | { ok: false; status: number; message: string }
+> {
+  try {
+    const res = await fetch(
+      `${apiBase()}/tour-visits/${encodeURIComponent(token)}/share/${encodeURIComponent(shareToken)}`,
+      {
+        method: 'DELETE',
+        cache: 'no-store',
+      }
+    );
+    if (!res.ok) {
+      const body = await res.json().catch(() => null);
+      return {
+        ok: false,
+        status: res.status,
+        message: body?.message || body?.error || 'Could not revoke share link',
+      };
+    }
+    const body = (await res.json()) as {
+      shares: Array<{ token: string; mode: string; created_at: string }>;
+    };
+    return { ok: true, data: { shares: body.shares } };
+  } catch (err) {
+    console.error('revokeShareLink failed', err);
+    return { ok: false, status: 500, message: 'Could not reach the booking service' };
+  }
+}
+
 export async function createShareLink(
   token: string
 ): Promise<
@@ -280,7 +340,6 @@ export async function saveItinerary(
     selected_segments: string[];
     answers: Record<string, unknown>;
     confirm?: boolean;
-    visit_url?: string;
   }
 ): Promise<{ ok: true; data: TourVisitPayload } | { ok: false; status: number; message: string }> {
   try {

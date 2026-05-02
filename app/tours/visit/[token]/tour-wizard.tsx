@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 import {
   createShareLink,
+  revokeShareLink,
   saveItinerary,
   type TourSegment,
   type TourVisitPayload,
@@ -62,17 +63,25 @@ const PHOTO_PERMISSION_OPTIONS = [
   { value: 'no', label: 'No photos of me, please' },
 ];
 
+/**
+ * Format the tour date in the venue's local timezone (Europe/Rome) so a
+ * Sydney customer doesn't see "21:00 Tue" for an 11:00 Florence tour.
+ * The "(Florence local time)" suffix makes the timezone explicit.
+ */
 const formatDate = (iso: string | null): string => {
   if (!iso) return '';
   try {
-    return new Date(iso).toLocaleString(undefined, {
+    const formatted = new Date(iso).toLocaleString('en-GB', {
       weekday: 'long',
       day: 'numeric',
       month: 'long',
       year: 'numeric',
       hour: 'numeric',
       minute: '2-digit',
+      hour12: false,
+      timeZone: 'Europe/Rome',
     });
+    return `${formatted} (Florence local time)`;
   } catch {
     return iso;
   }
@@ -102,6 +111,25 @@ const sourceLabel = (s: string | null): string => {
   if (!s) return 'Direct booking';
   if (s.toLowerCase() === 'gyg') return 'GetYourGuide';
   return s;
+};
+
+/**
+ * Fire a wizard event into the in-house analytics module
+ * (window.jytAnalytics.track), defensively. The script is loaded by the
+ * site-wide layout but may not be present in dev or on every host —
+ * gracefully no-op when missing instead of throwing.
+ */
+const track = (name: string, metadata: Record<string, unknown> = {}) => {
+  if (typeof window === 'undefined') return;
+  const a = (window as unknown as {
+    jytAnalytics?: { track?: (n: string, m: Record<string, unknown>) => void };
+  }).jytAnalytics;
+  try {
+    a?.track?.(name, { surface: 'tour-visit-wizard', ...metadata });
+  } catch (err) {
+    // Analytics must never break the customer flow.
+    console.debug('[wizard] analytics track failed', err);
+  }
 };
 
 /**
@@ -164,6 +192,20 @@ export function TourWizard({ token, initial }: Props) {
     return () => window.clearInterval(id);
   }, []);
 
+  // Fire one funnel-entry event per page mount. The token is intentionally
+  // not sent — the in-house analytics already correlates by visitor/session
+  // ID and we don't want to leak tokens into event metadata.
+  useEffect(() => {
+    track('tour_visit_loaded', {
+      access_mode: initial.access_mode,
+      booking_ref: initial.booking?.booking_ref || null,
+      country: initial.traveller?.country || null,
+      add_ons_currency: initial.payment?.add_ons_currency || null,
+    });
+    // Run once on mount.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const currentStepId: StepId = useMemo(() => {
     const raw = searchParams?.get('step');
     if (raw && STEPS.some((s) => s.id === raw)) return raw as StepId;
@@ -176,6 +218,13 @@ export function TourWizard({ token, initial }: Props) {
   const guides = data.form.settings?.guides || [];
   const story = data.form.settings?.story || null;
   const practical = data.form.settings?.practical_guidance || null;
+  const highlights = Array.isArray(data.form.settings?.highlights)
+    ? (data.form.settings!.highlights as string[]).filter(Boolean)
+    : [];
+  const excluded = Array.isArray(data.form.settings?.excluded)
+    ? (data.form.settings!.excluded as string[]).filter(Boolean)
+    : [];
+  const trust = data.form.settings?.trust_signals || null;
   // Field names the wizard already renders inline — exclude them from the
   // "A few more questions" admin-defined block to avoid duplication.
   const BUILT_IN_FIELD_NAMES = new Set([
@@ -242,15 +291,10 @@ export function TourWizard({ token, initial }: Props) {
       if (isReadOnly) return true;
       const sel = override?.selected ?? persistSelectionRef.current.selected;
       const ans = override?.answers ?? persistSelectionRef.current.answers;
-      const visitUrl =
-        typeof window !== 'undefined'
-          ? `${window.location.origin}${window.location.pathname}`
-          : undefined;
       const result = await saveItinerary(token, {
         selected_segments: Array.from(sel),
         answers: ans,
         confirm: !!override?.confirm,
-        visit_url: visitUrl,
       });
       if (!result.ok) {
         setError(result.message);
@@ -271,13 +315,14 @@ export function TourWizard({ token, initial }: Props) {
       const params = new URLSearchParams(searchParams?.toString() || '');
       params.set('step', id);
       router.replace(`?${params.toString()}`, { scroll: false });
+      track('tour_visit_step', { from: currentStepId, to: id, skipped_save: !!opts?.skipSave });
       if (!opts?.skipSave) {
         startSaving(async () => {
           await persist();
         });
       }
     },
-    [router, searchParams, persist]
+    [router, searchParams, persist, currentStepId]
   );
 
   const goNext = () => {
@@ -293,8 +338,10 @@ export function TourWizard({ token, initial }: Props) {
     if (locked || isReadOnly) return;
     setSelected((prev) => {
       const next = new Set(prev);
+      const action = next.has(id) ? 'remove' : 'add';
       if (next.has(id)) next.delete(id);
       else next.add(id);
+      track('tour_segment_toggle', { segment_id: id, action });
       return next;
     });
   };
@@ -328,11 +375,17 @@ export function TourWizard({ token, initial }: Props) {
 
   const onSaveFinal = () => {
     setError(null);
+    track('tour_visit_confirm_attempt', {
+      selected_count: selected.size,
+      add_ons_currency: data.payment?.add_ons_currency,
+      add_ons_due: data.payment?.add_ons_due,
+    });
     startSaving(async () => {
       const ok = await persist({ confirm: true });
       if (ok) {
         setSavedAt(Date.now());
         setConfirmed(true);
+        track('tour_visit_confirmed');
       }
     });
   };
@@ -340,17 +393,29 @@ export function TourWizard({ token, initial }: Props) {
   const handleShare = async () => {
     if (isReadOnly) return;
     setSharePending(true);
+    track('tour_visit_share_attempt');
     try {
       const res = await createShareLink(token);
       if (!res.ok) {
         setError(res.message);
+        track('tour_visit_share_failed', { status: res.status });
         return;
       }
+      track('tour_visit_share_created');
       const url =
         typeof window !== 'undefined'
           ? `${window.location.origin}${res.data.visit_path}`
           : res.data.visit_path;
       setShareUrl(url);
+      // Optimistically add to the in-memory list so the Revoke button shows
+      // up immediately. The next persist round-trip rehydrates from server.
+      setData((prev) => ({
+        ...prev,
+        shares: [
+          ...(prev.shares || []),
+          { token: res.data.share_token, mode: 'read', created_at: new Date().toISOString() },
+        ],
+      }));
       setError(null);
       try {
         await navigator.clipboard.writeText(url);
@@ -360,6 +425,19 @@ export function TourWizard({ token, initial }: Props) {
     } finally {
       setSharePending(false);
     }
+  };
+
+  const handleRevokeShare = async (shareToken: string) => {
+    if (isReadOnly) return;
+    const res = await revokeShareLink(token, shareToken);
+    if (!res.ok) {
+      setError(res.message);
+      return;
+    }
+    track('tour_visit_share_revoked');
+    setData((prev) => ({ ...prev, shares: res.data.shares }));
+    if (shareUrl?.includes(shareToken)) setShareUrl(null);
+    setError(null);
   };
 
   const handleDownloadIcs = () => {
@@ -519,6 +597,57 @@ export function TourWizard({ token, initial }: Props) {
               </p>
             )}
 
+            {trust ? (
+              <ul className="mt-6 flex flex-wrap gap-2 text-xs">
+                {trust.duration ? (
+                  <li className="rounded-full bg-white px-3 py-1.5 text-olive-800 ring-1 ring-olive-200">
+                    {trust.duration}
+                  </li>
+                ) : null}
+                {typeof trust.group_cap === 'number' ? (
+                  <li className="rounded-full bg-white px-3 py-1.5 text-olive-800 ring-1 ring-olive-200">
+                    Capped at {trust.group_cap}
+                  </li>
+                ) : null}
+                {Array.isArray(trust.languages) && trust.languages.length > 0 ? (
+                  <li className="rounded-full bg-white px-3 py-1.5 text-olive-800 ring-1 ring-olive-200">
+                    {trust.languages.join(' · ')}
+                  </li>
+                ) : null}
+                {trust.wheelchair_accessible ? (
+                  <li className="rounded-full bg-white px-3 py-1.5 text-olive-800 ring-1 ring-olive-200">
+                    Wheelchair accessible
+                  </li>
+                ) : null}
+                {typeof trust.free_cancellation_hours === 'number' ? (
+                  <li className="rounded-full bg-emerald-50 px-3 py-1.5 text-emerald-800 ring-1 ring-emerald-200">
+                    Free cancellation {trust.free_cancellation_hours}h ahead
+                  </li>
+                ) : null}
+                {trust.pay_later ? (
+                  <li className="rounded-full bg-emerald-50 px-3 py-1.5 text-emerald-800 ring-1 ring-emerald-200">
+                    Reserve now, pay later
+                  </li>
+                ) : null}
+              </ul>
+            ) : null}
+
+            {highlights.length > 0 ? (
+              <div className="mt-8 rounded-2xl border border-olive-200 bg-white p-5">
+                <h3 className="font-display text-sm font-medium uppercase tracking-wide text-olive-500">
+                  Highlights
+                </h3>
+                <ul className="mt-3 space-y-2">
+                  {highlights.map((h, i) => (
+                    <li key={i} className="flex items-baseline gap-2 text-sm text-olive-800">
+                      <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-clay-500" />
+                      <span>{h}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
+
             <dl className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-3">
               {data.booking.booking_ref ? (
                 <div className="rounded-2xl border border-olive-200 bg-white p-4">
@@ -575,6 +704,37 @@ export function TourWizard({ token, initial }: Props) {
                   <path d="M2.5 6h7m0 0L6 2.5M9.5 6 6 9.5" />
                 </svg>
               </button>
+            </div>
+
+            <div className="mt-10 grid grid-cols-1 gap-3 border-t border-olive-200 pt-6 text-xs text-olive-500 sm:grid-cols-2">
+              <p>
+                <span className="font-medium text-olive-700">Need to cancel?</span>{' '}
+                Cancellations are managed via your GetYourGuide booking — log into{' '}
+                <a
+                  href="https://www.getyourguide.com/account/bookings"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-clay-700 underline-offset-2 hover:underline"
+                >
+                  your GYG bookings
+                </a>{' '}
+                to cancel or reschedule, free up to 24 hours ahead.
+              </p>
+              <p>
+                <span className="font-medium text-olive-700">Your privacy:</span>{' '}
+                We collect dietary preferences, access needs and emergency contact
+                details only to host you well — they go to your guide and nowhere
+                else. See our{' '}
+                <a
+                  href="/privacy-policy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-clay-700 underline-offset-2 hover:underline"
+                >
+                  privacy policy
+                </a>{' '}
+                for the full GDPR detail.
+              </p>
             </div>
           </section>
         ) : null}
@@ -1382,6 +1542,38 @@ export function TourWizard({ token, initial }: Props) {
               );
             })()}
 
+            {excluded.length > 0 ? (
+              <div className="mt-6 rounded-2xl border border-amber-200 bg-amber-50/50">
+                <div className="flex items-start gap-3 px-5 py-4">
+                  <span
+                    aria-hidden="true"
+                    className="mt-0.5 inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-amber-100 text-amber-800"
+                  >
+                    <svg viewBox="0 0 16 16" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                      <circle cx="8" cy="8" r="6" />
+                      <path d="M8 5v3.5M8 11v0.1" />
+                    </svg>
+                  </span>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-display text-base font-medium text-olive-950">
+                      Not included
+                    </h3>
+                    <p className="mt-1 text-xs text-olive-600">
+                      Plan for these separately — they aren&apos;t covered by your booking.
+                    </p>
+                    <ul className="mt-3 flex flex-col gap-1.5 text-sm text-olive-800">
+                      {excluded.map((line, i) => (
+                        <li key={i} className="flex items-baseline gap-2">
+                          <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-amber-600" />
+                          <span>{line}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            ) : null}
+
             {practical &&
             (practical.what_to_wear ||
               practical.what_we_provide ||
@@ -1477,6 +1669,57 @@ export function TourWizard({ token, initial }: Props) {
                     >
                       Copy again
                     </button>
+                  </div>
+                ) : null}
+
+                {(data.shares || []).length > 0 ? (
+                  <div className="mt-3 flex flex-col gap-1.5">
+                    <p className="text-xs font-medium text-olive-700">
+                      Active share links ({(data.shares || []).length}/3)
+                    </p>
+                    <ul className="flex flex-col gap-1.5">
+                      {(data.shares || []).map((share) => {
+                        const url =
+                          typeof window !== 'undefined'
+                            ? `${window.location.origin}/tours/visit/${share.token}`
+                            : `/tours/visit/${share.token}`;
+                        const created = new Date(share.created_at);
+                        return (
+                          <li
+                            key={share.token}
+                            className="flex flex-wrap items-center gap-2 rounded-xl bg-white px-3 py-2 text-xs ring-1 ring-clay-200"
+                          >
+                            <code className="flex-1 min-w-0 truncate font-mono text-olive-700">
+                              …/{share.token.slice(0, 12)}…
+                            </code>
+                            <span className="text-olive-500">
+                              {isNaN(created.getTime())
+                                ? ''
+                                : created.toLocaleDateString(undefined, {
+                                    day: 'numeric',
+                                    month: 'short',
+                                  })}
+                            </span>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                navigator.clipboard?.writeText(url).catch(() => {});
+                              }}
+                              className="shrink-0 rounded-full bg-olive-50 px-2.5 py-1 text-olive-800 ring-1 ring-olive-200 hover:bg-olive-100"
+                            >
+                              Copy
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => handleRevokeShare(share.token)}
+                              className="shrink-0 rounded-full bg-white px-2.5 py-1 text-red-700 ring-1 ring-red-200 hover:bg-red-50"
+                            >
+                              Revoke
+                            </button>
+                          </li>
+                        );
+                      })}
+                    </ul>
                   </div>
                 ) : null}
               </div>
