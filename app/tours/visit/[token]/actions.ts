@@ -31,11 +31,29 @@ export type TourGuide = {
   photo_url?: string | null;
   languages?: string[] | null;
   instagram?: string | null;
+  /**
+   * "available" — real guide, can be booked.
+   * "na" — placeholder profile, not yet onboarded; we tag these so the
+   *        customer knows the day will be hosted by someone else.
+   */
+  availability?: 'available' | 'na' | null;
 };
 
 export type TourStory = {
   headline?: string | null;
   body?: string | null;
+};
+
+/**
+ * Practical day-of guidance — dress code, what we provide, what to bring,
+ * meeting point notes. Operators configure each line via Form.settings.
+ * Empty/missing entries are skipped on the UI.
+ */
+export type TourPracticalGuidance = {
+  what_to_wear?: string | null;
+  what_we_provide?: string | null;
+  what_to_bring?: string | null;
+  meeting_point?: string | null;
 };
 
 export type TourFormField = {
@@ -61,6 +79,7 @@ export type TourVisitPayload = {
     settings: {
       story?: TourStory | null;
       guides?: TourGuide[];
+      practical_guidance?: TourPracticalGuidance | null;
       [key: string]: unknown;
     } | null;
     fields: TourFormField[];
@@ -70,6 +89,7 @@ export type TourVisitPayload = {
     id: string;
     status: string;
     submitted_at: string;
+    updated_at: string;
     answers: Record<string, unknown>;
     selected_segments: string[];
   };
@@ -203,7 +223,12 @@ export async function loadTourVisit(
 
 export async function saveItinerary(
   token: string,
-  payload: { selected_segments: string[]; answers: Record<string, unknown> }
+  payload: {
+    selected_segments: string[];
+    answers: Record<string, unknown>;
+    confirm?: boolean;
+    visit_url?: string;
+  }
 ): Promise<{ ok: true; data: TourVisitPayload } | { ok: false; status: number; message: string }> {
   try {
     const res = await fetch(`${apiBase()}/tour-visits/${encodeURIComponent(token)}`, {

@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { saveItinerary, type TourSegment, type TourVisitPayload } from './actions';
 import { SegmentModal } from './segment-modal';
+import { buildTourIcs, downloadIcs } from './ics';
 
 type Props = {
   token: string;
@@ -41,6 +42,19 @@ const ARRIVAL_MODE_OPTIONS = [
   { value: 'car', label: 'Car / private transfer' },
   { value: 'bus', label: 'Bus / coach' },
   { value: 'already_in_city', label: 'Already in Florence' },
+];
+
+const MEETING_POINT_TRANSPORT_OPTIONS = [
+  { value: 'walking', label: 'Walking — send me directions' },
+  { value: 'public', label: 'Public transport — send me tickets/instructions' },
+  { value: 'partner_taxi', label: 'Partner taxi (~€15)' },
+  { value: 'self', label: "I'll arrange my own way" },
+];
+
+const PHOTO_PERMISSION_OPTIONS = [
+  { value: 'yes', label: 'Yes, photos welcome' },
+  { value: 'no_face', label: 'Yes, but please not my face' },
+  { value: 'no', label: 'No photos of me, please' },
 ];
 
 const formatDate = (iso: string | null): string => {
@@ -85,6 +99,31 @@ const sourceLabel = (s: string | null): string => {
   return s;
 };
 
+/**
+ * Tight, friendly relative-time. Designed for the small "Last saved …"
+ * label so it never goes stale-feeling: anything under a minute is "just
+ * now", anything under an hour is "X min ago", under a day is "X h ago",
+ * older than that is the literal date.
+ */
+const formatRelativeTime = (then: number, now: number): string => {
+  const delta = Math.max(0, now - then);
+  const sec = Math.floor(delta / 1000);
+  if (sec < 30) return 'just now';
+  if (sec < 60) return 'less than a minute ago';
+  const min = Math.floor(sec / 60);
+  if (min < 60) return `${min} min${min === 1 ? '' : 's'} ago`;
+  const hr = Math.floor(min / 60);
+  if (hr < 24) return `${hr} h ago`;
+  try {
+    return new Date(then).toLocaleDateString(undefined, {
+      day: 'numeric',
+      month: 'short',
+    });
+  } catch {
+    return 'a while ago';
+  }
+};
+
 export function TourWizard({ token, initial }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -97,9 +136,22 @@ export function TourWizard({ token, initial }: Props) {
     initial.response.answers || {}
   );
   const [error, setError] = useState<string | null>(null);
-  const [savedAt, setSavedAt] = useState<number | null>(null);
+  // savedAt = last successful PATCH (or initial load timestamp); persists
+  // across step navigation so the "Last saved" line stays meaningful.
+  const [savedAt, setSavedAt] = useState<number>(() =>
+    initial.response.updated_at ? new Date(initial.response.updated_at).getTime() : Date.now()
+  );
   const [saving, startSaving] = useTransition();
   const [openSegment, setOpenSegment] = useState<TourSegment | null>(null);
+  const [confirmed, setConfirmed] = useState(false);
+  const [now, setNow] = useState(() => Date.now());
+
+  // Tick the relative-time formatter every 30s so "Last saved 2 min ago"
+  // updates without forcing the user to refresh.
+  useEffect(() => {
+    const id = window.setInterval(() => setNow(Date.now()), 30_000);
+    return () => window.clearInterval(id);
+  }, []);
 
   const currentStepId: StepId = useMemo(() => {
     const raw = searchParams?.get('step');
@@ -112,7 +164,52 @@ export function TourWizard({ token, initial }: Props) {
   const segments = data.form.itinerary_segments || [];
   const guides = data.form.settings?.guides || [];
   const story = data.form.settings?.story || null;
-  const fields = (data.form.fields || []).slice().sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+  const practical = data.form.settings?.practical_guidance || null;
+  // Field names the wizard already renders inline — exclude them from the
+  // "A few more questions" admin-defined block to avoid duplication.
+  const BUILT_IN_FIELD_NAMES = new Set([
+    'interests',
+    'notes_for_guide',
+    'dietary',
+    'access_needs',
+    'preferred_language',
+    'insurance',
+    'insurance_provider',
+    'arrival_mode',
+    'arrival_time',
+    'accommodation',
+    'meeting_point_transport',
+    'photo_permission',
+    'emergency_contact_name',
+    'emergency_contact_phone',
+  ]);
+  const fields = (data.form.fields || [])
+    .slice()
+    .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+    .filter((f) => !BUILT_IN_FIELD_NAMES.has(f.name));
+
+  // Union of languages from guides marked Available — used to bound the
+  // language picker. Falls back to a free-text input if guides aren't loaded.
+  const guideLanguages = useMemo(() => {
+    const set = new Set<string>();
+    for (const g of guides) {
+      if (g.availability === 'na') continue;
+      for (const l of g.languages || []) {
+        const trimmed = (l || '').trim();
+        if (trimmed) set.add(trimmed);
+      }
+    }
+    return Array.from(set).sort();
+  }, [guides]);
+
+  // Soft warning: when both far-apart add-ons are selected without the
+  // private transfer, suggest adding it. Pure heuristic — operators can
+  // tweak the segment IDs in settings if their tour topology changes.
+  const showTransferHint = useMemo(() => {
+    const hasFar = selected.has('seg_antico_setificio') && selected.has('seg_stefanie_dux');
+    const hasTransfer = selected.has('seg_transport_private');
+    return hasFar && !hasTransfer;
+  }, [selected]);
 
   const persistSelectionRef = useRef<{ selected: Set<string>; answers: Record<string, unknown> }>({
     selected,
@@ -122,13 +219,23 @@ export function TourWizard({ token, initial }: Props) {
 
   const persist = useCallback(
     async (
-      override?: { selected?: Set<string>; answers?: Record<string, unknown> }
+      override?: {
+        selected?: Set<string>;
+        answers?: Record<string, unknown>;
+        confirm?: boolean;
+      }
     ): Promise<boolean> => {
       const sel = override?.selected ?? persistSelectionRef.current.selected;
       const ans = override?.answers ?? persistSelectionRef.current.answers;
+      const visitUrl =
+        typeof window !== 'undefined'
+          ? `${window.location.origin}${window.location.pathname}`
+          : undefined;
       const result = await saveItinerary(token, {
         selected_segments: Array.from(sel),
         answers: ans,
+        confirm: !!override?.confirm,
+        visit_url: visitUrl,
       });
       if (!result.ok) {
         setError(result.message);
@@ -207,9 +314,42 @@ export function TourWizard({ token, initial }: Props) {
   const onSaveFinal = () => {
     setError(null);
     startSaving(async () => {
-      const ok = await persist();
-      if (ok) setSavedAt(Date.now());
+      const ok = await persist({ confirm: true });
+      if (ok) {
+        setSavedAt(Date.now());
+        setConfirmed(true);
+      }
     });
+  };
+
+  const handleDownloadIcs = () => {
+    if (!data.booking.tour_date) return;
+    const includedSegments = segments.filter(
+      (s) => selected.has(s.id) || s.required
+    );
+    const totalMinutes = includedSegments.reduce(
+      (acc, s) => acc + (typeof s.duration_minutes === 'number' ? s.duration_minutes : 0),
+      0
+    );
+    const description = [
+      `Booking ref: ${data.booking.booking_ref ?? '—'}`,
+      `Visit link: ${typeof window !== 'undefined' ? window.location.href : ''}`,
+      '',
+      'Itinerary:',
+      ...includedSegments.map(
+        (s) => `• ${s.title ?? s.id}${s.time_slot ? ` (${s.time_slot})` : ''}`
+      ),
+    ].join('\n');
+
+    const ics = buildTourIcs({
+      uid: `tour-${data.response.id}@jaalyantra.com`,
+      title: data.booking.product || data.form.title || 'JYT visit',
+      description,
+      location: 'Florence, Italy',
+      startsAt: data.booking.tour_date,
+      durationMinutes: totalMinutes > 0 ? totalMinutes : 240,
+    });
+    downloadIcs(`jyt-${data.booking.booking_ref ?? 'visit'}.ics`, ics);
   };
 
   const setAnswer = (name: string, value: unknown) => {
@@ -247,14 +387,17 @@ export function TourWizard({ token, initial }: Props) {
                   <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-olive-500" />
                   Saving…
                 </span>
-              ) : savedAt ? (
-                <span className="inline-flex items-center gap-1.5 text-olive-700">
+              ) : (
+                <span
+                  className="inline-flex items-center gap-1.5 text-olive-600"
+                  title={`Last saved ${new Date(savedAt).toLocaleString()}`}
+                >
                   <svg viewBox="0 0 12 12" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                     <path d="M2 6.5l2.5 2.5L10 3.5" />
                   </svg>
-                  Saved
+                  Saved {formatRelativeTime(savedAt, now)}
                 </span>
-              ) : null}
+              )}
               {currentStepId !== 'itinerary' ? (
                 <button
                   type="button"
@@ -402,64 +545,101 @@ export function TourWizard({ token, initial }: Props) {
               </div>
             ) : (
               <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {guides.map((g) => (
-                  <article
-                    key={g.id || g.name}
-                    className="flex flex-col overflow-hidden rounded-2xl border border-olive-200 bg-white shadow-sm"
-                  >
-                    {g.photo_url ? (
-                      <div className="relative aspect-[4/5] w-full bg-olive-100">
-                        <Image
-                          src={g.photo_url}
-                          alt={g.name}
-                          fill
-                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                          className="object-cover"
+                {guides.map((g) => {
+                  const isPlaceholder = g.availability === 'na';
+                  return (
+                    <article
+                      key={g.id || g.name}
+                      className={[
+                        'relative flex flex-col overflow-hidden rounded-2xl border bg-white shadow-sm transition',
+                        isPlaceholder
+                          ? 'border-olive-200/70 opacity-80'
+                          : 'border-olive-200',
+                      ].join(' ')}
+                    >
+                      {g.photo_url ? (
+                        <div className="relative aspect-[4/5] w-full bg-olive-100">
+                          <Image
+                            src={g.photo_url}
+                            alt={g.name}
+                            fill
+                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                            className={[
+                              'object-cover',
+                              isPlaceholder ? 'grayscale' : '',
+                            ].join(' ')}
+                          />
+                        </div>
+                      ) : (
+                        <div className="aspect-[4/5] w-full bg-gradient-to-br from-clay-100 via-olive-100 to-clay-200" />
+                      )}
+
+                      <span
+                        className={[
+                          'absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium shadow-sm backdrop-blur-sm',
+                          isPlaceholder
+                            ? 'bg-white/85 text-olive-700 ring-1 ring-olive-200'
+                            : 'bg-emerald-600/90 text-white',
+                        ].join(' ')}
+                      >
+                        <span
+                          className={[
+                            'h-1.5 w-1.5 rounded-full',
+                            isPlaceholder ? 'bg-olive-400' : 'bg-white',
+                          ].join(' ')}
+                          aria-hidden="true"
                         />
-                      </div>
-                    ) : (
-                      <div className="aspect-[4/5] w-full bg-gradient-to-br from-clay-100 via-olive-100 to-clay-200" />
-                    )}
-                    <div className="flex flex-1 flex-col gap-y-4 px-6 py-6">
-                      <div className="flex flex-col gap-y-1">
-                        <h3 className="font-display text-lg font-medium leading-tight text-olive-950">
-                          {g.name}
-                        </h3>
-                        {g.role ? (
-                          <p className="font-serif text-sm italic leading-snug text-clay-700">
-                            {g.role}
-                          </p>
-                        ) : null}
-                      </div>
-                      {g.bio ? (
-                        <p className="text-sm leading-7 text-olive-700">{g.bio}</p>
-                      ) : null}
-                      {(Array.isArray(g.languages) && g.languages.length > 0) || g.instagram ? (
-                        <div className="mt-auto flex flex-wrap gap-2 pt-2 text-xs text-olive-500">
-                          {Array.isArray(g.languages) && g.languages.length > 0 ? (
-                            <span className="rounded-full bg-olive-50 px-2.5 py-1">
-                              {g.languages.join(' · ')}
-                            </span>
-                          ) : null}
-                          {g.instagram ? (
-                            <a
-                              href={
-                                g.instagram.startsWith('http')
-                                  ? g.instagram
-                                  : `https://instagram.com/${g.instagram.replace(/^@/, '')}`
-                              }
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="rounded-full bg-clay-50 px-2.5 py-1 text-clay-800 hover:bg-clay-100"
-                            >
-                              {g.instagram.startsWith('@') ? g.instagram : `@${g.instagram}`}
-                            </a>
+                        {isPlaceholder ? 'Profile coming soon' : 'Available'}
+                      </span>
+
+                      <div className="flex flex-1 flex-col gap-y-4 px-6 py-6">
+                        <div className="flex flex-col gap-y-1">
+                          <h3 className="font-display text-lg font-medium leading-tight text-olive-950">
+                            {g.name}
+                          </h3>
+                          {g.role ? (
+                            <p className="font-serif text-sm italic leading-snug text-clay-700">
+                              {g.role}
+                            </p>
                           ) : null}
                         </div>
-                      ) : null}
-                    </div>
-                  </article>
-                ))}
+                        {g.bio ? (
+                          <p className="text-sm leading-7 text-olive-700">{g.bio}</p>
+                        ) : null}
+                        {isPlaceholder ? (
+                          <p className="rounded-lg bg-olive-50 px-3 py-2 text-xs leading-5 text-olive-600">
+                            We&apos;re still finalising who will host this date — your
+                            actual guide will be confirmed before the visit.
+                          </p>
+                        ) : null}
+                        {(Array.isArray(g.languages) && g.languages.length > 0) ||
+                        g.instagram ? (
+                          <div className="mt-auto flex flex-wrap gap-2 pt-2 text-xs text-olive-500">
+                            {Array.isArray(g.languages) && g.languages.length > 0 ? (
+                              <span className="rounded-full bg-olive-50 px-2.5 py-1">
+                                {g.languages.join(' · ')}
+                              </span>
+                            ) : null}
+                            {g.instagram && !isPlaceholder ? (
+                              <a
+                                href={
+                                  g.instagram.startsWith('http')
+                                    ? g.instagram
+                                    : `https://instagram.com/${g.instagram.replace(/^@/, '')}`
+                                }
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="rounded-full bg-clay-50 px-2.5 py-1 text-clay-800 hover:bg-clay-100"
+                              >
+                                {g.instagram.startsWith('@') ? g.instagram : `@${g.instagram}`}
+                              </a>
+                            ) : null}
+                          </div>
+                        ) : null}
+                      </div>
+                    </article>
+                  );
+                })}
               </div>
             )}
 
@@ -476,6 +656,35 @@ export function TourWizard({ token, initial }: Props) {
               Click a card to add it. Tap &quot;Learn more&quot; for the full story, photos, and links.
               Your total updates as you go.
             </p>
+
+            {showTransferHint ? (
+              <div
+                role="status"
+                className="mt-6 flex flex-col gap-3 rounded-2xl border border-clay-200 bg-clay-50/70 p-4 text-sm sm:flex-row sm:items-start sm:gap-4 sm:p-5"
+              >
+                <span
+                  className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-clay-100 text-clay-700"
+                  aria-hidden="true"
+                >
+                  <svg viewBox="0 0 16 16" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M8 1.5l6.5 11h-13l6.5-11Z M8 6.5v3 M8 11.5v0.1" />
+                  </svg>
+                </span>
+                <div className="flex flex-1 flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                  <p className="text-clay-900">
+                    Antico Setificio and Stefanie Dux are about 25 minutes apart by foot —
+                    consider adding the private transfer so you don&apos;t lose the day to logistics.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => toggleSegment('seg_transport_private', false)}
+                    className="inline-flex shrink-0 items-center gap-2 rounded-full bg-clay-700 px-3.5 py-1.5 text-xs font-medium text-white shadow-sm transition hover:bg-clay-600"
+                  >
+                    Add transfer
+                  </button>
+                </div>
+              </div>
+            ) : null}
 
             {segments.length === 0 ? (
               <p className="mt-8 rounded-2xl border border-dashed border-olive-300 bg-white p-8 text-center text-olive-500">
@@ -593,28 +802,72 @@ export function TourWizard({ token, initial }: Props) {
               </QuestionCard>
 
               <QuestionCard
-                title="Anything we should know about access, dietary needs, or pace?"
-                help="Mobility, allergies, birthdays, anything at all — this goes only to the guide."
+                title="Dietary preferences & allergies"
+                help="Anything we should plan around at lunch or for snacks during the day."
               >
                 <textarea
-                  rows={3}
+                  rows={2}
+                  className={fieldInputClass}
+                  placeholder="Vegetarian, gluten-free, nut allergy…"
+                  value={(answers.dietary as string | undefined) ?? ''}
+                  onChange={(e) => setAnswer('dietary', e.target.value)}
+                />
+              </QuestionCard>
+
+              <QuestionCard
+                title="Access needs & pace"
+                help="Mobility, stairs, sensory considerations, energy level — anything we should plan around."
+              >
+                <textarea
+                  rows={2}
                   className={fieldInputClass}
                   placeholder="A few words is plenty…"
-                  value={(answers.notes_for_guide as string | undefined) ?? ''}
-                  onChange={(e) => setAnswer('notes_for_guide', e.target.value)}
+                  value={(answers.access_needs as string | undefined) ?? ''}
+                  onChange={(e) => setAnswer('access_needs', e.target.value)}
                 />
               </QuestionCard>
 
               <QuestionCard
                 title="Preferred language for the day"
-                help="We will match you with a guide who speaks this comfortably."
+                help={
+                  guideLanguages.length > 0
+                    ? `We can host in: ${guideLanguages.join(', ')}.`
+                    : 'We will match you with a guide who speaks this comfortably.'
+                }
               >
-                <input
-                  type="text"
-                  placeholder={traveller?.language || 'English'}
-                  className={fieldInputClass}
-                  value={(answers.preferred_language as string | undefined) ?? ''}
-                  onChange={(e) => setAnswer('preferred_language', e.target.value)}
+                {guideLanguages.length > 0 ? (
+                  <select
+                    className={fieldInputClass}
+                    value={(answers.preferred_language as string | undefined) ?? ''}
+                    onChange={(e) => setAnswer('preferred_language', e.target.value)}
+                  >
+                    <option value="">No preference</option>
+                    {guideLanguages.map((lang) => (
+                      <option key={lang} value={lang}>
+                        {lang}
+                      </option>
+                    ))}
+                  </select>
+                ) : (
+                  <input
+                    type="text"
+                    placeholder={traveller?.language || 'English'}
+                    className={fieldInputClass}
+                    value={(answers.preferred_language as string | undefined) ?? ''}
+                    onChange={(e) => setAnswer('preferred_language', e.target.value)}
+                  />
+                )}
+              </QuestionCard>
+
+              <QuestionCard
+                title="Photos on the day"
+                help="We sometimes share short workshop reels with our partners. Tell us your preference."
+                asFieldset
+              >
+                <ChipRow
+                  options={PHOTO_PERMISSION_OPTIONS}
+                  value={(answers.photo_permission as string | undefined) ?? ''}
+                  onChange={(next) => setAnswer('photo_permission', next)}
                 />
               </QuestionCard>
 
@@ -676,6 +929,18 @@ export function TourWizard({ token, initial }: Props) {
                     />
                   </label>
                 </div>
+              </QuestionCard>
+
+              <QuestionCard
+                title="Getting to the first meeting point"
+                help="From your hotel/arrival point to Fondazione Lisio. We can help with each option."
+                asFieldset
+              >
+                <ChipRow
+                  options={MEETING_POINT_TRANSPORT_OPTIONS}
+                  value={(answers.meeting_point_transport as string | undefined) ?? ''}
+                  onChange={(next) => setAnswer('meeting_point_transport', next)}
+                />
               </QuestionCard>
 
               <QuestionCard
@@ -772,7 +1037,90 @@ export function TourWizard({ token, initial }: Props) {
           </section>
         ) : null}
 
-        {currentStepId === 'review' ? (
+        {currentStepId === 'review' && confirmed ? (
+          <section className="mx-auto max-w-3xl">
+            <div className="rounded-3xl border border-olive-200 bg-white p-8 text-center shadow-sm sm:p-12">
+              <div className="mx-auto inline-flex h-12 w-12 items-center justify-center rounded-full bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200">
+                <svg viewBox="0 0 16 16" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M3 8.5l3 3L13 4" />
+                </svg>
+              </div>
+              <p className="mt-5 font-serif text-sm italic text-clay-700">Confirmed</p>
+              <h2 className="mt-2 font-display text-3xl font-medium text-olive-950 sm:text-4xl">
+                We&apos;ve got your day, {data.traveller?.first_name || 'there'}.
+              </h2>
+              <p className="mt-3 text-sm text-olive-600">
+                Saved {formatRelativeTime(savedAt, now)} · You can come back to this link anytime to change your selections.
+              </p>
+            </div>
+
+            <ol className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
+              <li className="rounded-2xl border border-olive-200 bg-white p-5">
+                <span className="font-mono text-xs text-olive-500">01</span>
+                <p className="mt-2 font-display text-base font-medium text-olive-950">
+                  We email your itinerary
+                </p>
+                <p className="mt-1 text-sm leading-6 text-olive-600">
+                  A copy lands in your inbox so you can find this page later.
+                </p>
+              </li>
+              <li className="rounded-2xl border border-olive-200 bg-white p-5">
+                <span className="font-mono text-xs text-olive-500">02</span>
+                <p className="mt-2 font-display text-base font-medium text-olive-950">
+                  Your guide reaches out
+                </p>
+                <p className="mt-1 text-sm leading-6 text-olive-600">
+                  About 48 hours before your visit — meeting point, what to bring, any last questions.
+                </p>
+              </li>
+              <li className="rounded-2xl border border-olive-200 bg-white p-5">
+                <span className="font-mono text-xs text-olive-500">03</span>
+                <p className="mt-2 font-display text-base font-medium text-olive-950">
+                  You show up & we host
+                </p>
+                <p className="mt-1 text-sm leading-6 text-olive-600">
+                  Add-ons settle on the day with your guide — cash or card, whichever you prefer.
+                </p>
+              </li>
+            </ol>
+
+            <div className="mt-10 flex flex-wrap items-center justify-between gap-3 border-t border-olive-200 pt-6">
+              <button
+                type="button"
+                onClick={() => {
+                  setConfirmed(false);
+                  goToStep('itinerary', { skipSave: true });
+                }}
+                className="text-sm text-clay-700 underline-offset-2 hover:underline"
+              >
+                ← Change my itinerary
+              </button>
+              <div className="flex flex-wrap items-center gap-2">
+                {data.booking.tour_date ? (
+                  <button
+                    type="button"
+                    onClick={handleDownloadIcs}
+                    className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-medium text-olive-800 ring-1 ring-olive-200 transition hover:bg-olive-50"
+                  >
+                    <svg viewBox="0 0 16 16" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <rect x="2" y="3" width="12" height="11" rx="1.5" />
+                      <path d="M2 6h12 M5 1.5v3 M11 1.5v3" />
+                    </svg>
+                    Add to calendar
+                  </button>
+                ) : null}
+                <a
+                  href="/"
+                  className="inline-flex items-center gap-2 rounded-full bg-olive-50 px-4 py-2 text-sm font-medium text-olive-800 ring-1 ring-olive-200 transition hover:bg-olive-100"
+                >
+                  Back to JYT
+                </a>
+              </div>
+            </div>
+          </section>
+        ) : null}
+
+        {currentStepId === 'review' && !confirmed ? (
           <section className="mx-auto max-w-3xl">
             <h2 className="font-display text-2xl font-medium text-olive-950 sm:text-3xl">
               Last look — does this feel right?
@@ -910,6 +1258,65 @@ export function TourWizard({ token, initial }: Props) {
                 );
               })()}
             </div>
+
+            {practical &&
+            (practical.what_to_wear ||
+              practical.what_we_provide ||
+              practical.what_to_bring ||
+              practical.meeting_point) ? (
+              <div className="mt-6 rounded-2xl border border-olive-200 bg-white">
+                <div className="border-b border-olive-100 px-5 py-4">
+                  <h3 className="font-display text-base font-medium text-olive-950">
+                    On the day
+                  </h3>
+                  <p className="mt-1 text-xs text-olive-500">
+                    Practical notes so you arrive ready and at ease.
+                  </p>
+                </div>
+                <dl className="grid grid-cols-1 divide-y divide-olive-100 sm:grid-cols-2 sm:divide-x sm:divide-y-0">
+                  {practical.meeting_point ? (
+                    <div className="px-5 py-4 sm:py-5">
+                      <dt className="text-xs uppercase tracking-wide text-olive-500">
+                        Meeting point
+                      </dt>
+                      <dd className="mt-1.5 whitespace-pre-line text-sm leading-6 text-olive-800">
+                        {practical.meeting_point}
+                      </dd>
+                    </div>
+                  ) : null}
+                  {practical.what_to_wear ? (
+                    <div className="px-5 py-4 sm:py-5">
+                      <dt className="text-xs uppercase tracking-wide text-olive-500">
+                        What to wear
+                      </dt>
+                      <dd className="mt-1.5 whitespace-pre-line text-sm leading-6 text-olive-800">
+                        {practical.what_to_wear}
+                      </dd>
+                    </div>
+                  ) : null}
+                  {practical.what_we_provide ? (
+                    <div className="border-t border-olive-100 px-5 py-4 sm:py-5">
+                      <dt className="text-xs uppercase tracking-wide text-olive-500">
+                        We provide
+                      </dt>
+                      <dd className="mt-1.5 whitespace-pre-line text-sm leading-6 text-olive-800">
+                        {practical.what_we_provide}
+                      </dd>
+                    </div>
+                  ) : null}
+                  {practical.what_to_bring ? (
+                    <div className="border-t border-olive-100 px-5 py-4 sm:py-5">
+                      <dt className="text-xs uppercase tracking-wide text-olive-500">
+                        What to bring
+                      </dt>
+                      <dd className="mt-1.5 whitespace-pre-line text-sm leading-6 text-olive-800">
+                        {practical.what_to_bring}
+                      </dd>
+                    </div>
+                  ) : null}
+                </dl>
+              </div>
+            ) : null}
 
             <div className="mt-8 flex flex-wrap items-center justify-between gap-3">
               <button

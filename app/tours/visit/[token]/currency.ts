@@ -92,8 +92,14 @@ type RateResponse = {
 
 /**
  * Fetch FX rates from open.er-api.com (free, no API key) with Next.js
- * caching for 24h. Returns the multiplier to convert `from` → `to`,
+ * caching for 7 days. Returns the multiplier to convert `from` → `to`,
  * or null on any error / unknown currency.
+ *
+ * Why 7 days: most tour visits play out within a single week; fixing the
+ * rate window to that horizon keeps the customer's "≈ A$294" stable
+ * across the planning + travel period without needing a per-response
+ * persisted snapshot. (A persisted lock is still the long-term fix —
+ * tracked separately.)
  *
  * https://www.exchangerate-api.com/docs/free
  */
@@ -107,7 +113,7 @@ export async function getFxRate(
   try {
     const res = await fetch(
       `https://open.er-api.com/v6/latest/${encodeURIComponent(from)}`,
-      { next: { revalidate: 86_400, tags: [`fx-${from}`] } }
+      { next: { revalidate: 604_800, tags: [`fx-${from}`] } }
     );
     if (!res.ok) return null;
     const body = (await res.json()) as RateResponse;

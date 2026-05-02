@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
+import { Navbar } from '@/components/navbar';
 import { loadTourVisit } from './actions';
 import { TourWizard } from './tour-wizard';
 
@@ -23,7 +24,8 @@ export default async function TourVisitPage({ params }: PageProps) {
     const isExpired = result.status === 403;
     return (
       <div className="min-h-screen bg-hero-wash">
-        <div className="mx-auto flex min-h-screen w-full max-w-2xl items-center justify-center px-6 py-16">
+        <Navbar />
+        <div className="mx-auto flex w-full max-w-2xl items-center justify-center px-6 py-16">
           <div className="rounded-3xl border border-olive-200 bg-white p-10 text-center shadow-sm">
             <p className="font-serif text-sm italic text-clay-700">
               {isExpired ? 'Link expired' : isNotFound ? "We couldn't find this visit" : 'Something went wrong'}
@@ -49,8 +51,11 @@ export default async function TourVisitPage({ params }: PageProps) {
   }
 
   return (
-    <Suspense fallback={null}>
-      <TourWizard token={token} initial={result.data} />
-    </Suspense>
+    <>
+      <Navbar />
+      <Suspense fallback={null}>
+        <TourWizard token={token} initial={result.data} />
+      </Suspense>
+    </>
   );
 }
