@@ -3,7 +3,12 @@
 import { useCallback, useEffect, useMemo, useRef, useState, useTransition } from 'react';
 import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { saveItinerary, type TourSegment, type TourVisitPayload } from './actions';
+import {
+  createShareLink,
+  saveItinerary,
+  type TourSegment,
+  type TourVisitPayload,
+} from './actions';
 import { SegmentModal } from './segment-modal';
 import { buildTourIcs, downloadIcs } from './ics';
 
@@ -145,6 +150,12 @@ export function TourWizard({ token, initial }: Props) {
   const [openSegment, setOpenSegment] = useState<TourSegment | null>(null);
   const [confirmed, setConfirmed] = useState(false);
   const [now, setNow] = useState(() => Date.now());
+  const [shareUrl, setShareUrl] = useState<string | null>(null);
+  const [sharePending, setSharePending] = useState(false);
+
+  // Share tokens render the page read-only — the partner can see the
+  // itinerary but can't change anything.
+  const isReadOnly = data.access_mode === 'share';
 
   // Tick the relative-time formatter every 30s so "Last saved 2 min ago"
   // updates without forcing the user to refresh.
@@ -225,6 +236,10 @@ export function TourWizard({ token, initial }: Props) {
         confirm?: boolean;
       }
     ): Promise<boolean> => {
+      // Read-only viewers (share tokens) skip the network round-trip — the
+      // backend would 403 anyway. Make it a soft no-op so the wizard's
+      // step-navigation code can keep calling persist() without branching.
+      if (isReadOnly) return true;
       const sel = override?.selected ?? persistSelectionRef.current.selected;
       const ans = override?.answers ?? persistSelectionRef.current.answers;
       const visitUrl =
@@ -275,7 +290,7 @@ export function TourWizard({ token, initial }: Props) {
   };
 
   const toggleSegment = (id: string, locked: boolean) => {
-    if (locked) return;
+    if (locked || isReadOnly) return;
     setSelected((prev) => {
       const next = new Set(prev);
       if (next.has(id)) next.delete(id);
@@ -322,6 +337,31 @@ export function TourWizard({ token, initial }: Props) {
     });
   };
 
+  const handleShare = async () => {
+    if (isReadOnly) return;
+    setSharePending(true);
+    try {
+      const res = await createShareLink(token);
+      if (!res.ok) {
+        setError(res.message);
+        return;
+      }
+      const url =
+        typeof window !== 'undefined'
+          ? `${window.location.origin}${res.data.visit_path}`
+          : res.data.visit_path;
+      setShareUrl(url);
+      setError(null);
+      try {
+        await navigator.clipboard.writeText(url);
+      } catch {
+        /* clipboard might be blocked — link is still rendered */
+      }
+    } finally {
+      setSharePending(false);
+    }
+  };
+
   const handleDownloadIcs = () => {
     if (!data.booking.tour_date) return;
     const includedSegments = segments.filter(
@@ -353,10 +393,12 @@ export function TourWizard({ token, initial }: Props) {
   };
 
   const setAnswer = (name: string, value: unknown) => {
+    if (isReadOnly) return;
     setAnswers((prev) => ({ ...prev, [name]: value }));
   };
 
   const toggleInterest = (value: string) => {
+    if (isReadOnly) return;
     setAnswers((prev) => {
       const cur = Array.isArray(prev.interests) ? (prev.interests as string[]) : [];
       const next = cur.includes(value) ? cur.filter((v) => v !== value) : [...cur, value];
@@ -382,7 +424,14 @@ export function TourWizard({ token, initial }: Props) {
               {data.booking.tour_date ? (
                 <span>{formatDate(data.booking.tour_date)}</span>
               ) : null}
-              {saving ? (
+              {isReadOnly ? (
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-50 px-3 py-1 text-amber-900 ring-1 ring-amber-200">
+                  <svg viewBox="0 0 12 12" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <path d="M3 5.5V4a3 3 0 0 1 6 0v1.5 M2.5 5.5h7v5h-7z" />
+                  </svg>
+                  Read-only — shared with you
+                </span>
+              ) : saving ? (
                 <span className="inline-flex items-center gap-1.5 text-olive-600">
                   <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-olive-500" />
                   Saving…
@@ -1259,6 +1308,80 @@ export function TourWizard({ token, initial }: Props) {
               })()}
             </div>
 
+            {(() => {
+              const sites = projectedCost.by_segment
+                .map((line) => {
+                  const seg = segmentById(line.id);
+                  return seg && (seg.location?.address || seg.location?.lat) ? seg : null;
+                })
+                .filter((s): s is TourSegment => !!s);
+              if (sites.length === 0) return null;
+              const buildMapsUrl = (s: TourSegment): string => {
+                const loc = s.location;
+                if (!loc) return '#';
+                if (typeof loc.lat === 'number' && typeof loc.lng === 'number') {
+                  // Apple Maps + Google Maps both honour ?q=lat,lng — covers iOS/macOS
+                  // (Apple Maps) and everything else (Google Maps).
+                  return `https://www.google.com/maps/search/?api=1&query=${loc.lat},${loc.lng}`;
+                }
+                return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                  loc.address || s.title || ''
+                )}`;
+              };
+              return (
+                <div className="mt-6 rounded-2xl border border-olive-200 bg-white">
+                  <div className="border-b border-olive-100 px-5 py-4">
+                    <h3 className="font-display text-base font-medium text-olive-950">
+                      Where you&apos;ll be
+                    </h3>
+                    <p className="mt-1 text-xs text-olive-500">
+                      Tap any site to open it in your maps app.
+                    </p>
+                  </div>
+                  <ol className="divide-y divide-olive-100">
+                    {sites.map((s, idx) => (
+                      <li
+                        key={s.id}
+                        className="flex items-start gap-4 px-5 py-4"
+                      >
+                        <span className="mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-olive-100 font-mono text-xs text-olive-700">
+                          {idx + 1}
+                        </span>
+                        <div className="flex-1 min-w-0">
+                          <p className="font-medium text-olive-900">
+                            {s.title || s.id}
+                          </p>
+                          {s.location?.address ? (
+                            <p className="mt-0.5 text-sm text-olive-600">
+                              {s.location.address}
+                            </p>
+                          ) : null}
+                          <div className="mt-2 flex flex-wrap gap-2 text-xs">
+                            <a
+                              href={buildMapsUrl(s)}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center gap-1.5 rounded-full bg-olive-50 px-2.5 py-1 text-olive-800 ring-1 ring-olive-200 hover:bg-olive-100"
+                            >
+                              <svg viewBox="0 0 12 12" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                                <path d="M6 1.5C3.8 1.5 2 3.3 2 5.5c0 3 4 5 4 5s4-2 4-5c0-2.2-1.8-4-4-4Z M6 4.5a1.2 1.2 0 1 0 0 2.4 1.2 1.2 0 0 0 0-2.4Z" />
+                              </svg>
+                              Open in Maps
+                            </a>
+                            {s.time_slot ? (
+                              <span className="inline-flex items-center gap-1 rounded-full bg-clay-50 px-2.5 py-1 text-clay-800 ring-1 ring-clay-200">
+                                {s.time_slot}
+                              </span>
+                            ) : null}
+                          </div>
+                        </div>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+              );
+            })()}
+
             {practical &&
             (practical.what_to_wear ||
               practical.what_we_provide ||
@@ -1318,6 +1441,47 @@ export function TourWizard({ token, initial }: Props) {
               </div>
             ) : null}
 
+            {!isReadOnly ? (
+              <div className="mt-6 rounded-2xl border border-clay-200 bg-clay-50/50 px-5 py-4">
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm font-medium text-olive-900">
+                      Travelling with someone?
+                    </p>
+                    <p className="mt-0.5 text-xs text-olive-600">
+                      Share a read-only copy so they can see the day without
+                      changing your selections.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handleShare}
+                    disabled={sharePending}
+                    className="inline-flex items-center gap-2 rounded-full bg-white px-3.5 py-1.5 text-xs font-medium text-clay-800 ring-1 ring-clay-200 transition hover:bg-clay-100 disabled:opacity-60"
+                  >
+                    {sharePending ? 'Creating link…' : shareUrl ? 'New share link' : 'Share with partner'}
+                  </button>
+                </div>
+                {shareUrl ? (
+                  <div className="mt-3 flex flex-wrap items-center gap-2 rounded-xl bg-white px-3 py-2 text-xs">
+                    <span className="text-olive-500 shrink-0">Copied:</span>
+                    <code className="flex-1 min-w-0 truncate font-mono text-olive-800">
+                      {shareUrl}
+                    </code>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        navigator.clipboard?.writeText(shareUrl).catch(() => {});
+                      }}
+                      className="shrink-0 rounded-full bg-olive-50 px-2.5 py-1 text-olive-800 ring-1 ring-olive-200 hover:bg-olive-100"
+                    >
+                      Copy again
+                    </button>
+                  </div>
+                ) : null}
+              </div>
+            ) : null}
+
             <div className="mt-8 flex flex-wrap items-center justify-between gap-3">
               <button
                 type="button"
@@ -1328,17 +1492,23 @@ export function TourWizard({ token, initial }: Props) {
               </button>
               <div className="flex items-center gap-3">
                 {error ? <span className="text-sm text-red-600">{error}</span> : null}
-                {!error && savedAt ? (
+                {!error && savedAt && !isReadOnly ? (
                   <span className="text-sm text-olive-500">Saved</span>
                 ) : null}
-                <button
-                  type="button"
-                  onClick={onSaveFinal}
-                  disabled={saving}
-                  className="inline-flex items-center gap-2 rounded-full bg-clay-600 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-clay-500 disabled:opacity-60"
-                >
-                  {saving ? 'Saving…' : 'Confirm itinerary'}
-                </button>
+                {!isReadOnly ? (
+                  <button
+                    type="button"
+                    onClick={onSaveFinal}
+                    disabled={saving}
+                    className="inline-flex items-center gap-2 rounded-full bg-clay-600 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-clay-500 disabled:opacity-60"
+                  >
+                    {saving ? 'Saving…' : 'Confirm itinerary'}
+                  </button>
+                ) : (
+                  <span className="text-sm text-olive-500">
+                    Read-only view — only the original recipient can confirm.
+                  </span>
+                )}
               </div>
             </div>
           </section>

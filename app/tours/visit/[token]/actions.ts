@@ -7,6 +7,14 @@ export type TourSegmentLink = {
   url: string;
 };
 
+export type TourSegmentLocation = {
+  /** Human-readable address line shown to the customer. */
+  address?: string;
+  /** Optional precise coordinates so we can build map-app deep links. */
+  lat?: number;
+  lng?: number;
+};
+
 export type TourSegment = {
   id: string;
   title?: string;
@@ -21,6 +29,7 @@ export type TourSegment = {
   depends_on?: string[];
   links?: TourSegmentLink[];
   gallery?: string[];
+  location?: TourSegmentLocation;
 };
 
 export type TourGuide = {
@@ -141,6 +150,12 @@ export type TourVisitPayload = {
       total: number;
     } | null;
   };
+  /**
+   * Indicates whether the current token grants edit access.
+   * `owner` — original visit token, full read/write.
+   * `share` — sibling token, read-only.
+   */
+  access_mode?: 'owner' | 'share';
 };
 
 const apiBase = (): string =>
@@ -217,6 +232,44 @@ export async function loadTourVisit(
     return { ok: true, data: enriched };
   } catch (err) {
     console.error('loadTourVisit failed', err);
+    return { ok: false, status: 500, message: 'Could not reach the booking service' };
+  }
+}
+
+export async function createShareLink(
+  token: string
+): Promise<
+  | { ok: true; data: { share_token: string; visit_path: string } }
+  | { ok: false; status: number; message: string }
+> {
+  try {
+    const res = await fetch(
+      `${apiBase()}/tour-visits/${encodeURIComponent(token)}/share`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        cache: 'no-store',
+        body: JSON.stringify({}),
+      }
+    );
+    if (!res.ok) {
+      const body = await res.json().catch(() => null);
+      return {
+        ok: false,
+        status: res.status,
+        message: body?.message || body?.error || 'Could not create share link',
+      };
+    }
+    const body = (await res.json()) as {
+      share: { token: string };
+      visit_path: string;
+    };
+    return {
+      ok: true,
+      data: { share_token: body.share.token, visit_path: body.visit_path },
+    };
+  } catch (err) {
+    console.error('createShareLink failed', err);
     return { ok: false, status: 500, message: 'Could not reach the booking service' };
   }
 }
