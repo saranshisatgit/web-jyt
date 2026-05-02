@@ -6,8 +6,9 @@
  * page reads like architectural plan paper.
  *
  * Pointer-events-none, fixed, z-50 — sits above section backgrounds
- * but never intercepts clicks. Lines are intentionally faint
- * (~6% opacity) so they're texture, not chrome.
+ * but never intercepts clicks. Lines run at very low opacity so they
+ * read as texture across both empty page wash and white content cards
+ * without visually competing with either.
  */
 
 export function BlueprintGrid() {
@@ -19,15 +20,15 @@ export function BlueprintGrid() {
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none fixed inset-0 z-50"
+      className="pointer-events-none fixed inset-0 z-50 mix-blend-multiply"
     >
       {/* Vertical rails — aligned to the centered max-w-7xl column. */}
       <div className="absolute inset-0 flex justify-center">
         <div className="relative h-full w-full max-w-[80rem] px-6 lg:px-10">
-          <span className="absolute inset-y-0 left-6 w-px bg-olive-950/[0.07] lg:left-10" />
-          <span className="absolute inset-y-0 right-6 w-px bg-olive-950/[0.07] lg:right-10" />
-          <span className="absolute inset-y-0 left-1/3 hidden w-px bg-olive-950/[0.04] lg:block" />
-          <span className="absolute inset-y-0 left-2/3 hidden w-px bg-olive-950/[0.04] lg:block" />
+          <span className="absolute inset-y-0 left-6 w-px bg-olive-950/[0.04] lg:left-10" />
+          <span className="absolute inset-y-0 right-6 w-px bg-olive-950/[0.04] lg:right-10" />
+          <span className="absolute inset-y-0 left-1/3 hidden w-px bg-olive-950/[0.02] lg:block" />
+          <span className="absolute inset-y-0 left-2/3 hidden w-px bg-olive-950/[0.02] lg:block" />
         </div>
       </div>
 
@@ -35,7 +36,7 @@ export function BlueprintGrid() {
       {horizontalPercents.map((p) => (
         <span
           key={p}
-          className="absolute inset-x-0 h-px bg-olive-950/[0.05]"
+          className="absolute inset-x-0 h-px bg-olive-950/[0.03]"
           style={{ top: `${p}%` }}
         />
       ))}
