@@ -131,10 +131,10 @@ const AgreementView = ({ responseId, accessToken }: AgreementViewProps) => {
         <main>
           <Container>
             <section className="mt-8">
-              <div className="bg-white/80 dark:bg-olive-900/80 backdrop-blur-sm p-8 rounded-lg shadow-lg animate-fade-in text-center">
+              <div className="bg-white/80 backdrop-blur-sm p-8 rounded-lg shadow-lg animate-fade-in text-center">
                 <div className="flex items-center justify-center space-x-3">
                   <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
-                  <span className="text-olive-700 dark:text-olive-400">Loading agreement...</span>
+                  <span className="text-olive-700">Loading agreement...</span>
                 </div>
               </div>
             </section>
@@ -152,11 +152,11 @@ const AgreementView = ({ responseId, accessToken }: AgreementViewProps) => {
         <main>
           <Container>
             <section className="mt-8">
-              <div className="bg-white/80 dark:bg-olive-900/80 backdrop-blur-sm p-8 rounded-lg shadow-lg animate-fade-in max-w-md mx-auto text-center">
+              <div className="bg-white/80 backdrop-blur-sm p-8 rounded-lg shadow-lg animate-fade-in max-w-md mx-auto text-center">
                 <div className="text-red-500 text-5xl mb-4">⚠️</div>
-                <h1 className="text-2xl font-bold text-olive-900 dark:text-white mb-2">Access Denied</h1>
-                <p className="text-olive-600 dark:text-olive-400 mb-4">{error}</p>
-                <p className="text-sm text-olive-500 dark:text-olive-400">
+                <h1 className="text-2xl font-bold text-olive-900 mb-2">Access Denied</h1>
+                <p className="text-olive-600 mb-4">{error}</p>
+                <p className="text-sm text-olive-500">
                   Please check your access link or contact the sender for assistance.
                 </p>
               </div>
@@ -175,10 +175,10 @@ const AgreementView = ({ responseId, accessToken }: AgreementViewProps) => {
         <main>
           <Container>
             <section className="mt-8">
-              <div className="bg-white/80 dark:bg-olive-900/80 backdrop-blur-sm p-8 rounded-lg shadow-lg animate-fade-in max-w-md mx-auto text-center">
+              <div className="bg-white/80 backdrop-blur-sm p-8 rounded-lg shadow-lg animate-fade-in max-w-md mx-auto text-center">
                 <div className="text-olive-400 text-5xl mb-4">📄</div>
-                <h1 className="text-2xl font-bold text-olive-900 dark:text-white mb-2">Agreement Not Found</h1>
-                <p className="text-olive-600 dark:text-olive-400">The requested agreement could not be found.</p>
+                <h1 className="text-2xl font-bold text-olive-900 mb-2">Agreement Not Found</h1>
+                <p className="text-olive-600">The requested agreement could not be found.</p>
               </div>
             </section>
           </Container>
@@ -209,41 +209,41 @@ const AgreementView = ({ responseId, accessToken }: AgreementViewProps) => {
           <section className="mt-8 mb-24 min-h-[60vh]">
             <div className="max-w-4xl mx-auto">
               {/* Agreement Info */}
-              <div className="bg-white dark:bg-olive-900 rounded-lg shadow-lg mb-6 animate-fade-in">
-                <div className="px-6 py-4 border-b border-olive-200 dark:border-olive-800">
+              <div className="bg-white rounded-lg shadow-lg mb-6 animate-fade-in">
+                <div className="px-6 py-4 border-b border-olive-200">
                   <div className="flex items-center justify-between">
-                    <h2 className="text-lg font-semibold text-olive-900 dark:text-white">Agreement Details</h2>
+                    <h2 className="text-lg font-semibold text-olive-900">Agreement Details</h2>
                     {getStatusBadge(response.status)}
                   </div>
                 </div>
 
                 {/* Agreement Info */}
-                <div className="px-6 py-4 bg-olive-50 dark:bg-olive-800">
+                <div className="px-6 py-4 bg-olive-50">
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
                     <div>
-                      <span className="font-medium text-olive-700 dark:text-olive-400">Sent to:</span>
-                      <p className="text-olive-900 dark:text-white">{response.email_sent_to}</p>
+                      <span className="font-medium text-olive-700">Sent to:</span>
+                      <p className="text-olive-900">{response.email_sent_to}</p>
                     </div>
                     <div>
-                      <span className="font-medium text-olive-700 dark:text-olive-400">Sent on:</span>
-                      <p className="text-olive-900 dark:text-white">{formatDate(response.sent_at)}</p>
+                      <span className="font-medium text-olive-700">Sent on:</span>
+                      <p className="text-olive-900">{formatDate(response.sent_at)}</p>
                     </div>
                     <div>
-                      <span className="font-medium text-olive-700 dark:text-olive-400">Valid until:</span>
-                      <p className="text-olive-900 dark:text-white">{formatDate(agreement.valid_until)}</p>
+                      <span className="font-medium text-olive-700">Valid until:</span>
+                      <p className="text-olive-900">{formatDate(agreement.valid_until)}</p>
                     </div>
                   </div>
                 </div>
               </div>
 
               {/* Agreement Content */}
-              <div className="bg-white dark:bg-olive-900 rounded-lg shadow-lg mb-6 animate-fade-in">
-                <div className="px-6 py-4 border-b border-olive-200 dark:border-olive-800">
-                  <h2 className="text-lg font-semibold text-olive-900 dark:text-white">Agreement Content</h2>
+              <div className="bg-white rounded-lg shadow-lg mb-6 animate-fade-in">
+                <div className="px-6 py-4 border-b border-olive-200">
+                  <h2 className="text-lg font-semibold text-olive-900">Agreement Content</h2>
                 </div>
                 <div className="px-6 py-6">
                   <div
-                    className="prose dark:prose-invert max-w-none text-olive-700 dark:text-olive-400 leading-relaxed"
+                    className="prose max-w-none text-olive-700 leading-relaxed"
                     dangerouslySetInnerHTML={{ __html: agreement.content }}
                   />
                 </div>
@@ -251,26 +251,26 @@ const AgreementView = ({ responseId, accessToken }: AgreementViewProps) => {
 
               {/* Response Section */}
               {hasResponded ? (
-                <div className="bg-white dark:bg-olive-900 rounded-lg shadow-lg animate-fade-in">
-                  <div className="px-6 py-4 border-b border-olive-200 dark:border-olive-800">
-                    <h2 className="text-lg font-semibold text-olive-900 dark:text-white">Response Status</h2>
+                <div className="bg-white rounded-lg shadow-lg animate-fade-in">
+                  <div className="px-6 py-4 border-b border-olive-200">
+                    <h2 className="text-lg font-semibold text-olive-900">Response Status</h2>
                   </div>
                   <div className="px-6 py-6">
                     <div className="text-center py-8">
                       <div className={`text-6xl mb-4 ${response.agreed ? '✅' : '❌'}`}>
                         {response.agreed ? '✅' : '❌'}
                       </div>
-                      <h3 className="text-2xl font-bold text-olive-900 dark:text-white mb-2">
+                      <h3 className="text-2xl font-bold text-olive-900 mb-2">
                         Agreement {response.agreed ? 'Accepted' : 'Declined'}
                       </h3>
                       <p className="text-lg text-olive-600 mb-4">
                         You {response.agreed ? 'accepted' : 'declined'} this agreement
                       </p>
-                      <div className="bg-olive-50 dark:bg-olive-800 rounded-lg p-4 inline-block">
-                        <p className="text-sm font-medium text-olive-700 dark:text-olive-400">
+                      <div className="bg-olive-50 rounded-lg p-4 inline-block">
+                        <p className="text-sm font-medium text-olive-700">
                           Response submitted on:
                         </p>
-                        <p className="text-sm text-olive-900 dark:text-white">
+                        <p className="text-sm text-olive-900">
                           {formatDate(response.responded_at)}
                         </p>
                       </div>
@@ -283,10 +283,10 @@ const AgreementView = ({ responseId, accessToken }: AgreementViewProps) => {
                   </div>
                 </div>
               ) : can_respond ? (
-                <div className="bg-white dark:bg-olive-900 rounded-lg shadow-lg animate-fade-in">
-                  <div className="px-6 py-4 border-b border-olive-200 dark:border-olive-800">
-                    <h2 className="text-lg font-semibold text-olive-900 dark:text-white">Your Response</h2>
-                    <p className="text-sm text-olive-600 dark:text-olive-400 mt-1">
+                <div className="bg-white rounded-lg shadow-lg animate-fade-in">
+                  <div className="px-6 py-4 border-b border-olive-200">
+                    <h2 className="text-lg font-semibold text-olive-900">Your Response</h2>
+                    <p className="text-sm text-olive-600 mt-1">
                       Please review the agreement above and provide your response.
                     </p>
                   </div>
@@ -298,13 +298,13 @@ const AgreementView = ({ responseId, accessToken }: AgreementViewProps) => {
                     )}
 
                     <div className="mb-6">
-                      <label htmlFor="response-notes" className="block text-sm font-medium text-olive-700 dark:text-olive-400 mb-2">
+                      <label htmlFor="response-notes" className="block text-sm font-medium text-olive-700 mb-2">
                         Additional Notes (Optional)
                       </label>
                       <textarea
                         id="response-notes"
                         rows={4}
-                        className="w-full px-3 py-2 border border-olive-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-olive-800 dark:border-olive-700 dark:text-white"
+                        className="w-full px-3 py-2 border border-olive-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                         placeholder="Add any comments or notes about your decision..."
                         value={responseNotes}
                         onChange={(e) => setResponseNotes(e.target.value)}
@@ -331,11 +331,11 @@ const AgreementView = ({ responseId, accessToken }: AgreementViewProps) => {
                   </div>
                 </div>
               ) : (
-                <div className="bg-white dark:bg-olive-900 rounded-lg shadow-lg animate-fade-in">
+                <div className="bg-white rounded-lg shadow-lg animate-fade-in">
                   <div className="px-6 py-6 text-center">
                     <div className="text-olive-400 text-4xl mb-4">⏰</div>
-                    <h2 className="text-lg font-semibold text-olive-900 dark:text-white mb-2">Response Period Ended</h2>
-                    <p className="text-olive-600 dark:text-olive-400">
+                    <h2 className="text-lg font-semibold text-olive-900 mb-2">Response Period Ended</h2>
+                    <p className="text-olive-600">
                       The response period for this agreement has ended or you have already responded.
                     </p>
                   </div>

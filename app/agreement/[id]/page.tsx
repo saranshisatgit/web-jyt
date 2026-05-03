@@ -22,14 +22,14 @@ export default async function AgreementPage({ params, searchParams }: PageProps)
   // If no token is provided, show error message
   if (!token) {
     return (
-      <div className="min-h-screen bg-olive-50 dark:bg-olive-950 flex items-center justify-center">
-        <div className="bg-white/80 dark:bg-olive-900/80 backdrop-blur-sm p-8 rounded-lg shadow-lg animate-fade-in max-w-md text-center">
+      <div className="min-h-screen bg-olive-50 flex items-center justify-center">
+        <div className="bg-white/80 backdrop-blur-sm p-8 rounded-lg shadow-lg animate-fade-in max-w-md text-center">
           <div className="text-red-500 text-5xl mb-4">🔒</div>
-          <h1 className="text-2xl font-bold text-olive-900 dark:text-white mb-2">Access Token Required</h1>
-          <p className="text-olive-600 dark:text-olive-400 mb-4">
+          <h1 className="text-2xl font-bold text-olive-900 mb-2">Access Token Required</h1>
+          <p className="text-olive-600 mb-4">
             This agreement requires a valid access token to view.
           </p>
-          <p className="text-sm text-olive-500 dark:text-olive-400">
+          <p className="text-sm text-olive-500">
             Please use the link provided in your email or contact the sender for assistance.
           </p>
         </div>

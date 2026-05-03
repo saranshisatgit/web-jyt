@@ -22,27 +22,27 @@ export default function SignUpAvailabilitySlide({
   return (
     <div className="flex flex-col md:flex-row items-start justify-center gap-8 h-full relative">
       <div className="w-full md:w-1/2 pt-16">
-        <h3 className="text-3xl font-bold mb-4 text-olive-900 dark:text-white">{title}</h3>
+        <h3 className="text-3xl font-bold mb-4 text-olive-900">{title}</h3>
         {Array.isArray(description) ? (
           <ul className="list-disc pl-5 mb-4 space-y-2">
             {description.map((d, idx) => (
-              <li key={idx} className="text-base text-olive-600 dark:text-olive-300">{d}</li>
+              <li key={idx} className="text-base text-olive-600">{d}</li>
             ))}
           </ul>
         ) : (
-          <p className="text-base text-olive-600 dark:text-olive-300 mb-2">{description}</p>
+          <p className="text-base text-olive-600 mb-2">{description}</p>
         )}
       </div>
-      <div className="-m-2 grid grid-cols-1 rounded-4xl ring-1 shadow-[inset_0_0_2px_1px_#ffffff4d] ring-black/5 dark:ring-white/10 max-lg:mx-auto max-lg:max-w-md self-end relative mt-4 md:mt-16 overflow-visible">
-        <div className="grid grid-cols-1 rounded-4xl p-2 shadow-md shadow-black/5 dark:shadow-white/5">
-          <div className="rounded-3xl bg-white p-10 pb-9 ring-1 shadow-2xl ring-black/5 dark:bg-olive-900 dark:ring-white/10">
+      <div className="-m-2 grid grid-cols-1 rounded-4xl ring-1 shadow-[inset_0_0_2px_1px_#ffffff4d] ring-black/5 max-lg:mx-auto max-lg:max-w-md self-end relative mt-4 md:mt-16 overflow-visible">
+        <div className="grid grid-cols-1 rounded-4xl p-2 shadow-md shadow-black/5">
+          <div className="rounded-3xl bg-white p-10 pb-9 ring-1 shadow-2xl ring-black/5">
             {/* Mobile dashboard (PricingCard style) */}
             <div className="flex flex-col items-center w-full">
-              <UserIcon className="h-10 w-10 text-olive-700 dark:text-olive-300 mb-4" />
-              <h3 className="text-lg font-semibold text-olive-800 dark:text-white mb-2 text-center">
+              <UserIcon className="h-10 w-10 text-olive-700 mb-4" />
+              <h3 className="text-lg font-semibold text-olive-800 mb-2 text-center">
                 Availability Dashboard
               </h3>
-              <p className="text-center text-olive-600 dark:text-olive-400 mb-4">
+              <p className="text-center text-olive-600 mb-4">
                 {today.toLocaleString('en-US', { weekday: 'long', month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric' })}
               </p>
               <div className="grid grid-cols-3 gap-2 mb-4 w-full">
@@ -61,7 +61,7 @@ export default function SignUpAvailabilitySlide({
                 })}
               </div>
               <div className="flex justify-between items-center w-full">
-                <span className="text-olive-800 dark:text-white font-medium">Available</span>
+                <span className="text-olive-800 font-medium">Available</span>
                 <Switch
                   checked={isAvailable}
                   onChange={setIsAvailable}
@@ -69,7 +69,7 @@ export default function SignUpAvailabilitySlide({
                 >
                   <span className="sr-only">Toggle Availability</span>
                   <span
-                    className={`${isAvailable ? 'translate-x-6' : 'translate-x-1'} inline-block h-4 w-4 transform rounded-full bg-white dark:bg-olive-200 transition`}
+                    className={`${isAvailable ? 'translate-x-6' : 'translate-x-1'} inline-block h-4 w-4 transform rounded-full bg-white transition`}
                   />
                 </Switch>
               </div>

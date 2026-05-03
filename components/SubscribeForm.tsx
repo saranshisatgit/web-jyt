@@ -57,13 +57,13 @@ const SubscribeForm: React.FC<SubscribeFormProps> = ({ domainName }) => {
     <div className="w-full max-w-4xl mx-auto px-4 sm:px-0">
       {/* Header Section */}
       <div className="mb-6">
-        <h3 className="text-lg sm:text-xl font-semibold text-olive-950 dark:text-white mb-2">
+        <h3 className="text-lg sm:text-xl font-semibold text-olive-950 mb-2">
           Subscribe to our newsletter
         </h3>
-        <p className="text-sm text-olive-600 dark:text-olive-400 mb-1">
+        <p className="text-sm text-olive-600 mb-1">
           Receive updates on our latest products and exclusive offers.
         </p>
-        <p className="text-xs italic text-olive-500 dark:text-olive-400">
+        <p className="text-xs italic text-olive-500">
           We need your first name and last name to personalize the emails being sent.
         </p>
       </div>
@@ -74,7 +74,7 @@ const SubscribeForm: React.FC<SubscribeFormProps> = ({ domainName }) => {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {/* First Name Input */}
           <div className="w-full">
-            <label htmlFor="firstName" className="block text-xs font-medium text-olive-700 dark:text-olive-300 mb-1.5">
+            <label htmlFor="firstName" className="block text-xs font-medium text-olive-700 mb-1.5">
               First name*
             </label>
             <input
@@ -82,7 +82,7 @@ const SubscribeForm: React.FC<SubscribeFormProps> = ({ domainName }) => {
               id="firstName"
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
-              className="w-full px-3 py-2.5 text-sm bg-white border border-olive-300 rounded-md focus:outline-none focus:ring-2 focus:ring-olive-950 focus:border-transparent disabled:bg-olive-50 disabled:text-olive-500 dark:bg-olive-800 dark:border-olive-700 dark:text-white dark:focus:ring-olive-400 dark:disabled:bg-olive-900"
+              className="w-full px-3 py-2.5 text-sm bg-white border border-olive-300 rounded-md focus:outline-none focus:ring-2 focus:ring-olive-950 focus:border-transparent disabled:bg-olive-50 disabled:text-olive-500"
               placeholder="First name"
               disabled={isLoading}
               required
@@ -91,7 +91,7 @@ const SubscribeForm: React.FC<SubscribeFormProps> = ({ domainName }) => {
 
           {/* Last Name Input */}
           <div className="w-full">
-            <label htmlFor="lastName" className="block text-xs font-medium text-olive-700 dark:text-olive-300 mb-1.5">
+            <label htmlFor="lastName" className="block text-xs font-medium text-olive-700 mb-1.5">
               Last name*
             </label>
             <input
@@ -99,7 +99,7 @@ const SubscribeForm: React.FC<SubscribeFormProps> = ({ domainName }) => {
               id="lastName"
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
-              className="w-full px-3 py-2.5 text-sm bg-white border border-olive-300 rounded-md focus:outline-none focus:ring-2 focus:ring-olive-950 focus:border-transparent disabled:bg-olive-50 disabled:text-olive-500 dark:bg-olive-800 dark:border-olive-700 dark:text-white dark:focus:ring-olive-400 dark:disabled:bg-olive-900"
+              className="w-full px-3 py-2.5 text-sm bg-white border border-olive-300 rounded-md focus:outline-none focus:ring-2 focus:ring-olive-950 focus:border-transparent disabled:bg-olive-50 disabled:text-olive-500"
               placeholder="Last name"
               disabled={isLoading}
               required
@@ -111,7 +111,7 @@ const SubscribeForm: React.FC<SubscribeFormProps> = ({ domainName }) => {
         <div className="flex flex-col sm:flex-row gap-3 sm:items-end">
           {/* Email Input */}
           <div className="flex-1">
-            <label htmlFor="email" className="block text-xs font-medium text-olive-700 dark:text-olive-300 mb-1.5">
+            <label htmlFor="email" className="block text-xs font-medium text-olive-700 mb-1.5">
               Email*
             </label>
             <input
@@ -119,7 +119,7 @@ const SubscribeForm: React.FC<SubscribeFormProps> = ({ domainName }) => {
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-3 py-2.5 text-sm bg-white border border-olive-300 rounded-md focus:outline-none focus:ring-2 focus:ring-olive-950 focus:border-transparent disabled:bg-olive-50 disabled:text-olive-500 dark:bg-olive-800 dark:border-olive-700 dark:text-white dark:focus:ring-olive-400 dark:disabled:bg-olive-900"
+              className="w-full px-3 py-2.5 text-sm bg-white border border-olive-300 rounded-md focus:outline-none focus:ring-2 focus:ring-olive-950 focus:border-transparent disabled:bg-olive-50 disabled:text-olive-500"
               placeholder="your@email.com"
               disabled={isLoading}
               required

@@ -35,7 +35,7 @@ export function PostMainContentArea({
   generatedHtml,
 }: PostMainContentAreaProps) {
   return (
-    <div className="text-olive-700 dark:text-olive-400">
+    <div className="text-olive-700">
       <div className="max-w-2xl xl:mx-auto">
         {/* Display featured image if available */}
         {featuredImageUrl && (
@@ -70,7 +70,7 @@ export function PostMainContentArea({
           </div>
         ) : (
           <div 
-            className="prose prose-olive dark:prose-invert prose-ol:list-decimal prose-ul:list-[square] prose-li:my-1 prose-li:pl-2 prose-p:my-4 prose-headings:mt-8 prose-headings:mb-4 prose-headings:font-medium prose-img:my-6 prose-img:rounded-lg prose-a:font-semibold prose-a:underline-offset-4 max-w-none"
+            className="prose prose-olive prose-ol:list-decimal prose-ul:list-[square] prose-li:my-1 prose-li:pl-2 prose-p:my-4 prose-headings:mt-8 prose-headings:mb-4 prose-headings:font-medium prose-img:my-6 prose-img:rounded-lg prose-a:font-semibold prose-a:underline-offset-4 max-w-none"
             dangerouslySetInnerHTML={{ __html: generatedHtml }}
           />
         )}

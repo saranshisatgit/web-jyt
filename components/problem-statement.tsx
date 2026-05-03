@@ -185,7 +185,7 @@ export function ProblemStatement() {
     }, [])
 
     return (
-        <section className="relative z-0 overflow-hidden pt-12 sm:pt-16 pb-24 sm:pb-32 bg-olive-50 dark:bg-[#0B0F0B] font-sans transition-colors duration-300">
+        <section className="relative z-0 overflow-hidden pt-12 sm:pt-16 pb-24 sm:pb-32 bg-olive-50 font-sans transition-colors duration-300">
             <Container className="relative z-0 mb-12">
                 <div className="flex flex-col items-center text-center max-w-3xl mx-auto px-4">
                     <Heading as="h2" className="mb-6">
@@ -201,7 +201,7 @@ export function ProblemStatement() {
             <div className="mx-auto max-w-[80rem] px-4 sm:px-6 lg:px-8">
                 <div
                     ref={containerRef}
-                    className="relative w-full h-[500px] lg:h-[600px] rounded-3xl overflow-hidden border border-olive-200/80 dark:border-white/5 cursor-ew-resize select-none"
+                    className="relative w-full h-[500px] lg:h-[600px] rounded-3xl overflow-hidden border border-olive-200/80 cursor-ew-resize select-none"
                     onMouseMove={handleMouseMove}
                     onMouseDown={handleMouseDown}
                     onMouseUp={handleMouseUp}
@@ -224,25 +224,25 @@ export function ProblemStatement() {
                         Icons: left-[2%] to left-[46%].
                     ═══════════════════════════════════════════════════════ */}
                     <div
-                        className="absolute inset-0 bg-olive-100 dark:bg-[#0A0A0A] transition-colors duration-300"
+                        className="absolute inset-0 bg-olive-100 transition-colors duration-300"
                         style={{ clipPath: `inset(0 ${100 - sliderPosition}% 0 0)` }}
                     >
                         {/* Chaotic dot grid */}
-                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_2px_2px,rgba(88,89,68,0.08)_1px,transparent_0)] dark:bg-[radial-gradient(circle_at_2px_2px,rgba(239,68,68,0.09)_1px,transparent_0)] bg-[length:28px_28px] pointer-events-none" />
+                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_2px_2px,rgba(88,89,68,0.08)_1px,transparent_0)] bg-[length:28px_28px] pointer-events-none" />
 
                         {/* Manual chaos visual — centred at true center */}
                         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 pointer-events-none">
                             {/* Light mode chaos */}
-                            <div className="block dark:hidden w-full h-full">
+                            <div className="block w-full h-full">
                                 <ManualChaos dark={false} />
                             </div>
                             {/* Dark mode chaos */}
-                            <div className="hidden dark:block w-full h-full">
+                            <div className="hidden w-full h-full">
                                 <ManualChaos dark={true} />
                             </div>
                             {/* "Manual" label inside the rough circle */}
                             <div className="absolute inset-0 flex items-center justify-center">
-                                <span className="font-serif italic text-xl text-olive-500/60 dark:text-red-400/40 transition-colors duration-300 select-none">
+                                <span className="font-serif italic text-xl text-olive-500/60 transition-colors duration-300 select-none">
                                     Manual
                                 </span>
                             </div>
@@ -256,10 +256,10 @@ export function ProblemStatement() {
                             transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut' }}
                             whileHover={shouldReduceMotion ? undefined : { rotate: [-8, 8, -8, 8, 0], scale: 1.05 }}
                         >
-                            <div className="w-9 h-9 rounded-xl border border-olive-400/50 dark:border-red-500/30 bg-olive-50 dark:bg-[#1a1212] flex items-center justify-center text-olive-600/80 dark:text-red-400/70 transition-all duration-300 group-hover:border-red-400/60 group-hover:shadow-[0_0_15px_rgba(239,68,68,0.2)]">
+                            <div className="w-9 h-9 rounded-xl border border-olive-400/50 bg-olive-50 flex items-center justify-center text-olive-600/80 transition-all duration-300 group-hover:border-red-400/60 group-hover:shadow-[0_0_15px_rgba(239,68,68,0.2)]">
                                 <PencilSquareIcon className="w-5 h-5" />
                             </div>
-                            <span className="font-mono text-[8px] tracking-widest uppercase text-olive-500/80 dark:text-red-400/50 whitespace-nowrap group-hover:text-red-500/80 transition-colors">Scratch Pad</span>
+                            <span className="font-mono text-[8px] tracking-widest uppercase text-olive-500/80 whitespace-nowrap group-hover:text-red-500/80 transition-colors">Scratch Pad</span>
                         </motion.div>
 
                         <motion.div 
@@ -269,10 +269,10 @@ export function ProblemStatement() {
                             transition={{ repeat: Infinity, duration: 3.8, ease: 'easeInOut', delay: 0.3 }}
                             whileHover={shouldReduceMotion ? undefined : { rotate: [8, -8, 8, -8, 0], scale: 1.05 }}
                         >
-                            <div className="w-9 h-9 rounded-xl border border-olive-400/50 dark:border-red-500/30 bg-olive-50 dark:bg-[#1a1212] flex items-center justify-center text-olive-600/80 dark:text-red-400/70 transition-all duration-300 group-hover:border-red-400/60 group-hover:shadow-[0_0_15px_rgba(239,68,68,0.2)]">
+                            <div className="w-9 h-9 rounded-xl border border-olive-400/50 bg-olive-50 flex items-center justify-center text-olive-600/80 transition-all duration-300 group-hover:border-red-400/60 group-hover:shadow-[0_0_15px_rgba(239,68,68,0.2)]">
                                 <TableCellsIcon className="w-5 h-5" />
                             </div>
-                            <span className="font-mono text-[8px] tracking-widest uppercase text-olive-500/80 dark:text-red-400/50 whitespace-nowrap group-hover:text-red-500/80 transition-colors">Excel</span>
+                            <span className="font-mono text-[8px] tracking-widest uppercase text-olive-500/80 whitespace-nowrap group-hover:text-red-500/80 transition-colors">Excel</span>
                         </motion.div>
 
                         <motion.div 
@@ -282,10 +282,10 @@ export function ProblemStatement() {
                             transition={{ repeat: Infinity, duration: 4.5, ease: 'easeInOut', delay: 0.8 }}
                             whileHover={shouldReduceMotion ? undefined : { rotate: [-10, 10, -10, 10, 0], scale: 1.05 }}
                         >
-                            <div className="w-9 h-9 rounded-xl border border-olive-400/50 dark:border-red-500/30 bg-olive-50 dark:bg-[#1a1212] flex items-center justify-center text-olive-600/80 dark:text-red-400/70 transition-all duration-300 group-hover:border-red-400/60 group-hover:shadow-[0_0_15px_rgba(239,68,68,0.2)]">
+                            <div className="w-9 h-9 rounded-xl border border-olive-400/50 bg-olive-50 flex items-center justify-center text-olive-600/80 transition-all duration-300 group-hover:border-red-400/60 group-hover:shadow-[0_0_15px_rgba(239,68,68,0.2)]">
                                 <ChatBubbleLeftRightIcon className="w-5 h-5" />
                             </div>
-                            <span className="font-mono text-[8px] tracking-widest uppercase text-olive-500/80 dark:text-red-400/50 whitespace-nowrap group-hover:text-red-500/80 transition-colors">WhatsApp</span>
+                            <span className="font-mono text-[8px] tracking-widest uppercase text-olive-500/80 whitespace-nowrap group-hover:text-red-500/80 transition-colors">WhatsApp</span>
                         </motion.div>
 
                         <motion.div 
@@ -295,10 +295,10 @@ export function ProblemStatement() {
                             transition={{ repeat: Infinity, duration: 5, ease: 'easeInOut', delay: 0.5 }}
                             whileHover={shouldReduceMotion ? undefined : { rotate: [-6, 6, -6, 6, 0], scale: 1.05 }}
                         >
-                            <div className="w-9 h-9 rounded-xl border border-olive-400/50 dark:border-red-500/30 bg-olive-50 dark:bg-[#1a1212] flex items-center justify-center text-olive-600/80 dark:text-red-400/70 transition-all duration-300 group-hover:border-red-400/60 group-hover:shadow-[0_0_15px_rgba(239,68,68,0.2)]">
+                            <div className="w-9 h-9 rounded-xl border border-olive-400/50 bg-olive-50 flex items-center justify-center text-olive-600/80 transition-all duration-300 group-hover:border-red-400/60 group-hover:shadow-[0_0_15px_rgba(239,68,68,0.2)]">
                                 <TableCellsIcon className="w-5 h-5" />
                             </div>
-                            <span className="font-mono text-[8px] tracking-widest uppercase text-olive-500/80 dark:text-red-400/50 whitespace-nowrap group-hover:text-red-500/80 transition-colors">Spreadsheets</span>
+                            <span className="font-mono text-[8px] tracking-widest uppercase text-olive-500/80 whitespace-nowrap group-hover:text-red-500/80 transition-colors">Spreadsheets</span>
                         </motion.div>
 
                         <motion.div 
@@ -308,10 +308,10 @@ export function ProblemStatement() {
                             transition={{ repeat: Infinity, duration: 4.2, ease: 'easeInOut', delay: 1 }}
                             whileHover={shouldReduceMotion ? undefined : { rotate: [8, -8, 8, -8, 0], scale: 1.05 }}
                         >
-                            <div className="w-9 h-9 rounded-xl border border-olive-400/50 dark:border-red-500/30 bg-olive-50 dark:bg-[#1a1212] flex items-center justify-center text-olive-600/80 dark:text-red-400/70 transition-all duration-300 group-hover:border-red-400/60 group-hover:shadow-[0_0_15px_rgba(239,68,68,0.2)]">
+                            <div className="w-9 h-9 rounded-xl border border-olive-400/50 bg-olive-50 flex items-center justify-center text-olive-600/80 transition-all duration-300 group-hover:border-red-400/60 group-hover:shadow-[0_0_15px_rgba(239,68,68,0.2)]">
                                 <ShoppingBagIcon className="w-5 h-5" />
                             </div>
-                            <span className="font-mono text-[8px] tracking-widest uppercase text-olive-500/80 dark:text-red-400/50 whitespace-nowrap group-hover:text-red-500/80 transition-colors">E-commerce</span>
+                            <span className="font-mono text-[8px] tracking-widest uppercase text-olive-500/80 whitespace-nowrap group-hover:text-red-500/80 transition-colors">E-commerce</span>
                         </motion.div>
 
                         <motion.div 
@@ -321,10 +321,10 @@ export function ProblemStatement() {
                             transition={{ repeat: Infinity, duration: 3.5, ease: 'easeInOut', delay: 0.2 }}
                             whileHover={shouldReduceMotion ? undefined : { rotate: [-7, 7, -7, 7, 0], scale: 1.05 }}
                         >
-                            <div className="w-9 h-9 rounded-xl border border-olive-400/50 dark:border-red-500/30 bg-olive-50 dark:bg-[#1a1212] flex items-center justify-center text-olive-600/80 dark:text-red-400/70 transition-all duration-300 group-hover:border-red-400/60 group-hover:shadow-[0_0_15px_rgba(239,68,68,0.2)]">
+                            <div className="w-9 h-9 rounded-xl border border-olive-400/50 bg-olive-50 flex items-center justify-center text-olive-600/80 transition-all duration-300 group-hover:border-red-400/60 group-hover:shadow-[0_0_15px_rgba(239,68,68,0.2)]">
                                 <ChatBubbleLeftRightIcon className="w-5 h-5" />
                             </div>
-                            <span className="font-mono text-[8px] tracking-widest uppercase text-olive-500/80 dark:text-red-400/50 whitespace-nowrap group-hover:text-red-500/80 transition-colors">Chat</span>
+                            <span className="font-mono text-[8px] tracking-widest uppercase text-olive-500/80 whitespace-nowrap group-hover:text-red-500/80 transition-colors">Chat</span>
                         </motion.div>
 
                         <motion.div 
@@ -334,10 +334,10 @@ export function ProblemStatement() {
                             transition={{ repeat: Infinity, duration: 4.8, ease: 'easeInOut', delay: 0.6 }}
                             whileHover={shouldReduceMotion ? undefined : { rotate: [9, -9, 9, -9, 0], scale: 1.05 }}
                         >
-                            <div className="w-9 h-9 rounded-xl border border-olive-400/50 dark:border-red-500/30 bg-olive-50 dark:bg-[#1a1212] flex items-center justify-center text-olive-600/80 dark:text-red-400/70 transition-all duration-300 group-hover:border-red-400/60 group-hover:shadow-[0_0_15px_rgba(239,68,68,0.2)]">
+                            <div className="w-9 h-9 rounded-xl border border-olive-400/50 bg-olive-50 flex items-center justify-center text-olive-600/80 transition-all duration-300 group-hover:border-red-400/60 group-hover:shadow-[0_0_15px_rgba(239,68,68,0.2)]">
                                 <PencilSquareIcon className="w-5 h-5" />
                             </div>
-                            <span className="font-mono text-[8px] tracking-widest uppercase text-olive-500/80 dark:text-red-400/50 whitespace-nowrap group-hover:text-red-500/80 transition-colors">Notes</span>
+                            <span className="font-mono text-[8px] tracking-widest uppercase text-olive-500/80 whitespace-nowrap group-hover:text-red-500/80 transition-colors">Notes</span>
                         </motion.div>
 
                         <motion.div 
@@ -347,18 +347,18 @@ export function ProblemStatement() {
                             transition={{ repeat: Infinity, duration: 5.1, ease: 'easeInOut', delay: 1.2 }}
                             whileHover={shouldReduceMotion ? undefined : { rotate: [-5, 5, -5, 5, 0], scale: 1.05 }}
                         >
-                            <div className="w-9 h-9 rounded-xl border border-olive-400/50 dark:border-red-500/30 bg-olive-50 dark:bg-[#1a1212] flex items-center justify-center text-olive-600/80 dark:text-red-400/70 transition-all duration-300 group-hover:border-red-400/60 group-hover:shadow-[0_0_15px_rgba(239,68,68,0.2)]">
+                            <div className="w-9 h-9 rounded-xl border border-olive-400/50 bg-olive-50 flex items-center justify-center text-olive-600/80 transition-all duration-300 group-hover:border-red-400/60 group-hover:shadow-[0_0_15px_rgba(239,68,68,0.2)]">
                                 <TableCellsIcon className="w-5 h-5" />
                             </div>
-                            <span className="font-mono text-[8px] tracking-widest uppercase text-olive-500/80 dark:text-red-400/50 whitespace-nowrap group-hover:text-red-500/80 transition-colors">Data Sheets</span>
+                            <span className="font-mono text-[8px] tracking-widest uppercase text-olive-500/80 whitespace-nowrap group-hover:text-red-500/80 transition-colors">Data Sheets</span>
                         </motion.div>
 
                         {/* Connection lines showing chaos - broken/disconnected */}
-                        <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-20 dark:opacity-30" style={{ zIndex: 5 }}>
-                            <line x1="3%" y1="12%" x2="14%" y2="18%" stroke="currentColor" className="text-olive-400 dark:text-red-500" strokeWidth="1" strokeDasharray="4 6" />
-                            <line x1="2%" y1="50%" x2="13%" y2="72%" stroke="currentColor" className="text-olive-400 dark:text-red-500" strokeWidth="1" strokeDasharray="3 8" />
-                            <line x1="4%" y1="88%" x2="34%" y2="82%" stroke="currentColor" className="text-olive-400 dark:text-red-500" strokeWidth="1" strokeDasharray="5 5" />
-                            <line x1="34%" y1="25%" x2="38%" y2="58%" stroke="currentColor" className="text-olive-400 dark:text-red-500" strokeWidth="0.8" strokeDasharray="2 10" />
+                        <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-20" style={{ zIndex: 5 }}>
+                            <line x1="3%" y1="12%" x2="14%" y2="18%" stroke="currentColor" className="text-olive-400" strokeWidth="1" strokeDasharray="4 6" />
+                            <line x1="2%" y1="50%" x2="13%" y2="72%" stroke="currentColor" className="text-olive-400" strokeWidth="1" strokeDasharray="3 8" />
+                            <line x1="4%" y1="88%" x2="34%" y2="82%" stroke="currentColor" className="text-olive-400" strokeWidth="1" strokeDasharray="5 5" />
+                            <line x1="34%" y1="25%" x2="38%" y2="58%" stroke="currentColor" className="text-olive-400" strokeWidth="0.8" strokeDasharray="2 10" />
                         </svg>
 
                         {/* Disconnected data flow indicators */}
@@ -368,7 +368,7 @@ export function ProblemStatement() {
                             animate={shouldReduceMotion ? undefined : { opacity: [0.3, 0.6, 0.3] }}
                             transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
                         >
-                            <div className="text-[10px] font-mono text-olive-500/60 dark:text-red-400/40 line-through">sync failed</div>
+                            <div className="text-[10px] font-mono text-olive-500/60 line-through">sync failed</div>
                         </motion.div>
 
                         {/* Chaos Side - Error Cards */}
@@ -379,12 +379,12 @@ export function ProblemStatement() {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.5, delay: 0.3 }}
                         >
-                            <div className="bg-red-50/90 dark:bg-red-950/40 border border-red-300/60 dark:border-red-500/30 rounded-lg p-2 shadow-lg backdrop-blur-sm">
+                            <div className="bg-red-50/90 border border-red-300/60 rounded-lg p-2 shadow-lg backdrop-blur-sm">
                                 <div className="flex items-center gap-1.5 mb-1">
                                     <div className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
-                                    <span className="text-[8px] font-mono uppercase text-red-600 dark:text-red-400 font-semibold">Order Delayed</span>
+                                    <span className="text-[8px] font-mono uppercase text-red-600 font-semibold">Order Delayed</span>
                                 </div>
-                                <div className="text-[7px] text-red-500/70 dark:text-red-400/60 font-mono">Status: 3 days overdue</div>
+                                <div className="text-[7px] text-red-500/70 font-mono">Status: 3 days overdue</div>
                             </div>
                         </motion.div>
 
@@ -395,12 +395,12 @@ export function ProblemStatement() {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.5, delay: 0.6 }}
                         >
-                            <div className="bg-amber-50/90 dark:bg-amber-950/40 border border-amber-300/60 dark:border-amber-500/30 rounded-lg p-2 shadow-lg backdrop-blur-sm">
+                            <div className="bg-amber-50/90 border border-amber-300/60 rounded-lg p-2 shadow-lg backdrop-blur-sm">
                                 <div className="flex items-center gap-1.5 mb-1">
                                     <div className="w-1.5 h-1.5 rounded-full bg-amber-500" />
-                                    <span className="text-[8px] font-mono uppercase text-amber-600 dark:text-amber-400 font-semibold">Design Not Found</span>
+                                    <span className="text-[8px] font-mono uppercase text-amber-600 font-semibold">Design Not Found</span>
                                 </div>
-                                <div className="text-[7px] text-amber-500/70 dark:text-amber-400/60 font-mono">File: version_3_final_FINAL.ai</div>
+                                <div className="text-[7px] text-amber-500/70 font-mono">File: version_3_final_FINAL.ai</div>
                             </div>
                         </motion.div>
 
@@ -411,12 +411,12 @@ export function ProblemStatement() {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.5, delay: 0.9 }}
                         >
-                            <div className="bg-gray-100/90 dark:bg-gray-900/60 border border-gray-300/60 dark:border-gray-600/30 rounded-lg p-2 shadow-lg backdrop-blur-sm">
+                            <div className="bg-gray-100/90 border border-gray-300/60 rounded-lg p-2 shadow-lg backdrop-blur-sm">
                                 <div className="flex items-center gap-1.5 mb-1">
                                     <div className="w-1.5 h-1.5 rounded-full bg-gray-400" />
-                                    <span className="text-[8px] font-mono uppercase text-gray-600 dark:text-gray-400 font-semibold">Messages Lost</span>
+                                    <span className="text-[8px] font-mono uppercase text-gray-600 font-semibold">Messages Lost</span>
                                 </div>
-                                <div className="text-[7px] text-gray-500/70 dark:text-gray-400/60 font-mono">12 unread in 5 threads</div>
+                                <div className="text-[7px] text-gray-500/70 font-mono">12 unread in 5 threads</div>
                             </div>
                         </motion.div>
                     </div>
@@ -427,11 +427,11 @@ export function ProblemStatement() {
                         Icons: left-[54%] to left-[93%].
                     ═══════════════════════════════════════════════════════ */}
                     <div
-                        className="absolute inset-0 bg-olive-50 dark:bg-[#0B0F0B] z-20 transition-colors duration-300"
+                        className="absolute inset-0 bg-olive-50 z-20 transition-colors duration-300"
                         style={{ clipPath: `inset(0 0 0 ${sliderPosition}%)` }}
                     >
                         {/* Structured dot grid */}
-                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_2px_2px,rgba(88,89,68,0.07)_1px,transparent_0)] dark:bg-[radial-gradient(circle_at_2px_2px,rgba(163,230,53,0.06)_1px,transparent_0)] bg-[length:28px_28px] pointer-events-none" />
+                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_2px_2px,rgba(88,89,68,0.07)_1px,transparent_0)] bg-[length:28px_28px] pointer-events-none" />
 
                         {/* ── JYT Flower Hub — centred at true center */}
                         <motion.div
@@ -439,8 +439,8 @@ export function ProblemStatement() {
                             animate={{ rotate: [0, 1, 0, -1, 0] }}
                             transition={{ repeat: Infinity, duration: 12, ease: 'easeInOut' }}
                         >
-                            <div className="block dark:hidden w-full h-full"><JYTFlower dark={false} /></div>
-                            <div className="hidden dark:block w-full h-full"><JYTFlower dark={true} /></div>
+                            <div className="block w-full h-full"><JYTFlower dark={false} /></div>
+                            <div className="hidden w-full h-full"><JYTFlower dark={true} /></div>
                         </motion.div>
 
                         {/* Pulsing data flow particles - matching icon positions */}
@@ -454,7 +454,7 @@ export function ProblemStatement() {
                             }}
                             transition={{ repeat: Infinity, duration: 2, ease: 'easeOut', delay: 0 }}
                         >
-                            <div className="w-2 h-2 rounded-full bg-olive-400 dark:bg-lime-400 shadow-[0_0_8px_rgba(163,230,53,0.8)]" />
+                            <div className="w-2 h-2 rounded-full bg-olive-400 shadow-[0_0_8px_rgba(163,230,53,0.8)]" />
                         </motion.div>
                         <motion.div
                             className="absolute pointer-events-none"
@@ -466,7 +466,7 @@ export function ProblemStatement() {
                             }}
                             transition={{ repeat: Infinity, duration: 2.3, ease: 'easeOut', delay: 0.5 }}
                         >
-                            <div className="w-2 h-2 rounded-full bg-olive-400 dark:bg-lime-400 shadow-[0_0_8px_rgba(163,230,53,0.8)]" />
+                            <div className="w-2 h-2 rounded-full bg-olive-400 shadow-[0_0_8px_rgba(163,230,53,0.8)]" />
                         </motion.div>
                         <motion.div
                             className="absolute pointer-events-none"
@@ -478,7 +478,7 @@ export function ProblemStatement() {
                             }}
                             transition={{ repeat: Infinity, duration: 1.8, ease: 'easeOut', delay: 1 }}
                         >
-                            <div className="w-2 h-2 rounded-full bg-olive-400 dark:bg-lime-400 shadow-[0_0_8px_rgba(163,230,53,0.8)]" />
+                            <div className="w-2 h-2 rounded-full bg-olive-400 shadow-[0_0_8px_rgba(163,230,53,0.8)]" />
                         </motion.div>
                         <motion.div
                             className="absolute pointer-events-none"
@@ -490,7 +490,7 @@ export function ProblemStatement() {
                             }}
                             transition={{ repeat: Infinity, duration: 2.1, ease: 'easeOut', delay: 0.3 }}
                         >
-                            <div className="w-2 h-2 rounded-full bg-olive-400 dark:bg-lime-400 shadow-[0_0_8px_rgba(163,230,53,0.8)]" />
+                            <div className="w-2 h-2 rounded-full bg-olive-400 shadow-[0_0_8px_rgba(163,230,53,0.8)]" />
                         </motion.div>
                         <motion.div
                             className="absolute pointer-events-none"
@@ -502,7 +502,7 @@ export function ProblemStatement() {
                             }}
                             transition={{ repeat: Infinity, duration: 2.4, ease: 'easeOut', delay: 0.7 }}
                         >
-                            <div className="w-2 h-2 rounded-full bg-olive-400 dark:bg-lime-400 shadow-[0_0_8px_rgba(163,230,53,0.8)]" />
+                            <div className="w-2 h-2 rounded-full bg-olive-400 shadow-[0_0_8px_rgba(163,230,53,0.8)]" />
                         </motion.div>
                         <motion.div
                             className="absolute pointer-events-none"
@@ -514,7 +514,7 @@ export function ProblemStatement() {
                             }}
                             transition={{ repeat: Infinity, duration: 1.9, ease: 'easeOut', delay: 1.2 }}
                         >
-                            <div className="w-2 h-2 rounded-full bg-olive-400 dark:bg-lime-400 shadow-[0_0_8px_rgba(163,230,53,0.8)]" />
+                            <div className="w-2 h-2 rounded-full bg-olive-400 shadow-[0_0_8px_rgba(163,230,53,0.8)]" />
                         </motion.div>
 
                         {/* JYT feature icons — positioned at line endpoints with hover glow and scale */}
@@ -525,12 +525,12 @@ export function ProblemStatement() {
                             transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut' }}
                             whileHover={{ scale: 1.15, y: -5 }}
                         >
-                            <div className="w-10 h-10 rounded-full border border-olive-500/40 dark:border-lime-400/40 bg-olive-100 dark:bg-[#0B0F0B] flex items-center justify-center text-olive-600 dark:text-lime-400 shadow-[0_0_14px_rgba(88,89,68,0.08)] dark:shadow-[0_0_14px_rgba(163,230,53,0.18)] transition-all duration-300 group-hover:shadow-[0_0_25px_rgba(163,230,53,0.5)] group-hover:border-lime-400/80 dark:group-hover:shadow-[0_0_30px_rgba(163,230,53,0.6)]">
+                            <div className="w-10 h-10 rounded-full border border-olive-500/40 bg-olive-100 flex items-center justify-center text-olive-600 shadow-[0_0_14px_rgba(88,89,68,0.08)] transition-all duration-300 group-hover:shadow-[0_0_25px_rgba(163,230,53,0.5)] group-hover:border-lime-400/80">
                                 <SwatchIcon className="w-5 h-5" />
                             </div>
-                            <span className="font-mono text-[8px] tracking-widest uppercase text-olive-600 dark:text-lime-400 font-bold whitespace-nowrap transition-colors duration-300 group-hover:text-lime-500">Design Tracing</span>
+                            <span className="font-mono text-[8px] tracking-widest uppercase text-olive-600 font-bold whitespace-nowrap transition-colors duration-300 group-hover:text-lime-500">Design Tracing</span>
                             <motion.div 
-                                className="absolute -bottom-1 opacity-0 group-hover:opacity-100 transition-opacity text-[9px] text-olive-500/70 dark:text-lime-300/70 whitespace-nowrap"
+                                className="absolute -bottom-1 opacity-0 group-hover:opacity-100 transition-opacity text-[9px] text-olive-500/70 whitespace-nowrap"
                                 initial={{ y: 5 }}
                                 whileHover={{ y: 0 }}
                             >
@@ -545,12 +545,12 @@ export function ProblemStatement() {
                             transition={{ repeat: Infinity, duration: 5, ease: 'easeInOut', delay: 0.5 }}
                             whileHover={{ scale: 1.15, y: -5 }}
                         >
-                            <div className="w-10 h-10 rounded-full border border-olive-500/40 dark:border-lime-400/40 bg-olive-100 dark:bg-[#0B0F0B] flex items-center justify-center text-olive-600 dark:text-lime-400 shadow-[0_0_14px_rgba(88,89,68,0.08)] dark:shadow-[0_0_14px_rgba(163,230,53,0.18)] transition-all duration-300 group-hover:shadow-[0_0_25px_rgba(163,230,53,0.5)] group-hover:border-lime-400/80 dark:group-hover:shadow-[0_0_30px_rgba(163,230,53,0.6)]">
+                            <div className="w-10 h-10 rounded-full border border-olive-500/40 bg-olive-100 flex items-center justify-center text-olive-600 shadow-[0_0_14px_rgba(88,89,68,0.08)] transition-all duration-300 group-hover:shadow-[0_0_25px_rgba(163,230,53,0.5)] group-hover:border-lime-400/80">
                                 <ArchiveBoxIcon className="w-5 h-5" />
                             </div>
-                            <span className="font-mono text-[8px] tracking-widest uppercase text-olive-600 dark:text-lime-400 font-bold whitespace-nowrap transition-colors duration-300 group-hover:text-lime-500">Inventory</span>
+                            <span className="font-mono text-[8px] tracking-widest uppercase text-olive-600 font-bold whitespace-nowrap transition-colors duration-300 group-hover:text-lime-500">Inventory</span>
                             <motion.div 
-                                className="absolute -bottom-1 opacity-0 group-hover:opacity-100 transition-opacity text-[9px] text-olive-500/70 dark:text-lime-300/70 whitespace-nowrap"
+                                className="absolute -bottom-1 opacity-0 group-hover:opacity-100 transition-opacity text-[9px] text-olive-500/70 whitespace-nowrap"
                             >
                                 Real-time sync
                             </motion.div>
@@ -563,12 +563,12 @@ export function ProblemStatement() {
                             transition={{ repeat: Infinity, duration: 4.5, ease: 'easeInOut', delay: 1 }}
                             whileHover={{ scale: 1.15, y: -5 }}
                         >
-                            <div className="w-10 h-10 rounded-full border border-olive-500/40 dark:border-lime-400/40 bg-olive-100 dark:bg-[#0B0F0B] flex items-center justify-center text-olive-600 dark:text-lime-400 shadow-[0_0_14px_rgba(88,89,68,0.08)] dark:shadow-[0_0_14px_rgba(163,230,53,0.18)] transition-all duration-300 group-hover:shadow-[0_0_25px_rgba(163,230,53,0.5)] group-hover:border-lime-400/80 dark:group-hover:shadow-[0_0_30px_rgba(163,230,53,0.6)]">
+                            <div className="w-10 h-10 rounded-full border border-olive-500/40 bg-olive-100 flex items-center justify-center text-olive-600 shadow-[0_0_14px_rgba(88,89,68,0.08)] transition-all duration-300 group-hover:shadow-[0_0_25px_rgba(163,230,53,0.5)] group-hover:border-lime-400/80">
                                 <UsersIcon className="w-5 h-5" />
                             </div>
-                            <span className="font-mono text-[8px] tracking-widest uppercase text-olive-600 dark:text-lime-400 font-bold whitespace-nowrap transition-colors duration-300 group-hover:text-lime-500">Supplier Portal</span>
+                            <span className="font-mono text-[8px] tracking-widest uppercase text-olive-600 font-bold whitespace-nowrap transition-colors duration-300 group-hover:text-lime-500">Supplier Portal</span>
                             <motion.div 
-                                className="absolute -bottom-1 opacity-0 group-hover:opacity-100 transition-opacity text-[9px] text-olive-500/70 dark:text-lime-300/70 whitespace-nowrap"
+                                className="absolute -bottom-1 opacity-0 group-hover:opacity-100 transition-opacity text-[9px] text-olive-500/70 whitespace-nowrap"
                             >
                                 Unified access
                             </motion.div>
@@ -581,12 +581,12 @@ export function ProblemStatement() {
                             transition={{ repeat: Infinity, duration: 3.5, ease: 'easeInOut', delay: 0.3 }}
                             whileHover={{ scale: 1.15, y: -5 }}
                         >
-                            <div className="w-10 h-10 rounded-full border border-olive-500/40 dark:border-lime-400/40 bg-olive-100 dark:bg-[#0B0F0B] flex items-center justify-center text-olive-600 dark:text-lime-400 shadow-[0_0_14px_rgba(88,89,68,0.08)] dark:shadow-[0_0_14px_rgba(163,230,53,0.18)] transition-all duration-300 group-hover:shadow-[0_0_25px_rgba(163,230,53,0.5)] group-hover:border-lime-400/80 dark:group-hover:shadow-[0_0_30px_rgba(163,230,53,0.6)]">
+                            <div className="w-10 h-10 rounded-full border border-olive-500/40 bg-olive-100 flex items-center justify-center text-olive-600 shadow-[0_0_14px_rgba(88,89,68,0.08)] transition-all duration-300 group-hover:shadow-[0_0_25px_rgba(163,230,53,0.5)] group-hover:border-lime-400/80">
                                 <ShoppingBagIcon className="w-5 h-5" />
                             </div>
-                            <span className="font-mono text-[8px] tracking-widest uppercase text-olive-600 dark:text-lime-400 font-bold whitespace-nowrap transition-colors duration-300 group-hover:text-lime-500">Orders</span>
+                            <span className="font-mono text-[8px] tracking-widest uppercase text-olive-600 font-bold whitespace-nowrap transition-colors duration-300 group-hover:text-lime-500">Orders</span>
                             <motion.div 
-                                className="absolute -bottom-1 opacity-0 group-hover:opacity-100 transition-opacity text-[9px] text-olive-500/70 dark:text-lime-300/70 whitespace-nowrap"
+                                className="absolute -bottom-1 opacity-0 group-hover:opacity-100 transition-opacity text-[9px] text-olive-500/70 whitespace-nowrap"
                             >
                                 Auto-fulfill
                             </motion.div>
@@ -599,12 +599,12 @@ export function ProblemStatement() {
                             transition={{ repeat: Infinity, duration: 4.8, ease: 'easeInOut', delay: 0.8 }}
                             whileHover={{ scale: 1.15, y: -5 }}
                         >
-                            <div className="w-10 h-10 rounded-full border border-olive-500/40 dark:border-lime-400/40 bg-olive-100 dark:bg-[#0B0F0B] flex items-center justify-center text-olive-600 dark:text-lime-400 shadow-[0_0_14px_rgba(88,89,68,0.08)] dark:shadow-[0_0_14px_rgba(163,230,53,0.18)] transition-all duration-300 group-hover:shadow-[0_0_25px_rgba(163,230,53,0.5)] group-hover:border-lime-400/80 dark:group-hover:shadow-[0_0_30px_rgba(163,230,53,0.6)]">
+                            <div className="w-10 h-10 rounded-full border border-olive-500/40 bg-olive-100 flex items-center justify-center text-olive-600 shadow-[0_0_14px_rgba(88,89,68,0.08)] transition-all duration-300 group-hover:shadow-[0_0_25px_rgba(163,230,53,0.5)] group-hover:border-lime-400/80">
                                 <BuildingStorefrontIcon className="w-5 h-5" />
                             </div>
-                            <span className="font-mono text-[8px] tracking-widest uppercase text-olive-600 dark:text-lime-400 font-bold whitespace-nowrap transition-colors duration-300 group-hover:text-lime-500">Payments</span>
+                            <span className="font-mono text-[8px] tracking-widest uppercase text-olive-600 font-bold whitespace-nowrap transition-colors duration-300 group-hover:text-lime-500">Payments</span>
                             <motion.div 
-                                className="absolute -bottom-1 opacity-0 group-hover:opacity-100 transition-opacity text-[9px] text-olive-500/70 dark:text-lime-300/70 whitespace-nowrap"
+                                className="absolute -bottom-1 opacity-0 group-hover:opacity-100 transition-opacity text-[9px] text-olive-500/70 whitespace-nowrap"
                             >
                                 Integrated
                             </motion.div>
@@ -617,12 +617,12 @@ export function ProblemStatement() {
                             transition={{ repeat: Infinity, duration: 4.2, ease: 'easeInOut', delay: 0.2 }}
                             whileHover={{ scale: 1.15, y: -5 }}
                         >
-                            <div className="w-10 h-10 rounded-full border border-olive-500/40 dark:border-lime-400/40 bg-olive-100 dark:bg-[#0B0F0B] flex items-center justify-center text-olive-600 dark:text-lime-400 shadow-[0_0_14px_rgba(88,89,68,0.08)] dark:shadow-[0_0_14px_rgba(163,230,53,0.18)] transition-all duration-300 group-hover:shadow-[0_0_25px_rgba(163,230,53,0.5)] group-hover:border-lime-400/80 dark:group-hover:shadow-[0_0_30px_rgba(163,230,53,0.6)]">
+                            <div className="w-10 h-10 rounded-full border border-olive-500/40 bg-olive-100 flex items-center justify-center text-olive-600 shadow-[0_0_14px_rgba(88,89,68,0.08)] transition-all duration-300 group-hover:shadow-[0_0_25px_rgba(163,230,53,0.5)] group-hover:border-lime-400/80">
                                 <TableCellsIcon className="w-5 h-5" />
                             </div>
-                            <span className="font-mono text-[8px] tracking-widest uppercase text-olive-600 dark:text-lime-400 font-bold whitespace-nowrap transition-colors duration-300 group-hover:text-lime-500">Sheets</span>
+                            <span className="font-mono text-[8px] tracking-widest uppercase text-olive-600 font-bold whitespace-nowrap transition-colors duration-300 group-hover:text-lime-500">Sheets</span>
                             <motion.div 
-                                className="absolute -bottom-1 opacity-0 group-hover:opacity-100 transition-opacity text-[9px] text-olive-500/70 dark:text-lime-300/70 whitespace-nowrap"
+                                className="absolute -bottom-1 opacity-0 group-hover:opacity-100 transition-opacity text-[9px] text-olive-500/70 whitespace-nowrap"
                             >
                                 Live data
                             </motion.div>
@@ -636,12 +636,12 @@ export function ProblemStatement() {
                             animate={{ opacity: 1, y: 0, scale: 1 }}
                             transition={{ duration: 0.5, delay: 0.4 }}
                         >
-                            <div className="bg-lime-50/95 dark:bg-lime-950/50 border border-lime-400/60 dark:border-lime-400/40 rounded-lg p-2.5 shadow-[0_0_20px_rgba(163,230,53,0.3)] backdrop-blur-sm">
+                            <div className="bg-lime-50/95 border border-lime-400/60 rounded-lg p-2.5 shadow-[0_0_20px_rgba(163,230,53,0.3)] backdrop-blur-sm">
                                 <div className="flex items-center gap-1.5 mb-1">
                                     <div className="w-2 h-2 rounded-full bg-lime-500 animate-pulse" />
-                                    <span className="text-[9px] font-mono uppercase text-lime-700 dark:text-lime-400 font-bold">Order Sent</span>
+                                    <span className="text-[9px] font-mono uppercase text-lime-700 font-bold">Order Sent</span>
                                 </div>
-                                <div className="text-[7px] text-lime-600/80 dark:text-lime-400/70 font-mono">Delivered in 2 hours</div>
+                                <div className="text-[7px] text-lime-600/80 font-mono">Delivered in 2 hours</div>
                             </div>
                         </motion.div>
 
@@ -652,12 +652,12 @@ export function ProblemStatement() {
                             animate={{ opacity: 1, y: 0, scale: 1 }}
                             transition={{ duration: 0.5, delay: 0.7 }}
                         >
-                            <div className="bg-emerald-50/95 dark:bg-emerald-950/50 border border-emerald-400/60 dark:border-emerald-400/40 rounded-lg p-2.5 shadow-[0_0_20px_rgba(52,211,153,0.3)] backdrop-blur-sm">
+                            <div className="bg-emerald-50/95 border border-emerald-400/60 rounded-lg p-2.5 shadow-[0_0_20px_rgba(52,211,153,0.3)] backdrop-blur-sm">
                                 <div className="flex items-center gap-1.5 mb-1">
                                     <div className="w-2 h-2 rounded-full bg-emerald-500" />
-                                    <span className="text-[9px] font-mono uppercase text-emerald-700 dark:text-emerald-400 font-bold">Design Created</span>
+                                    <span className="text-[9px] font-mono uppercase text-emerald-700 font-bold">Design Created</span>
                                 </div>
-                                <div className="text-[7px] text-emerald-600/80 dark:text-emerald-400/70 font-mono">Auto-saved to cloud</div>
+                                <div className="text-[7px] text-emerald-600/80 font-mono">Auto-saved to cloud</div>
                             </div>
                         </motion.div>
 
@@ -668,12 +668,12 @@ export function ProblemStatement() {
                             animate={{ opacity: 1, y: 0, scale: 1 }}
                             transition={{ duration: 0.5, delay: 1.0 }}
                         >
-                            <div className="bg-blue-50/95 dark:bg-blue-950/50 border border-blue-400/60 dark:border-blue-400/40 rounded-lg p-2.5 shadow-[0_0_20px_rgba(96,165,250,0.3)] backdrop-blur-sm">
+                            <div className="bg-blue-50/95 border border-blue-400/60 rounded-lg p-2.5 shadow-[0_0_20px_rgba(96,165,250,0.3)] backdrop-blur-sm">
                                 <div className="flex items-center gap-1.5 mb-1">
                                     <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
-                                    <span className="text-[9px] font-mono uppercase text-blue-700 dark:text-blue-400 font-bold">Loading Order...</span>
+                                    <span className="text-[9px] font-mono uppercase text-blue-700 font-bold">Loading Order...</span>
                                 </div>
-                                <div className="w-16 h-1 bg-blue-200 dark:bg-blue-800 rounded-full overflow-hidden">
+                                <div className="w-16 h-1 bg-blue-200 rounded-full overflow-hidden">
                                     <motion.div 
                                         className="h-full bg-blue-500"
                                         initial={{ width: 0 }}
@@ -691,10 +691,10 @@ export function ProblemStatement() {
                             animate={{ x: [0, 30, 0], y: [0, -22, 0] }}
                             transition={{ repeat: Infinity, duration: 6, ease: 'easeInOut' }}
                         >
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="text-olive-500 dark:text-pink-400 -rotate-90 flex-shrink-0 transition-colors duration-300">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="text-olive-500 -rotate-90 flex-shrink-0 transition-colors duration-300">
                                 <path d="M5.5 3.21V20.8c0 .45.54.67.85.35l4.86-4.86H19.5c.32 0 .5-.4.27-.63L5.5 3.21z" fill="currentColor" />
                             </svg>
-                            <span className="bg-olive-200/90 dark:bg-pink-500/20 text-olive-800 dark:text-pink-300 border border-olive-300/60 dark:border-pink-500/30 text-[8px] font-bold px-2 py-0.5 rounded-full tracking-wide whitespace-nowrap backdrop-blur-sm transition-colors duration-300">
+                            <span className="bg-olive-200/90 text-olive-800 border border-olive-300/60 text-[8px] font-bold px-2 py-0.5 rounded-full tracking-wide whitespace-nowrap backdrop-blur-sm transition-colors duration-300">
                                 Inventory Sync
                             </span>
                         </motion.div>
@@ -705,10 +705,10 @@ export function ProblemStatement() {
                             animate={{ x: [0, 35, 0], y: [0, 18, 0] }}
                             transition={{ repeat: Infinity, duration: 8, ease: 'easeInOut', delay: 1.5 }}
                         >
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="text-olive-600 dark:text-lime-400 -rotate-45 flex-shrink-0 transition-colors duration-300">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="text-olive-600 -rotate-45 flex-shrink-0 transition-colors duration-300">
                                 <path d="M5.5 3.21V20.8c0 .45.54.67.85.35l4.86-4.86H19.5c.32 0 .5-.4.27-.63L5.5 3.21z" fill="currentColor" />
                             </svg>
-                            <span className="bg-olive-600 dark:bg-lime-400 text-white dark:text-black text-[8px] font-bold px-2 py-0.5 rounded-full tracking-wide whitespace-nowrap transition-colors duration-300">
+                            <span className="bg-olive-600 text-white text-[8px] font-bold px-2 py-0.5 rounded-full tracking-wide whitespace-nowrap transition-colors duration-300">
                                 AI Agent
                             </span>
                         </motion.div>
@@ -716,15 +716,15 @@ export function ProblemStatement() {
 
                     {/* ─── Slider divider ──────────────────────────────────── */}
                     <div
-                        className="absolute top-0 bottom-0 w-[2px] bg-olive-400/40 dark:bg-white/20 z-30 pointer-events-none"
+                        className="absolute top-0 bottom-0 w-[2px] bg-olive-400/40 z-30 pointer-events-none"
                         style={{ left: `${sliderPosition}%`, transform: 'translateX(-50%)' }}
                     />
                     {/* Handle */}
                     <div
-                        className="absolute top-1/2 z-30 -translate-y-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-white dark:bg-neutral-800 border border-olive-300/60 dark:border-white/20 shadow-lg flex items-center justify-center pointer-events-none transition-colors duration-300"
+                        className="absolute top-1/2 z-30 -translate-y-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-white border border-olive-300/60 shadow-lg flex items-center justify-center pointer-events-none transition-colors duration-300"
                         style={{ left: `${sliderPosition}%` }}
                     >
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="text-olive-500 dark:text-white/60 transition-colors duration-300">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="text-olive-500 transition-colors duration-300">
                             <path d="M8 5l-5 7 5 7M16 5l5 7-5 7" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
                     </div>
@@ -738,33 +738,33 @@ export function ProblemStatement() {
                     >
                         {isDragging && dragDirection === 'right' ? (
                             // Revealing Manual/Chaos side (dragging right shows more of left/Manual side)
-                            <div className="text-center bg-red-50/90 dark:bg-red-950/70 backdrop-blur-md px-6 py-4 rounded-2xl border border-red-300/60 dark:border-red-500/30 shadow-2xl">
+                            <div className="text-center bg-red-50/90 backdrop-blur-md px-6 py-4 rounded-2xl border border-red-300/60 shadow-2xl">
                                 <div className="text-[16px] mb-2">😰</div>
-                                <div className="text-[13px] font-mono uppercase tracking-[0.1em] text-red-700 dark:text-red-400 font-bold whitespace-nowrap">
+                                <div className="text-[13px] font-mono uppercase tracking-[0.1em] text-red-700 font-bold whitespace-nowrap">
                                     Back to chaos?
                                 </div>
-                                <div className="text-[10px] font-mono text-red-600/80 dark:text-red-400/70 mt-1 whitespace-nowrap">
+                                <div className="text-[10px] font-mono text-red-600/80 mt-1 whitespace-nowrap">
                                     Bad choice for you
                                 </div>
                             </div>
                         ) : isDragging && dragDirection === 'left' ? (
                             // Revealing JYT side (dragging left shows more of right/JYT side)
-                            <div className="text-center bg-lime-50/90 dark:bg-lime-950/70 backdrop-blur-md px-6 py-4 rounded-2xl border border-lime-400/60 dark:border-lime-400/30 shadow-[0_0_30px_rgba(163,230,53,0.4)]">
+                            <div className="text-center bg-lime-50/90 backdrop-blur-md px-6 py-4 rounded-2xl border border-lime-400/60 shadow-[0_0_30px_rgba(163,230,53,0.4)]">
                                 <div className="text-[20px] mb-1">☯️</div>
-                                <div className="text-[13px] font-mono uppercase tracking-[0.1em] text-lime-700 dark:text-lime-400 font-bold whitespace-nowrap">
+                                <div className="text-[13px] font-mono uppercase tracking-[0.1em] text-lime-700 font-bold whitespace-nowrap">
                                     Good choice!
                                 </div>
-                                <div className="text-[10px] font-mono text-lime-600/80 dark:text-lime-400/70 mt-1 whitespace-nowrap">
+                                <div className="text-[10px] font-mono text-lime-600/80 mt-1 whitespace-nowrap">
                                     Welcome to zen
                                 </div>
                             </div>
                         ) : (
                             // Not dragging - show default
-                            <div className="text-center bg-white/80 dark:bg-black/60 backdrop-blur-md px-6 py-4 rounded-2xl border border-olive-200/60 dark:border-white/10 shadow-2xl">
-                                <div className="text-[14px] font-mono uppercase tracking-[0.15em] text-olive-700 dark:text-lime-400 font-bold whitespace-nowrap">
+                            <div className="text-center bg-white/80 backdrop-blur-md px-6 py-4 rounded-2xl border border-olive-200/60 shadow-2xl">
+                                <div className="text-[14px] font-mono uppercase tracking-[0.15em] text-olive-700 font-bold whitespace-nowrap">
                                     From Chaos
                                 </div>
-                                <div className="text-[11px] font-mono uppercase tracking-[0.2em] text-olive-500 dark:text-lime-300/80 mt-1 whitespace-nowrap">
+                                <div className="text-[11px] font-mono uppercase tracking-[0.2em] text-olive-500 mt-1 whitespace-nowrap">
                                     to Unification & Peace
                                 </div>
                             </div>
@@ -780,8 +780,8 @@ export function ProblemStatement() {
                     >
                         <div className="flex items-center gap-2">
                             <div className="w-2 h-2 rounded-full bg-red-400/60 animate-pulse" />
-                            <span className="text-[11px] font-mono uppercase tracking-wider text-olive-600 dark:text-red-400/80 font-semibold">The Old Way</span>
-                            <span className="text-[10px] text-olive-500/60 dark:text-red-400/40">— Fragmented tools</span>
+                            <span className="text-[11px] font-mono uppercase tracking-wider text-olive-600 font-semibold">The Old Way</span>
+                            <span className="text-[10px] text-olive-500/60">— Fragmented tools</span>
                         </div>
                     </motion.div>
 
@@ -792,8 +792,8 @@ export function ProblemStatement() {
                         transition={{ duration: 0.5, delay: 0.3 }}
                     >
                         <div className="flex items-center gap-2">
-                            <span className="text-[10px] text-olive-500/60 dark:text-lime-400/60">Unified workspace —</span>
-                            <span className="text-[11px] font-mono uppercase tracking-wider text-olive-600 dark:text-lime-400 font-semibold">The JYT Way</span>
+                            <span className="text-[10px] text-olive-500/60">Unified workspace —</span>
+                            <span className="text-[11px] font-mono uppercase tracking-wider text-olive-600 font-semibold">The JYT Way</span>
                             <div className="w-2 h-2 rounded-full bg-lime-400 animate-pulse" />
                         </div>
                     </motion.div>

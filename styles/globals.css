@@ -1,7 +1,13 @@
 @import 'tailwindcss';
 @plugin "@tailwindcss/typography";
 
-
+/* The site is light-only. Tailwind v4 defaults the `dark:` variant to
+   `prefers-color-scheme: dark`, which would silently activate every
+   dark:* override anywhere in the codebase whenever a visitor's OS is
+   in dark mode — producing inconsistent dark patches on an otherwise
+   light layout. Re-bind `dark:` to a manual `.dark` class that we
+   never apply, so the variant is effectively dead. */
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
   /* Switzer is loaded via Fontshare in layout.tsx (already present).

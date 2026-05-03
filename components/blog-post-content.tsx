@@ -178,7 +178,7 @@ export function BlogPostContent({
             authorsBlock={authorsBlock}
             category={(post.public_metadata as { category?: string })?.category}
           />
-          <div className="text-olive-700 dark:text-olive-400">
+          <div className="text-olive-700">
             <PostMainContentArea
               post={post}
               featuredImageUrl={featuredImageUrl}

@@ -25,7 +25,7 @@ function SubmitButton() {
       type="submit"
       aria-disabled={pending}
       disabled={pending}
-      className="w-full rounded-full bg-olive-950 px-4 py-[calc(var(--spacing-2,8px)-1px)] text-base font-medium whitespace-nowrap text-white shadow-md hover:bg-olive-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-olive-950 disabled:opacity-50 dark:bg-olive-300 dark:text-olive-950 dark:hover:bg-olive-200"
+      className="w-full rounded-full bg-olive-950 px-4 py-[calc(var(--spacing-2,8px)-1px)] text-base font-medium whitespace-nowrap text-white shadow-md hover:bg-olive-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-olive-950 disabled:opacity-50"
     >
       {pending ? 'Sending...' : 'Send Message'}
     </button>
@@ -40,7 +40,7 @@ function VerifyButton() {
       type="submit"
       aria-disabled={pending}
       disabled={pending}
-      className="w-full rounded-full bg-olive-950 px-4 py-[calc(var(--spacing-2,8px)-1px)] text-base font-medium whitespace-nowrap text-white shadow-md hover:bg-olive-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-olive-950 disabled:opacity-50 dark:bg-olive-300 dark:text-olive-950 dark:hover:bg-olive-200"
+      className="w-full rounded-full bg-olive-950 px-4 py-[calc(var(--spacing-2,8px)-1px)] text-base font-medium whitespace-nowrap text-white shadow-md hover:bg-olive-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-olive-950 disabled:opacity-50"
     >
       {pending ? 'Verifying...' : 'Verify Code'}
     </button>
@@ -70,7 +70,7 @@ const ContactForm = () => {
 
   if (step === 'done') {
     return (
-      <div className="rounded-xl bg-white p-7 sm:p-11 shadow-md ring-1 ring-black/5 dark:bg-olive-900 dark:ring-white/10">
+      <div className="rounded-xl bg-white p-7 sm:p-11 shadow-md ring-1 ring-black/5">
         <p className="text-sm/5 text-green-600">
           {verifyState.message || 'Thank you! Your message has been verified.'}
         </p>
@@ -80,7 +80,7 @@ const ContactForm = () => {
 
   if (step === 'verify') {
     return (
-      <form action={verifyAction} className="space-y-6 rounded-xl bg-white p-7 sm:p-11 shadow-md ring-1 ring-black/5 dark:bg-olive-900 dark:ring-white/10">
+      <form action={verifyAction} className="space-y-6 rounded-xl bg-white p-7 sm:p-11 shadow-md ring-1 ring-black/5">
         <input type="hidden" name="response_id" value={responseId} />
 
         <p className="text-sm/5 text-olive-900">
@@ -88,7 +88,7 @@ const ContactForm = () => {
         </p>
 
         <div>
-          <label htmlFor="code" className="block text-sm/5 font-medium text-olive-900 dark:text-white">
+          <label htmlFor="code" className="block text-sm/5 font-medium text-olive-900">
             Verification Code
           </label>
           <input
@@ -119,9 +119,9 @@ const ContactForm = () => {
   }
 
   return (
-    <form action={formAction} className="space-y-6 rounded-xl bg-white p-7 sm:p-11 shadow-md ring-1 ring-black/5 dark:bg-olive-900 dark:ring-white/10">
+    <form action={formAction} className="space-y-6 rounded-xl bg-white p-7 sm:p-11 shadow-md ring-1 ring-black/5">
       <div>
-        <label htmlFor="name" className="block text-sm/5 font-medium text-olive-900 dark:text-white">
+        <label htmlFor="name" className="block text-sm/5 font-medium text-olive-900">
           Full Name
         </label>
         <input
@@ -129,11 +129,11 @@ const ContactForm = () => {
           name="name"
           id="name"
           required
-          className="mt-1 block w-full rounded-lg border-transparent ring-1 ring-black/10 shadow-sm px-[calc(var(--spacing-2,8px)-1px)] py-[calc(var(--spacing-1-5,6px)-1px)] text-base/6 sm:text-sm/6 focus:outline-2 focus:-outline-offset-1 focus:outline-black focus:ring-0 focus:border-transparent dark:bg-olive-800 dark:text-white dark:ring-white/10 dark:focus:outline-white"
+          className="mt-1 block w-full rounded-lg border-transparent ring-1 ring-black/10 shadow-sm px-[calc(var(--spacing-2,8px)-1px)] py-[calc(var(--spacing-1-5,6px)-1px)] text-base/6 sm:text-sm/6 focus:outline-2 focus:-outline-offset-1 focus:outline-black focus:ring-0 focus:border-transparent"
         />
       </div>
       <div>
-        <label htmlFor="email" className="block text-sm/5 font-medium text-olive-900 dark:text-white">
+        <label htmlFor="email" className="block text-sm/5 font-medium text-olive-900">
           Email Address
         </label>
         <input
@@ -141,33 +141,33 @@ const ContactForm = () => {
           name="email"
           id="email"
           required
-          className="mt-1 block w-full rounded-lg border-transparent ring-1 ring-black/10 shadow-sm px-[calc(var(--spacing-2,8px)-1px)] py-[calc(var(--spacing-1-5,6px)-1px)] text-base/6 sm:text-sm/6 focus:outline-2 focus:-outline-offset-1 focus:outline-black focus:ring-0 focus:border-transparent dark:bg-olive-800 dark:text-white dark:ring-white/10 dark:focus:outline-white"
+          className="mt-1 block w-full rounded-lg border-transparent ring-1 ring-black/10 shadow-sm px-[calc(var(--spacing-2,8px)-1px)] py-[calc(var(--spacing-1-5,6px)-1px)] text-base/6 sm:text-sm/6 focus:outline-2 focus:-outline-offset-1 focus:outline-black focus:ring-0 focus:border-transparent"
         />
       </div>
       <div>
-        <label htmlFor="company" className="block text-sm/5 font-medium text-olive-900 dark:text-white">
+        <label htmlFor="company" className="block text-sm/5 font-medium text-olive-900">
           Company
         </label>
         <input
           type="text"
           name="company"
           id="company"
-          className="mt-1 block w-full rounded-lg border-transparent ring-1 ring-black/10 shadow-sm px-[calc(var(--spacing-2,8px)-1px)] py-[calc(var(--spacing-1-5,6px)-1px)] text-base/6 sm:text-sm/6 focus:outline-2 focus:-outline-offset-1 focus:outline-black focus:ring-0 focus:border-transparent dark:bg-olive-800 dark:text-white dark:ring-white/10 dark:focus:outline-white"
+          className="mt-1 block w-full rounded-lg border-transparent ring-1 ring-black/10 shadow-sm px-[calc(var(--spacing-2,8px)-1px)] py-[calc(var(--spacing-1-5,6px)-1px)] text-base/6 sm:text-sm/6 focus:outline-2 focus:-outline-offset-1 focus:outline-black focus:ring-0 focus:border-transparent"
         />
       </div>
       <div>
-        <label htmlFor="role" className="block text-sm/5 font-medium text-olive-900 dark:text-white">
+        <label htmlFor="role" className="block text-sm/5 font-medium text-olive-900">
           Role
         </label>
         <input
           type="text"
           name="role"
           id="role"
-          className="mt-1 block w-full rounded-lg border-transparent ring-1 ring-black/10 shadow-sm px-[calc(var(--spacing-2,8px)-1px)] py-[calc(var(--spacing-1-5,6px)-1px)] text-base/6 sm:text-sm/6 focus:outline-2 focus:-outline-offset-1 focus:outline-black focus:ring-0 focus:border-transparent dark:bg-olive-800 dark:text-white dark:ring-white/10 dark:focus:outline-white"
+          className="mt-1 block w-full rounded-lg border-transparent ring-1 ring-black/10 shadow-sm px-[calc(var(--spacing-2,8px)-1px)] py-[calc(var(--spacing-1-5,6px)-1px)] text-base/6 sm:text-sm/6 focus:outline-2 focus:-outline-offset-1 focus:outline-black focus:ring-0 focus:border-transparent"
         />
       </div>
       <div>
-        <label htmlFor="message" className="block text-sm/5 font-medium text-olive-900 dark:text-white">
+        <label htmlFor="message" className="block text-sm/5 font-medium text-olive-900">
           Message
         </label>
         <textarea
@@ -176,7 +176,7 @@ const ContactForm = () => {
           rows={4}
           required
           defaultValue={prefilledMessage}
-          className="mt-1 block w-full rounded-lg border-transparent ring-1 ring-black/10 shadow-sm px-[calc(var(--spacing-2,8px)-1px)] py-[calc(var(--spacing-1-5,6px)-1px)] text-base/6 sm:text-sm/6 focus:outline-2 focus:-outline-offset-1 focus:outline-black focus:ring-0 focus:border-transparent dark:bg-olive-800 dark:text-white dark:ring-white/10 dark:focus:outline-white"
+          className="mt-1 block w-full rounded-lg border-transparent ring-1 ring-black/10 shadow-sm px-[calc(var(--spacing-2,8px)-1px)] py-[calc(var(--spacing-1-5,6px)-1px)] text-base/6 sm:text-sm/6 focus:outline-2 focus:-outline-offset-1 focus:outline-black focus:ring-0 focus:border-transparent"
         />
       </div>
 

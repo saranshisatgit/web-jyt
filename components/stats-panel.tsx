@@ -59,11 +59,11 @@ function MetricView({ data, display }: { data: PanelData; display: Display }) {
   const value = (data as any)[field] ?? data.value
   return (
     <div className="p-6">
-      <div className="text-4xl font-semibold text-gray-900 dark:text-gray-100">
+      <div className="text-4xl font-semibold text-gray-900">
         {formatValue(value, display)}
       </div>
       {display.label && (
-        <div className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+        <div className="mt-1 text-sm text-gray-500">
           {display.label}
         </div>
       )}
@@ -80,7 +80,7 @@ function ListView({ data, display }: { data: PanelData; display: Display }) {
     return <div className="p-4 text-sm text-gray-500">No results</div>
   }
   return (
-    <ul className="divide-y divide-gray-200 dark:divide-gray-700">
+    <ul className="divide-y divide-gray-200">
       {items.slice(0, limit).map((item: any, idx) => {
         const label = item?.keys?.[labelField] ?? item?.[labelField] ?? item?.key
         const value = item?.[valueField]
@@ -104,16 +104,16 @@ function TableView({ data, display }: { data: PanelData; display: Display }) {
   return (
     <div className="overflow-x-auto">
       <table className="w-full text-sm text-left">
-        <thead className="bg-gray-50 dark:bg-gray-800">
+        <thead className="bg-gray-50">
           <tr>
             {columns.map((c) => (
-              <th key={c} className="px-3 py-2 font-medium text-gray-600 dark:text-gray-300">
+              <th key={c} className="px-3 py-2 font-medium text-gray-600">
                 {c}
               </th>
             ))}
           </tr>
         </thead>
-        <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+        <tbody className="divide-y divide-gray-200">
           {rows.slice(0, display.limit ?? 50).map((row: any, idx) => (
             <tr key={idx}>
               {columns.map((c) => {
@@ -147,10 +147,10 @@ function BarView({ data, display }: { data: PanelData; display: Display }) {
         const pct = Math.max(2, Math.round((value / max) * 100))
         return (
           <div key={idx} className="flex items-center gap-3 text-sm">
-            <div className="w-32 truncate text-gray-600 dark:text-gray-400">
+            <div className="w-32 truncate text-gray-600">
               {String(label ?? '—')}
             </div>
-            <div className="flex-1 bg-gray-100 dark:bg-gray-800 rounded h-5 overflow-hidden">
+            <div className="flex-1 bg-gray-100 rounded h-5 overflow-hidden">
               <div
                 className="h-full bg-gradient-to-r from-indigo-500 to-indigo-400"
                 style={{ width: `${pct}%` }}
@@ -251,12 +251,12 @@ function LabelView({ display }: { display: Display }) {
   return (
     <div className="p-4">
       {display.title && (
-        <div className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+        <div className="text-lg font-semibold text-gray-900">
           {display.title}
         </div>
       )}
       {display.text && (
-        <div className="mt-1 text-sm text-gray-600 dark:text-gray-400 whitespace-pre-wrap">
+        <div className="mt-1 text-sm text-gray-600 whitespace-pre-wrap">
           {display.text}
         </div>
       )}
@@ -301,13 +301,13 @@ export const StatsPanelNodeView: React.FC<NodeViewProps> = ({ node }) => {
   return (
     <NodeViewWrapper
       as="div"
-      className="stats-panel my-6 border border-gray-200 dark:border-gray-800 rounded-lg overflow-hidden bg-white dark:bg-gray-900"
+      className="stats-panel my-6 border border-gray-200 rounded-lg overflow-hidden bg-white"
       data-stats-panel=""
       data-panel-id={attrs.panelId ?? undefined}
     >
       {attrs.title && (
-        <div className="px-4 py-2 border-b border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50">
-          <div className="text-sm font-medium text-gray-700 dark:text-gray-300">
+        <div className="px-4 py-2 border-b border-gray-200 bg-gray-50">
+          <div className="text-sm font-medium text-gray-700">
             {attrs.title}
           </div>
         </div>
@@ -320,7 +320,7 @@ export const StatsPanelNodeView: React.FC<NodeViewProps> = ({ node }) => {
 type RenderSpec = any
 
 const CONTAINER_CLASS =
-  'stats-panel my-6 border border-gray-200 dark:border-gray-800 rounded-lg overflow-hidden bg-white dark:bg-gray-900'
+  'stats-panel my-6 border border-gray-200 rounded-lg overflow-hidden bg-white'
 
 function buildMetricSpec(data: PanelData, display: Display): RenderSpec {
   const field = display.valueField ?? 'value'
@@ -330,11 +330,11 @@ function buildMetricSpec(data: PanelData, display: Display): RenderSpec {
     { class: 'p-6' },
     [
       'div',
-      { class: 'text-4xl font-semibold text-gray-900 dark:text-gray-100' },
+      { class: 'text-4xl font-semibold text-gray-900' },
       formatValue(value, display),
     ],
     ...(display.label
-      ? [['div', { class: 'mt-1 text-sm text-gray-500 dark:text-gray-400' }, display.label]]
+      ? [['div', { class: 'mt-1 text-sm text-gray-500' }, display.label]]
       : []),
   ]
 }
@@ -357,7 +357,7 @@ function buildListSpec(data: PanelData, display: Display): RenderSpec {
       ['span', { class: 'font-medium tabular-nums' }, formatValue(value, display)],
     ]
   })
-  return ['ul', { class: 'divide-y divide-gray-200 dark:divide-gray-700' }, ...rows]
+  return ['ul', { class: 'divide-y divide-gray-200' }, ...rows]
 }
 
 function buildTableSpec(data: PanelData, display: Display): RenderSpec {
@@ -368,20 +368,20 @@ function buildTableSpec(data: PanelData, display: Display): RenderSpec {
   const columns = display.columns ?? Object.keys(rows[0] as object)
   const head = [
     'thead',
-    { class: 'bg-gray-50 dark:bg-gray-800' },
+    { class: 'bg-gray-50' },
     [
       'tr',
       {},
       ...columns.map((c) => [
         'th',
-        { class: 'px-3 py-2 font-medium text-gray-600 dark:text-gray-300' },
+        { class: 'px-3 py-2 font-medium text-gray-600' },
         c,
       ]),
     ],
   ]
   const body = [
     'tbody',
-    { class: 'divide-y divide-gray-200 dark:divide-gray-700' },
+    { class: 'divide-y divide-gray-200' },
     ...rows.slice(0, display.limit ?? 50).map((row: any) => [
       'tr',
       {},
@@ -413,10 +413,10 @@ function buildBarSpec(data: PanelData, display: Display): RenderSpec {
     return [
       'div',
       { class: 'flex items-center gap-3 text-sm' },
-      ['div', { class: 'w-32 truncate text-gray-600 dark:text-gray-400' }, String(label ?? '—')],
+      ['div', { class: 'w-32 truncate text-gray-600' }, String(label ?? '—')],
       [
         'div',
-        { class: 'flex-1 bg-gray-100 dark:bg-gray-800 rounded h-5 overflow-hidden' },
+        { class: 'flex-1 bg-gray-100 rounded h-5 overflow-hidden' },
         [
           'div',
           {
@@ -436,14 +436,14 @@ function buildLabelSpec(display: Display): RenderSpec {
   if (display.title) {
     children.push([
       'div',
-      { class: 'text-lg font-semibold text-gray-900 dark:text-gray-100' },
+      { class: 'text-lg font-semibold text-gray-900' },
       display.title,
     ])
   }
   if (display.text) {
     children.push([
       'div',
-      { class: 'mt-1 text-sm text-gray-600 dark:text-gray-400 whitespace-pre-wrap' },
+      { class: 'mt-1 text-sm text-gray-600 whitespace-pre-wrap' },
       display.text,
     ])
   }
@@ -459,10 +459,10 @@ function buildSparkFallbackSpec(data: PanelData, display: Display): RenderSpec {
   const rows = buckets.slice(0, limit).map((b) => [
     'li',
     { class: 'flex justify-between items-center px-4 py-2 text-sm' },
-    ['span', { class: 'truncate text-gray-600 dark:text-gray-400' }, b.date],
+    ['span', { class: 'truncate text-gray-600' }, b.date],
     ['span', { class: 'font-medium tabular-nums' }, formatValue(b.value, display)],
   ])
-  return ['ul', { class: 'divide-y divide-gray-200 dark:divide-gray-700' }, ...rows]
+  return ['ul', { class: 'divide-y divide-gray-200' }, ...rows]
 }
 
 function buildPanelBodySpec(
@@ -530,9 +530,9 @@ export const StatsPanelExtension = Node.create({
         'div',
         {
           class:
-            'px-4 py-2 border-b border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50',
+            'px-4 py-2 border-b border-gray-200 bg-gray-50',
         },
-        ['div', { class: 'text-sm font-medium text-gray-700 dark:text-gray-300' }, attrs.title],
+        ['div', { class: 'text-sm font-medium text-gray-700' }, attrs.title],
       ])
     }
     children.push(buildPanelBodySpec(type, data, display))
