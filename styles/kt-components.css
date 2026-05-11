@@ -523,6 +523,40 @@
   .kt-foot-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
 }
 
+/* "Ateliers powered" — full-width row above kt-foot-grid */
+.kt-foot-ateliers {
+  display: flex;
+  align-items: baseline;
+  gap: 32px;
+  padding-bottom: 32px;
+  margin-bottom: 40px;
+  border-bottom: 1px solid var(--rule-soft);
+  flex-wrap: wrap;
+}
+.kt-foot-ateliers .kt-eyebrow { flex-shrink: 0; }
+.kt-foot-ateliers-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  flex: 1;
+}
+.kt-foot-ateliers-list a {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  text-decoration: none;
+  color: var(--ink);
+  font-size: 14px;
+  transition: color var(--dur-fast) ease;
+}
+.kt-foot-ateliers-list a:hover { color: var(--accent-deep); }
+.kt-foot-ateliers-domain {
+  font-family: var(--font-mono);
+  font-size: var(--t-mono-s);
+  letter-spacing: 0.06em;
+  color: var(--ink-soft);
+}
+
 /* ---------------- HERO ---------------- */
 .kt-hero {
   padding: 120px 0 100px;
@@ -726,4 +760,252 @@ body[data-mode="platform"] [data-aud="investor"] { display: none; }
   .kt-fork-card { padding: 40px 32px; min-height: 320px; }
   .kt-fork-card h2 { font-size: 56px; }
   .kt-fork-head { padding: 24px 24px 0; }
+}
+
+/* ---------------- CARD LINK (storefront CTA inside kt-card) ---------------- */
+.kt-card-link {
+  margin-top: auto;
+  padding-top: 24px;
+  font-family: var(--font-mono);
+  font-size: var(--t-caption);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent-deep);
+}
+
+/* ---------------- BRAND STRIP (Wearing "Also from us") ---------------- */
+.kt-brand-strip {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 24px 28px;
+  background: var(--cream);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-md);
+  flex-wrap: wrap;
+}
+.kt-brand-strip-links {
+  display: flex;
+  gap: 28px;
+  flex-wrap: wrap;
+  flex: 1;
+}
+.kt-brand-strip-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--ink);
+  transition: color var(--dur-fast) ease;
+}
+.kt-brand-strip-link:hover { color: var(--accent-deep); }
+.kt-brand-strip-link img { border-radius: 4px; }
+.kt-brand-strip-link span:first-of-type { font-weight: 500; }
+.kt-brand-strip-domain {
+  font-family: var(--font-mono);
+  font-size: var(--t-mono-s);
+  letter-spacing: 0.08em;
+  color: var(--ink-soft);
+}
+
+/* ---------------- COMPARE TABLE (Building "without/with us") ---------------- */
+.kt-compare {
+  border: 1px solid var(--rule);
+  border-radius: var(--r-md);
+  overflow: hidden;
+}
+.kt-compare-head {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-bottom: 1px solid var(--rule);
+}
+.kt-compare-head-cell {
+  padding: 20px 28px;
+  font-family: var(--font-mono);
+  font-size: var(--t-caption);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.kt-compare-head-cell.muted {
+  color: var(--ink-soft);
+  background: var(--cream);
+  border-right: 1px solid var(--rule);
+}
+.kt-compare-head-cell.accent {
+  color: var(--cream);
+  background: var(--ink-dark-bg);
+}
+.kt-compare-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-top: 1px solid var(--rule-soft);
+}
+.kt-compare-row:first-child { border-top: 0; }
+.kt-compare-cell {
+  padding: 22px 28px;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  font-size: var(--t-body-s);
+  line-height: 1.5;
+}
+.kt-compare-cell.traditional {
+  color: var(--ink-soft);
+  background: var(--cream);
+  border-right: 1px solid var(--rule-soft);
+  text-decoration: line-through;
+  text-decoration-color: oklch(0.75 0.02 55 / 0.5);
+}
+.kt-compare-cell.platform {
+  color: var(--cream);
+  background: var(--ink-dark-bg);
+}
+.kt-compare-cell .n {
+  font-family: var(--font-mono);
+  font-size: var(--t-mono-s);
+  letter-spacing: 0.08em;
+  color: var(--accent-deep);
+  min-width: 28px;
+}
+.kt-compare-cell.platform .n { color: oklch(0.82 0.14 50); }
+
+/* ---------------- GMV HEADLINE (Building) ---------------- */
+.kt-gmv-headline {
+  text-align: center;
+  padding: 64px 24px;
+  background: var(--cream);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-lg);
+}
+.kt-gmv-number {
+  font-family: var(--font-serif);
+  font-size: clamp(96px, 14vw, 188px);
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+  color: var(--accent-deep);
+  margin: 24px 0 16px;
+}
+
+/* ---------------- TOPBAR ACTIONS + HAMBURGER ---------------- */
+.kt-topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.kt-hamburger {
+  display: none;
+  background: transparent;
+  border: 1px solid var(--rule);
+  border-radius: var(--r-pill);
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  cursor: pointer;
+  position: relative;
+}
+.kt-hamburger span {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  height: 2px;
+  background: var(--ink);
+  border-radius: 2px;
+  transition: transform 240ms cubic-bezier(.65, .05, .36, 1),
+              opacity 160ms ease;
+}
+.kt-hamburger span:nth-child(1) { top: 14px; }
+.kt-hamburger span:nth-child(2) { top: 21px; }
+.kt-hamburger span:nth-child(3) { top: 28px; }
+.kt-hamburger span:nth-child(1)[data-open="true"] { transform: translateY(7px) rotate(45deg); }
+.kt-hamburger span:nth-child(2)[data-open="true"] { opacity: 0; }
+.kt-hamburger span:nth-child(3)[data-open="true"] { transform: translateY(-7px) rotate(-45deg); }
+
+/* ---------------- MOBILE DRAWER ---------------- */
+.kt-mobile-drawer {
+  position: fixed;
+  inset: 72px 0 0 0;
+  z-index: 90;
+  background: var(--bg);
+  border-top: 1px solid var(--rule);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-8px);
+  transition: opacity 240ms ease, transform 240ms cubic-bezier(.65, .05, .36, 1);
+  overflow-y: auto;
+}
+.kt-mobile-drawer[data-open="true"] {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+.kt-mobile-nav {
+  display: flex;
+  flex-direction: column;
+  padding: 32px var(--container-pad, 24px);
+  gap: 4px;
+}
+.kt-mobile-nav a {
+  display: block;
+  padding: 20px 0;
+  font-family: var(--font-serif);
+  font-size: 32px;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1px solid var(--rule-soft);
+  transition: color var(--dur-fast) ease, padding-left 200ms ease;
+}
+.kt-mobile-nav a:hover,
+.kt-mobile-nav a:focus { color: var(--accent-deep); padding-left: 6px; }
+
+/* ---------------- MOBILE SWEEP ---------------- */
+@media (max-width: 760px) {
+  .kt-hamburger { display: inline-flex; align-items: center; justify-content: center; }
+  .kt-topbar-actions { gap: 8px; }
+
+  /* Hero side rail stacks under the headline, with a more compact density. */
+  .kt-hero-side { padding-top: 24px; border-top: 1px solid var(--rule-soft); }
+  .kt-hero-side .row .v { font-size: 22px; }
+
+  /* Inline-style callouts (Waitlist / Raise / Demo) collapse to one column.
+     Use attribute selectors so we can target inline `style="grid-template-columns"`. */
+  .kt-callout.dark[style] { grid-template-columns: 1fr !important; padding: 36px !important; gap: 32px !important; }
+  section[id="waitlist"] .kt-callout.dark,
+  section[id="raise"] .kt-section .grid,
+  section[id="demo"] .kt-section .grid,
+  section[id="raise"] > .container > div[style*="grid"],
+  section[id="demo"] > .container > div[style*="grid"] {
+    grid-template-columns: 1fr !important;
+    padding: 36px !important;
+    gap: 32px !important;
+  }
+
+  /* Hypothesis panes — shrink padding so the type doesn't overflow. */
+  section[data-aud="investor"] .grid > div[style*="padding: 48px"] {
+    padding: 32px 24px !important;
+  }
+  section[data-aud="investor"] .grid > div .serif[style*="56px"] {
+    font-size: 40px !important;
+  }
+
+  /* Compare table — stack rows top/bottom on mobile rather than side/side. */
+  .kt-compare-head,
+  .kt-compare-row { grid-template-columns: 1fr; }
+  .kt-compare-head-cell.muted { border-right: 0; border-bottom: 1px solid var(--rule); }
+  .kt-compare-cell.traditional { border-right: 0; border-bottom: 1px solid var(--rule-soft); }
+
+  /* Mode toggle compaction — keep all three pills visible on iPhone widths. */
+  .kt-mode-toggle button { padding: 6px 10px; font-size: 11px; }
+
+  /* Footer ateliers row — stack label above links. */
+  .kt-foot-ateliers { flex-direction: column; gap: 16px; align-items: flex-start; }
+
+  /* Brand strip — drop domain text on mobile, name is enough. */
+  .kt-brand-strip-domain { display: none; }
+  .kt-brand-strip { padding: 20px 18px; gap: 16px; }
+  .kt-brand-strip-links { gap: 18px; }
+
+  /* GMV headline — looser side padding so it doesn't crash into the card border. */
+  .kt-gmv-headline { padding: 48px 20px; }
 }
