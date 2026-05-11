@@ -81,12 +81,12 @@ export default async function Partner() {
                 <span className="dot" aria-hidden />
                 {header.announcement || 'For makers'}
               </span>
-              <h1 className="kt-display xl" style={{ marginTop: '32px', marginBottom: '24px' }}>
+              <h1 className="kt-display xl" style={{ marginTop: '20px', marginBottom: '16px' }}>
                 {header.title || 'Partner with us.'}
               </h1>
               <p
                 className="muted"
-                style={{ fontSize: '21px', maxWidth: '680px', lineHeight: 1.45, margin: 0 }}
+                style={{ fontSize: '18px', maxWidth: '620px', lineHeight: 1.4, margin: 0 }}
               >
                 {header.subtitle ||
                   'Run your atelier on the same rails fashion brands like LeAtelier and Cici Label already trust.'}

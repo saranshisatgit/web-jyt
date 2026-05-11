@@ -33,11 +33,14 @@ const BENEFITS: Benefit[] = [
 ]
 
 type Stat = { num: string; unit?: string; label: string; sub: string }
+// Fallback shown only when the live metrics endpoint returns all zeros —
+// kept currency-neutral on purpose since we don't yet have the visitor's
+// currency at this fallback point (the live branch handles formatting).
 const STATS: Stat[] = [
   { num: '150', label: 'Artisans onboarded', sub: 'EU · IN · AU' },
   { num: '10', unit: '/ mo', label: 'Inbound signups', sub: '~20% curation rate' },
-  { num: '10', unit: '/ mo', label: 'Client orders', sub: '€100 avg order value' },
-  { num: '€1K', label: 'GMV this month', sub: '+ €18 / mo per artisan' },
+  { num: '10', unit: '/ mo', label: 'Client orders', sub: 'Avg order value tracked' },
+  { num: '—', label: 'GMV this month', sub: 'Live metrics warming up' },
 ]
 
 type Testimonial = { quote: string; brand: string; role: string }

@@ -16,18 +16,18 @@ const MapPage = async () => {
   return (
     <main>
       <Navbar />
-      <section className="kt-hero">
+      <section className="kt-hero compact">
         <div className="container">
           <span className="kt-eyebrow">
             <span className="dot pulse" aria-hidden />
             Atlas
           </span>
-          <h1 className="kt-display xl" style={{ marginTop: '32px', marginBottom: '24px' }}>
+          <h1 className="kt-display l" style={{ marginTop: '20px', marginBottom: '16px' }}>
             Meet the <em>makers</em>.
           </h1>
           <p
             className="muted"
-            style={{ fontSize: '21px', maxWidth: '680px', lineHeight: 1.45, margin: 0 }}
+            style={{ fontSize: '18px', maxWidth: '620px', lineHeight: 1.4, margin: 0 }}
           >
             We work with a diverse, vetted network of artisans across three continents. The map shows
             where the hands are.

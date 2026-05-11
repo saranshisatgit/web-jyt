@@ -88,16 +88,16 @@ export default async function ContactPage() {
               </span>
               <h1
                 className="kt-display xl"
-                style={{ marginTop: '32px', marginBottom: '24px' }}
+                style={{ marginTop: '20px', marginBottom: '16px' }}
               >
                 {heroTitle}
               </h1>
               <p
                 className="muted"
                 style={{
-                  fontSize: '21px',
-                  maxWidth: '680px',
-                  lineHeight: 1.45,
+                  fontSize: '18px',
+                  maxWidth: '620px',
+                  lineHeight: 1.4,
                   margin: 0,
                 }}
               >

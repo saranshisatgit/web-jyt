@@ -612,6 +612,15 @@
   color: inherit;
 }
 
+/* Compact hero — drops the viewport-lock for content-light intros like
+   legal pages and the map index, where centering a title in 100svh of
+   whitespace reads as empty rather than intentional. */
+.kt-hero.compact {
+  min-height: 0;
+  padding: 80px 0 32px;
+  display: block;
+}
+
 @media (max-width: 760px) {
   /* On mobile, drop the viewport lock — phone heights are too variable
      (Safari address bar, in-app browsers) and we'd rather the content
