@@ -1,10 +1,7 @@
-import { Button } from '@/components/button'
-import { GradientBackground } from '@/components/gradient'
-import { Link } from '@/components/link'
+import Link from 'next/link'
 import { Mark } from '@/components/logo'
 import { Checkbox, Field, Input, Label } from '@headlessui/react'
 import { CheckIcon } from '@heroicons/react/16/solid'
-import { clsx } from 'clsx'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -14,79 +11,106 @@ export const metadata: Metadata = {
 
 export default function Login() {
   return (
-    <main className="bg-olive-50">
-      <GradientBackground />
-      <div className="isolate flex min-h-dvh items-center justify-center p-6 lg:p-8">
-        <div className="w-full max-w-md rounded-xl bg-white ring-1 shadow-md ring-black/5">
-          <form action="#" method="POST" className="p-7 sm:p-11">
-            <div className="flex items-start">
-              <Link href="/" title="Home">
-                <Mark className="h-9 fill-black" />
-              </Link>
-            </div>
-            <h1 className="mt-8 text-base/6 font-medium text-olive-950">Welcome back!</h1>
-            <p className="mt-1 text-sm/5 text-olive-600">
-              Sign in to your account to continue.
-            </p>
-            <Field className="mt-8 space-y-3">
-              <Label className="text-sm/5 font-medium text-olive-950">Email</Label>
-              <Input
-                required
-                autoFocus
-                type="email"
-                name="email"
-                className={clsx(
-                  'block w-full rounded-lg border border-transparent ring-1 shadow-sm ring-black/10',
-                  'px-[calc(--spacing(2)-1px)] py-[calc(--spacing(1.5)-1px)] text-base/6 sm:text-sm/6',
-                  'data-focus:outline data-focus:outline-2 data-focus:-outline-offset-1 data-focus:outline-black',
-                )}
-              />
-            </Field>
-            <Field className="mt-8 space-y-3">
-              <Label className="text-sm/5 font-medium text-olive-950">Password</Label>
-              <Input
-                required
-                type="password"
-                name="password"
-                className={clsx(
-                  'block w-full rounded-lg border border-transparent ring-1 shadow-sm ring-black/10',
-                  'px-[calc(--spacing(2)-1px)] py-[calc(--spacing(1.5)-1px)] text-base/6 sm:text-sm/6',
-                  'data-focus:outline data-focus:outline-2 data-focus:-outline-offset-1 data-focus:outline-black',
-                )}
-              />
-            </Field>
-            <div className="mt-8 flex items-center justify-between text-sm/5">
-              <Field className="flex items-center gap-3">
-                <Checkbox
-                  name="remember-me"
-                  className={clsx(
-                    'group block size-4 rounded-sm border border-transparent ring-1 shadow-sm ring-black/10 focus:outline-hidden',
-                    'data-checked:bg-black data-checked:ring-black',
-                    'data-focus:outline data-focus:outline-2 data-focus:outline-offset-2 data-focus:outline-black',
-                  )}
-                >
-                  <CheckIcon className="fill-white opacity-0 group-data-checked:opacity-100" />
-                </Checkbox>
-                <Label className="text-olive-950">Remember me</Label>
-              </Field>
-              <Link href="#" className="font-medium text-olive-950 hover:text-olive-600">
-                Forgot password?
-              </Link>
-            </div>
-            <div className="mt-8">
-              <Button type="submit" className="w-full">
-                Sign in
-              </Button>
-            </div>
-          </form>
-          <div className="m-1.5 rounded-lg bg-olive-50 py-4 text-center text-sm/5 ring-1 ring-black/5">
-            Not a member?{' '}
-            <Link href="#" className="font-medium hover:text-olive-600">
-              Create an account
+    <main>
+      <section
+        className="kt-section"
+        style={{ padding: '80px 0', minHeight: '100vh', display: 'flex', alignItems: 'center' }}
+      >
+        <div className="container">
+          <div
+            style={{
+              maxWidth: '440px',
+              margin: '0 auto',
+              background: 'var(--cream)',
+              border: '1px solid var(--rule)',
+              padding: '40px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '24px',
+            }}
+          >
+            <Link href="/" title="Home" style={{ alignSelf: 'flex-start', color: 'var(--ink)' }}>
+              <Mark className="h-9" />
             </Link>
+            <div>
+              <h1 className="kt-display s" style={{ marginBottom: '8px' }}>
+                Welcome back.
+              </h1>
+              <p className="muted" style={{ fontSize: '15px', margin: 0 }}>
+                Sign in to your account to continue.
+              </p>
+            </div>
+            <form
+              action="#"
+              method="POST"
+              style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}
+            >
+              <Field className="kt-field">
+                <Label className="kt-label">Email</Label>
+                <Input
+                  required
+                  autoFocus
+                  type="email"
+                  name="email"
+                  className="kt-input"
+                />
+              </Field>
+              <Field className="kt-field">
+                <Label className="kt-label">Password</Label>
+                <Input
+                  required
+                  type="password"
+                  name="password"
+                  className="kt-input"
+                />
+              </Field>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  fontSize: '14px',
+                }}
+              >
+                <Field style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <Checkbox
+                    name="remember-me"
+                    className="group block size-4 rounded-sm border border-transparent ring-1 shadow-sm ring-black/10 focus:outline-hidden data-checked:bg-black data-checked:ring-black data-focus:outline data-focus:outline-2 data-focus:outline-offset-2 data-focus:outline-black"
+                  >
+                    <CheckIcon className="fill-white opacity-0 group-data-checked:opacity-100" />
+                  </Checkbox>
+                  <Label style={{ color: 'var(--ink)' }}>Remember me</Label>
+                </Field>
+                <Link
+                  href="#"
+                  style={{ color: 'var(--accent-deep)', textDecoration: 'underline' }}
+                >
+                  Forgot password?
+                </Link>
+              </div>
+              <button
+                type="submit"
+                className="kt-btn"
+                style={{ width: '100%', justifyContent: 'center' }}
+              >
+                Sign in
+              </button>
+            </form>
+            <p
+              className="kt-meta"
+              style={{ textAlign: 'center', color: 'var(--ink-soft)' }}
+            >
+              Not a member?{' '}
+              <Link
+                href="#"
+                style={{ color: 'var(--accent-deep)', textDecoration: 'underline' }}
+              >
+                Create an account
+              </Link>
+            </p>
           </div>
         </div>
-      </div>
+      </section>
     </main>
   )
 }

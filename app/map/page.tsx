@@ -1,44 +1,57 @@
-import React from 'react';
+import React from 'react'
 import { type Metadata } from 'next'
-import { HeroSection } from "@/components/hero-section";
-import { Container } from "@/components/container";
-import { Navbar } from '@/components/navbar';
-import MapView from './map-view';
-import { getPersons } from './actions';
+import { Navbar } from '@/components/navbar'
+import MapView from './map-view'
+import { getPersons } from './actions'
 
 export const metadata: Metadata = {
-  title: 'Jaal Yantra Textiles - Artisan Map',
+  title: 'Artisan map',
   description:
-    'Explore our network of talented artisans and technicians across the map.',
+    'Explore our network of artisans and technicians across the world.',
 }
 
 const MapPage = async () => {
-  const persons = await getPersons();
-  const headerBlock = {
-    content: {
-      title: 'Meet Our Artisans',
-      subtitle: 'We are proud to work with a diverse and talented network of artisans. Explore the map to see where they are located and learn more about them.',
-      announcement: '',
-      buttons: [],
-    },
-  }
+  const persons = await getPersons()
 
   return (
-    <div>
+    <main>
       <Navbar />
-      <HeroSection headerBlock={headerBlock} />
-      <main>
-        <Container>
-          <section className="mt-8">
-            <div className="h-[600px] w-full overflow-hidden rounded-lg shadow-lg">
-              <MapView initialPersons={persons} />
-            </div>
-          </section>
-        </Container>
-      </main>
-    </div>
-  );
-};
+      <section className="kt-hero">
+        <div className="container">
+          <span className="kt-eyebrow">
+            <span className="dot pulse" aria-hidden />
+            Atlas
+          </span>
+          <h1 className="kt-display xl" style={{ marginTop: '32px', marginBottom: '24px' }}>
+            Meet the <em>makers</em>.
+          </h1>
+          <p
+            className="muted"
+            style={{ fontSize: '21px', maxWidth: '680px', lineHeight: 1.45, margin: 0 }}
+          >
+            We work with a diverse, vetted network of artisans across three continents. The map shows
+            where the hands are.
+          </p>
+        </div>
+      </section>
+      <section className="kt-section">
+        <div className="container">
+          <div
+            style={{
+              height: '600px',
+              width: '100%',
+              overflow: 'hidden',
+              borderRadius: 'var(--r-md)',
+              border: '1px solid var(--rule)',
+            }}
+          >
+            <MapView initialPersons={persons} />
+          </div>
+        </div>
+      </section>
+    </main>
+  )
+}
 
-export default MapPage;
+export default MapPage
 

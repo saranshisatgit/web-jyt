@@ -1,156 +1,206 @@
-import { type Metadata } from 'next';
-import { Suspense } from 'react';
-import { Container } from '@/components/container';
-import { GradientBackground } from '@/components/gradient';
-import { HeroSection, type HeaderBlock, type ButtonDef } from '@/components/hero-section';
-import { fetchPagefromAPI } from '../actions';
-import { type Block, getBlockByName } from '@/medu/queries';
-import { SectionLoading } from '@/components/section-loading';
-import { Link } from '@/components/link';
-import { Navbar } from '@/components/navbar';
-import ContactForm from '@/components/ContactForm';
+import type { Metadata } from 'next'
+import { Suspense } from 'react'
+import { Navbar } from '@/components/navbar'
+import { fetchPagefromAPI } from '../actions'
+import { type Block, getBlockByName } from '@/medu/queries'
+import { SectionLoading } from '@/components/section-loading'
+import ContactForm from '@/components/ContactForm'
 
-// Types for the new ContactInfoBlock
 interface LinkItem {
-  text: string;
-  url: string;
-  target?: string;
+  text: string
+  url: string
+  target?: string
 }
 
 interface ContactInfoContent {
-  title?: string;
-  introParagraph?: string;
-  links?: LinkItem[];
-  wholesaleInquiryText?: string;
-  mainContentParagraph?: string;
-  address?: string;
-  phone?: string;
-  email?: string;
+  title?: string
+  introParagraph?: string
+  links?: LinkItem[]
+  wholesaleInquiryText?: string
+  mainContentParagraph?: string
+  address?: string
+  phone?: string
+  email?: string
 }
 
-interface ContactInfoBlock extends Block {
-  name: "ContactInfo"; // Ensure this matches the CMS block name
-  content: Record<string, unknown>; // Use unknown for better type safety, cast when using
-}
-
-export const dynamic = 'force-dynamic';
+export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
-  title: 'Contact Us',
-  description: 'Get in touch with the Jaal Yantra Textiles sales team. We are here to help you with your textile and garment production needs.',
-};
+  title: 'Contact',
+  description:
+    'Get in touch with the sales team — bespoke textiles, production runs, and platform demos.',
+}
 
+const DEFAULT_INFO: ContactInfoContent = {
+  title: 'Contact our sales team',
+  introParagraph:
+    "We're here to help you find the right textile partner. Whether it's a custom quote, a bespoke run, or a platform demo — the team responds within one business day.",
+  links: [{ text: 'cicilabel.com', url: 'https://cicilabel.com', target: '_blank' }],
+  wholesaleInquiryText: 'For other wholesale inquiries please use the form.',
+  mainContentParagraph:
+    'Our team has extensive experience in the textile industry — trends, materials, production techniques, and routing tasks across global artisan partners.',
+  address: '123 Textile Avenue, Weaverville, TX 75001, USA',
+  phone: '+1 (555) 123-4567',
+  email: 'sales@jaalyantra.com',
+}
 
 export default async function ContactPage() {
-  const pageData = await fetchPagefromAPI('contact');
-
+  const pageData = await fetchPagefromAPI('contact')
   if (!pageData) {
     return (
-      <div className="flex h-screen flex-col items-center justify-center">
-        <p className="mb-4 text-xl">Could not load contact page information.</p>
-        <SectionLoading />
-      </div>
-    );
+      <main>
+        <Navbar />
+        <section className="kt-section">
+          <div className="container">
+            <p className="muted">Loading…</p>
+          </div>
+        </section>
+      </main>
+    )
   }
 
-  const cmsHeaderBlock = getBlockByName(pageData.blocks, 'Header') as Block | undefined;
-  const cmsContactInfoBlock = getBlockByName(pageData.blocks, 'ContactInfo') as ContactInfoBlock | undefined;
-  const specificContactContent = cmsContactInfoBlock?.content as ContactInfoContent | undefined;
+  const cmsHeader = getBlockByName(pageData.blocks, 'Header') as Block | undefined
+  const cmsContactInfo = getBlockByName(pageData.blocks, 'ContactInfo') as Block | undefined
+  const cmsContent =
+    (cmsContactInfo?.content as ContactInfoContent | undefined) || {}
 
-  // Default content for ContactInfo section if CMS block is not found or fields are missing
-  const contactInfoData: ContactInfoContent = {
-    title: specificContactContent?.title || 'Contact Our Sales Team',
-    introParagraph: specificContactContent?.introParagraph || 'We\'re here to help you find the perfect textile solutions for your business. Whether you have questions about our products, need a custom quote, or want to discuss a potential partnership, our expert sales team is ready to assist you.',
-    links: specificContactContent?.links || [
-      { text: 'cicilabel.com', url: 'https://cicilabel.com', target: '_blank' },
-    ],
-    wholesaleInquiryText: specificContactContent?.wholesaleInquiryText || 'For other wholesale inquiries please contact us using the form below.',
-    mainContentParagraph: specificContactContent?.mainContentParagraph || 'Our team has extensive experience in the textile industry and can provide insights into the latest trends, materials, and production techniques. We are committed to understanding your unique needs and delivering exceptional service.',
-    address: specificContactContent?.address || '123 Textile Avenue, Weaverville, TX 75001, USA',
-    phone: specificContactContent?.phone || '+1 (555) 123-4567',
-    email: specificContactContent?.email || 'sales@jaalyantra.com',
-  };
+  const info: ContactInfoContent = { ...DEFAULT_INFO, ...cmsContent }
+  const headerContent = cmsHeader?.content as
+    | { title?: string; subtitle?: string }
+    | undefined
+  const heroTitle = headerContent?.title || 'Get in touch.'
+  const heroSubtitle =
+    headerContent?.subtitle || 'We typically respond within one business day.'
 
-
-  const heroHeaderBlock: HeaderBlock = {
-    content: {
-      title: (cmsHeaderBlock?.content?.title as string) || 'Contact Our Sales Team',
-      subtitle: (cmsHeaderBlock?.content?.subtitle as string) || 'We are here to help you with your textile needs.',
-      announcement: (cmsHeaderBlock?.content?.announcement as string) || '',
-      buttons: (cmsHeaderBlock?.content?.buttons as ButtonDef[]) || [],
-    },
-  };
+  const phoneHref = info.phone ? `tel:${info.phone.replace(/[\s()]/g, '')}` : '#'
 
   return (
-    <>
-      <main>
-        <GradientBackground />
-        <Navbar />
-        {/* HeroSection includes Navbar and uses the fetched header data */}
-        <HeroSection headerBlock={heroHeaderBlock} />
+    <main>
+      <Navbar />
 
-        <Container className="py-16 sm:py-24">
-          <div className="grid grid-cols-1 gap-x-12 gap-y-16 md:grid-cols-2">
-
-            {/* Left Column: Dynamic Contact Information */}
-            <div className="prose prose-lg max-w-none lg:prose-xl बनावट">
-              <h2 className="text-3xl font-bold tracking-tight बनावट text-olive-900 sm:text-4xl">
-                {contactInfoData.title}
-              </h2>
-              <p className="mt-4 text-lg leading-8 बनावट text-olive-600">
-                {contactInfoData.introParagraph}
+      <section className="kt-hero">
+        <div className="container">
+          <div className="kt-hero-grid">
+            <div>
+              <span className="kt-eyebrow">
+                <span className="dot" aria-hidden />
+                Contact
+              </span>
+              <h1
+                className="kt-display xl"
+                style={{ marginTop: '32px', marginBottom: '24px' }}
+              >
+                {heroTitle}
+              </h1>
+              <p
+                className="muted"
+                style={{
+                  fontSize: '21px',
+                  maxWidth: '680px',
+                  lineHeight: 1.45,
+                  margin: 0,
+                }}
+              >
+                {heroSubtitle}
               </p>
-              {contactInfoData.links && contactInfoData.links.map((link, index) => (
-                <p key={index} className="mt-4 text-base text-olive-600 बनावट">
-                  {/* Basic heuristic to add prefix for the cicilabel link, can be refined or made data-driven */}
-                  {link.url.includes('cicilabel.com') ? 'Buy from our bespoke label: ' : ''}
-                  <Link href={link.url} target={link.target || '_self'} rel={link.target === '_blank' ? 'noopener noreferrer' : undefined} className="text-pink-600 hover:text-pink-500">
-                    {link.text}
-                  </Link>
-                </p>
-              ))}
-              {contactInfoData.wholesaleInquiryText && (
-                <p className="mt-4 text-base text-olive-600 बनावट">
-                  {contactInfoData.wholesaleInquiryText}
+            </div>
+            <aside className="kt-hero-side">
+              <div className="row"><span className="k">Response</span><span className="v">≤ 1 day</span></div>
+              <div className="row"><span className="k">Languages</span><span className="v">EN · IT · HI</span></div>
+              <div className="row"><span className="k">Hours</span><span className="v">Mon–Fri 9–18 CET</span></div>
+              <div className="row">
+                <span className="k">Email</span>
+                <span className="v" style={{ fontSize: '20px' }}>{info.email}</span>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      <section className="kt-section">
+        <div className="container">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+            <div>
+              <div className="kt-eyebrow">Talk to us</div>
+              <h2 className="kt-display m" style={{ marginTop: '12px', marginBottom: '20px' }}>
+                {info.title}
+              </h2>
+              <p className="muted" style={{ fontSize: '17px', lineHeight: 1.6, marginBottom: '24px' }}>
+                {info.introParagraph}
+              </p>
+
+              {info.links && info.links.length > 0 && (
+                <div style={{ marginBottom: '24px' }}>
+                  {info.links.map((link, i) => (
+                    <p key={i} className="muted" style={{ fontSize: '15px', margin: '8px 0' }}>
+                      {link.url.includes('cicilabel.com')
+                        ? 'Buy from our bespoke label: '
+                        : ''}
+                      <a
+                        href={link.url}
+                        target={link.target || '_self'}
+                        rel={link.target === '_blank' ? 'noopener noreferrer' : undefined}
+                        style={{ color: 'var(--accent-deep)', textDecoration: 'underline' }}
+                      >
+                        {link.text}
+                      </a>
+                    </p>
+                  ))}
+                </div>
+              )}
+
+              {info.wholesaleInquiryText && (
+                <p className="muted" style={{ fontSize: '15px', margin: '0 0 16px' }}>
+                  {info.wholesaleInquiryText}
                 </p>
               )}
-              {contactInfoData.mainContentParagraph && (
-                <p className="mt-6 text-base text-olive-600 बनावट">
-                  {contactInfoData.mainContentParagraph}
+
+              {info.mainContentParagraph && (
+                <p className="muted" style={{ fontSize: '15px', lineHeight: 1.6, marginBottom: '32px' }}>
+                  {info.mainContentParagraph}
                 </p>
               )}
-              <address className="mt-6 not-italic">
-                <strong className="block text-olive-900 बनावट">Jaal Yantra Textiles HQ</strong>
-                {contactInfoData.address?.split(',').map((line, index) => (
-                  <span key={index}>{line.trim()}<br /></span>
+
+              <address style={{ fontStyle: 'normal', marginBottom: '32px' }}>
+                <div className="kt-meta" style={{ marginBottom: '8px' }}>HQ</div>
+                {info.address?.split(',').map((line, i) => (
+                  <span
+                    key={i}
+                    style={{ display: 'block', fontSize: '15px', color: 'var(--ink-soft)' }}
+                  >
+                    {line.trim()}
+                  </span>
                 ))}
               </address>
-              <div className="mt-8">
-                <h3 className="text-xl font-semibold बनावट text-olive-900">Why Choose Jaal Yantra?</h3>
-                <ul className="mt-4 list-disc space-y-2 pl-5 बनावट text-olive-600">
-                  <li>Innovative and sustainable textile solutions.</li>
-                  <li>Commitment to quality and craftsmanship.</li>
-                  <li>Global reach with personalized local support.</li>
-                  <li>Competitive pricing and flexible MOQs.</li>
-                </ul>
-              </div>
-              <div className="mt-8 border-t border-olive-200 pt-8">
-                <h3 className="text-xl font-semibold बनावट text-olive-900">Get In Touch</h3>
-                <p className="mt-1 text-base text-olive-600 बनावट">
-                  For inquiries, please use the form or reach out to us via phone at <a href={`tel:${contactInfoData.phone?.replace(/\s|\(|\)/g, '')}`} className="text-pink-600 hover:text-pink-500">{contactInfoData.phone}</a> or email at <a href={`mailto:${contactInfoData.email}`} className="text-pink-600 hover:text-pink-500">{contactInfoData.email}</a>.
+
+              <div style={{ borderTop: '1px solid var(--rule)', paddingTop: '24px' }}>
+                <div className="kt-meta" style={{ marginBottom: '12px' }}>Reach out directly</div>
+                <p style={{ fontSize: '16px', lineHeight: 1.55, margin: 0 }}>
+                  <a
+                    href={phoneHref}
+                    style={{ color: 'var(--accent-deep)', textDecoration: 'none' }}
+                  >
+                    {info.phone}
+                  </a>
+                  <span style={{ color: 'var(--ink-mute)', margin: '0 8px' }}>·</span>
+                  <a
+                    href={`mailto:${info.email}`}
+                    style={{ color: 'var(--accent-deep)', textDecoration: 'none' }}
+                  >
+                    {info.email}
+                  </a>
                 </p>
               </div>
             </div>
 
-            {/* Right Column: Contact Form */}
             <div>
               <Suspense fallback={<SectionLoading />}>
                 <ContactForm />
               </Suspense>
             </div>
           </div>
-        </Container>
-      </main>
-    </>
-  );
+        </div>
+      </section>
+    </main>
+  )
 }

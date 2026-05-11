@@ -1,455 +1,473 @@
 import React, { Suspense } from 'react'
 import { AnimatedNumber } from '@/components/animated-number'
-import { Button } from '@/components/button'
-import { Container } from '@/components/container'
-import { GradientBackground } from '@/components/gradient'
 import { Navbar } from '@/components/navbar'
-import { Heading, Lead, Subheading } from '@/components/text'
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import { fetchPagefromAPI } from '../actions'
 import { getBlockByName, Block } from '@/medu/queries'
 import { SectionLoading } from '@/components/section-loading'
 
-// Interfaces for block content types
 interface StatItem {
-  label: string;
-  value: string;
-  animatedValue: {
-    start: number;
-    end: number;
-    decimals?: number;
-  };
+  label: string
+  value: string
+  animatedValue: { start: number; end: number; decimals?: number }
 }
 
 interface HeaderBlockContent {
-  title: string;
-  subtitle: string;
-  mission: {
-    title: string;
-    paragraphs: string[];
-  };
-  stats: StatItem[];
-  images: string[];
+  title: string
+  subtitle: string
+  mission: { title: string; paragraphs: string[] }
+  stats: StatItem[]
+  images: string[]
 }
 
 interface TeamMember {
-  name: string;
-  role: string;
-  image: string;
-}
-
-interface CtaButton {
-  text: string;
-  link: string;
+  name: string
+  role: string
+  image: string
 }
 
 interface TeamBlockContent {
-  heading: string;
-  subheading: string;
-  description: string;
-  story: string[];
-  teamImage: string; // Ensure teamImage is preserved
-  members: TeamMember[];
-  ctaButton?: CtaButton; // Optional CTA button
+  heading: string
+  subheading: string
+  description: string
+  story: string[]
+  teamImage: string
+  members: TeamMember[]
+  ctaButton?: { text: string; link: string }
 }
 
 interface InvestorGroup {
-  name: string;
-  logo: string;
+  name: string
+  logo: string
 }
 
 interface InvestorsBlockContent {
-  heading: string;
-  subheading: string;
-  description: string;
-  investorGroups: InvestorGroup[];
-  testimonial: {
-    quote: string;
-    author: string;
-    role: string;
-    image: string;
-  };
+  heading: string
+  subheading: string
+  description: string
+  investorGroups: InvestorGroup[]
+  testimonial: { quote: string; author: string; role: string; image: string }
 }
 
 interface JobPosition {
-  title: string;
-  department: string;
-  location: string;
-  type: string;
-}
-
-interface Perk {
-  title: string;
-  description: string;
+  title: string
+  department: string
+  location: string
+  type: string
 }
 
 interface CareersBlockContent {
-  heading: string;
-  subheading: string;
-  description: string;
-  perks: Perk[];
-  openPositions: JobPosition[];
-  ctaButton: {
-    text: string;
-    link: string;
-  };
+  heading: string
+  subheading: string
+  description: string
+  perks: { title: string; description: string }[]
+  openPositions: JobPosition[]
+  ctaButton: { text: string; link: string }
 }
 
 export const metadata: Metadata = {
-  title: 'Jaal Yantra Textiles - We are on a mission',
-  description:
-    'We’re on a mission to transform how textiles is desgined and sold.',
+  title: 'About — We are on a mission',
+  description: "We're on a mission to transform how textiles are designed, made, and sold.",
 }
 
-function Header({ data }: { data?: Block }) {
-  const content = data?.content as unknown as HeaderBlockContent;
-  // If no data is provided, return null or a fallback UI
-  if (!content) {
-    return (
-      <Container className="mt-16">
-        <Heading as="h1">Loading header content...</Heading>
-      </Container>
-    );
-  }
+function AboutHero({ data }: { data?: Block }) {
+  const content = data?.content as unknown as HeaderBlockContent | undefined
+  if (!content) return null
 
   return (
-    <Container className="mt-16">
-      <Heading as="h1">{content.title}</Heading>
-      <Lead className="mt-6 max-w-3xl">
-        {content.subtitle}
-      </Lead>
-      <section className="mt-16 grid grid-cols-1 lg:grid-cols-2 lg:gap-12">
-        <div className="max-w-lg">
-          <h2 className="text-2xl font-medium tracking-tight text-olive-950">{content.mission.title}</h2>
-          {content.mission.paragraphs.map((paragraph, index) => (
-            <p key={index} className={`mt-${index === 0 ? '6' : '8'} text-sm/6 text-olive-600`}>
-              {paragraph}
+    <section className="kt-hero">
+      <div className="container">
+        <div className="kt-hero-grid">
+          <div>
+            <span className="kt-eyebrow">
+              <span className="dot" aria-hidden />
+              About us
+            </span>
+            <h1 className="kt-display xl" style={{ marginTop: '32px', marginBottom: '24px' }}>
+              {content.title}
+            </h1>
+            <p
+              className="muted"
+              style={{ fontSize: '21px', maxWidth: '680px', lineHeight: 1.45, margin: 0 }}
+            >
+              {content.subtitle}
             </p>
-          ))}
-        </div>
-        <div className="pt-20 lg:row-span-2">
-          <div className="-mx-8 grid grid-cols-2 gap-4 sm:-mx-16 sm:grid-cols-4 lg:mx-0 lg:grid-cols-2 lg:gap-4 xl:gap-8">
-            {content.images.map((image, index) => (
-              <div
-                key={index}
-                className={`${index % 2 === 1 ? '-mt-8 lg:-mt-32' : ''} relative aspect-square overflow-hidden rounded-xl shadow-xl outline-1 -outline-offset-1 outline-black/10`}
-              >
-                <Image
-                  alt="An image from the Jaal Yantra Textiles company gallery"
-                  src={image}
-                  className="object-cover"
-                  fill
-                  sizes="(min-width: 640px) 25vw, 50vw"
-                />
-              </div>
-            ))}
           </div>
+          <aside className="kt-hero-side">
+            {(content.stats || []).slice(0, 4).map((stat) => {
+              const unit = stat.value.replace(/[0-9.,]+/, '').trim()
+              return (
+                <div key={stat.label} className="row">
+                  <span className="k">{stat.label}</span>
+                  <span className="v">
+                    <AnimatedNumber
+                      start={stat.animatedValue.start}
+                      end={stat.animatedValue.end}
+                      decimals={stat.animatedValue.decimals}
+                    />
+                    {unit && <span>{unit}</span>}
+                  </span>
+                </div>
+              )
+            })}
+          </aside>
         </div>
-        <div className="max-lg:mt-12 lg:col-span-1">
-          <dl className="grid grid-cols-2 gap-8 sm:grid-cols-4 lg:grid-cols-2">
-            {content.stats.map((stat, index) => (
-              <div key={index} className={`flex flex-col gap-y-2 ${index < content.stats.length - 1 && index < 3 ? 'max-sm:border-b max-sm:border-dotted max-sm:border-olive-200 max-sm:pb-4' : ''}`}>
-                <dt className="text-sm/6 text-olive-600">{stat.label}</dt>
-                <dd className="order-first text-6xl font-medium tracking-tight text-olive-950">
-                  <AnimatedNumber
-                    start={stat.animatedValue.start}
-                    end={stat.animatedValue.end}
-                    decimals={stat.animatedValue.decimals}
-                  />
-                  {stat.value.replace(/[0-9.]+/, '')}
-                </dd>
-              </div>
-            ))}
-          </dl>
-        </div>
-      </section>
-    </Container>
+      </div>
+    </section>
   )
 }
 
-function Person({
-  name,
-  description,
-  img,
-}: {
-  name: string
-  description: string
-  img: string
-}) {
+function Mission({ data }: { data?: Block }) {
+  const content = data?.content as unknown as HeaderBlockContent | undefined
+  if (!content?.mission) return null
+
   return (
-    <li className="flex items-center gap-4">
-      <Image alt="" src={img} className="size-12 rounded-full" width={100} height={100} />
-      <div className="text-sm/6">
-        <h3 className="font-medium text-olive-950">{name}</h3>
-        <p className="text-olive-500">{description}</p>
+    <section
+      className="kt-section"
+      style={{ background: 'var(--ink-dark-bg)', color: 'var(--cream)', padding: '100px 0' }}
+    >
+      <div className="container">
+        <div className="kt-section-head">
+          <div className="kt-eyebrow on-dark">Manifesto</div>
+          <h2 className="kt-display m" style={{ color: 'var(--cream)' }}>
+            {content.mission.title}
+          </h2>
+        </div>
+        <ul className="kt-list" style={{ marginBottom: '48px' }}>
+          {content.mission.paragraphs.map((p, i) => (
+            <li key={i} style={{ borderBottomColor: 'oklch(0.32 0.02 55)' }}>
+              <span className="n" style={{ color: 'oklch(0.8 0.1 50)' }}>
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <div>
+                <span style={{ color: 'oklch(0.85 0.018 75)', fontSize: '17px', lineHeight: 1.5 }}>
+                  {p}
+                </span>
+              </div>
+            </li>
+          ))}
+        </ul>
+        {content.images?.length > 0 && (
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {content.images.map((img, i) => (
+              <div
+                key={i}
+                aria-hidden
+                style={{
+                  backgroundImage: `url('${img}')`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  aspectRatio: '1 / 1',
+                  borderRadius: 'var(--r-md)',
+                  border: '1px solid oklch(0.32 0.02 55)',
+                }}
+              />
+            ))}
+          </div>
+        )}
       </div>
-    </li>
+    </section>
   )
 }
 
 function Team({ data }: { data?: Block }) {
-  const content = data?.content as unknown as TeamBlockContent;
-
-  // If no data is provided, return null or a fallback UI
-  if (!content) {
-    return (
-      <Container className="mt-32">
-        <Subheading>Loading team information...</Subheading>
-      </Container>
-    );
-  }
+  const content = data?.content as unknown as TeamBlockContent | undefined
+  if (!content) return null
 
   return (
-    <Container className="mt-32">
-      <Subheading>{content.heading}</Subheading>
-      <Heading as="h3" className="mt-2">
-        {content.subheading}
-      </Heading>
-      <Lead className="mt-6 max-w-3xl">
-        {content.description}
-      </Lead>
-      <div className="mt-12 grid grid-cols-1 gap-12 lg:grid-cols-2">
-        <div className="max-w-lg">
-          {content.story.map((paragraph, index) => (
-            <p key={index} className={`${index > 0 ? 'mt-8 ' : ''}text-sm/6 text-olive-600`}>
-              {paragraph}
-            </p>
-          ))}
-          {content.ctaButton && content.ctaButton.link && content.ctaButton.text && (
-            <div className="mt-8">
-              <Button className="w-full sm:w-auto" href={content.ctaButton.link}>
-                {content.ctaButton.text}
-              </Button>
-            </div>
-          )}
+    <section className="kt-section">
+      <div className="container">
+        <div className="kt-section-head">
+          <div className="kt-eyebrow">{content.subheading}</div>
+          <h2 className="kt-display m">{content.heading}</h2>
         </div>
-        <div className="max-lg:order-first max-lg:max-w-lg">
-          <div className="aspect-3/2 overflow-hidden rounded-xl shadow-xl outline-1 -outline-offset-1 outline-black/10">
-            <Image
-              alt="Team photo"
-              src={content.teamImage}
-              className="block size-full object-cover"
-              width={450}
-              height={100}
-            />
+        {content.description && (
+          <p
+            className="muted"
+            style={{ maxWidth: '720px', fontSize: '19px', lineHeight: 1.55, marginBottom: '48px' }}
+          >
+            {content.description}
+          </p>
+        )}
+        {content.story?.length > 0 && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8" style={{ marginBottom: '64px' }}>
+            {content.story.map((para, i) => (
+              <p key={i} className="muted" style={{ fontSize: '17px', lineHeight: 1.6, margin: 0 }}>
+                {para}
+              </p>
+            ))}
           </div>
+        )}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {content.members?.map((m) => (
+            <article key={m.name} className="kt-card">
+              <div
+                className="kt-card-img photo"
+                style={{ backgroundImage: m.image ? `url('${m.image}')` : undefined }}
+                data-label={m.role}
+              />
+              <h3 className="kt-card-title">{m.name}</h3>
+              <p className="muted" style={{ fontSize: '14px', margin: 0 }}>
+                {m.role}
+              </p>
+            </article>
+          ))}
         </div>
+        {content.ctaButton && (
+          <div style={{ marginTop: '48px' }}>
+            <a href={content.ctaButton.link} className="kt-btn ghost">
+              {content.ctaButton.text}
+            </a>
+          </div>
+        )}
       </div>
-      <Subheading as="h3" className="mt-24">
-        The team
-      </Subheading>
-      <hr className="mt-6 border-t border-olive-200" />
-      <ul
-        role="list"
-        className="mx-auto mt-16 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3"
-      >
-        {content.members.map((member, index) => (
-          <Person
-            key={index}
-            name={member.name}
-            description={member.role}
-            img={member.image}
-          />
-        ))}
-      </ul>
-    </Container>
+    </section>
   )
 }
 
 function Investors({ data }: { data?: Block }) {
-  const content = data?.content as unknown as InvestorsBlockContent;
-
-  // If no data is provided, return null or a fallback UI
-  if (!content) {
-    return (
-      <Container className="mt-32">
-        <Subheading>Loading investor information...</Subheading>
-      </Container>
-    );
-  }
+  const content = data?.content as unknown as InvestorsBlockContent | undefined
+  if (!content) return null
 
   return (
-    <Container className="mt-32">
-      <Subheading>{content.heading}</Subheading>
-      <Heading as="h3" className="mt-2">
-        {content.subheading}
-      </Heading>
-      <Lead className="mt-6 max-w-3xl">
-        {content.description}
-      </Lead>
-      <div className="mt-16 grid grid-cols-2 gap-x-12 gap-y-16 sm:grid-cols-3 lg:grid-cols-6">
-        {content.investorGroups.map((investor, index) => (
-          <div key={index} className="flex flex-col gap-y-6">
-            {investor.logo && (
-              <Image
-                alt={investor.name}
-                src={investor.logo}
-                className="h-14 w-auto"
-                width={100}
-                height={100}
+    <section className="kt-section">
+      <div className="container">
+        <div className="kt-section-head">
+          <div className="kt-eyebrow">{content.subheading}</div>
+          <h2 className="kt-display m">{content.heading}</h2>
+        </div>
+        {content.description && (
+          <p
+            className="muted"
+            style={{ maxWidth: '720px', fontSize: '19px', marginBottom: '48px' }}
+          >
+            {content.description}
+          </p>
+        )}
+        {content.investorGroups?.length > 0 && (
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6" style={{ marginBottom: '48px' }}>
+            {content.investorGroups.map((inv) => (
+              <div
+                key={inv.name}
+                className="kt-card"
+                style={{
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  minHeight: '120px',
+                  padding: '24px',
+                }}
+              >
+                {inv.logo ? (
+                  <Image
+                    src={inv.logo}
+                    alt={inv.name}
+                    width={140}
+                    height={48}
+                    style={{ objectFit: 'contain', maxHeight: '48px', width: 'auto' }}
+                  />
+                ) : (
+                  <span className="kt-meta">{inv.name}</span>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+        {content.testimonial?.quote && (
+          <div
+            className="kt-callout dark"
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'auto 1fr',
+              gap: '32px',
+              alignItems: 'center',
+              padding: '40px 48px',
+            }}
+          >
+            {content.testimonial.image && (
+              <div
+                aria-hidden
+                style={{
+                  width: '72px',
+                  height: '72px',
+                  borderRadius: '50%',
+                  backgroundImage: `url('${content.testimonial.image}')`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  flexShrink: 0,
+                }}
               />
             )}
-            <div className="text-sm/6 text-olive-600">{investor.name}</div>
-          </div>
-        ))}
-      </div>
-
-      <div className="mt-16 rounded-4xl bg-olive-950 py-20 sm:mt-32 sm:py-32 lg:mt-56">
-        <Container>
-          <div className="mx-auto max-w-2xl lg:max-w-none">
-            <div className="flex flex-col items-center text-center">
-              <p className="font-display text-base font-semibold text-white">
-                What our investors are saying
+            <div>
+              <p
+                className="serif italic"
+                style={{ fontSize: '24px', lineHeight: 1.4, color: 'var(--cream)', margin: 0 }}
+              >
+                &ldquo;{content.testimonial.quote}&rdquo;
               </p>
-              <figure className="mt-6">
-                <blockquote className="text-xl/8 text-white sm:text-2xl/9">
-                  <p>
-                    &ldquo;{content.testimonial.quote}&rdquo;
-                  </p>
-                </blockquote>
-                <figcaption className="mt-6 flex flex-col gap-x-4 gap-y-1">
-                  <div className="font-semibold text-white">{content.testimonial.author}</div>
-                  <div className="text-sm text-olive-400">
-                    {content.testimonial.role}
-                  </div>
-                </figcaption>
-              </figure>
+              <div
+                className="kt-meta"
+                style={{
+                  marginTop: '16px',
+                  color: 'oklch(0.8 0.018 75)',
+                  letterSpacing: '0.1em',
+                }}
+              >
+                {content.testimonial.author} · {content.testimonial.role}
+              </div>
             </div>
           </div>
-        </Container>
+        )}
       </div>
-    </Container>
+    </section>
   )
 }
 
 function Careers({ data }: { data?: Block }) {
-  const content = data?.content as unknown as CareersBlockContent;
+  const content = data?.content as unknown as CareersBlockContent | undefined
+  if (!content) return null
 
-  // If no data is provided, return null or a fallback UI
-  if (!content) {
-    return (
-      <Container className="my-32">
-        <Subheading>Loading career information...or probably no career section created yet</Subheading>
-      </Container>
-    );
-  }
+  const grouped = (content.openPositions || []).reduce(
+    (acc: Record<string, JobPosition[]>, job) => {
+      const dept = job.department || 'Other'
+      if (!acc[dept]) acc[dept] = []
+      acc[dept].push(job)
+      return acc
+    },
+    {}
+  )
 
   return (
-    <Container className="my-32">
-      <Subheading>{content.heading}</Subheading>
-      <Heading as="h3" className="mt-2">
-        {content.subheading}
-      </Heading>
-      <Lead className="mt-6 max-w-3xl">
-        {content.description}
-      </Lead>
-      <div className="mt-24 grid grid-cols-1 gap-16 lg:grid-cols-[1fr_24rem]">
-        <div className="lg:max-w-2xl">
-          <Subheading as="h3">Open positions</Subheading>
-          <div>
-            <table className="w-full text-left">
-              <colgroup>
-                <col className="w-2/3" />
-                <col className="w-1/3" />
-                <col className="w-0" />
-              </colgroup>
-              <thead className="sr-only">
-                <tr>
-                  <th scope="col">Title</th>
-                  <th scope="col">Location</th>
-                  <th scope="col">Read more</th>
-                </tr>
-              </thead>
-              <tbody>
-                {/* Group positions by department */}
-                {(() => {
-                  // Get unique departments
-                  const departments = [...new Set(content.openPositions.map(position => position.department))];
-
-                  return departments.map((department, deptIndex) => {
-                    const departmentPositions = content.openPositions.filter(
-                      position => position.department === department
-                    );
-
-                    return (
-                      <React.Fragment key={deptIndex}>
-                        <tr>
-                          <th scope="colgroup" colSpan={3} className="px-0 pt-10 pb-0">
-                            <div className="-mx-4 rounded-lg bg-olive-50 px-4 py-3 text-sm/6 font-semibold">
-                              {department}
-                            </div>
-                          </th>
-                        </tr>
-                        {departmentPositions.map((position, posIndex) => {
-                          const isLast = posIndex === departmentPositions.length - 1;
-                          return (
-                            <tr
-                              key={posIndex}
-                              className={`text-sm/6 font-normal ${!isLast ? 'border-b border-dotted border-olive-200' : ''}`}
-                            >
-                              <td className="px-0 py-4">{position.title}</td>
-                              <td className="px-0 py-4 text-olive-600">{position.location}</td>
-                              <td className="px-0 py-4 text-right">
-                                <Button variant="outline" href="#">
-                                  View listing
-                                </Button>
-                              </td>
-                            </tr>
-                          );
-                        })}
-                      </React.Fragment>
-                    );
-                  });
-                })()}
-              </tbody>
-            </table>
-          </div>
-          <div className="mt-12">
-            <Button className="w-full sm:w-auto" href={content.ctaButton.link}>
-              {content.ctaButton.text}
-            </Button>
-          </div>
+    <section className="kt-section">
+      <div className="container">
+        <div className="kt-section-head">
+          <div className="kt-eyebrow">{content.subheading}</div>
+          <h2 className="kt-display m">{content.heading}</h2>
         </div>
-        <div>
-          <Subheading as="h3">Perks</Subheading>
-          <dl className="mt-6 grid grid-cols-1 gap-8">
-            {content.perks.map((perk, index) => (
-              <div key={index}>
-                <dt className="font-semibold text-olive-950">{perk.title}</dt>
-                <dd className="mt-2 text-sm/6 text-olive-600">{perk.description}</dd>
+        {content.description && (
+          <p
+            className="muted"
+            style={{ maxWidth: '720px', fontSize: '19px', marginBottom: '48px' }}
+          >
+            {content.description}
+          </p>
+        )}
+        {content.perks?.length > 0 && (
+          <div
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+            style={{ marginBottom: '64px' }}
+          >
+            {content.perks.map((perk) => (
+              <div
+                key={perk.title}
+                style={{
+                  borderTop: '1px solid var(--rule)',
+                  paddingTop: '20px',
+                }}
+              >
+                <h3
+                  className="serif"
+                  style={{ fontSize: '22px', fontWeight: 400, marginBottom: '8px', margin: 0 }}
+                >
+                  {perk.title}
+                </h3>
+                <p className="muted" style={{ fontSize: '15px', margin: '8px 0 0', lineHeight: 1.5 }}>
+                  {perk.description}
+                </p>
               </div>
             ))}
-          </dl>
-        </div>
+          </div>
+        )}
+        {Object.keys(grouped).length > 0 && (
+          <div>
+            <div className="kt-meta" style={{ marginBottom: '20px' }}>
+              Open positions
+            </div>
+            {Object.entries(grouped).map(([dept, jobs]) => (
+              <div key={dept} style={{ marginBottom: '32px' }}>
+                <div
+                  className="kt-eyebrow"
+                  style={{ marginBottom: '12px', color: 'var(--ink-soft)' }}
+                >
+                  {dept}
+                </div>
+                <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                  {jobs.map((job, i) => (
+                    <li
+                      key={`${job.title}-${i}`}
+                      style={{
+                        display: 'grid',
+                        gridTemplateColumns: '2fr 1fr 1fr auto',
+                        gap: '16px',
+                        padding: '16px 0',
+                        borderBottom: '1px solid var(--rule-soft)',
+                        alignItems: 'baseline',
+                      }}
+                    >
+                      <span className="serif" style={{ fontSize: '20px' }}>
+                        {job.title}
+                      </span>
+                      <span className="muted" style={{ fontSize: '14px' }}>
+                        {job.location}
+                      </span>
+                      <span className="kt-meta">{job.type}</span>
+                      <a href={content.ctaButton.link} className="kt-meta" style={{ color: 'var(--accent-deep)' }}>
+                        Apply →
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+            <div style={{ marginTop: '32px' }}>
+              <a href={content.ctaButton.link} className="kt-btn">
+                {content.ctaButton.text}
+              </a>
+            </div>
+          </div>
+        )}
       </div>
-    </Container>
+    </section>
   )
 }
 
 export default async function Company() {
   const headerBlock = await fetchPagefromAPI('about-us')
-  if (!headerBlock) return null
-  // We will then get the block type 
-  const headerType = getBlockByName(headerBlock.blocks, "Header");
-  const team = getBlockByName(headerBlock.blocks, "Team");
-  const investors = getBlockByName(headerBlock.blocks, "Investors");
-  const careers = getBlockByName(headerBlock.blocks, "Careers");
+  if (!headerBlock) {
+    return (
+      <main>
+        <Navbar />
+        <section className="kt-section">
+          <div className="container">
+            <p className="muted">Loading…</p>
+          </div>
+        </section>
+      </main>
+    )
+  }
+
+  const headerData = getBlockByName(headerBlock.blocks, 'Header')
+  const teamData = getBlockByName(headerBlock.blocks, 'Team')
+  const investorsData = getBlockByName(headerBlock.blocks, 'Investors')
+  const careersData = getBlockByName(headerBlock.blocks, 'Careers')
+
   return (
     <main>
-      <GradientBackground />
       <Navbar />
       <Suspense fallback={<SectionLoading />}>
-        <Header data={headerType} />
+        <AboutHero data={headerData} />
       </Suspense>
       <Suspense fallback={<SectionLoading />}>
-        <Team data={team} />
+        <Mission data={headerData} />
       </Suspense>
       <Suspense fallback={<SectionLoading />}>
-        <Investors data={investors} />
+        <Team data={teamData} />
       </Suspense>
       <Suspense fallback={<SectionLoading />}>
-        <Careers data={careers} />
+        <Investors data={investorsData} />
+      </Suspense>
+      <Suspense fallback={<SectionLoading />}>
+        <Careers data={careersData} />
       </Suspense>
     </main>
   )
