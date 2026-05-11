@@ -1,139 +1,96 @@
 import { type Metadata } from 'next'
-import { Container } from '@/components/container'
-import { GradientBackground } from '@/components/gradient'
-import { HeroSection, type HeaderBlock } from '@/components/hero-section'
-import { MainContent, type MainContentBlock } from '@/components/main-content'
+import { notFound } from 'next/navigation'
+import { Navbar } from '@/components/navbar'
 import { fetchPagefromAPI } from '@/app/actions'
 import { getBlockByName, type Block } from '@/medu/queries'
-import { Navbar } from '@/components/navbar'
-import { notFound } from 'next/navigation'
+import { getContentFallback } from '@/lib/content-fallbacks'
 
 export const dynamic = 'force-dynamic'
 
 type PageParams = Promise<{ slug: string }>
 
-/**
- * Generate metadata for the content page
- */
+type MainContentBlockShape = { content: { content?: string } }
+
+// Resolve the page's title/subtitle/html from either the CMS or the
+// built-in fallback registry. Used by both generateMetadata and the
+// page component so the two stay in sync.
+async function resolveContent(slug: string) {
+  const page = await fetchPagefromAPI(slug).catch(() => null)
+  const headerBlock = getBlockByName(page?.blocks, 'Header') as Block | undefined
+  const mainBlock = getBlockByName(page?.blocks, 'MainContent') as
+    | (Block & MainContentBlockShape)
+    | undefined
+
+  const cmsTitle = headerBlock?.content?.title as string | undefined
+  const cmsSubtitle = headerBlock?.content?.subtitle as string | undefined
+  const cmsHtml = mainBlock?.content?.content
+
+  if (cmsHtml || cmsTitle) {
+    const fallback = getContentFallback(slug)
+    return {
+      title: cmsTitle || fallback?.title || 'Content',
+      subtitle: cmsSubtitle || fallback?.subtitle || '',
+      html: cmsHtml || fallback?.html || '',
+      source: 'cms' as const,
+    }
+  }
+
+  const fallback = getContentFallback(slug)
+  if (fallback) return { ...fallback, source: 'fallback' as const }
+
+  return null
+}
+
 export async function generateMetadata({ params }: { params: PageParams }): Promise<Metadata> {
   const { slug } = await params
-
-  try {
-    const pageData = await fetchPagefromAPI(slug)
-    const headerBlock = getBlockByName(pageData?.blocks, 'Header') as Block | undefined
-
-    const title = (headerBlock?.content?.title as string) || 'Content Page'
-    const description = (headerBlock?.content?.subtitle as string) || 'Jaal Yantra Textiles content page'
-
-    return {
-      title,
-      description,
-    }
-  } catch (error) {
-    console.error('Error generating metadata:', error)
-    return {
-      title: 'Content Page',
-      description: 'Jaal Yantra Textiles content page',
-    }
+  const data = await resolveContent(slug)
+  if (!data) {
+    return { title: 'Page not found' }
+  }
+  return {
+    title: data.title.replace(/\.$/, ''),
+    description: data.subtitle || undefined,
   }
 }
 
-/**
- * Generic Content Page Component
- * 
- * This component creates a reusable template for displaying textual content
- * like privacy policies, terms of service, and other static pages.
- * 
- * Features:
- * - Dynamic routing based on slug
- * - Fetches content from CMS
- * - Consistent header/footer design
- * - Responsive layout
- * - Prose styling for beautiful typography
- * 
- * CMS Block Structure Required:
- * 1. Header Block: Contains title, subtitle, announcement
- * 2. MainContent Block: Contains the actual content
- * 
- * @example
- * URL: /content/privacy-policy
- * Fetches: Page with slug "privacy-policy"
- * Renders: Header + MainContent + Footer
- */
 export default async function ContentPage({ params }: { params: PageParams }) {
   const { slug } = await params
+  const data = await resolveContent(slug)
+  if (!data) notFound()
 
-  try {
-    const pageData = await fetchPagefromAPI(slug)
-
-    if (!pageData) {
-      notFound()
-    }
-
-    // Extract blocks from CMS
-    const cmsHeaderBlock = getBlockByName(pageData.blocks, 'Header') as Block | undefined
-    const cmsMainContentBlock = getBlockByName(pageData.blocks, 'MainContent') as MainContentBlock | undefined
-
-    // If no content block found, show error
-    if (!cmsMainContentBlock) {
-      return (
-        <main>
-          <GradientBackground />
-          <Navbar />
-          <Container className="py-16">
-            <div className="text-center">
-              <h1 className="text-3xl font-bold text-olive-900">Content Not Found</h1>
-              <p className="mt-4 text-olive-600">
-                The content for this page is not available. Please check back later.
-              </p>
-            </div>
-          </Container>
-        </main>
-      )
-    }
-
-    // Prepare header block for HeroSection
-    const heroHeaderBlock: HeaderBlock = {
-      content: {
-        title: (cmsHeaderBlock?.content?.title as string) || 'Content Page',
-        subtitle: (cmsHeaderBlock?.content?.subtitle as string) || '',
-        announcement: (cmsHeaderBlock?.content?.announcement as string) || '',
-        buttons: [], // No buttons for content pages
-      },
-    }
-
-
-    return (
-      <main>
-        <GradientBackground />
-        <Navbar />
-
-        {/* Hero Section with Navbar */}
-        <HeroSection
-          headerBlock={heroHeaderBlock}
-
-        />
-
-        {/* Main Content Section */}
-        <MainContent block={cmsMainContentBlock} />
-      </main>
-    )
-  } catch (error) {
-    console.error('Error loading content page:', error)
-
-    return (
-      <main>
-        <GradientBackground />
-        <Navbar />
-        <Container className="py-16">
-          <div className="text-center">
-            <h1 className="text-3xl font-bold text-olive-900">Error Loading Page</h1>
-            <p className="mt-4 text-olive-600">
-              We encountered an error while loading this page. Please try again later.
+  return (
+    <main>
+      <Navbar />
+      <section className="kt-hero compact">
+        <div className="container">
+          <span className="kt-eyebrow">
+            <span className="dot" aria-hidden />
+            {/* "Legal" is right for privacy/terms; generic CMS pages get
+                the slug itself, which is at worst neutral. */}
+            {slug === 'privacy-policy' || slug === 'terms-of-service' ? 'Legal' : slug}
+          </span>
+          <h1 className="kt-display l" style={{ marginTop: '20px', marginBottom: '16px' }}>
+            {data.title}
+          </h1>
+          {data.subtitle && (
+            <p
+              className="muted"
+              style={{ fontSize: '18px', maxWidth: '620px', lineHeight: 1.4, margin: 0 }}
+            >
+              {data.subtitle}
             </p>
-          </div>
-        </Container>
-      </main>
-    )
-  }
+          )}
+        </div>
+      </section>
+      <section className="kt-section">
+        <div className="container">
+          <article
+            className="prose prose-olive"
+            style={{ maxWidth: '720px', margin: '0 auto' }}
+            dangerouslySetInnerHTML={{ __html: data.html }}
+          />
+        </div>
+      </section>
+    </main>
+  )
 }

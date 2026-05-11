@@ -39,6 +39,17 @@ const nextConfig: NextConfig = {
     ],
   },
   turbopack: {},
+  // Preserve canonical legal URLs while the routes live under /content/[slug].
+  // Rewrites keep the address bar showing /privacy-policy and /terms-of-service
+  // (no redirect chain, no SEO change). Adding a new CMS page is now just:
+  //   1) seed the page in TipTap with slug "your-slug"
+  //   2) optionally add a rewrite here if you want a top-level URL.
+  async rewrites() {
+    return [
+      { source: "/privacy-policy", destination: "/content/privacy-policy" },
+      { source: "/terms-of-service", destination: "/content/terms-of-service" },
+    ]
+  },
 };
 
 const sentryNextConfig = withSentryConfig(nextConfig, {
