@@ -1001,15 +1001,18 @@ body[data-mode="platform"] [data-aud="investor"] { display: none; }
 .kt-hamburger span:nth-child(1) { top: 14px; }
 .kt-hamburger span:nth-child(2) { top: 21px; }
 .kt-hamburger span:nth-child(3) { top: 28px; }
-.kt-hamburger span:nth-child(1)[data-open="true"] { transform: translateY(7px) rotate(45deg); }
-.kt-hamburger span:nth-child(2)[data-open="true"] { opacity: 0; }
-.kt-hamburger span:nth-child(3)[data-open="true"] { transform: translateY(-7px) rotate(-45deg); }
+.kt-hamburger.is-open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.kt-hamburger.is-open span:nth-child(2) { opacity: 0; }
+.kt-hamburger.is-open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
 /* ---------------- MOBILE DRAWER ---------------- */
+/* Portalled to <body> from the Navbar so it escapes any ancestor
+   overflow-clip / overflow-hidden. position: fixed with full viewport
+   inset; opens via the .is-open class set by the navbar state. */
 .kt-mobile-drawer {
   position: fixed;
   inset: 72px 0 0 0;
-  z-index: 90;
+  z-index: 110;
   background: var(--bg);
   border-top: 1px solid var(--rule);
   opacity: 0;
@@ -1017,8 +1020,12 @@ body[data-mode="platform"] [data-aud="investor"] { display: none; }
   transform: translateY(-8px);
   transition: opacity 240ms ease, transform 240ms cubic-bezier(.65, .05, .36, 1);
   overflow-y: auto;
+  display: none;
 }
-.kt-mobile-drawer[data-open="true"] {
+@media (max-width: 760px) {
+  .kt-mobile-drawer { display: block; }
+}
+.kt-mobile-drawer.is-open {
   opacity: 1;
   pointer-events: auto;
   transform: translateY(0);
