@@ -105,6 +105,11 @@ type MetricsResponse = {
   artisans: number
   brands_live: number
   hubs: number
+  lead_time?: {
+    avg_days: number | null
+    sample_size: number
+    window_days: number
+  }
   gmv: {
     amount: number
     currency: string
@@ -119,6 +124,7 @@ const EMPTY_METRICS: MetricsResponse = {
   artisans: 0,
   brands_live: 0,
   hubs: 0,
+  lead_time: { avg_days: null, sample_size: 0, window_days: 90 },
   gmv: { amount: 0, currency: 'USD', window_days: 90, source: 'projected' },
   last_updated: null,
 }
@@ -148,6 +154,7 @@ function useMetrics() {
         ...EMPTY_METRICS,
         ...(json || {}),
         gmv: { ...EMPTY_METRICS.gmv, ...(json?.gmv || {}) },
+        lead_time: { ...EMPTY_METRICS.lead_time!, ...(json?.lead_time || {}) },
       }
     },
     staleTime: 60_000,
@@ -199,6 +206,7 @@ function Hero() {
   const hubCount = metrics && metrics.hubs > 0 ? metrics.hubs : brand.geographies.length
   const brandsCount = metrics && metrics.brands_live > 0 ? String(metrics.brands_live) : '3+'
   const gmvCount = metrics && metrics.gmv.amount > 0 ? formatGmv(metrics.gmv.amount, metrics.gmv.currency) : null
+  const leadDays = metrics?.lead_time?.avg_days ?? null
   return (
     <section className="kt-hero">
       <div className="container">
@@ -245,7 +253,9 @@ function Hero() {
             <div data-aud="consumer">
               <div className="row"><span className="k">Atelier</span><span className="v">{artisanCount}</span></div>
               <div className="row"><span className="k">Hubs</span><span className="v">{hubCount}</span></div>
-              <div className="row"><span className="k">Avg lead time</span><span className="v">21 days</span></div>
+              {leadDays !== null && (
+                <div className="row"><span className="k">Avg lead time</span><span className="v">{leadDays} days</span></div>
+              )}
               <div className="row"><span className="k">Made-to-measure</span><span className="v">Always</span></div>
             </div>
             <div data-aud="investor">

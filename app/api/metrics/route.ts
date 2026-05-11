@@ -9,6 +9,7 @@ const EMPTY = {
   artisans: 0,
   brands_live: 0,
   hubs: 0,
+  lead_time: { avg_days: null as number | null, sample_size: 0, window_days: 90 },
   gmv: { amount: 0, currency: "USD", window_days: 90 },
   last_updated: null,
 }
@@ -40,6 +41,7 @@ export async function GET(request: NextRequest) {
       ...EMPTY,
       ...(data || {}),
       gmv: { ...EMPTY.gmv, ...((data && data.gmv) || {}) },
+      lead_time: { ...EMPTY.lead_time, ...((data && data.lead_time) || {}) },
     }
     const response = NextResponse.json(normalized)
     response.headers.set("Cache-Control", "public, max-age=60, stale-while-revalidate=300")
