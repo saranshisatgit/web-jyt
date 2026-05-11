@@ -1,13 +1,10 @@
+'use client'
+
 import React from 'react'
 import { Navbar } from '@/components/navbar'
 import { CheckIcon, MinusIcon } from '@heroicons/react/16/solid'
-import type { Metadata } from 'next'
-
-export const metadata: Metadata = {
-  title: 'Pricing',
-  description:
-    'Pricing for artisans, brands, and designers — from a marketplace seat to a full production OS.',
-}
+import { useCurrency } from '@/app/context/currency-context'
+import { formatPrice, CURRENCIES } from '@/lib/currency'
 
 type FeatureValue = boolean | string
 
@@ -21,7 +18,10 @@ type Tier = {
   name: string
   slug: string
   description: string
-  priceMonthly: number
+  // Anchor monthly price in INR. The featured "Professional" tier is the
+  // real subscription cost (₹2000). Other tiers scale around it. Display
+  // converts to the visitor's currency via lib/currency.
+  priceMonthlyInr: number
   highlights: string[]
   featured?: boolean
   features: Feature[]
@@ -32,7 +32,7 @@ const TIERS: Tier[] = [
     name: 'Marketplace',
     slug: 'marketplace',
     description: 'For artisans selling handcrafted pieces directly.',
-    priceMonthly: 49,
+    priceMonthlyInr: 999,
     highlights: [
       'Customers through our marketplace',
       'Checkout & payment integrations',
@@ -57,7 +57,7 @@ const TIERS: Tier[] = [
     name: 'Professional',
     slug: 'professional',
     description: 'For growing brands shipping with advanced ops.',
-    priceMonthly: 149,
+    priceMonthlyInr: 2000,
     featured: true,
     highlights: [
       'Everything in Marketplace',
@@ -84,7 +84,7 @@ const TIERS: Tier[] = [
     name: 'Designer',
     slug: 'designer',
     description: 'End-to-end production OS for textile creators.',
-    priceMonthly: 299,
+    priceMonthlyInr: 6000,
     highlights: [
       'Everything in Professional',
       'End-to-end design platform',
@@ -146,6 +146,12 @@ export default function Pricing() {
 }
 
 function Hero() {
+  const currency = useCurrency()
+  // Build a "Yours · others" list so the visitor sees their currency first.
+  const others = Object.values(CURRENCIES)
+    .filter((c) => c.code !== currency.code)
+    .map((c) => c.code)
+    .join(' · ')
   return (
     <section className="kt-hero">
       <div className="container">
@@ -168,9 +174,9 @@ function Hero() {
           </div>
           <aside className="kt-hero-side">
             <div className="row"><span className="k">Plans</span><span className="v">3</span></div>
-            <div className="row"><span className="k">Currencies</span><span className="v">EUR · USD · INR · AUD</span></div>
+            <div className="row"><span className="k">Yours</span><span className="v">{currency.symbol} {currency.code}</span></div>
+            <div className="row"><span className="k">Also</span><span className="v" style={{ fontSize: '14px', fontFamily: 'var(--font-mono)' }}>{others}</span></div>
             <div className="row"><span className="k">Trial</span><span className="v">14 days</span></div>
-            <div className="row"><span className="k">Switch</span><span className="v">Any time</span></div>
           </aside>
         </div>
       </div>
@@ -179,6 +185,7 @@ function Hero() {
 }
 
 function Tiers() {
+  const currency = useCurrency()
   return (
     <section className="kt-section" id="tiers">
       <div className="container">
@@ -201,7 +208,7 @@ function Tiers() {
                   margin: '16px 0 8px',
                 }}
               >
-                ${tier.priceMonthly}
+                {formatPrice(tier.priceMonthlyInr, currency)}
                 <span style={{ fontSize: '18px', color: 'var(--ink-soft)', fontFamily: 'var(--font-sans)', marginLeft: '8px' }}>
                   / mo
                 </span>
