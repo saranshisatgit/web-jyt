@@ -105,7 +105,12 @@ type MetricsResponse = {
   artisans: number
   brands_live: number
   hubs: number
-  gmv: { amount: number; currency: string; window_days: number }
+  gmv: {
+    amount: number
+    currency: string
+    window_days: number
+    source?: 'actual' | 'projected'
+  }
   last_updated: string | null
 }
 
@@ -114,7 +119,7 @@ const EMPTY_METRICS: MetricsResponse = {
   artisans: 0,
   brands_live: 0,
   hubs: 0,
-  gmv: { amount: 0, currency: 'USD', window_days: 90 },
+  gmv: { amount: 0, currency: 'USD', window_days: 90, source: 'projected' },
   last_updated: null,
 }
 
@@ -665,22 +670,27 @@ function Compare() {
   )
 }
 
-// Single-number GMV headline scoped to the current brand. Falls back to the
-// same fallback Stats uses — never render a misleading $0.
+// Single-number GMV headline scoped to the current brand. When the metric
+// is projected (capacity model rather than actual conversion sum), the
+// label and caption say so explicitly — investors and buyers respect the
+// disclosure more than a thinly-veiled forecast presented as truth.
 function GmvHeadline() {
   const brand = useBrand()
   const { data: metrics } = useMetrics()
   if (!metrics || metrics.gmv.amount === 0) return null
   const display = formatGmv(metrics.gmv.amount, metrics.gmv.currency)
+  const isProjected = metrics.gmv.source === 'projected'
+  const eyebrow = isProjected ? 'Projected GMV · capacity model' : 'GMV powered for ateliers'
+  const caption = isProjected
+    ? `Trailing ${metrics.gmv.window_days} days · ${brand.shortName} · projection from active brands + artisans`
+    : `Trailing ${metrics.gmv.window_days} days · ${brand.shortName} · live from production`
   return (
     <section className="kt-section flush" data-aud="platform" id="gmv">
       <div className="container" style={{ paddingTop: '40px', paddingBottom: '40px' }}>
         <div className="kt-gmv-headline">
-          <div className="kt-eyebrow">GMV powered for ateliers</div>
+          <div className="kt-eyebrow">{eyebrow}</div>
           <div className="kt-gmv-number">{display}</div>
-          <div className="kt-meta">
-            Trailing {metrics.gmv.window_days} days · {brand.shortName} · live from production
-          </div>
+          <div className="kt-meta">{caption}</div>
         </div>
       </div>
     </section>
@@ -888,14 +898,16 @@ function Stats() {
   // artisans alone since GMV may be live before partner counts are seeded.
   const hasLive = !!metrics && (metrics.artisans > 0 || metrics.brands_live > 0 || metrics.gmv.amount > 0)
   const gmvNum = metrics ? formatGmv(metrics.gmv.amount, metrics.gmv.currency) : '€0'
+  const isProjected = metrics?.gmv.source === 'projected'
+  const gmvLabel = isProjected ? 'Projected GMV' : 'GMV processed'
   const gmvSub = metrics
-    ? `trailing ${metrics.gmv.window_days}d · ${metrics.gmv.currency}`
+    ? `trailing ${metrics.gmv.window_days}d · ${metrics.gmv.currency}${isProjected ? ' · capacity model' : ''}`
     : 'trailing 90d'
   const stats: Stat[] = hasLive
     ? [
         { num: String(metrics!.artisans), label: 'Artisans onboarded', sub: brand.geographies.join(' · ') },
         { num: String(metrics!.brands_live), label: 'Brands shipping', sub: `on ${brand.shortName}` },
-        { num: gmvNum, label: 'GMV processed', sub: gmvSub },
+        { num: gmvNum, label: gmvLabel, sub: gmvSub },
         { num: '10', unit: '/ mo', label: 'Inbound signups', sub: '~20% curation rate' },
       ]
     : STATS
