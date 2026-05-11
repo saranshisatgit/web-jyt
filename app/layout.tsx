@@ -3,8 +3,10 @@ import type { Metadata } from 'next'
 import { Inter_Tight, Instrument_Serif, JetBrains_Mono } from 'next/font/google'
 import { headers } from 'next/headers'
 import { brandFromKey } from '@/lib/brand'
+import { currencyFromCode } from '@/lib/currency'
 import { ApiQueryClientProvider } from './context/api-context'
 import { BrandProvider } from './context/brand-context'
+import { CurrencyProvider } from './context/currency-context'
 import { ModeProvider } from './context/mode-context'
 import { VisualEditorProvider } from './context/visual-editor-context'
 import { Footer } from '@/components/footer'
@@ -49,6 +51,7 @@ export default async function RootLayout({
 }>) {
   const headersList = await headers()
   const brand = brandFromKey(headersList.get('x-brand'))
+  const currency = currencyFromCode(headersList.get('x-currency'))
 
   return (
     <ApiQueryClientProvider>
@@ -72,14 +75,16 @@ export default async function RootLayout({
         </head>
         <body className="antialiased">
           <BrandProvider value={brand}>
-            <ModeProvider>
+            <CurrencyProvider value={currency}>
+              <ModeProvider>
               <VisualEditorProvider>
                 <main className="relative overflow-clip">{children}</main>
                 <Footer />
                 <ForkOverlay />
                 <BlueprintGrid />
               </VisualEditorProvider>
-            </ModeProvider>
+              </ModeProvider>
+            </CurrencyProvider>
           </BrandProvider>
         </body>
       </html>
