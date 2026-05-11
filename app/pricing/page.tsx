@@ -127,7 +127,7 @@ const FAQ: { q: string; a: string }[] = [
   },
   {
     q: 'How does billing work?',
-    a: 'Monthly or annual. Annual gets you 2 months free. We bill in EUR, USD, INR, and AUD.',
+    a: 'Monthly or annual. Annual gets you 2 months free. We bill in INR, USD, EUR, GBP, and AUD — your prices above are shown in your local currency automatically.',
   },
 ]
 

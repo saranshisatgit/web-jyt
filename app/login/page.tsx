@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Mark } from '@/components/logo'
+import { Navbar } from '@/components/navbar'
 import { Checkbox, Field, Input, Label } from '@headlessui/react'
 import { CheckIcon } from '@heroicons/react/16/solid'
 import type { Metadata } from 'next'
@@ -12,9 +12,15 @@ export const metadata: Metadata = {
 export default function Login() {
   return (
     <main>
+      <Navbar />
       <section
         className="kt-section"
-        style={{ padding: '80px 0', minHeight: '100vh', display: 'flex', alignItems: 'center' }}
+        style={{
+          minHeight: 'calc(100svh - 72px)',
+          display: 'flex',
+          alignItems: 'center',
+          padding: '48px 0',
+        }}
       >
         <div className="container">
           <div
@@ -24,16 +30,18 @@ export default function Login() {
               background: 'var(--cream)',
               border: '1px solid var(--rule)',
               padding: '40px',
+              borderRadius: 'var(--r-md)',
               display: 'flex',
               flexDirection: 'column',
               gap: '24px',
             }}
           >
-            <Link href="/" title="Home" style={{ alignSelf: 'flex-start', color: 'var(--ink)' }}>
-              <Mark className="h-9" />
-            </Link>
             <div>
-              <h1 className="kt-display s" style={{ marginBottom: '8px' }}>
+              <span className="kt-eyebrow">
+                <span className="dot" aria-hidden />
+                Account
+              </span>
+              <h1 className="kt-display s" style={{ marginTop: '16px', marginBottom: '8px' }}>
                 Welcome back.
               </h1>
               <p className="muted" style={{ fontSize: '15px', margin: 0 }}>
