@@ -1,11 +1,8 @@
 'use client'
 
 import { useState, useMemo, useCallback } from 'react'
-import { Button } from '@/components/button'
-import { Container } from '@/components/container'
-import { GradientBackground } from '@/components/gradient'
+import Link from 'next/link'
 import { Navbar } from '@/components/navbar'
-import { Heading, Subheading } from '@/components/text'
 import { type HeadingItem } from '@/components/manual-table-of-contents'
 import { PostTableOfContents, type HeadingItem as TocHeadingItem } from '@/components/PostTableOfContents'
 import { PostMetadataSidebar } from '@/components/post-metadata-sidebar'
@@ -163,65 +160,68 @@ export function BlogPostContent({
 
   return (
     <main>
-      <GradientBackground />
       <Navbar />
-      <Container>
-        <Subheading className="mt-16">
-          {dayjs(post.published_at).format('dddd, MMMM D, YYYY')}
-        </Subheading>
-        <Heading as="h1" className="mt-2">
-          {post.title}
-        </Heading>
-        <div className="mt-16 grid grid-cols-1 gap-8 pb-24 lg:grid-cols-[15rem_1fr] xl:grid-cols-[15rem_1fr_15rem]">
-          {/* Left sidebar for post metadata */}
-          <PostMetadataSidebar
-            authorsBlock={authorsBlock}
-            category={(post.public_metadata as { category?: string })?.category}
-          />
-          <div className="text-olive-700">
-            <PostMainContentArea
-              post={post}
-              featuredImageUrl={featuredImageUrl}
-              processedContent={processedContent}
-              drawerNode={drawerNode}
-              showDebug={showDebug}
-              setShowDebug={setShowDebug}
-              onHtmlGenerated={handleHtmlGenerated}
-              isDevelopment={isDevelopment}
-              initialContentForDebug={contentBlock?.content.text}
-              generatedHtml={generatedHtml}
+
+      <section className="kt-section">
+        <div className="container">
+          <div className="kt-meta" style={{ marginBottom: '12px' }}>
+            {dayjs(post.published_at).format('dddd · MMM D, YYYY')}
+          </div>
+          <h1 className="kt-display l" style={{ marginBottom: '24px' }}>
+            {post.title}
+          </h1>
+
+          <div
+            style={{
+              marginTop: '48px',
+              display: 'grid',
+              gridTemplateColumns: '1fr',
+              gap: '32px',
+              paddingBottom: '64px',
+            }}
+            className="lg:grid-cols-[15rem_1fr] xl:grid-cols-[15rem_1fr_15rem]"
+          >
+            <PostMetadataSidebar
+              authorsBlock={authorsBlock}
+              category={(post.public_metadata as { category?: string })?.category}
             />
-          </div> {/* Closes the center content's outer div (text-olive-700) */}
+            <div>
+              <PostMainContentArea
+                post={post}
+                featuredImageUrl={featuredImageUrl}
+                processedContent={processedContent}
+                drawerNode={drawerNode}
+                showDebug={showDebug}
+                setShowDebug={setShowDebug}
+                onHtmlGenerated={handleHtmlGenerated}
+                isDevelopment={isDevelopment}
+                initialContentForDebug={contentBlock?.content.text}
+                generatedHtml={generatedHtml}
+              />
+            </div>
+            <PostTableOfContents
+              generatedHtml={generatedHtml}
+              onHeadingsChange={handleHeadingsChange}
+              hasOriginalTocNode={hasOriginalTocNode}
+              tocHeadingsCount={tocHeadingsCount}
+              headings={headings}
+            />
+          </div>
 
-          {/* Right sidebar for Table of Contents - should be the third column of the main grid */}
-          <PostTableOfContents
-            generatedHtml={generatedHtml}
-            onHeadingsChange={handleHeadingsChange}
-            hasOriginalTocNode={hasOriginalTocNode}
-            tocHeadingsCount={tocHeadingsCount}
-            headings={headings}
-          />
-        </div> {/* Closes the main three-column grid div (mt-16 grid...) */}
-
-        <div className="pb-24">
-          <Button href="/blog" variant="secondary" className="gap-1">
-            <ChevronLeftIcon className="size-4" />
-            Back to blog
-          </Button>
+          <div style={{ paddingBottom: '64px' }}>
+            <Link href="/blog" className="kt-btn ghost sm">
+              <ChevronLeftIcon className="size-3" />
+              Back to journal
+            </Link>
+          </div>
         </div>
+      </section>
 
-      </Container>
-
-      {/* Subscription Form Section with Gradient Background */}
-      <div className="relative py-16 sm:py-24">
-        <div className="absolute inset-0">
-          <GradientBackground />
-        </div>
-        <Container className="relative z-10">
+      <section className="kt-section flush" style={{ background: 'var(--bg-deep)' }}>
+        <div className="container" style={{ padding: '64px var(--container-pad)' }}>
           <SubscribeForm domainName="jaalyantra.com" />
-        </Container>
-      </div>
-
+        </div>
+      </section>
     </main>
   )
 }

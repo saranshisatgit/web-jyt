@@ -1,150 +1,131 @@
-'use client';
+'use client'
 
-import React, { useState } from 'react';
-import { subscribeToUpdates, SubscriptionPayload } from '@/medu/queries'; // Assuming @/ maps to ./
-import { Button } from './button';
+import React, { useState } from 'react'
+import { subscribeToUpdates, SubscriptionPayload } from '@/medu/queries'
 
 interface SubscribeFormProps {
-  domainName: string; // To pass to the API call
+  domainName: string
 }
 
 const SubscribeForm: React.FC<SubscribeFormProps> = ({ domainName }) => {
-  const [email, setEmail] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-  const [message, setMessage] = useState(''); // For success or error messages
-  const [isError, setIsError] = useState(false);
+  const [email, setEmail] = useState('')
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+  const [status, setStatus] = useState<{ kind: 'idle' | 'ok' | 'err'; msg?: string }>({
+    kind: 'idle',
+  })
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setIsLoading(true);
-    setMessage('');
-    setIsError(false);
-
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    if (isLoading) return
     if (!email || !firstName || !lastName) {
-      setMessage('Please fill in all fields.');
-      setIsError(true);
-      setIsLoading(false);
-      return;
+      setStatus({ kind: 'err', msg: 'Please fill in all fields.' })
+      return
     }
+    setIsLoading(true)
+    setStatus({ kind: 'idle' })
 
-    const payload: SubscriptionPayload = { email, first_name: firstName, last_name: lastName };
-
+    const payload: SubscriptionPayload = {
+      email,
+      first_name: firstName,
+      last_name: lastName,
+    }
     try {
-      const response = await subscribeToUpdates(domainName, payload);
+      const response = await subscribeToUpdates(domainName, payload)
       if (response.error) {
-        setMessage(response.error);
-        setIsError(true);
+        setStatus({ kind: 'err', msg: response.error })
       } else {
-        setMessage(response.message || 'Successfully subscribed!');
-        setIsError(false);
-        // Optionally clear fields
-        setEmail('');
-        setFirstName('');
-        setLastName('');
+        setStatus({ kind: 'ok', msg: response.message || 'Subscribed.' })
+        setEmail('')
+        setFirstName('')
+        setLastName('')
       }
-    } catch (error) {
-      console.error('Subscription submission error:', error);
-      setMessage('An unexpected error occurred. Please try again.');
-      setIsError(true);
+    } catch (err) {
+      console.error('Subscription error:', err)
+      setStatus({ kind: 'err', msg: 'An unexpected error occurred. Please try again.' })
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
+
+  const statusColor =
+    status.kind === 'ok'
+      ? 'oklch(0.55 0.15 145)'
+      : status.kind === 'err'
+        ? 'var(--accent-deep)'
+        : 'var(--ink-soft)'
 
   return (
-    <div className="w-full max-w-4xl mx-auto px-4 sm:px-0">
-      {/* Header Section */}
-      <div className="mb-6">
-        <h3 className="text-lg sm:text-xl font-semibold text-olive-950 mb-2">
-          Subscribe to our newsletter
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-12" style={{ alignItems: 'center' }}>
+      <div>
+        <div className="kt-eyebrow">Subscribe</div>
+        <h3 className="kt-display s" style={{ marginTop: '12px', marginBottom: '16px' }}>
+          Stories from <em>the workshop</em>.
         </h3>
-        <p className="text-sm text-olive-600 mb-1">
-          Receive updates on our latest products and exclusive offers.
-        </p>
-        <p className="text-xs italic text-olive-500">
-          We need your first name and last name to personalize the emails being sent.
+        <p className="muted" style={{ fontSize: '17px', lineHeight: 1.55, margin: 0 }}>
+          One letter per quarter — field notes, product updates, and how we&apos;re thinking about
+          provenance, production, and platform.
         </p>
       </div>
-
-      {/* Form Section */}
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        {/* Name Fields Row - Stack on mobile, side-by-side on tablet+ */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {/* First Name Input */}
-          <div className="w-full">
-            <label htmlFor="firstName" className="block text-xs font-medium text-olive-700 mb-1.5">
-              First name*
-            </label>
+      <form onSubmit={onSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+        <div className="grid grid-cols-2 gap-3">
+          <div className="kt-field">
+            <label htmlFor="firstName" className="kt-label">First name</label>
             <input
-              type="text"
               id="firstName"
+              type="text"
+              required
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
-              className="w-full px-3 py-2.5 text-sm bg-white border border-olive-300 rounded-md focus:outline-none focus:ring-2 focus:ring-olive-950 focus:border-transparent disabled:bg-olive-50 disabled:text-olive-500"
-              placeholder="First name"
               disabled={isLoading}
-              required
+              className="kt-input"
+              placeholder="First"
             />
           </div>
-
-          {/* Last Name Input */}
-          <div className="w-full">
-            <label htmlFor="lastName" className="block text-xs font-medium text-olive-700 mb-1.5">
-              Last name*
-            </label>
+          <div className="kt-field">
+            <label htmlFor="lastName" className="kt-label">Last name</label>
             <input
-              type="text"
               id="lastName"
+              type="text"
+              required
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
-              className="w-full px-3 py-2.5 text-sm bg-white border border-olive-300 rounded-md focus:outline-none focus:ring-2 focus:ring-olive-950 focus:border-transparent disabled:bg-olive-50 disabled:text-olive-500"
-              placeholder="Last name"
               disabled={isLoading}
-              required
+              className="kt-input"
+              placeholder="Last"
             />
           </div>
         </div>
-
-        {/* Email and Button Row */}
-        <div className="flex flex-col sm:flex-row gap-3 sm:items-end">
-          {/* Email Input */}
-          <div className="flex-1">
-            <label htmlFor="email" className="block text-xs font-medium text-olive-700 mb-1.5">
-              Email*
-            </label>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-3 py-2.5 text-sm bg-white border border-olive-300 rounded-md focus:outline-none focus:ring-2 focus:ring-olive-950 focus:border-transparent disabled:bg-olive-50 disabled:text-olive-500"
-              placeholder="your@email.com"
-              disabled={isLoading}
-              required
-            />
-          </div>
-
-          {/* Submit Button */}
-          <Button
-            type="submit"
-            className="w-full sm:w-auto px-6 py-2.5 bg-olive-950 text-white text-sm font-medium rounded-md hover:bg-olive-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-olive-950 disabled:opacity-50 disabled:cursor-not-allowed transition-colors whitespace-nowrap"
+        <div className="kt-field">
+          <label htmlFor="email" className="kt-label">Email</label>
+          <input
+            id="email"
+            type="email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             disabled={isLoading}
-          >
-            {isLoading ? 'Subscribing...' : 'Subscribe'}
-          </Button>
+            className="kt-input"
+            placeholder="you@somewhere.com"
+          />
         </div>
+        <button
+          type="submit"
+          disabled={isLoading}
+          className="kt-btn"
+          style={{ width: '100%', justifyContent: 'center' }}
+        >
+          {isLoading ? 'Subscribing…' : 'Subscribe →'}
+        </button>
+        {status.msg && (
+          <p className="kt-meta" style={{ color: statusColor, margin: 0, minHeight: '18px' }}>
+            {status.msg}
+          </p>
+        )}
       </form>
-
-      {/* Message Display */}
-      {message && (
-        <div className={`mt-4 p-3 rounded-md ${isError ? 'bg-red-50 text-red-700' : 'bg-green-50 text-green-700'}`}>
-          <p className="text-sm">{message}</p>
-        </div>
-      )}
     </div>
-  );
-};
+  )
+}
 
-export default SubscribeForm;
+export default SubscribeForm

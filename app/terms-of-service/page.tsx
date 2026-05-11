@@ -1,30 +1,12 @@
 import { type Metadata } from 'next'
-import { GradientBackground } from '@/components/gradient'
-import { HeroSection, type HeaderBlock } from '@/components/hero-section'
-import { SimpleMainContent } from '@/components/main-content'
 import { Navbar } from '@/components/navbar'
 
 export const metadata: Metadata = {
   title: 'Terms and Conditions',
-  description: 'Terms and conditions for using Jaal Yantra Textiles services and website.',
+  description: 'Terms and conditions for using our services and website.',
 }
 
-/**
- * Terms and Conditions Page
- * 
- * This page outlines the terms and conditions for using the Jaal Yantra Textiles
- * website and services.
- */
 export default function TermsOfServicePage() {
-  // Header configuration
-  const heroHeaderBlock: HeaderBlock = {
-    content: {
-      title: 'Terms and Conditions',
-      subtitle: 'Please read these terms carefully before using our services',
-      announcement: '',
-      buttons: [],
-    },
-  }
 
 
   // HTML content for the terms and conditions
@@ -267,20 +249,33 @@ export default function TermsOfServicePage() {
 
   return (
     <main>
-      <GradientBackground />
       <Navbar />
-
-      {/* Hero Section with Navbar */}
-      <HeroSection
-        headerBlock={heroHeaderBlock}
-
-      />
-
-      {/* Main Content */}
-      <SimpleMainContent
-        html={termsContent}
-        maxWidth="medium"
-      />
+      <section className="kt-hero">
+        <div className="container">
+          <span className="kt-eyebrow">
+            <span className="dot" aria-hidden />
+            Legal
+          </span>
+          <h1 className="kt-display xl" style={{ marginTop: '32px', marginBottom: '24px' }}>
+            Terms and conditions.
+          </h1>
+          <p
+            className="muted"
+            style={{ fontSize: '21px', maxWidth: '680px', lineHeight: 1.45, margin: 0 }}
+          >
+            Please read these terms carefully before using our services.
+          </p>
+        </div>
+      </section>
+      <section className="kt-section">
+        <div className="container">
+          <article
+            className="prose-olive"
+            style={{ maxWidth: '720px', margin: '0 auto', fontSize: '17px', lineHeight: 1.65 }}
+            dangerouslySetInnerHTML={{ __html: termsContent }}
+          />
+        </div>
+      </section>
     </main>
   )
 }

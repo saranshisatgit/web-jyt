@@ -1,32 +1,13 @@
 import { type Metadata } from 'next'
-import { GradientBackground } from '@/components/gradient'
-import { HeroSection, type HeaderBlock } from '@/components/hero-section'
-import { SimpleMainContent } from '@/components/main-content'
 import { Navbar } from '@/components/navbar'
 
 export const metadata: Metadata = {
   title: 'Privacy Policy',
-  description: 'Learn how Jaal Yantra Textiles collects, uses, and protects your personal information.',
+  description:
+    'How we collect, use, and protect your personal information.',
 }
 
-/**
- * Privacy Policy Page
- * 
- * This is an example implementation of a content page using the
- * SimpleMainContent component with hardcoded content.
- * 
- * For CMS-driven content, use the /content/[slug] route instead.
- */
 export default function PrivacyPolicyPage() {
-  // Header configuration
-  const heroHeaderBlock: HeaderBlock = {
-    content: {
-      title: 'Privacy Policy',
-      subtitle: 'How we collect, use, and protect your personal information',
-      announcement: '',
-      buttons: [],
-    },
-  }
 
 
   // HTML content for the privacy policy
@@ -183,20 +164,33 @@ export default function PrivacyPolicyPage() {
 
   return (
     <main>
-      <GradientBackground />
       <Navbar />
-
-      {/* Hero Section with Navbar */}
-      <HeroSection
-        headerBlock={heroHeaderBlock}
-
-      />
-
-      {/* Main Content */}
-      <SimpleMainContent
-        html={privacyPolicyContent}
-        maxWidth="medium"
-      />
+      <section className="kt-hero">
+        <div className="container">
+          <span className="kt-eyebrow">
+            <span className="dot" aria-hidden />
+            Legal
+          </span>
+          <h1 className="kt-display xl" style={{ marginTop: '32px', marginBottom: '24px' }}>
+            Privacy policy.
+          </h1>
+          <p
+            className="muted"
+            style={{ fontSize: '21px', maxWidth: '680px', lineHeight: 1.45, margin: 0 }}
+          >
+            How we collect, use, and protect your personal information.
+          </p>
+        </div>
+      </section>
+      <section className="kt-section">
+        <div className="container">
+          <article
+            className="prose-olive"
+            style={{ maxWidth: '720px', margin: '0 auto', fontSize: '17px', lineHeight: 1.65 }}
+            dangerouslySetInnerHTML={{ __html: privacyPolicyContent }}
+          />
+        </div>
+      </section>
     </main>
   )
 }
