@@ -1,13 +1,37 @@
 import '@/styles/globals.css'
 import type { Metadata } from 'next'
+import { Inter_Tight, Instrument_Serif, JetBrains_Mono } from 'next/font/google'
+import { headers } from 'next/headers'
+import { brandFromKey } from '@/lib/brand'
 import { ApiQueryClientProvider } from './context/api-context'
-import { SiteDataProvider } from './context/site-data-context'
+import { BrandProvider } from './context/brand-context'
+import { ModeProvider } from './context/mode-context'
 import { VisualEditorProvider } from './context/visual-editor-context'
-import { getSiteData } from './site-data'
 import { Footer } from '@/components/footer'
-import { Spinner } from '@/components/spinner'
+import { ForkOverlay } from '@/components/fork-overlay'
 import { BlueprintGrid } from '@/components/blueprint-grid'
-import { cache } from 'react'
+
+const interTight = Inter_Tight({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600'],
+  variable: '--font-sans',
+  display: 'swap',
+})
+
+const instrumentSerif = Instrument_Serif({
+  subsets: ['latin'],
+  weight: '400',
+  style: ['normal', 'italic'],
+  variable: '--font-serif',
+  display: 'swap',
+})
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ['latin'],
+  weight: ['400', '500'],
+  variable: '--font-mono',
+  display: 'swap',
+})
 
 export const dynamic = 'force-dynamic'
 
@@ -18,31 +42,21 @@ export const metadata: Metadata = {
   },
 }
 
-// Create a cached version of the data fetching function
-const getCachedSiteData = cache(async () => {
-  return await getSiteData()
-})
-
 export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const siteData = await getCachedSiteData()
-  if (!siteData.footerBlock) return <Spinner size="lg" />
+  const headersList = await headers()
+  const brand = brandFromKey(headersList.get('x-brand'))
 
   return (
     <ApiQueryClientProvider>
-      <html lang="en">
+      <html
+        lang="en"
+        className={`${interTight.variable} ${instrumentSerif.variable} ${jetbrainsMono.variable}`}
+      >
         <head>
-          <link
-            rel="stylesheet"
-            href="https://api.fontshare.com/css?f%5B%5D=switzer@300,400,500,600,700,800&amp;display=swap"
-          />
-          <link
-            href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap"
-            rel="stylesheet"
-          />
           <link
             rel="alternate"
             type="application/rss+xml"
@@ -56,16 +70,17 @@ export default async function RootLayout({
             defer
           />
         </head>
-        <body className="text-olive-950 bg-olive-50 antialiased">
-          <SiteDataProvider value={{ navBlock: siteData.navBlock }}>
-            <VisualEditorProvider>
-              <main className="relative overflow-clip">{children}</main>
-              <Footer data={siteData.footerBlock.content} />
-              {/* Sits over everything via fixed + z-50 but pointer-events-none.
-                  Subtle enough not to interfere with content or buttons. */}
-              <BlueprintGrid />
-            </VisualEditorProvider>
-          </SiteDataProvider>
+        <body className="antialiased">
+          <BrandProvider value={brand}>
+            <ModeProvider>
+              <VisualEditorProvider>
+                <main className="relative overflow-clip">{children}</main>
+                <Footer />
+                <ForkOverlay />
+                <BlueprintGrid />
+              </VisualEditorProvider>
+            </ModeProvider>
+          </BrandProvider>
         </body>
       </html>
     </ApiQueryClientProvider>

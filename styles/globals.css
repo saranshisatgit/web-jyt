@@ -1,4 +1,12 @@
 @import 'tailwindcss';
+
+/* Kind Health / Jaal Yantra design system.
+   Tokens (CSS custom properties) + kt-* component classes.
+   Imported after Tailwind so kt-* rules override preflight defaults but stay
+   below @theme + utility scales (olive-/clay-* remain available for blog prose). */
+@import './kt-tokens.css';
+@import './kt-components.css';
+
 @plugin "@tailwindcss/typography";
 
 /* The site is light-only. Tailwind v4 defaults the `dark:` variant to
