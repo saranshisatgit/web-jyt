@@ -5,13 +5,7 @@ const BRAND_DOMAINS: Record<string, string> = {
   kindhealth: "kindhealth.com",
 }
 
-const EMPTY = {
-  artisans: 0,
-  brands_live: 0,
-  hubs: 0,
-  gmv: { amount: 0, currency: "USD", window_days: 90 },
-  last_updated: null,
-}
+const EMPTY = { websites: [] }
 
 export async function GET(request: NextRequest) {
   const brand = request.headers.get("x-brand") || "jaalyantra"
@@ -23,8 +17,8 @@ export async function GET(request: NextRequest) {
 
   try {
     const upstream = await fetch(
-      `${apiBase}/website/${encodeURIComponent(domain)}/marketing/metrics`,
-      { next: { revalidate: 60 } }
+      `${apiBase}/website/${encodeURIComponent(domain)}/marketing/websites`,
+      { next: { revalidate: 300 } }
     )
     if (!upstream.ok) {
       return NextResponse.json(
@@ -34,7 +28,7 @@ export async function GET(request: NextRequest) {
     }
     const data = await upstream.json()
     const response = NextResponse.json(data)
-    response.headers.set("Cache-Control", "public, max-age=60, stale-while-revalidate=300")
+    response.headers.set("Cache-Control", "public, max-age=300, stale-while-revalidate=900")
     return response
   } catch {
     return NextResponse.json({ ...EMPTY, error: "network_error" }, { status: 503 })

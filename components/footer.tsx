@@ -2,14 +2,30 @@
 
 import Link from 'next/link'
 import { useBrand } from '@/app/context/brand-context'
+import { useWebsites } from '@/lib/marketing-data'
 
 export function Footer() {
   const brand = useBrand()
   const year = new Date().getFullYear()
+  const { data } = useWebsites()
+  const websites = data?.websites ?? []
 
   return (
     <footer className="kt-footer">
       <div className="container">
+        {websites.length > 0 && (
+          <div className="kt-foot-ateliers">
+            <span className="kt-eyebrow">Ateliers powered</span>
+            <div className="kt-foot-ateliers-list">
+              {websites.map((w) => (
+                <a key={w.id} href={w.url} target="_blank" rel="noopener noreferrer">
+                  {w.name}
+                  <span className="kt-foot-ateliers-domain">{w.domain}</span>
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
         <div className="kt-foot-grid">
           <div>
             <Link href="/" className="kt-brand" aria-label={`${brand.wordmark} home`}>

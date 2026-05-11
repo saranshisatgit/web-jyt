@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useQuery } from '@tanstack/react-query'
 import { Navbar } from '@/components/navbar'
 import { useBrand } from '@/app/context/brand-context'
+import { useWebsites } from '@/lib/marketing-data'
 
 // ----- DATA -----------------------------------------------------------------
 
@@ -104,11 +105,18 @@ type MetricsResponse = {
   artisans: number
   brands_live: number
   hubs: number
+  gmv: { amount: number; currency: string; window_days: number }
   last_updated: string | null
 }
 
 const EMPTY_PARTNERS: PartnersResponse = { artisans: [], brands: [] }
-const EMPTY_METRICS: MetricsResponse = { artisans: 0, brands_live: 0, hubs: 0, last_updated: null }
+const EMPTY_METRICS: MetricsResponse = {
+  artisans: 0,
+  brands_live: 0,
+  hubs: 0,
+  gmv: { amount: 0, currency: 'USD', window_days: 90 },
+  last_updated: null,
+}
 
 function usePartners() {
   return useQuery<PartnersResponse>({
@@ -134,6 +142,15 @@ function useMetrics() {
   })
 }
 
+// Compact GMV formatter — "€12.4K" / "$1.2M" — for stat tiles where space
+// is tight. Currency code defaults to USD if unmapped.
+function formatGmv(amount: number, currency: string): string {
+  const symbol = currency === 'EUR' ? '€' : currency === 'GBP' ? '£' : currency === 'INR' ? '₹' : '$'
+  if (amount >= 1_000_000) return `${symbol}${(amount / 1_000_000).toFixed(1)}M`
+  if (amount >= 1_000) return `${symbol}${(amount / 1_000).toFixed(1)}K`
+  return `${symbol}${Math.round(amount)}`
+}
+
 // ----- ROOT -----------------------------------------------------------------
 
 export default function Home() {
@@ -145,10 +162,14 @@ export default function Home() {
       <Thesis />
       <Surfaces />
       <Makers />
+      <Brands />
+      <BrandSites />
       <Flow />
       <Hypothesis />
       <Benefits />
+      <Compare />
       <Stats />
+      <GmvHeadline />
       <Testimonials />
       <Waitlist />
       <Raise />
@@ -164,7 +185,8 @@ function Hero() {
   const { data: metrics } = useMetrics()
   const artisanCount = metrics && metrics.artisans > 0 ? metrics.artisans : 150
   const hubCount = metrics && metrics.hubs > 0 ? metrics.hubs : brand.geographies.length
-  const brandsCount = metrics && metrics.brands_live > 0 ? `${metrics.brands_live}+` : '3+'
+  const brandsCount = metrics && metrics.brands_live > 0 ? String(metrics.brands_live) : '3+'
+  const gmvCount = metrics && metrics.gmv.amount > 0 ? formatGmv(metrics.gmv.amount, metrics.gmv.currency) : null
   return (
     <section className="kt-hero">
       <div className="container">
@@ -223,7 +245,7 @@ function Hero() {
             <div data-aud="platform">
               <div className="row"><span className="k">Surfaces</span><span className="v">Admin · Partners · Storefront</span></div>
               <div className="row"><span className="k">Brands shipping</span><span className="v">{brandsCount}</span></div>
-              <div className="row"><span className="k">Customers</span><span className="v">15+</span></div>
+              {gmvCount && <div className="row"><span className="k">GMV powered</span><span className="v">{gmvCount}</span></div>}
               <div className="row"><span className="k">Stack</span><span className="v">MedusaJS · OSS</span></div>
             </div>
           </aside>
@@ -286,6 +308,87 @@ function Makers() {
               </article>
             )
           })}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// Consumer-facing rail of partner storefronts — same data as the platform
+// `Testimonials` brand cards but reframed as "shop the ateliers" for buyers.
+function Brands() {
+  const { data } = usePartners()
+  const brands = data?.brands ?? []
+  if (brands.length === 0) return null
+  return (
+    <section className="kt-section" data-aud="consumer" id="shop">
+      <div className="container">
+        <div className="kt-section-head">
+          <div className="kt-eyebrow">Shop the ateliers</div>
+          <h2 className="kt-display m">Storefronts <em>powered by hands</em>.</h2>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {brands.map((b) => {
+            const external = b.storefront_url.startsWith('http')
+            return (
+              <a
+                key={b.id}
+                href={b.storefront_url}
+                target={external ? '_blank' : undefined}
+                rel={external ? 'noopener noreferrer' : undefined}
+                className="kt-card hover"
+                style={{ textDecoration: 'none', color: 'inherit' }}
+              >
+                <div
+                  className={`kt-card-img${b.logo ? ' photo' : ''}`}
+                  data-label={b.is_live ? 'live' : undefined}
+                  style={b.logo ? { backgroundImage: `url('${b.logo}')` } : undefined}
+                />
+                <h3 className="kt-card-title l">{b.name}</h3>
+                {(b.craft || b.location) && (
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {b.craft && <span className="kt-pill">{b.craft}</span>}
+                    {b.location && <span className="kt-pill">{b.location}</span>}
+                  </div>
+                )}
+                {b.story && <p className="kt-card-body">{b.story}</p>}
+                <div className="kt-card-link">Visit storefront →</div>
+              </a>
+            )
+          })}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// Small strip cross-linking platform brand sites. Filters the current brand
+// out so we never advertise jaalyantra.com to a jaalyantra.com visitor.
+function BrandSites() {
+  const brand = useBrand()
+  const { data } = useWebsites()
+  const others = (data?.websites ?? []).filter((w) => {
+    const host = w.domain.replace(/^https?:\/\//, '')
+    return host !== brand.key + '.com' && host !== `www.${brand.key}.com`
+  })
+  if (others.length === 0) return null
+  return (
+    <section className="kt-section flush" data-aud="consumer">
+      <div className="container" style={{ paddingTop: '40px', paddingBottom: '40px' }}>
+        <div className="kt-brand-strip">
+          <div className="kt-eyebrow">Also from us</div>
+          <div className="kt-brand-strip-links">
+            {others.map((w) => (
+              <a key={w.id} href={w.url} target="_blank" rel="noopener noreferrer" className="kt-brand-strip-link">
+                {w.favicon_url && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={w.favicon_url} alt="" width={20} height={20} />
+                )}
+                <span>{w.name}</span>
+                <span className="kt-brand-strip-domain">{w.domain}</span>
+              </a>
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -511,6 +614,72 @@ function Surfaces() {
   )
 }
 
+// Side-by-side: traditional ops vs platform. Marketing pages call this a
+// "compare table"; we keep the kt-compare CSS lighter — two columns of
+// numbered rows, the right column on the dark accent so the contrast does
+// the rhetorical work.
+type ComparePair = { traditional: string; platform: string }
+const COMPARE_ROWS: ComparePair[] = [
+  { traditional: 'Spreadsheets in 4 tabs, two timezones out of date', platform: 'One source of truth, live across admin / partner / storefront' },
+  { traditional: 'WhatsApp threads for production updates', platform: 'Mobile-first partner portal with task accept / decline / status' },
+  { traditional: 'PDF lookbooks → manual product entry', platform: 'Design module feeds collection + storefront in one click' },
+  { traditional: 'Provenance claims with no receipt', platform: 'Digital Product Passport per SKU, EU ESPR ready' },
+  { traditional: 'Custom site rebuild for every brand', platform: 'Headless storefront on custom domains, switched on day one' },
+]
+
+function Compare() {
+  return (
+    <section className="kt-section" data-aud="platform" id="compare">
+      <div className="container">
+        <div className="kt-section-head">
+          <div className="kt-eyebrow">Without us / with us</div>
+          <h2 className="kt-display m">Stop reconciling. <em>Start shipping.</em></h2>
+        </div>
+        <div className="kt-compare">
+          <div className="kt-compare-head">
+            <div className="kt-compare-head-cell muted">The way most ateliers run</div>
+            <div className="kt-compare-head-cell accent">On the platform</div>
+          </div>
+          {COMPARE_ROWS.map((row, i) => (
+            <div key={i} className="kt-compare-row">
+              <div className="kt-compare-cell traditional">
+                <span className="n">{String(i + 1).padStart(2, '0')}</span>
+                <span>{row.traditional}</span>
+              </div>
+              <div className="kt-compare-cell platform">
+                <span className="n">{String(i + 1).padStart(2, '0')}</span>
+                <span>{row.platform}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// Single-number GMV headline scoped to the current brand. Falls back to the
+// same fallback Stats uses — never render a misleading $0.
+function GmvHeadline() {
+  const brand = useBrand()
+  const { data: metrics } = useMetrics()
+  if (!metrics || metrics.gmv.amount === 0) return null
+  const display = formatGmv(metrics.gmv.amount, metrics.gmv.currency)
+  return (
+    <section className="kt-section flush" data-aud="platform" id="gmv">
+      <div className="container" style={{ paddingTop: '40px', paddingBottom: '40px' }}>
+        <div className="kt-gmv-headline">
+          <div className="kt-eyebrow">GMV powered for ateliers</div>
+          <div className="kt-gmv-number">{display}</div>
+          <div className="kt-meta">
+            Trailing {metrics.gmv.window_days} days · {brand.shortName} · live from production
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
 function Demo() {
   return (
     <section className="kt-section flush" data-aud="platform" id="demo">
@@ -706,16 +875,23 @@ function Flow() {
 }
 
 function Stats() {
+  const brand = useBrand()
   const { data: metrics } = useMetrics()
-  const stats: Stat[] =
-    metrics && metrics.artisans > 0
-      ? [
-          { num: String(metrics.artisans), label: 'Artisans onboarded', sub: 'EU · IN · AU' },
-          { num: String(metrics.brands_live || 0), label: 'Brands shipping', sub: 'on JaalYantra' },
-          { num: '10', unit: '/ mo', label: 'Inbound signups', sub: '~20% curation rate' },
-          { num: '€1K', label: 'GMV this month', sub: '+ €18 / mo per artisan' },
-        ]
-      : STATS
+  // Live data drives the row when any metric is non-zero. We don't gate on
+  // artisans alone since GMV may be live before partner counts are seeded.
+  const hasLive = !!metrics && (metrics.artisans > 0 || metrics.brands_live > 0 || metrics.gmv.amount > 0)
+  const gmvNum = metrics ? formatGmv(metrics.gmv.amount, metrics.gmv.currency) : '€0'
+  const gmvSub = metrics
+    ? `trailing ${metrics.gmv.window_days}d · ${metrics.gmv.currency}`
+    : 'trailing 90d'
+  const stats: Stat[] = hasLive
+    ? [
+        { num: String(metrics!.artisans), label: 'Artisans onboarded', sub: brand.geographies.join(' · ') },
+        { num: String(metrics!.brands_live), label: 'Brands shipping', sub: `on ${brand.shortName}` },
+        { num: gmvNum, label: 'GMV processed', sub: gmvSub },
+        { num: '10', unit: '/ mo', label: 'Inbound signups', sub: '~20% curation rate' },
+      ]
+    : STATS
   return (
     <section
       className="kt-section flush"
@@ -737,7 +913,7 @@ function Stats() {
               className="kt-stat dark"
               style={{
                 border: 0,
-                borderRight: i === STATS.length - 1 ? 'none' : '1px solid var(--rule-dark)',
+                borderRight: i === stats.length - 1 ? 'none' : '1px solid var(--rule-dark)',
               }}
             >
               <div>
