@@ -629,40 +629,105 @@
   .kt-hero-grid { grid-template-columns: 1fr; gap: 32px; align-items: stretch; }
 }
 
-/* ---------------- MODE TOGGLE (sliding pill) ---------------- */
-.kt-mode-toggle {
+/* ---------------- MODE MENU (hovering dropdown) ---------------- */
+/* Single button that opens a panel listing the three audience modes.
+   Replaces the always-visible 3-pill toggle so the topbar stays compact
+   on narrow viewports (where the hamburger lives next door). */
+.kt-mode-menu {
+  position: relative;
+}
+.kt-mode-trigger {
   display: inline-flex;
   align-items: center;
+  gap: 10px;
+  padding: 9px 16px;
   background: var(--cream);
   border: 1px solid var(--rule);
   border-radius: var(--r-pill);
-  padding: 4px;
-  position: relative;
-}
-.kt-mode-toggle button {
-  position: relative; z-index: 2;
-  background: transparent; border: 0;
   font-family: var(--font-mono);
-  font-size: 12px; letter-spacing: 0.08em;
+  font-size: 12px;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  padding: 8px 14px;
-  border-radius: var(--r-pill);
+  color: var(--ink);
   cursor: pointer;
-  color: var(--ink-soft);
-  transition: color 200ms ease;
+  transition: border-color 160ms ease, background 160ms ease;
 }
-.kt-mode-toggle button[aria-pressed="true"] { color: var(--cream); }
-.kt-mode-toggle .pill {
-  position: absolute; top: 4px; left: 4px;
-  height: calc(100% - 8px); width: calc((100% - 8px) / 3);
+.kt-mode-trigger:hover { border-color: var(--ink); }
+.kt-mode-trigger[aria-expanded="true"] {
   background: var(--ink-dark-bg);
-  border-radius: var(--r-pill);
-  transition: transform 320ms cubic-bezier(.65, .05, .36, 1);
-  z-index: 1;
+  color: var(--cream);
+  border-color: var(--ink-dark-bg);
 }
-body[data-mode="consumer"] .kt-mode-toggle .pill { transform: translateX(0); }
-body[data-mode="investor"] .kt-mode-toggle .pill { transform: translateX(100%); }
-body[data-mode="platform"] .kt-mode-toggle .pill { transform: translateX(200%); }
+.kt-mode-trigger .dot {
+  width: 6px; height: 6px;
+  background: currentColor;
+  border-radius: 50%;
+  opacity: 0.7;
+}
+.kt-mode-caret {
+  transition: transform 200ms ease;
+}
+.kt-mode-caret[data-open="true"] {
+  transform: rotate(180deg);
+}
+.kt-mode-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 95;
+  min-width: 280px;
+  background: var(--cream);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-md);
+  box-shadow: 0 12px 32px oklch(0 0 0 / 0.08);
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  animation: kt-mode-dropdown-in 160ms ease;
+}
+@keyframes kt-mode-dropdown-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.kt-mode-dropdown button {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  padding: 14px 16px;
+  background: transparent;
+  border: 0;
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  text-align: left;
+  transition: background 160ms ease, color 160ms ease;
+  color: var(--ink);
+}
+.kt-mode-dropdown button:hover { background: oklch(0.92 0.024 78); }
+.kt-mode-dropdown button.is-current {
+  background: var(--ink-dark-bg);
+  color: var(--cream);
+}
+.kt-mode-dropdown-name {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.kt-mode-dropdown-blurb {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 1.35;
+  color: var(--ink-soft);
+}
+.kt-mode-dropdown button.is-current .kt-mode-dropdown-blurb {
+  color: oklch(0.78 0.018 75);
+}
+@media (max-width: 760px) {
+  .kt-mode-trigger { padding: 8px 12px; font-size: 11px; }
+  .kt-mode-dropdown { min-width: 240px; }
+}
 
 /* ---------------- FORK OVERLAY (first-visit) ---------------- */
 .kt-fork {
@@ -979,6 +1044,38 @@ body[data-mode="platform"] [data-aud="investor"] { display: none; }
 .kt-mobile-nav a:hover,
 .kt-mobile-nav a:focus { color: var(--accent-deep); padding-left: 6px; }
 
+/* Mode picker inside the mobile drawer — gives users a second discovery
+   path beyond the trigger in the topbar. */
+.kt-mobile-modes {
+  padding: 24px var(--container-pad, 24px) 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.kt-mobile-modes-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+}
+.kt-mobile-modes-list button {
+  padding: 14px 8px;
+  background: var(--cream);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-pill);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition: background 160ms ease, color 160ms ease, border-color 160ms ease;
+}
+.kt-mobile-modes-list button.is-current {
+  background: var(--ink-dark-bg);
+  color: var(--cream);
+  border-color: var(--ink-dark-bg);
+}
+
 /* ---------------- MOBILE SWEEP ---------------- */
 @media (max-width: 760px) {
   .kt-hamburger { display: inline-flex; align-items: center; justify-content: center; }
@@ -1014,9 +1111,6 @@ body[data-mode="platform"] [data-aud="investor"] { display: none; }
   .kt-compare-row { grid-template-columns: 1fr; }
   .kt-compare-head-cell.muted { border-right: 0; border-bottom: 1px solid var(--rule); }
   .kt-compare-cell.traditional { border-right: 0; border-bottom: 1px solid var(--rule-soft); }
-
-  /* Mode toggle compaction — keep all three pills visible on iPhone widths. */
-  .kt-mode-toggle button { padding: 6px 10px; font-size: 11px; }
 
   /* Footer ateliers row — stack label above links. */
   .kt-foot-ateliers { flex-direction: column; gap: 16px; align-items: flex-start; }

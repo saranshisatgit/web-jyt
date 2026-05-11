@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useBrand } from '@/app/context/brand-context'
+import { useMode, MODE_LABELS, type Mode } from '@/app/context/mode-context'
 import { ModeToggle } from './mode-toggle'
 
 type NavLink = { href: string; text: string }
@@ -14,9 +15,17 @@ const NAV_LINKS: NavLink[] = [
   { href: '/about', text: 'About' },
 ]
 
+const MODES: Mode[] = ['consumer', 'investor', 'platform']
+
 export function Navbar() {
   const brand = useBrand()
+  const { mode, setMode } = useMode()
   const [menuOpen, setMenuOpen] = useState(false)
+
+  const pickMode = (m: Mode) => {
+    setMode(m)
+    setMenuOpen(false)
+  }
 
   // Lock body scroll while the drawer is open so the page underneath
   // doesn't jitter on touch. Unlocked on close + on unmount.
@@ -79,6 +88,22 @@ export function Navbar() {
             </Link>
           ))}
         </nav>
+        <div className="kt-mobile-modes" aria-label="Audience mode">
+          <span className="kt-eyebrow">You&apos;re</span>
+          <div className="kt-mobile-modes-list">
+            {MODES.map((m) => (
+              <button
+                key={m}
+                type="button"
+                onClick={() => pickMode(m)}
+                aria-pressed={mode === m}
+                className={mode === m ? 'is-current' : undefined}
+              >
+                {MODE_LABELS[m]}
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
     </header>
   )
