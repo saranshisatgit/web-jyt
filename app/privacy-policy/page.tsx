@@ -1,5 +1,9 @@
 import { type Metadata } from 'next'
 import { Navbar } from '@/components/navbar'
+import { fetchPagefromAPI } from '../actions'
+import { getBlockByName, type Block } from '@/medu/queries'
+
+export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'Privacy Policy',
@@ -7,11 +11,10 @@ export const metadata: Metadata = {
     'How we collect, use, and protect your personal information.',
 }
 
-export default function PrivacyPolicyPage() {
-
-
-  // HTML content for the privacy policy
-  const privacyPolicyContent = `
+// Default HTML used when the CMS doesn't have a 'privacy-policy' page yet
+// (or when the page exists but has no MainContent block). The CMS path
+// is authoritative once seeded.
+const FALLBACK_PRIVACY_POLICY = `
     <h3>Introduction</h3>
     <p>
       At Jaal Yantra Textiles, we are committed to protecting your privacy and ensuring the security 
@@ -157,10 +160,26 @@ export default function PrivacyPolicyPage() {
       <li><strong>Address:</strong> Kotwali Bazaar Road, Dharamshala, HP 176215, INDIA</li>
     </ul>
 
-    <p className="text-sm text-olive-500 mt-8">
-      <strong>Last Updated:</strong> January 2025
-    </p>
+    <p><strong>Last Updated:</strong> January 2025</p>
   `
+
+type MainContentBlockShape = { content: { content?: string } }
+
+export default async function PrivacyPolicyPage() {
+  // Try to load CMS-managed copy first (editable via TipTap in admin).
+  // If the page doesn't exist or has no MainContent block, fall through
+  // to the hardcoded baseline so the route never errors.
+  const page = await fetchPagefromAPI('privacy-policy').catch(() => null)
+  const headerBlock = getBlockByName(page?.blocks, 'Header') as Block | undefined
+  const mainBlock = getBlockByName(page?.blocks, 'MainContent') as
+    | (Block & MainContentBlockShape)
+    | undefined
+
+  const title = (headerBlock?.content?.title as string) || 'Privacy policy.'
+  const subtitle =
+    (headerBlock?.content?.subtitle as string) ||
+    'How we collect, use, and protect your personal information.'
+  const html = mainBlock?.content?.content || FALLBACK_PRIVACY_POLICY
 
   return (
     <main>
@@ -172,22 +191,22 @@ export default function PrivacyPolicyPage() {
             Legal
           </span>
           <h1 className="kt-display l" style={{ marginTop: '20px', marginBottom: '16px' }}>
-            Privacy policy.
+            {title}
           </h1>
           <p
             className="muted"
             style={{ fontSize: '18px', maxWidth: '620px', lineHeight: 1.4, margin: 0 }}
           >
-            How we collect, use, and protect your personal information.
+            {subtitle}
           </p>
         </div>
       </section>
       <section className="kt-section">
         <div className="container">
           <article
-            className="prose-olive"
-            style={{ maxWidth: '720px', margin: '0 auto', fontSize: '17px', lineHeight: 1.65 }}
-            dangerouslySetInnerHTML={{ __html: privacyPolicyContent }}
+            className="prose prose-olive"
+            style={{ maxWidth: '720px', margin: '0 auto' }}
+            dangerouslySetInnerHTML={{ __html: html }}
           />
         </div>
       </section>

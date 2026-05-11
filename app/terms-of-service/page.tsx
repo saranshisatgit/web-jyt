@@ -1,16 +1,18 @@
 import { type Metadata } from 'next'
 import { Navbar } from '@/components/navbar'
+import { fetchPagefromAPI } from '../actions'
+import { getBlockByName, type Block } from '@/medu/queries'
+
+export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'Terms and Conditions',
   description: 'Terms and conditions for using our services and website.',
 }
 
-export default function TermsOfServicePage() {
-
-
-  // HTML content for the terms and conditions
-  const termsContent = `
+// Default HTML used when the CMS doesn't have a 'terms-of-service' page
+// yet. The CMS path is authoritative once seeded.
+const FALLBACK_TERMS = `
     <h2>Introduction</h2>
     <p>
       Welcome to Jaal Yantra Textiles. These Terms and Conditions govern your use of our website 
@@ -242,10 +244,25 @@ export default function TermsOfServicePage() {
       immediately cease using our website and services.
     </p>
 
-    <p className="text-sm text-olive-500 mt-8">
-      <strong>Last Updated:</strong> January 2025
-    </p>
+    <p><strong>Last Updated:</strong> January 2025</p>
   `
+
+type MainContentBlockShape = { content: { content?: string } }
+
+export default async function TermsOfServicePage() {
+  // CMS-managed (TipTap) copy takes precedence. Falls back to the
+  // hardcoded baseline so the route is never empty.
+  const page = await fetchPagefromAPI('terms-of-service').catch(() => null)
+  const headerBlock = getBlockByName(page?.blocks, 'Header') as Block | undefined
+  const mainBlock = getBlockByName(page?.blocks, 'MainContent') as
+    | (Block & MainContentBlockShape)
+    | undefined
+
+  const title = (headerBlock?.content?.title as string) || 'Terms and conditions.'
+  const subtitle =
+    (headerBlock?.content?.subtitle as string) ||
+    'Please read these terms carefully before using our services.'
+  const html = mainBlock?.content?.content || FALLBACK_TERMS
 
   return (
     <main>
@@ -257,22 +274,22 @@ export default function TermsOfServicePage() {
             Legal
           </span>
           <h1 className="kt-display l" style={{ marginTop: '20px', marginBottom: '16px' }}>
-            Terms and conditions.
+            {title}
           </h1>
           <p
             className="muted"
             style={{ fontSize: '18px', maxWidth: '620px', lineHeight: 1.4, margin: 0 }}
           >
-            Please read these terms carefully before using our services.
+            {subtitle}
           </p>
         </div>
       </section>
       <section className="kt-section">
         <div className="container">
           <article
-            className="prose-olive"
-            style={{ maxWidth: '720px', margin: '0 auto', fontSize: '17px', lineHeight: 1.65 }}
-            dangerouslySetInnerHTML={{ __html: termsContent }}
+            className="prose prose-olive"
+            style={{ maxWidth: '720px', margin: '0 auto' }}
+            dangerouslySetInnerHTML={{ __html: html }}
           />
         </div>
       </section>
