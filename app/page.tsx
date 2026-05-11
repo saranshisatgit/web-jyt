@@ -136,7 +136,14 @@ function useMetrics() {
     queryFn: async () => {
       const res = await fetch('/api/metrics')
       if (!res.ok) return EMPTY_METRICS
-      return (await res.json()) as MetricsResponse
+      // Normalize against EMPTY_METRICS so an older backend (without gmv)
+      // can't crash the page when components read metrics.gmv.amount.
+      const json = (await res.json()) as Partial<MetricsResponse> | null
+      return {
+        ...EMPTY_METRICS,
+        ...(json || {}),
+        gmv: { ...EMPTY_METRICS.gmv, ...(json?.gmv || {}) },
+      }
     },
     staleTime: 60_000,
   })

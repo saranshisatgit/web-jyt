@@ -33,7 +33,15 @@ export async function GET(request: NextRequest) {
       )
     }
     const data = await upstream.json()
-    const response = NextResponse.json(data)
+    // Normalize against EMPTY so older backend deploys (pre-GMV) still
+    // satisfy the MetricsResponse contract the homepage expects. Upstream
+    // wins where it provides a value; the shape always exists.
+    const normalized = {
+      ...EMPTY,
+      ...(data || {}),
+      gmv: { ...EMPTY.gmv, ...((data && data.gmv) || {}) },
+    }
+    const response = NextResponse.json(normalized)
     response.headers.set("Cache-Control", "public, max-age=60, stale-while-revalidate=300")
     return response
   } catch {
