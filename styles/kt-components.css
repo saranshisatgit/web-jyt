@@ -558,20 +558,28 @@
 }
 
 /* ---------------- HERO ---------------- */
+/* The hero sits one viewport tall (minus navbar) and centers its content
+   so the headline is always the highlight, never pushed under the fold.
+   Inner spacing uses inline styles on the headline/subtitle (see page.tsx
+   inline margins) — keep those tight: 16-20px between blocks, not 40+. */
 .kt-hero {
-  padding: 120px 0 100px;
+  min-height: calc(100svh - 72px);
+  padding: 48px 0 56px;
   position: relative;
+  display: flex;
+  align-items: center;
 }
 .kt-hero-grid {
   display: grid;
   grid-template-columns: 1.4fr 1fr;
-  gap: 80px;
-  align-items: end;
+  gap: 64px;
+  align-items: center;
+  width: 100%;
 }
 .kt-hero-side {
   border-top: 1px solid var(--rule);
-  padding-top: 32px;
-  display: flex; flex-direction: column; gap: 24px;
+  padding-top: 24px;
+  display: flex; flex-direction: column; gap: 18px;
 }
 .kt-hero-side .row {
   display: flex; justify-content: space-between; align-items: baseline;
@@ -605,8 +613,11 @@
 }
 
 @media (max-width: 760px) {
-  .kt-hero { padding: 80px 0 60px; }
-  .kt-hero-grid { grid-template-columns: 1fr; gap: 40px; }
+  /* On mobile, drop the viewport lock — phone heights are too variable
+     (Safari address bar, in-app browsers) and we'd rather the content
+     scroll naturally than be vertically squished. */
+  .kt-hero { min-height: 0; padding: 56px 0 40px; }
+  .kt-hero-grid { grid-template-columns: 1fr; gap: 32px; align-items: stretch; }
 }
 
 /* ---------------- MODE TOGGLE (sliding pill) ---------------- */

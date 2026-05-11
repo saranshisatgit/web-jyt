@@ -218,12 +218,12 @@ function Hero() {
               <span data-aud="investor">{brand.raise.round} · {brand.raise.year} · open round</span>
               <span data-aud="platform">{brand.platformBrandName} · Medo · v3 live</span>
             </span>
-            <h1 className="kt-display xl" style={{ marginTop: '32px', marginBottom: '24px' }}>
+            <h1 className="kt-display xl" style={{ marginTop: '20px', marginBottom: '16px' }}>
               <span data-aud="consumer">A garment with <em>provenance</em>, made by hands you can name.</span>
               <span data-aud="investor">A confidence engine for <em>custom clothing</em>.</span>
               <span data-aud="platform">Three surfaces. <em>One source of truth.</em></span>
             </h1>
-            <p className="muted" style={{ fontSize: '21px', maxWidth: '680px', lineHeight: 1.45, margin: '0 0 48px' }}>
+            <p className="muted" style={{ fontSize: '18px', maxWidth: '620px', lineHeight: 1.4, margin: '0 0 28px' }}>
               <span data-aud="consumer">
                 Design with vetted artisans. Track every stitch. Wear something that comes with its own story — and the receipts to prove it.
               </span>
