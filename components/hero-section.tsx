@@ -37,7 +37,7 @@ function StyledTitle({ title }: { title: string }) {
   return (
     <h1 className="font-display font-medium tracking-[-0.025em] text-balance text-navy-950 text-4xl/[1.05] sm:text-5xl/[1.05] lg:text-[5rem]/[0.98]">
       {head}{' '}
-      <span className="bg-linear-to-r from-orange-500 to-orange-700 bg-clip-text text-transparent font-serif font-normal italic tracking-[-0.01em]">
+      <span className="font-serif font-normal italic tracking-[-0.01em] text-navy-950">
         {tail}
       </span>
     </h1>
@@ -185,7 +185,7 @@ function WovenGrid() {
         className="absolute inset-0 -z-10 rounded-full opacity-70 blur-3xl"
         style={{
           background:
-            'radial-gradient(closest-side, color-mix(in oklch, var(--color-orange-300) 55%, transparent), transparent 70%)',
+            'radial-gradient(closest-side, color-mix(in oklch, var(--color-navy-300) 55%, transparent), transparent 70%)',
         }}
       />
       <div
@@ -193,7 +193,7 @@ function WovenGrid() {
         className="absolute -inset-4 -z-20 rounded-[40px] opacity-60 blur-2xl"
         style={{
           background:
-            'radial-gradient(60% 60% at 80% 20%, color-mix(in oklch, var(--color-navy-400) 45%, transparent), transparent 70%), radial-gradient(40% 40% at 20% 80%, color-mix(in oklch, var(--color-orange-500) 40%, transparent), transparent 60%)',
+            'radial-gradient(60% 60% at 80% 20%, color-mix(in oklch, var(--color-navy-400) 45%, transparent), transparent 70%), radial-gradient(40% 40% at 20% 80%, color-mix(in oklch, var(--color-navy-500) 40%, transparent), transparent 60%)',
         }}
       />
       <div className="absolute inset-0 -z-10 rounded-2xl ring-1 ring-navy-200/60" />
@@ -302,7 +302,13 @@ export function HeroSection({ headerBlock }: { headerBlock: HeaderBlock }) {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
           >
-            <WovenGrid />
+            <div className="relative aspect-square w-full max-w-[520px] overflow-hidden rounded-2xl ring-1 ring-navy-200/60">
+              <img
+                src="https://i.pinimg.com/736x/14/6c/d9/146cd97c0ea97dcaf2db8b2f08df41a2.jpg"
+                alt="Textile weave detail"
+                className="h-full w-full object-cover"
+              />
+            </div>
           </motion.div>
         </div>
       </Container>

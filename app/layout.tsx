@@ -1,6 +1,6 @@
 import '@/styles/globals.css'
 import type { Metadata } from 'next'
-import { Inter_Tight, Instrument_Serif, JetBrains_Mono } from 'next/font/google'
+import { Rethink_Sans, Instrument_Serif, JetBrains_Mono } from 'next/font/google'
 import { headers } from 'next/headers'
 import { brandFromKey } from '@/lib/brand'
 import { currencyFromCode } from '@/lib/currency'
@@ -13,9 +13,9 @@ import { Footer } from '@/components/footer'
 import { ForkOverlay } from '@/components/fork-overlay'
 import { BlueprintGrid } from '@/components/blueprint-grid'
 
-const interTight = Inter_Tight({
+const rethinkSans = Rethink_Sans({
   subsets: ['latin'],
-  weight: ['300', '400', '500', '600'],
+  weight: ['400', '500', '600', '700'],
   variable: '--font-sans',
   display: 'swap',
 })
@@ -57,7 +57,7 @@ export default async function RootLayout({
     <ApiQueryClientProvider>
       <html
         lang="en"
-        className={`${interTight.variable} ${instrumentSerif.variable} ${jetbrainsMono.variable}`}
+        className={`${rethinkSans.variable} ${instrumentSerif.variable} ${jetbrainsMono.variable}`}
       >
         <head>
           <link
@@ -73,12 +73,12 @@ export default async function RootLayout({
             defer
           />
         </head>
-        <body className="antialiased">
+        <body className="antialiased" data-mode="consumer">
           <BrandProvider value={brand}>
             <CurrencyProvider value={currency}>
               <ModeProvider>
               <VisualEditorProvider>
-                <main className="relative overflow-clip">{children}</main>
+                <main className="relative">{children}</main>
                 <Footer />
                 <ForkOverlay />
                 <BlueprintGrid />

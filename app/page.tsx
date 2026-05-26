@@ -5,7 +5,6 @@ import Link from 'next/link'
 import { useQuery } from '@tanstack/react-query'
 import { Navbar } from '@/components/navbar'
 import { useBrand } from '@/app/context/brand-context'
-import { useWebsites } from '@/lib/marketing-data'
 
 // ----- DATA -----------------------------------------------------------------
 
@@ -96,6 +95,7 @@ type PublicPartner = {
   craft: string | null
   location: string | null
   story: string | null
+  storefront_url: string | null
 }
 
 type PublicBrand = PublicPartner & {
@@ -178,8 +178,20 @@ function formatGmv(amount: number, currency: string): string {
 export default function Home() {
   return (
     <>
-      <Navbar />
-      <Hero />
+      <div>
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 -z-10 bg-dot-grid opacity-60 [mask-image:radial-gradient(ellipse_at_center,black_40%,transparent_85%)]"
+          style={{ top: '-72px', height: 'calc(100% + 72px)' }}
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 -z-20 bg-hero-wash"
+          style={{ top: '-72px', height: 'calc(100% + 72px)' }}
+        />
+        <Navbar />
+        <Hero />
+      </div>
       <Problem />
       <Thesis />
       <Surfaces />
@@ -211,11 +223,7 @@ function Hero() {
   const gmvCount = metrics && metrics.gmv.amount > 0 ? formatGmv(metrics.gmv.amount, metrics.gmv.currency) : null
   const leadDays = metrics?.lead_time?.avg_days ?? null
   return (
-    <section className="kt-hero relative isolate overflow-hidden bg-hero-wash">
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 -z-10 bg-dot-grid opacity-60 [mask-image:radial-gradient(ellipse_at_center,black_40%,transparent_85%)]"
-      />
+    <section className="kt-hero relative isolate">
       <div className="container">
         <div className="kt-hero-grid">
           <div>
@@ -226,9 +234,9 @@ function Hero() {
               <span data-aud="platform">{brand.platformBrandName} · Medo · v3 live</span>
             </span>
             <h1 className="kt-display xl" style={{ marginTop: '20px', marginBottom: '16px' }}>
-              <span data-aud="consumer">A garment with <em className="bg-linear-to-r from-orange-500 to-orange-700 bg-clip-text text-transparent">provenance</em>, made by hands you can name.</span>
-              <span data-aud="investor">A confidence engine for <em className="bg-linear-to-r from-orange-500 to-orange-700 bg-clip-text text-transparent">custom clothing</em>.</span>
-              <span data-aud="platform">Three surfaces. <em className="bg-linear-to-r from-orange-500 to-orange-700 bg-clip-text text-transparent">One source of truth.</em></span>
+              <span data-aud="consumer">A garment with <em className="serif italic">provenance</em>, made by hands you can name.</span>
+              <span data-aud="investor">A confidence engine for <em className="serif italic">custom clothing</em>.</span>
+              <span data-aud="platform">Three surfaces. <em className="serif italic">One source of truth.</em></span>
             </h1>
             <p className="muted" style={{ fontSize: '18px', maxWidth: '620px', lineHeight: 1.4, margin: '0 0 28px' }}>
               <span data-aud="consumer">
@@ -288,7 +296,7 @@ function Hero() {
 
 function Problem() {
   return (
-    <section className="kt-section" data-aud="consumer" id="provenance">
+    <section className="kt-section" id="provenance">
       <div className="container">
         <div className="kt-section-head">
           <div>
@@ -321,8 +329,9 @@ function Makers() {
           {items.map((m, i) => {
             const key = 'id' in m && m.id ? m.id : m.name
             const logo = 'logo' in m ? m.logo : null
-            return (
-              <article key={key || i} className="kt-card hover">
+            const url = 'storefront_url' in m ? m.storefront_url : null
+            const card = (
+              <article className="kt-card hover" style={url ? { cursor: 'pointer' } : undefined}>
                 <div
                   className={`kt-card-img${logo ? ' photo' : ''}`}
                   data-label="portrait"
@@ -334,7 +343,15 @@ function Makers() {
                   {m.location && <span className="kt-pill">{m.location}</span>}
                 </div>
                 {m.story && <p className="kt-card-body">{m.story}</p>}
+                {url && <div className="kt-card-link">Visit storefront →</div>}
               </article>
+            )
+            return url ? (
+              <a key={key || i} href={url} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit' }}>
+                {card}
+              </a>
+            ) : (
+              <div key={key || i}>{card}</div>
             )
           })}
         </div>
@@ -391,32 +408,18 @@ function Brands() {
   )
 }
 
-// Small strip cross-linking platform brand sites. Filters the current brand
-// out so we never advertise jaalyantra.com to a jaalyantra.com visitor.
+// Small strip cross-linking cicilabel.com — Jaal Yantra's own atelier storefront.
 function BrandSites() {
-  const brand = useBrand()
-  const { data } = useWebsites()
-  const others = (data?.websites ?? []).filter((w) => {
-    const host = w.domain.replace(/^https?:\/\//, '')
-    return host !== brand.key + '.com' && host !== `www.${brand.key}.com`
-  })
-  if (others.length === 0) return null
   return (
     <section className="kt-section flush" data-aud="consumer">
       <div className="container" style={{ paddingTop: '40px', paddingBottom: '40px' }}>
         <div className="kt-brand-strip">
           <div className="kt-eyebrow">Also from us</div>
           <div className="kt-brand-strip-links">
-            {others.map((w) => (
-              <a key={w.id} href={w.url} target="_blank" rel="noopener noreferrer" className="kt-brand-strip-link">
-                {w.favicon_url && (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={w.favicon_url} alt="" width={20} height={20} />
-                )}
-                <span>{w.name}</span>
-                <span className="kt-brand-strip-domain">{w.domain}</span>
-              </a>
-            ))}
+            <a href="https://cicilabel.com" target="_blank" rel="noopener noreferrer" className="kt-brand-strip-link">
+              <span>Cici Label</span>
+              <span className="kt-brand-strip-domain">cicilabel.com</span>
+            </a>
           </div>
         </div>
       </div>
@@ -443,9 +446,9 @@ function Waitlist() {
             <div className="kt-eyebrow on-dark">Be early</div>
             <h3 className="kt-display s" style={{ color: 'var(--cream)', marginTop: '16px' }}>
               First 100{' '}
-              <em className="bg-linear-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent">get a fitting</em>.
+              <em className="serif italic">get a fitting</em>.
             </h3>
-            <p style={{ color: 'oklch(0.82 0.018 75)', marginTop: '20px', maxWidth: '420px', lineHeight: 1.5 }}>
+            <p style={{ color: 'oklch(0.78 0.04 145)', marginTop: '20px', maxWidth: '420px', lineHeight: 1.5 }}>
               Join the waitlist and we&apos;ll pair you with an atelier and a piece — yours, made by name, made by hand.
             </p>
           </div>
@@ -470,7 +473,7 @@ function Waitlist() {
 
 function Thesis() {
   return (
-    <section className="kt-section" data-aud="investor" id="thesis">
+    <section className="kt-section" id="thesis">
       <div className="container">
         <div className="kt-section-head">
           <div className="kt-eyebrow">The thesis</div>
@@ -523,7 +526,7 @@ function HypoPaneLight() {
         ))}
       </ul>
       <div style={{ marginTop: 'auto', paddingTop: '24px', borderTop: '2px solid var(--ink)', display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: '20px' }}>
-        <div className="serif bg-linear-to-r from-orange-500 to-orange-700 bg-clip-text text-transparent" style={{ fontSize: '48px', lineHeight: 0.95 }}>{p.metric}</div>
+        <div className="serif" style={{ fontSize: '48px', lineHeight: 0.95, color: 'var(--ink-dark)' }}>{p.metric}</div>
         <div className="kt-meta" style={{ textAlign: 'right', maxWidth: '220px', lineHeight: 1.4 }}>{p.caption}</div>
       </div>
     </div>
@@ -538,21 +541,21 @@ function HypoPaneDark() {
       <div className="serif" style={{ fontSize: '56px', lineHeight: 1, margin: '12px 0 4px', letterSpacing: '-0.02em', color: 'var(--cream)' }}>
         {p.name}
       </div>
-      <div style={{ color: 'oklch(0.8 0.018 75)', marginBottom: '24px', fontSize: '16px' }}>{p.sub}</div>
+      <div style={{ color: 'oklch(0.8 0.04 145)', marginBottom: '24px', fontSize: '16px' }}>{p.sub}</div>
       <ul className="kt-list">
         {p.items.map((it) => (
-          <li key={it.n} style={{ borderBottomColor: 'oklch(0.32 0.02 55)' }}>
-            <span className="n" style={{ color: 'oklch(0.8 0.1 50)' }}>{it.n}</span>
+          <li key={it.n} style={{ borderBottomColor: 'oklch(0.28 0.03 145)' }}>
+            <span className="n" style={{ color: 'oklch(0.78 0.06 145)' }}>{it.n}</span>
             <div>
               <b style={{ color: 'var(--cream)' }}>{it.bold}</b>
-              <span style={{ color: 'oklch(0.78 0.018 75)' }}>{it.body}</span>
+              <span style={{ color: 'oklch(0.72 0.04 145)' }}>{it.body}</span>
             </div>
           </li>
         ))}
       </ul>
       <div style={{ marginTop: 'auto', paddingTop: '24px', borderTop: '2px solid var(--cream)', display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: '20px' }}>
-        <div className="serif bg-linear-to-r from-orange-300 to-orange-500 bg-clip-text text-transparent" style={{ fontSize: '48px', lineHeight: 0.95 }}>{p.metric}</div>
-        <div className="kt-meta" style={{ textAlign: 'right', maxWidth: '220px', lineHeight: 1.4, color: 'oklch(0.78 0.018 75)' }}>{p.caption}</div>
+        <div className="serif" style={{ fontSize: '48px', lineHeight: 0.95, color: 'var(--cream)' }}>{p.metric}</div>
+          <div className="kt-meta" style={{ textAlign: 'right', maxWidth: '220px', lineHeight: 1.4, color: 'oklch(0.72 0.04 145)' }}>{p.caption}</div>
       </div>
     </div>
   )
@@ -577,21 +580,21 @@ function Raise() {
           <div>
             <div className="kt-eyebrow on-dark">The raise</div>
             <div
-              className="serif bg-linear-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent"
-              style={{ fontSize: 'clamp(96px, 14vw, 188px)', lineHeight: 0.85, letterSpacing: '-0.03em', marginTop: '24px' }}
+              className="serif"
+              style={{ fontSize: 'clamp(96px, 14vw, 188px)', lineHeight: 0.85, letterSpacing: '-0.03em', marginTop: '24px', color: 'var(--cream)' }}
             >
               {brand.raise.amount}
             </div>
-            <div className="kt-meta" style={{ color: 'oklch(0.8 0.1 50)', marginTop: '24px' }}>
+            <div className="kt-meta" style={{ color: 'oklch(0.78 0.06 145)', marginTop: '24px' }}>
               {brand.raise.round} · {brand.raise.year} · open round
             </div>
-            <p style={{ color: 'oklch(0.82 0.018 75)', marginTop: '24px', maxWidth: '420px', lineHeight: 1.5 }}>
+            <p style={{ color: 'oklch(0.78 0.04 145)', marginTop: '24px', maxWidth: '420px', lineHeight: 1.5 }}>
               Use of funds: dedicated sales team · artisan onboarding in EU/IN/AU · paid acquisition &amp; brand · connecting production hubs.
             </p>
           </div>
           <div>
             <h3 className="kt-display s" style={{ color: 'var(--cream)', marginBottom: '16px' }}>Want to talk?</h3>
-            <p style={{ color: 'oklch(0.82 0.018 75)', marginBottom: '28px' }}>
+            <p style={{ color: 'oklch(0.78 0.04 145)', marginBottom: '28px' }}>
               Drop your email and we&apos;ll send the data room and a calendar link.
             </p>
             <CaptureForm
@@ -733,21 +736,21 @@ function Demo() {
           <div>
             <div className="kt-eyebrow on-dark">Get a demo</div>
             <div
-              className="serif bg-linear-to-r from-orange-300 to-orange-500 bg-clip-text text-transparent"
-              style={{ fontSize: 'clamp(80px, 9vw, 120px)', lineHeight: 0.85, letterSpacing: '-0.03em', marginTop: '24px' }}
+              className="serif"
+              style={{ fontSize: 'clamp(80px, 9vw, 120px)', lineHeight: 0.85, letterSpacing: '-0.03em', marginTop: '24px', color: 'var(--cream)' }}
             >
               Run<br />your<br />atelier.
             </div>
-            <div className="kt-meta" style={{ color: 'oklch(0.8 0.1 50)', marginTop: '24px' }}>
+            <div className="kt-meta" style={{ color: 'oklch(0.78 0.06 145)', marginTop: '24px' }}>
               JaalYantra · since 2025
             </div>
-            <p style={{ color: 'oklch(0.82 0.018 75)', marginTop: '24px', maxWidth: '420px', lineHeight: 1.5 }}>
+            <p style={{ color: 'oklch(0.78 0.04 145)', marginTop: '24px', maxWidth: '420px', lineHeight: 1.5 }}>
               15+ happy customers · 3+ brands shipping. Tell us what you&apos;re making and we&apos;ll show you the platform live.
             </p>
           </div>
           <div>
             <h3 className="kt-display s" style={{ color: 'var(--cream)', marginBottom: '16px' }}>See it on your collection.</h3>
-            <p style={{ color: 'oklch(0.82 0.018 75)', marginBottom: '28px' }}>
+            <p style={{ color: 'oklch(0.78 0.04 145)', marginBottom: '28px' }}>
               30-minute call. We&apos;ll spin up a sandbox with your products in it.
             </p>
             <CaptureForm
@@ -849,7 +852,7 @@ function Testimonials() {
                 </p>
                 <div className="kt-byline" style={{ marginTop: 'auto', paddingTop: '24px' }}>
                   <div className="kt-avatar sm" aria-hidden />
-                  <div>
+      <div className="relative">
                     <div className="name">{t.brand}</div>
                     <div className="role">{t.role}</div>
                   </div>
@@ -887,7 +890,7 @@ function Flow() {
                   borderRight: isLast ? 'none' : '1px solid var(--rule)',
                 }}
               >
-                <div className="kt-meta" style={{ color: isDark ? 'oklch(0.8 0.1 50)' : 'var(--accent-deep)' }}>
+                <div className="kt-meta" style={{ color: isDark ? 'oklch(0.78 0.06 145)' : 'var(--accent-deep)' }}>
                   {step.stage}
                 </div>
                 <h3 className="serif" style={{ fontSize: '26px', margin: '12px 0 16px', lineHeight: 1.1, fontWeight: 400 }}>
@@ -895,7 +898,7 @@ function Flow() {
                 </h3>
                 <ul className="kt-dash-list">
                   {step.items.map((it) => (
-                    <li key={it} style={isDark ? { color: 'oklch(0.78 0.018 75)' } : undefined}>
+                    <li key={it} style={isDark ? { color: 'oklch(0.72 0.04 145)' } : undefined}>
                       {it}
                     </li>
                   ))}
@@ -941,7 +944,7 @@ function Stats() {
           <div className="kt-eyebrow on-dark">Traction · live</div>
           <h2 className="kt-display m" style={{ color: 'var(--cream)' }}>
             Numbers from the platform,{' '}
-              <em className="bg-linear-to-r from-orange-300 to-orange-500 bg-clip-text text-transparent">not the slide</em>.
+              <em className="serif italic">not the slide</em>.
           </h2>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4" style={{ border: '1px solid var(--rule-dark)' }}>
@@ -1020,14 +1023,14 @@ function CaptureForm({
     status.kind === 'ok'
       ? 'oklch(0.75 0.18 145)'
       : status.kind === 'err'
-        ? 'oklch(0.82 0.14 50)'
+        ? 'oklch(0.60 0.14 25)'
         : theme === 'dark'
-          ? 'oklch(0.78 0.018 75)'
+          ? 'oklch(0.72 0.04 145)'
           : 'var(--ink-soft)'
 
   const inputStyle =
     theme === 'dark'
-      ? { background: 'transparent', borderColor: 'oklch(0.4 0.02 55)', color: 'var(--cream)' }
+      ? { background: 'transparent', borderColor: 'oklch(0.38 0.03 145)', color: 'var(--cream)' }
       : undefined
 
   return (

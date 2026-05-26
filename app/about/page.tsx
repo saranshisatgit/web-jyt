@@ -136,12 +136,12 @@ function Mission({ data }: { data?: Block }) {
         </div>
         <ul className="kt-list" style={{ marginBottom: '48px' }}>
           {content.mission.paragraphs.map((p, i) => (
-            <li key={i} style={{ borderBottomColor: 'oklch(0.32 0.02 55)' }}>
-              <span className="n" style={{ color: 'oklch(0.8 0.1 50)' }}>
+            <li key={i} style={{ borderBottomColor: 'oklch(0.36 0.06 145)' }}>
+              <span className="n" style={{ color: 'var(--accent-soft)' }}>
                 {String(i + 1).padStart(2, '0')}
               </span>
               <div>
-                <span style={{ color: 'oklch(0.85 0.018 75)', fontSize: '17px', lineHeight: 1.5 }}>
+                <span style={{ color: 'var(--cream-warm)', fontSize: '17px', lineHeight: 1.5 }}>
                   {p}
                 </span>
               </div>
@@ -160,7 +160,7 @@ function Mission({ data }: { data?: Block }) {
                   backgroundPosition: 'center',
                   aspectRatio: '1 / 1',
                   borderRadius: 'var(--r-md)',
-                  border: '1px solid oklch(0.32 0.02 55)',
+                  border: '1px solid oklch(0.28 0.03 145)',
                 }}
               />
             ))}
@@ -309,7 +309,7 @@ function Investors({ data }: { data?: Block }) {
                 className="kt-meta"
                 style={{
                   marginTop: '16px',
-                  color: 'oklch(0.8 0.018 75)',
+                  color: 'oklch(0.8 0.04 145)',
                   letterSpacing: '0.1em',
                 }}
               >
