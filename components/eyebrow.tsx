@@ -5,8 +5,8 @@ export function Eyebrow({ children, className, ...props }: ComponentProps<'div'>
   return (
     <div
       className={clsx(
-        'inline-flex items-center gap-3 text-xs font-semibold tracking-[0.18em] uppercase text-clay-700',
-        'before:h-px before:w-8 before:bg-clay-500/60',
+        'inline-flex items-center gap-3 text-xs font-semibold tracking-[0.18em] uppercase text-orange-700',
+        'before:h-px before:w-8 before:bg-orange-500/60',
         className,
       )}
       {...props}

@@ -39,7 +39,7 @@ export function MainContent({ block, className = '' }: MainContentProps) {
   if (!block || !block.content) {
     return (
       <Container className="py-16 sm:py-24">
-        <div className="text-center text-olive-500">
+        <div className="text-center text-navy-500">
           <p>Content not available</p>
         </div>
       </Container>
@@ -62,20 +62,20 @@ export function MainContent({ block, className = '' }: MainContentProps) {
       case 'html':
         return (
           <div
-            className={`prose prose-olive prose-sm sm:prose-base max-w-none ${className}`}
+            className={`prose prose-navy prose-sm sm:prose-base max-w-none ${className}`}
             dangerouslySetInnerHTML={{ __html: content }}
           />
         )
       case 'text':
         return (
-          <div className={`prose prose-olive prose-sm sm:prose-base max-w-none ${className}`}>
+          <div className={`prose prose-navy prose-sm sm:prose-base max-w-none ${className}`}>
             <p className="whitespace-pre-wrap">{content}</p>
           </div>
         )
       default:
         return (
           <div
-            className={`prose prose-olive prose-sm sm:prose-base max-w-none ${className}`}
+            className={`prose prose-navy prose-sm sm:prose-base max-w-none ${className}`}
             dangerouslySetInnerHTML={{ __html: content }}
           />
         )
@@ -122,7 +122,7 @@ export function SimpleMainContent({
     <Container className="py-16 sm:py-24">
       <div className={`mx-auto ${maxWidthClass}`}>
         <div
-          className={`prose prose-olive prose-sm sm:prose-base max-w-none ${className}`}
+          className={`prose prose-navy prose-sm sm:prose-base max-w-none ${className}`}
           dangerouslySetInnerHTML={{ __html: html }}
         />
       </div>

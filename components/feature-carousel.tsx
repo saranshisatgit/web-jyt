@@ -74,7 +74,7 @@ export default function FeatureCarousel({ slides, slideProps = [], steps, interv
       onMouseMove={handleMouse}
       style={{ "--x": useMotionTemplate`${mouseX}px`, "--y": useMotionTemplate`${mouseY}px` } as React.CSSProperties}
     >
-      <div className="group relative w-full overflow-hidden md:overflow-visible rounded-xl sm:rounded-3xl border border-black/10 bg-olive-50 backdrop-blur-sm text-olive-900 transition duration-300 md:hover:border-transparent">
+      <div className="group relative w-full overflow-hidden md:overflow-visible rounded-xl sm:rounded-3xl border border-black/10 bg-navy-50 backdrop-blur-sm text-navy-900 transition duration-300 md:hover:border-transparent">
         {/* Step indicator inside carousel */}
         <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-50 flex justify-center gap-4">
           {stepNames.map((title, idx) => (

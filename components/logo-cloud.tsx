@@ -32,7 +32,7 @@ export function LogoCloud({
   return (
     <div className={clsx('relative', className)}>
       {label && (
-        <p className="mb-8 text-center text-xs font-semibold tracking-[0.18em] uppercase text-olive-500">
+        <p className="mb-8 text-center text-xs font-semibold tracking-[0.18em] uppercase text-navy-500">
           {label}
         </p>
       )}

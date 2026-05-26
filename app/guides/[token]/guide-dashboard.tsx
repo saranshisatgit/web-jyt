@@ -128,11 +128,11 @@ export function GuideDashboard({ initial }: Props) {
 
   return (
     <div className="min-h-screen bg-hero-wash pb-24">
-      <header className="border-b border-olive-200/70 bg-white/70 backdrop-blur-sm">
+      <header className="border-b border-navy-200/70 bg-white/70 backdrop-blur-sm">
         <div className="mx-auto flex w-full max-w-7xl flex-col gap-4 px-6 py-8 lg:flex-row lg:items-end lg:justify-between lg:px-10">
           <div className="flex items-center gap-4">
             {initial.guide.photo_url ? (
-              <div className="relative h-14 w-14 overflow-hidden rounded-full bg-olive-100">
+              <div className="relative h-14 w-14 overflow-hidden rounded-full bg-navy-100">
                 <Image
                   src={initial.guide.photo_url}
                   alt={initial.guide.name || ''}
@@ -143,20 +143,20 @@ export function GuideDashboard({ initial }: Props) {
               </div>
             ) : null}
             <div>
-              <p className="font-serif text-sm italic text-clay-700">Guide dashboard</p>
-              <h1 className="font-display text-2xl font-medium text-olive-950 sm:text-3xl">
+              <p className="font-serif text-sm italic text-orange-700">Guide dashboard</p>
+              <h1 className="font-display text-2xl font-medium text-navy-950 sm:text-3xl">
                 {initial.guide.name || 'Welcome'}
               </h1>
               {initial.guide.role ? (
-                <p className="text-sm text-olive-600">{initial.guide.role}</p>
+                <p className="text-sm text-navy-600">{initial.guide.role}</p>
               ) : null}
             </div>
           </div>
           <div className="flex items-center gap-3 text-sm">
-            <div className="rounded-full bg-clay-50 px-3 py-1.5 text-clay-800 ring-1 ring-clay-200">
+            <div className="rounded-full bg-orange-50 px-3 py-1.5 text-orange-800 ring-1 ring-orange-200">
               <span className="font-medium">{initial.upcoming_count}</span> upcoming
             </div>
-            <div className="inline-flex rounded-full bg-white p-1 ring-1 ring-olive-200">
+            <div className="inline-flex rounded-full bg-white p-1 ring-1 ring-navy-200">
               {(['upcoming', 'all'] as const).map((f) => (
                 <button
                   key={f}
@@ -165,8 +165,8 @@ export function GuideDashboard({ initial }: Props) {
                   className={[
                     'rounded-full px-3 py-1 text-xs transition',
                     filter === f
-                      ? 'bg-olive-900 text-white'
-                      : 'text-olive-600 hover:text-olive-900',
+                      ? 'bg-navy-900 text-white'
+                      : 'text-navy-600 hover:text-navy-900',
                   ].join(' ')}
                 >
                   {f === 'upcoming' ? 'Upcoming' : 'All'}
@@ -179,13 +179,13 @@ export function GuideDashboard({ initial }: Props) {
 
       <main className="mx-auto w-full max-w-7xl px-6 py-10 lg:px-10">
         {visits.length === 0 ? (
-          <div className="rounded-3xl border border-dashed border-olive-300 bg-white p-12 text-center">
-            <p className="font-display text-xl font-medium text-olive-950">
+          <div className="rounded-3xl border border-dashed border-navy-300 bg-white p-12 text-center">
+            <p className="font-display text-xl font-medium text-navy-950">
               {filter === 'upcoming'
                 ? 'Nothing on your calendar yet.'
                 : 'No visits in the window.'}
             </p>
-            <p className="mt-2 text-sm text-olive-600">
+            <p className="mt-2 text-sm text-navy-600">
               When customers confirm a visit, it&apos;ll show up here with their answers and
               what they&apos;ve picked.
             </p>
@@ -204,11 +204,11 @@ export function GuideDashboard({ initial }: Props) {
                   });
               return (
                 <section key={dateKey}>
-                  <header className="flex items-baseline justify-between border-b border-olive-200 pb-2">
-                    <h2 className="font-display text-lg font-medium text-olive-950">
+                  <header className="flex items-baseline justify-between border-b border-navy-200 pb-2">
+                    <h2 className="font-display text-lg font-medium text-navy-950">
                       {headerLabel}
                     </h2>
-                    <span className="text-xs text-olive-500">
+                    <span className="text-xs text-navy-500">
                       {dayVisits.length} visit{dayVisits.length === 1 ? '' : 's'}
                     </span>
                   </header>
@@ -218,31 +218,31 @@ export function GuideDashboard({ initial }: Props) {
                       return (
                         <li
                           key={v.response_id}
-                          className="overflow-hidden rounded-2xl border border-olive-200 bg-white"
+                          className="overflow-hidden rounded-2xl border border-navy-200 bg-white"
                         >
                           <button
                             type="button"
                             onClick={() => setOpenId(isOpen ? null : v.response_id)}
-                            className="flex w-full items-start gap-4 px-5 py-4 text-left transition hover:bg-olive-50/40"
+                            className="flex w-full items-start gap-4 px-5 py-4 text-left transition hover:bg-navy-50/40"
                           >
                             <div className="flex-1 min-w-0">
                               <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                                <p className="font-display text-base font-medium text-olive-950">
+                                <p className="font-display text-base font-medium text-navy-950">
                                   {traveller(v)}
                                 </p>
-                                <p className="text-sm text-olive-500">
+                                <p className="text-sm text-navy-500">
                                   {headcountSummary(v.headcount)}
                                 </p>
                                 {v.booking_ref ? (
-                                  <span className="font-mono text-xs text-olive-400">
+                                  <span className="font-mono text-xs text-navy-400">
                                     {v.booking_ref}
                                   </span>
                                 ) : null}
                               </div>
-                              <p className="mt-1 truncate text-sm text-olive-700">
+                              <p className="mt-1 truncate text-sm text-navy-700">
                                 {v.tour_form.title} · {formatDateLong(v.tour_date)}
                               </p>
-                              <p className="mt-1 text-xs text-olive-500">
+                              <p className="mt-1 text-xs text-navy-500">
                                 {v.selected_segments.length} segment
                                 {v.selected_segments.length === 1 ? '' : 's'} selected
                                 {v.payment?.add_ons_due
@@ -250,7 +250,7 @@ export function GuideDashboard({ initial }: Props) {
                                   : ''}
                               </p>
                             </div>
-                            <span className="ml-2 inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-olive-50 text-olive-700">
+                            <span className="ml-2 inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-navy-50 text-navy-700">
                               <svg
                                 viewBox="0 0 12 12"
                                 className={`h-3 w-3 transition-transform ${
@@ -269,26 +269,26 @@ export function GuideDashboard({ initial }: Props) {
                           </button>
 
                           {isOpen ? (
-                            <div className="grid grid-cols-1 gap-6 border-t border-olive-100 bg-olive-50/30 px-5 py-5 lg:grid-cols-3">
+                            <div className="grid grid-cols-1 gap-6 border-t border-navy-100 bg-navy-50/30 px-5 py-5 lg:grid-cols-3">
                               {/* Traveller */}
                               <div>
-                                <h3 className="text-xs uppercase tracking-wide text-olive-500">
+                                <h3 className="text-xs uppercase tracking-wide text-navy-500">
                                   Traveller
                                 </h3>
                                 <dl className="mt-2 space-y-1.5 text-sm">
                                   {v.traveller?.country ? (
                                     <div className="flex justify-between gap-3">
-                                      <dt className="text-olive-500">Country</dt>
-                                      <dd className="text-olive-900">{v.traveller.country}</dd>
+                                      <dt className="text-navy-500">Country</dt>
+                                      <dd className="text-navy-900">{v.traveller.country}</dd>
                                     </div>
                                   ) : null}
                                   {v.traveller?.email ? (
                                     <div className="flex justify-between gap-3">
-                                      <dt className="text-olive-500">Email</dt>
-                                      <dd className="truncate text-olive-900">
+                                      <dt className="text-navy-500">Email</dt>
+                                      <dd className="truncate text-navy-900">
                                         <a
                                           href={`mailto:${v.traveller.email}`}
-                                          className="text-clay-700 hover:underline"
+                                          className="text-orange-700 hover:underline"
                                         >
                                           {v.traveller.email}
                                         </a>
@@ -297,11 +297,11 @@ export function GuideDashboard({ initial }: Props) {
                                   ) : null}
                                   {v.traveller?.phone ? (
                                     <div className="flex justify-between gap-3">
-                                      <dt className="text-olive-500">Phone</dt>
-                                      <dd className="text-olive-900">
+                                      <dt className="text-navy-500">Phone</dt>
+                                      <dd className="text-navy-900">
                                         <a
                                           href={`tel:${v.traveller.phone}`}
-                                          className="text-clay-700 hover:underline"
+                                          className="text-orange-700 hover:underline"
                                         >
                                           {v.traveller.phone}
                                         </a>
@@ -310,8 +310,8 @@ export function GuideDashboard({ initial }: Props) {
                                   ) : null}
                                   {v.traveller?.language ? (
                                     <div className="flex justify-between gap-3">
-                                      <dt className="text-olive-500">Language</dt>
-                                      <dd className="text-olive-900">{v.traveller.language}</dd>
+                                      <dt className="text-navy-500">Language</dt>
+                                      <dd className="text-navy-900">{v.traveller.language}</dd>
                                     </div>
                                   ) : null}
                                 </dl>
@@ -319,11 +319,11 @@ export function GuideDashboard({ initial }: Props) {
 
                               {/* Itinerary */}
                               <div>
-                                <h3 className="text-xs uppercase tracking-wide text-olive-500">
+                                <h3 className="text-xs uppercase tracking-wide text-navy-500">
                                   Day plan
                                 </h3>
                                 {v.selected_segments.length === 0 ? (
-                                  <p className="mt-2 text-sm text-olive-500">
+                                  <p className="mt-2 text-sm text-navy-500">
                                     No segments selected yet.
                                   </p>
                                 ) : (
@@ -332,13 +332,13 @@ export function GuideDashboard({ initial }: Props) {
                                       <li key={s.id} className="flex items-baseline gap-2">
                                         <span
                                           className={`mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full ${
-                                            s.required ? 'bg-clay-500' : 'bg-olive-400'
+                                            s.required ? 'bg-orange-500' : 'bg-navy-400'
                                           }`}
                                         />
-                                        <span className="text-olive-900">
+                                        <span className="text-navy-900">
                                           {s.title}
                                           {s.required ? (
-                                            <span className="ml-1 text-xs text-olive-500">
+                                            <span className="ml-1 text-xs text-navy-500">
                                               · always included
                                             </span>
                                           ) : null}
@@ -350,7 +350,7 @@ export function GuideDashboard({ initial }: Props) {
                                 {v.payment ? (
                                   <div className="mt-4 rounded-lg bg-white p-3 text-xs">
                                     {v.payment.paid_via_source ? (
-                                      <p className="flex justify-between text-olive-700">
+                                      <p className="flex justify-between text-navy-700">
                                         <span>Paid via {v.payment.paid_via_source.provider}</span>
                                         <span className="font-mono">
                                           {formatMoney(
@@ -360,7 +360,7 @@ export function GuideDashboard({ initial }: Props) {
                                         </span>
                                       </p>
                                     ) : null}
-                                    <p className="mt-1 flex justify-between text-olive-900">
+                                    <p className="mt-1 flex justify-between text-navy-900">
                                       <span className="font-medium">Add-ons due on day</span>
                                       <span className="font-mono font-medium">
                                         {formatMoney(
@@ -375,11 +375,11 @@ export function GuideDashboard({ initial }: Props) {
 
                               {/* Customer answers */}
                               <div>
-                                <h3 className="text-xs uppercase tracking-wide text-olive-500">
+                                <h3 className="text-xs uppercase tracking-wide text-navy-500">
                                   From the customer
                                 </h3>
                                 {Object.keys(v.answers).length === 0 ? (
-                                  <p className="mt-2 text-sm text-olive-500">
+                                  <p className="mt-2 text-sm text-navy-500">
                                     They haven&apos;t left any notes yet.
                                   </p>
                                 ) : (
@@ -393,10 +393,10 @@ export function GuideDashboard({ initial }: Props) {
                                       })
                                       .map(([key, val]) => (
                                         <div key={key} className="flex flex-col gap-0.5">
-                                          <dt className="text-xs text-olive-500">
+                                          <dt className="text-xs text-navy-500">
                                             {ANSWER_LABELS[key] || key}
                                           </dt>
-                                          <dd className="whitespace-pre-line text-olive-900">
+                                          <dd className="whitespace-pre-line text-navy-900">
                                             {formatAnswerValue(val)}
                                           </dd>
                                         </div>
@@ -415,7 +415,7 @@ export function GuideDashboard({ initial }: Props) {
             })}
           </div>
         )}
-        <p className="mt-12 text-center text-xs text-olive-500">
+        <p className="mt-12 text-center text-xs text-navy-500">
           Showing visits from the last 7 days through any future date · Sorted by tour date
         </p>
       </main>

@@ -211,7 +211,11 @@ function Hero() {
   const gmvCount = metrics && metrics.gmv.amount > 0 ? formatGmv(metrics.gmv.amount, metrics.gmv.currency) : null
   const leadDays = metrics?.lead_time?.avg_days ?? null
   return (
-    <section className="kt-hero">
+    <section className="kt-hero relative isolate overflow-hidden bg-hero-wash">
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 -z-10 bg-dot-grid opacity-60 [mask-image:radial-gradient(ellipse_at_center,black_40%,transparent_85%)]"
+      />
       <div className="container">
         <div className="kt-hero-grid">
           <div>
@@ -222,9 +226,9 @@ function Hero() {
               <span data-aud="platform">{brand.platformBrandName} · Medo · v3 live</span>
             </span>
             <h1 className="kt-display xl" style={{ marginTop: '20px', marginBottom: '16px' }}>
-              <span data-aud="consumer">A garment with <em>provenance</em>, made by hands you can name.</span>
-              <span data-aud="investor">A confidence engine for <em>custom clothing</em>.</span>
-              <span data-aud="platform">Three surfaces. <em>One source of truth.</em></span>
+              <span data-aud="consumer">A garment with <em className="bg-linear-to-r from-orange-500 to-orange-700 bg-clip-text text-transparent">provenance</em>, made by hands you can name.</span>
+              <span data-aud="investor">A confidence engine for <em className="bg-linear-to-r from-orange-500 to-orange-700 bg-clip-text text-transparent">custom clothing</em>.</span>
+              <span data-aud="platform">Three surfaces. <em className="bg-linear-to-r from-orange-500 to-orange-700 bg-clip-text text-transparent">One source of truth.</em></span>
             </h1>
             <p className="muted" style={{ fontSize: '18px', maxWidth: '620px', lineHeight: 1.4, margin: '0 0 28px' }}>
               <span data-aud="consumer">
@@ -438,7 +442,8 @@ function Waitlist() {
           <div>
             <div className="kt-eyebrow on-dark">Be early</div>
             <h3 className="kt-display s" style={{ color: 'var(--cream)', marginTop: '16px' }}>
-              First 100 <em style={{ color: 'oklch(0.82 0.14 50)' }}>get a fitting</em>.
+              First 100{' '}
+              <em className="bg-linear-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent">get a fitting</em>.
             </h3>
             <p style={{ color: 'oklch(0.82 0.018 75)', marginTop: '20px', maxWidth: '420px', lineHeight: 1.5 }}>
               Join the waitlist and we&apos;ll pair you with an atelier and a piece — yours, made by name, made by hand.
@@ -518,7 +523,7 @@ function HypoPaneLight() {
         ))}
       </ul>
       <div style={{ marginTop: 'auto', paddingTop: '24px', borderTop: '2px solid var(--ink)', display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: '20px' }}>
-        <div className="serif" style={{ fontSize: '48px', lineHeight: 0.95, color: 'var(--accent-deep)' }}>{p.metric}</div>
+        <div className="serif bg-linear-to-r from-orange-500 to-orange-700 bg-clip-text text-transparent" style={{ fontSize: '48px', lineHeight: 0.95 }}>{p.metric}</div>
         <div className="kt-meta" style={{ textAlign: 'right', maxWidth: '220px', lineHeight: 1.4 }}>{p.caption}</div>
       </div>
     </div>
@@ -546,7 +551,7 @@ function HypoPaneDark() {
         ))}
       </ul>
       <div style={{ marginTop: 'auto', paddingTop: '24px', borderTop: '2px solid var(--cream)', display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: '20px' }}>
-        <div className="serif" style={{ fontSize: '48px', lineHeight: 0.95, color: 'oklch(0.82 0.14 50)' }}>{p.metric}</div>
+        <div className="serif bg-linear-to-r from-orange-300 to-orange-500 bg-clip-text text-transparent" style={{ fontSize: '48px', lineHeight: 0.95 }}>{p.metric}</div>
         <div className="kt-meta" style={{ textAlign: 'right', maxWidth: '220px', lineHeight: 1.4, color: 'oklch(0.78 0.018 75)' }}>{p.caption}</div>
       </div>
     </div>
@@ -572,8 +577,8 @@ function Raise() {
           <div>
             <div className="kt-eyebrow on-dark">The raise</div>
             <div
-              className="serif"
-              style={{ fontSize: 'clamp(96px, 14vw, 188px)', lineHeight: 0.85, letterSpacing: '-0.03em', color: 'oklch(0.85 0.16 50)', marginTop: '24px' }}
+              className="serif bg-linear-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent"
+              style={{ fontSize: 'clamp(96px, 14vw, 188px)', lineHeight: 0.85, letterSpacing: '-0.03em', marginTop: '24px' }}
             >
               {brand.raise.amount}
             </div>
@@ -728,8 +733,8 @@ function Demo() {
           <div>
             <div className="kt-eyebrow on-dark">Get a demo</div>
             <div
-              className="serif"
-              style={{ fontSize: 'clamp(80px, 9vw, 120px)', lineHeight: 0.85, letterSpacing: '-0.03em', color: 'oklch(0.85 0.16 50)', marginTop: '24px' }}
+              className="serif bg-linear-to-r from-orange-300 to-orange-500 bg-clip-text text-transparent"
+              style={{ fontSize: 'clamp(80px, 9vw, 120px)', lineHeight: 0.85, letterSpacing: '-0.03em', marginTop: '24px' }}
             >
               Run<br />your<br />atelier.
             </div>
@@ -935,7 +940,8 @@ function Stats() {
         <div className="kt-section-head">
           <div className="kt-eyebrow on-dark">Traction · live</div>
           <h2 className="kt-display m" style={{ color: 'var(--cream)' }}>
-            Numbers from the platform, <em style={{ color: 'oklch(0.82 0.14 50)' }}>not the slide</em>.
+            Numbers from the platform,{' '}
+              <em className="bg-linear-to-r from-orange-300 to-orange-500 bg-clip-text text-transparent">not the slide</em>.
           </h2>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4" style={{ border: '1px solid var(--rule-dark)' }}>

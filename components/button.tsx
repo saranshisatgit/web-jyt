@@ -27,9 +27,9 @@ export function Button({
   const classes = clsx(
     'inline-flex shrink-0 items-center justify-center gap-1 rounded-full text-sm/7 font-medium',
     buttonColor === 'dark/light' &&
-      'bg-olive-950 text-white hover:bg-olive-800',
-    buttonColor === 'light' && 'bg-white text-olive-950 hover:bg-olive-100',
-    buttonColor === 'outline' && 'bg-transparent text-olive-950 border border-olive-300 hover:bg-olive-100',
+      'bg-navy-950 text-white hover:bg-navy-800',
+    buttonColor === 'light' && 'bg-white text-navy-950 hover:bg-navy-100',
+    buttonColor === 'outline' && 'bg-transparent text-navy-950 border border-navy-300 hover:bg-navy-100',
     sizes[size],
     className,
   )
@@ -70,11 +70,11 @@ export function ButtonLink({
       className={clsx(
         'group inline-flex shrink-0 items-center justify-center gap-1 rounded-full text-sm/7 font-medium transition-colors',
         color === 'dark/light' &&
-          'bg-olive-950 text-white hover:bg-olive-800',
+          'bg-navy-950 text-white hover:bg-navy-800',
         color === 'light' &&
-          'bg-white text-olive-950 ring-1 ring-olive-200 hover:bg-olive-100',
+          'bg-white text-navy-950 ring-1 ring-navy-200 hover:bg-navy-100',
         color === 'accent' &&
-          'bg-clay-600 text-white shadow-sm shadow-clay-900/20 hover:bg-clay-500',
+          'bg-orange-600 text-white shadow-sm shadow-orange-900/20 hover:bg-orange-500',
         sizes[size],
         className,
       )}
@@ -94,7 +94,7 @@ export function SoftButton({
     <button
       type="button"
       className={clsx(
-        'inline-flex shrink-0 items-center justify-center gap-1 rounded-full bg-olive-950/10 text-sm/7 font-medium text-olive-950 hover:bg-olive-950/15',
+        'inline-flex shrink-0 items-center justify-center gap-1 rounded-full bg-navy-950/10 text-sm/7 font-medium text-navy-950 hover:bg-navy-950/15',
         sizes[size],
         className,
       )}
@@ -116,7 +116,7 @@ export function SoftButtonLink({
     <a
       href={href}
       className={clsx(
-        'inline-flex shrink-0 items-center justify-center gap-1 rounded-full bg-olive-950/10 text-sm/7 font-medium text-olive-950 hover:bg-olive-950/15',
+        'inline-flex shrink-0 items-center justify-center gap-1 rounded-full bg-navy-950/10 text-sm/7 font-medium text-navy-950 hover:bg-navy-950/15',
         sizes[size],
         className,
       )}
@@ -139,7 +139,7 @@ export function PlainButton({
       type="button"
       className={clsx(
         'inline-flex shrink-0 items-center justify-center gap-2 rounded-full text-sm/7 font-medium',
-        color === 'dark/light' && 'text-olive-950 hover:bg-olive-950/10',
+        color === 'dark/light' && 'text-navy-950 hover:bg-navy-950/10',
         color === 'light' && 'text-white hover:bg-white/15',
         sizes[size],
         className,
@@ -165,7 +165,7 @@ export function PlainButtonLink({
       href={href}
       className={clsx(
         'inline-flex shrink-0 items-center justify-center gap-2 rounded-full text-sm/7 font-medium',
-        color === 'dark/light' && 'text-olive-950 hover:bg-olive-950/10',
+        color === 'dark/light' && 'text-navy-950 hover:bg-navy-950/10',
         color === 'light' && 'text-white hover:bg-white/15',
         sizes[size],
         className,

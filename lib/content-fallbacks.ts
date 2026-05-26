@@ -4,7 +4,7 @@
 // (the route prefers fetched data over this registry).
 //
 // Keep these strings as plain HTML — they get fed to dangerouslySetInnerHTML
-// inside a <article className="prose prose-olive"> wrapper, so basic
+// inside a <article className="prose prose-navy"> wrapper, so basic
 // semantic markup (h2/h3/p/ul/ol/li/strong/em) is all that's needed.
 
 export type ContentFallback = {

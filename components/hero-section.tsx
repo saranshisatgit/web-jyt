@@ -35,9 +35,9 @@ function StyledTitle({ title }: { title: string }) {
   const head = trimmed.slice(0, lastSpace);
   const tail = trimmed.slice(lastSpace + 1);
   return (
-    <h1 className="font-display font-medium tracking-[-0.025em] text-balance text-olive-950 text-4xl/[1.05] sm:text-5xl/[1.05] lg:text-[5rem]/[0.98]">
+    <h1 className="font-display font-medium tracking-[-0.025em] text-balance text-navy-950 text-4xl/[1.05] sm:text-5xl/[1.05] lg:text-[5rem]/[0.98]">
       {head}{' '}
-      <span className="font-serif font-normal italic tracking-[-0.01em] text-clay-700">
+      <span className="bg-linear-to-r from-orange-500 to-orange-700 bg-clip-text text-transparent font-serif font-normal italic tracking-[-0.01em]">
         {tail}
       </span>
     </h1>
@@ -124,13 +124,13 @@ function HeroSearch() {
       onSubmit={handleSubmit}
       role="search"
       aria-label="Tell us what to build"
-      className="group relative flex w-full max-w-xl items-center gap-2 rounded-full bg-white p-1.5 pl-5 ring-1 ring-olive-200 shadow-sm transition focus-within:ring-2 focus-within:ring-clay-400/60 focus-within:shadow-md"
+      className="group relative flex w-full max-w-xl items-center gap-2 rounded-full bg-white p-1.5 pl-5 ring-1 ring-navy-200 shadow-sm transition focus-within:ring-2 focus-within:ring-orange-400/60 focus-within:shadow-md"
     >
       <svg
         aria-hidden="true"
         viewBox="0 0 20 20"
         fill="none"
-        className="size-4 shrink-0 text-olive-500"
+        className="size-4 shrink-0 text-navy-500"
       >
         <path
           d="M9 17a8 8 0 1 1 0-16 8 8 0 0 1 0 16Zm0-2a6 6 0 1 0 0-12 6 6 0 0 0 0 12Zm5.3-1.3 4 4-1.4 1.4-4-4 1.4-1.4Z"
@@ -143,11 +143,11 @@ function HeroSearch() {
         onChange={(e) => setValue(e.target.value)}
         placeholder={placeholder || PROMPT_EXAMPLES[0]}
         aria-label="What would you like to create?"
-        className="min-w-0 flex-1 bg-transparent py-2 text-[15px] text-olive-950 placeholder:text-olive-500 focus:outline-none"
+        className="min-w-0 flex-1 bg-transparent py-2 text-[15px] text-navy-950 placeholder:text-navy-500 focus:outline-none"
       />
       <button
         type="submit"
-        className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-clay-600 px-4 py-2 text-sm font-medium text-white shadow-sm shadow-clay-900/20 transition hover:bg-clay-500 disabled:opacity-60"
+        className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-orange-600 px-4 py-2 text-sm font-medium text-white shadow-sm shadow-orange-900/20 transition hover:bg-orange-500 disabled:opacity-60"
         disabled={!value.trim()}
       >
         Build
@@ -185,10 +185,18 @@ function WovenGrid() {
         className="absolute inset-0 -z-10 rounded-full opacity-70 blur-3xl"
         style={{
           background:
-            'radial-gradient(closest-side, color-mix(in oklch, var(--color-clay-300) 55%, transparent), transparent 70%)',
+            'radial-gradient(closest-side, color-mix(in oklch, var(--color-orange-300) 55%, transparent), transparent 70%)',
         }}
       />
-      <div className="absolute inset-0 -z-10 rounded-2xl ring-1 ring-olive-200/60" />
+      <div
+        aria-hidden="true"
+        className="absolute -inset-4 -z-20 rounded-[40px] opacity-60 blur-2xl"
+        style={{
+          background:
+            'radial-gradient(60% 60% at 80% 20%, color-mix(in oklch, var(--color-navy-400) 45%, transparent), transparent 70%), radial-gradient(40% 40% at 20% 80%, color-mix(in oklch, var(--color-orange-500) 40%, transparent), transparent 60%)',
+        }}
+      />
+      <div className="absolute inset-0 -z-10 rounded-2xl ring-1 ring-navy-200/60" />
 
       <div
         className="grid h-full w-full p-6"
@@ -222,10 +230,10 @@ function WovenGrid() {
               className={
                 'rounded-[2px] ' +
                 (isAccent
-                  ? 'bg-clay-500/90'
+                  ? 'bg-orange-500/90'
                   : isWarp
-                    ? 'bg-olive-700/40'
-                    : 'bg-olive-300/60')
+                    ? 'bg-navy-700/40'
+                    : 'bg-navy-300/60')
               }
             />
           );
@@ -233,10 +241,10 @@ function WovenGrid() {
       </div>
 
       {/* Crosshair ticks. */}
-      <span className="absolute -left-2 top-1/2 h-px w-4 bg-olive-400/70" />
-      <span className="absolute -right-2 top-1/2 h-px w-4 bg-olive-400/70" />
-      <span className="absolute -top-2 left-1/2 h-4 w-px bg-olive-400/70" />
-      <span className="absolute -bottom-2 left-1/2 h-4 w-px bg-olive-400/70" />
+      <span className="absolute -left-2 top-1/2 h-px w-4 bg-navy-400/70" />
+      <span className="absolute -right-2 top-1/2 h-px w-4 bg-navy-400/70" />
+      <span className="absolute -top-2 left-1/2 h-4 w-px bg-navy-400/70" />
+      <span className="absolute -bottom-2 left-1/2 h-4 w-px bg-navy-400/70" />
     </div>
   );
 }
@@ -282,8 +290,8 @@ export function HeroSection({ headerBlock }: { headerBlock: HeaderBlock }) {
 
             <motion.div variants={item} className="mt-2 w-full">
               <HeroSearch />
-              <p className="mt-3 text-xs text-olive-500">
-                Press <kbd className="rounded border border-olive-200 bg-white px-1.5 py-0.5 font-mono text-[10px] text-olive-700">Enter</kbd> to share your idea — we&apos;ll route it to the right team.
+              <p className="mt-3 text-xs text-navy-500">
+                Press <kbd className="rounded border border-navy-200 bg-white px-1.5 py-0.5 font-mono text-[10px] text-navy-700">Enter</kbd> to share your idea — we&apos;ll route it to the right team.
               </p>
             </motion.div>
           </motion.div>

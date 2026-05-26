@@ -486,17 +486,17 @@ export function TourWizard({ token, initial }: Props) {
 
   return (
     <div className="min-h-screen bg-hero-wash pb-16">
-      <header className="border-b border-olive-200/70 bg-white/70 backdrop-blur-sm">
+      <header className="border-b border-navy-200/70 bg-white/70 backdrop-blur-sm">
         <div className="mx-auto w-full max-w-7xl px-6 py-6 lg:px-10">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
-              <p className="font-serif text-sm italic text-clay-700">Plan your visit</p>
-              <h1 className="mt-0.5 font-display text-xl font-medium text-olive-950 sm:text-2xl">
+              <p className="font-serif text-sm italic text-orange-700">Plan your visit</p>
+              <h1 className="mt-0.5 font-display text-xl font-medium text-navy-950 sm:text-2xl">
                 {data.booking.product || data.form.title}
               </h1>
             </div>
-            <div className="flex flex-wrap items-center gap-3 text-xs text-olive-500">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-clay-50 px-3 py-1 text-clay-800 ring-1 ring-clay-200">
+            <div className="flex flex-wrap items-center gap-3 text-xs text-navy-500">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-orange-50 px-3 py-1 text-orange-800 ring-1 ring-orange-200">
                 Booked via {sourceLabel(data.source)}
               </span>
               {data.booking.tour_date ? (
@@ -510,13 +510,13 @@ export function TourWizard({ token, initial }: Props) {
                   Read-only — shared with you
                 </span>
               ) : saving ? (
-                <span className="inline-flex items-center gap-1.5 text-olive-600">
-                  <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-olive-500" />
+                <span className="inline-flex items-center gap-1.5 text-navy-600">
+                  <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-navy-500" />
                   Saving…
                 </span>
               ) : (
                 <span
-                  className="inline-flex items-center gap-1.5 text-olive-600"
+                  className="inline-flex items-center gap-1.5 text-navy-600"
                   title={`Last saved ${new Date(savedAt).toLocaleString()}`}
                 >
                   <svg viewBox="0 0 12 12" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -528,7 +528,7 @@ export function TourWizard({ token, initial }: Props) {
               {currentStepId !== 'itinerary' ? (
                 <button
                   type="button"
-                  className="text-clay-700 underline-offset-2 hover:underline"
+                  className="text-orange-700 underline-offset-2 hover:underline"
                   onClick={() => goToStep('itinerary', { skipSave: true })}
                 >
                   Skip to itinerary →
@@ -549,16 +549,16 @@ export function TourWizard({ token, initial }: Props) {
                     className={[
                       'inline-flex items-center gap-2 rounded-full px-3 py-1.5 transition',
                       active
-                        ? 'bg-olive-950 text-white'
+                        ? 'bg-navy-950 text-white'
                         : done
-                          ? 'bg-olive-100 text-olive-800 hover:bg-olive-200'
-                          : 'bg-white text-olive-500 ring-1 ring-olive-200 hover:bg-olive-50',
+                          ? 'bg-navy-100 text-navy-800 hover:bg-navy-200'
+                          : 'bg-white text-navy-500 ring-1 ring-navy-200 hover:bg-navy-50',
                     ].join(' ')}
                   >
                     <span
                       className={[
                         'flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-mono',
-                        active ? 'bg-white text-olive-950' : done ? 'bg-olive-300 text-olive-900' : 'bg-olive-200 text-olive-600',
+                        active ? 'bg-white text-navy-950' : done ? 'bg-navy-300 text-navy-900' : 'bg-navy-200 text-navy-600',
                       ].join(' ')}
                     >
                       {idx + 1}
@@ -566,7 +566,7 @@ export function TourWizard({ token, initial }: Props) {
                     {s.label}
                   </button>
                   {idx < STEPS.length - 1 ? (
-                    <span className="h-px w-6 bg-olive-300/70" aria-hidden="true" />
+                    <span className="h-px w-6 bg-navy-300/70" aria-hidden="true" />
                   ) : null}
                 </li>
               );
@@ -578,18 +578,18 @@ export function TourWizard({ token, initial }: Props) {
       <main className="mx-auto w-full max-w-7xl px-6 py-12 lg:px-10">
         {currentStepId === 'welcome' ? (
           <section className="mx-auto max-w-3xl">
-            <p className="font-serif text-base italic text-clay-700">
+            <p className="font-serif text-base italic text-orange-700">
               Hi {greetingName} — we&apos;re glad you&apos;re coming.
             </p>
-            <h2 className="mt-3 font-display text-3xl font-medium tracking-tight text-olive-950 sm:text-4xl">
+            <h2 className="mt-3 font-display text-3xl font-medium tracking-tight text-navy-950 sm:text-4xl">
               {story?.headline || 'A craft journey, told at your pace.'}
             </h2>
             {story?.body ? (
-              <p className="mt-5 whitespace-pre-line text-base leading-relaxed text-olive-700">
+              <p className="mt-5 whitespace-pre-line text-base leading-relaxed text-navy-700">
                 {story.body}
               </p>
             ) : (
-              <p className="mt-5 text-base leading-relaxed text-olive-700">
+              <p className="mt-5 text-base leading-relaxed text-navy-700">
                 JYT exists to put artisans at the centre of the story — weavers, dyers, and master craftspeople
                 whose work normally disappears behind a label. This visit is yours to shape: we&apos;ll show you
                 their workshops, their tools, and the cloth they&apos;ve given a lifetime to. Pick what you&apos;d
@@ -600,22 +600,22 @@ export function TourWizard({ token, initial }: Props) {
             {trust ? (
               <ul className="mt-6 flex flex-wrap gap-2 text-xs">
                 {trust.duration ? (
-                  <li className="rounded-full bg-white px-3 py-1.5 text-olive-800 ring-1 ring-olive-200">
+                  <li className="rounded-full bg-white px-3 py-1.5 text-navy-800 ring-1 ring-navy-200">
                     {trust.duration}
                   </li>
                 ) : null}
                 {typeof trust.group_cap === 'number' ? (
-                  <li className="rounded-full bg-white px-3 py-1.5 text-olive-800 ring-1 ring-olive-200">
+                  <li className="rounded-full bg-white px-3 py-1.5 text-navy-800 ring-1 ring-navy-200">
                     Capped at {trust.group_cap}
                   </li>
                 ) : null}
                 {Array.isArray(trust.languages) && trust.languages.length > 0 ? (
-                  <li className="rounded-full bg-white px-3 py-1.5 text-olive-800 ring-1 ring-olive-200">
+                  <li className="rounded-full bg-white px-3 py-1.5 text-navy-800 ring-1 ring-navy-200">
                     {trust.languages.join(' · ')}
                   </li>
                 ) : null}
                 {trust.wheelchair_accessible ? (
-                  <li className="rounded-full bg-white px-3 py-1.5 text-olive-800 ring-1 ring-olive-200">
+                  <li className="rounded-full bg-white px-3 py-1.5 text-navy-800 ring-1 ring-navy-200">
                     Wheelchair accessible
                   </li>
                 ) : null}
@@ -633,14 +633,14 @@ export function TourWizard({ token, initial }: Props) {
             ) : null}
 
             {highlights.length > 0 ? (
-              <div className="mt-8 rounded-2xl border border-olive-200 bg-white p-5">
-                <h3 className="font-display text-sm font-medium uppercase tracking-wide text-olive-500">
+              <div className="mt-8 rounded-2xl border border-navy-200 bg-white p-5">
+                <h3 className="font-display text-sm font-medium uppercase tracking-wide text-navy-500">
                   Highlights
                 </h3>
                 <ul className="mt-3 space-y-2">
                   {highlights.map((h, i) => (
-                    <li key={i} className="flex items-baseline gap-2 text-sm text-olive-800">
-                      <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-clay-500" />
+                    <li key={i} className="flex items-baseline gap-2 text-sm text-navy-800">
+                      <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-orange-500" />
                       <span>{h}</span>
                     </li>
                   ))}
@@ -650,25 +650,25 @@ export function TourWizard({ token, initial }: Props) {
 
             <dl className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-3">
               {data.booking.booking_ref ? (
-                <div className="rounded-2xl border border-olive-200 bg-white p-4">
-                  <dt className="text-xs uppercase tracking-wide text-olive-500">Booking ref</dt>
-                  <dd className="mt-1 font-mono text-sm text-olive-900">{data.booking.booking_ref}</dd>
+                <div className="rounded-2xl border border-navy-200 bg-white p-4">
+                  <dt className="text-xs uppercase tracking-wide text-navy-500">Booking ref</dt>
+                  <dd className="mt-1 font-mono text-sm text-navy-900">{data.booking.booking_ref}</dd>
                 </div>
               ) : null}
               {headcountList.length > 0 ? (
-                <div className="rounded-2xl border border-olive-200 bg-white p-4">
-                  <dt className="text-xs uppercase tracking-wide text-olive-500">Travellers</dt>
-                  <dd className="mt-1 text-sm text-olive-900">
+                <div className="rounded-2xl border border-navy-200 bg-white p-4">
+                  <dt className="text-xs uppercase tracking-wide text-navy-500">Travellers</dt>
+                  <dd className="mt-1 text-sm text-navy-900">
                     {headcountList.map(([cat, n]) => `${n} ${cat}`).join(' · ')}
                   </dd>
                 </div>
               ) : null}
               {data.payment.paid_via_source ? (
-                <div className="rounded-2xl border border-olive-200 bg-white p-4">
-                  <dt className="text-xs uppercase tracking-wide text-olive-500">
+                <div className="rounded-2xl border border-navy-200 bg-white p-4">
+                  <dt className="text-xs uppercase tracking-wide text-navy-500">
                     Paid via {data.payment.paid_via_source.provider}
                   </dt>
-                  <dd className="mt-1 font-mono text-sm text-olive-900">
+                  <dd className="mt-1 font-mono text-sm text-navy-900">
                     {data.payment.local_view?.paid_via_source != null
                       ? formatMoney(
                           data.payment.local_view.paid_via_source,
@@ -680,7 +680,7 @@ export function TourWizard({ token, initial }: Props) {
                         )}
                   </dd>
                   {data.payment.local_view?.paid_via_source != null ? (
-                    <dd className="mt-0.5 text-xs text-olive-500">
+                    <dd className="mt-0.5 text-xs text-navy-500">
                       Charged as{' '}
                       {formatMoney(
                         data.payment.paid_via_source.amount,
@@ -693,11 +693,11 @@ export function TourWizard({ token, initial }: Props) {
             </dl>
 
             <div className="mt-10 flex flex-wrap items-center justify-between gap-4">
-              <span className="text-sm text-olive-500">Takes about 3 minutes.</span>
+              <span className="text-sm text-navy-500">Takes about 3 minutes.</span>
               <button
                 type="button"
                 onClick={goNext}
-                className="inline-flex items-center gap-2 rounded-full bg-clay-600 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-clay-500"
+                className="inline-flex items-center gap-2 rounded-full bg-orange-600 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-orange-500"
               >
                 Let&apos;s begin
                 <svg viewBox="0 0 12 12" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
@@ -706,22 +706,22 @@ export function TourWizard({ token, initial }: Props) {
               </button>
             </div>
 
-            <div className="mt-10 grid grid-cols-1 gap-3 border-t border-olive-200 pt-6 text-xs text-olive-500 sm:grid-cols-2">
+            <div className="mt-10 grid grid-cols-1 gap-3 border-t border-navy-200 pt-6 text-xs text-navy-500 sm:grid-cols-2">
               <p>
-                <span className="font-medium text-olive-700">Need to cancel?</span>{' '}
+                <span className="font-medium text-navy-700">Need to cancel?</span>{' '}
                 Cancellations are managed via your GetYourGuide booking — log into{' '}
                 <a
                   href="https://www.getyourguide.com/account/bookings"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-clay-700 underline-offset-2 hover:underline"
+                  className="text-orange-700 underline-offset-2 hover:underline"
                 >
                   your GYG bookings
                 </a>{' '}
                 to cancel or reschedule, free up to 24 hours ahead.
               </p>
               <p>
-                <span className="font-medium text-olive-700">Your privacy:</span>{' '}
+                <span className="font-medium text-navy-700">Your privacy:</span>{' '}
                 We collect dietary preferences, access needs and emergency contact
                 details only to host you well — they go to your guide and nowhere
                 else. See our{' '}
@@ -729,7 +729,7 @@ export function TourWizard({ token, initial }: Props) {
                   href="/privacy-policy"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-clay-700 underline-offset-2 hover:underline"
+                  className="text-orange-700 underline-offset-2 hover:underline"
                 >
                   privacy policy
                 </a>{' '}
@@ -741,15 +741,15 @@ export function TourWizard({ token, initial }: Props) {
 
         {currentStepId === 'guides' ? (
           <section className="mx-auto max-w-5xl">
-            <h2 className="font-display text-2xl font-medium text-olive-950 sm:text-3xl">
+            <h2 className="font-display text-2xl font-medium text-navy-950 sm:text-3xl">
               Meet the people you&apos;ll spend time with
             </h2>
-            <p className="mt-2 max-w-2xl text-sm text-olive-600">
+            <p className="mt-2 max-w-2xl text-sm text-navy-600">
               Tell them what you&apos;re curious about — they&apos;ll tailor the day around it.
             </p>
 
             {guides.length === 0 ? (
-              <div className="mt-8 rounded-2xl border border-dashed border-olive-300 bg-white p-10 text-center text-olive-500">
+              <div className="mt-8 rounded-2xl border border-dashed border-navy-300 bg-white p-10 text-center text-navy-500">
                 Guide bios are being written — we&apos;ll introduce them on the day.
               </div>
             ) : (
@@ -762,12 +762,12 @@ export function TourWizard({ token, initial }: Props) {
                       className={[
                         'relative flex flex-col overflow-hidden rounded-2xl border bg-white shadow-sm transition',
                         isPlaceholder
-                          ? 'border-olive-200/70 opacity-80'
-                          : 'border-olive-200',
+                          ? 'border-navy-200/70 opacity-80'
+                          : 'border-navy-200',
                       ].join(' ')}
                     >
                       {g.photo_url ? (
-                        <div className="relative aspect-[4/5] w-full bg-olive-100">
+                        <div className="relative aspect-[4/5] w-full bg-navy-100">
                           <Image
                             src={g.photo_url}
                             alt={g.name}
@@ -780,21 +780,21 @@ export function TourWizard({ token, initial }: Props) {
                           />
                         </div>
                       ) : (
-                        <div className="aspect-[4/5] w-full bg-gradient-to-br from-clay-100 via-olive-100 to-clay-200" />
+                        <div className="aspect-[4/5] w-full bg-gradient-to-br from-orange-100 via-navy-100 to-orange-200" />
                       )}
 
                       <span
                         className={[
                           'absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium shadow-sm backdrop-blur-sm',
                           isPlaceholder
-                            ? 'bg-white/85 text-olive-700 ring-1 ring-olive-200'
+                            ? 'bg-white/85 text-navy-700 ring-1 ring-navy-200'
                             : 'bg-emerald-600/90 text-white',
                         ].join(' ')}
                       >
                         <span
                           className={[
                             'h-1.5 w-1.5 rounded-full',
-                            isPlaceholder ? 'bg-olive-400' : 'bg-white',
+                            isPlaceholder ? 'bg-navy-400' : 'bg-white',
                           ].join(' ')}
                           aria-hidden="true"
                         />
@@ -803,29 +803,29 @@ export function TourWizard({ token, initial }: Props) {
 
                       <div className="flex flex-1 flex-col gap-y-4 px-6 py-6">
                         <div className="flex flex-col gap-y-1">
-                          <h3 className="font-display text-lg font-medium leading-tight text-olive-950">
+                          <h3 className="font-display text-lg font-medium leading-tight text-navy-950">
                             {g.name}
                           </h3>
                           {g.role ? (
-                            <p className="font-serif text-sm italic leading-snug text-clay-700">
+                            <p className="font-serif text-sm italic leading-snug text-orange-700">
                               {g.role}
                             </p>
                           ) : null}
                         </div>
                         {g.bio ? (
-                          <p className="text-sm leading-7 text-olive-700">{g.bio}</p>
+                          <p className="text-sm leading-7 text-navy-700">{g.bio}</p>
                         ) : null}
                         {isPlaceholder ? (
-                          <p className="rounded-lg bg-olive-50 px-3 py-2 text-xs leading-5 text-olive-600">
+                          <p className="rounded-lg bg-navy-50 px-3 py-2 text-xs leading-5 text-navy-600">
                             We&apos;re still finalising who will host this date — your
                             actual guide will be confirmed before the visit.
                           </p>
                         ) : null}
                         {(Array.isArray(g.languages) && g.languages.length > 0) ||
                         g.instagram ? (
-                          <div className="mt-auto flex flex-wrap gap-2 pt-2 text-xs text-olive-500">
+                          <div className="mt-auto flex flex-wrap gap-2 pt-2 text-xs text-navy-500">
                             {Array.isArray(g.languages) && g.languages.length > 0 ? (
-                              <span className="rounded-full bg-olive-50 px-2.5 py-1">
+                              <span className="rounded-full bg-navy-50 px-2.5 py-1">
                                 {g.languages.join(' · ')}
                               </span>
                             ) : null}
@@ -838,7 +838,7 @@ export function TourWizard({ token, initial }: Props) {
                                 }
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="rounded-full bg-clay-50 px-2.5 py-1 text-clay-800 hover:bg-clay-100"
+                                className="rounded-full bg-orange-50 px-2.5 py-1 text-orange-800 hover:bg-orange-100"
                               >
                                 {g.instagram.startsWith('@') ? g.instagram : `@${g.instagram}`}
                               </a>
@@ -858,10 +858,10 @@ export function TourWizard({ token, initial }: Props) {
 
         {currentStepId === 'itinerary' ? (
           <section>
-            <h2 className="font-display text-2xl font-medium text-olive-950 sm:text-3xl">
+            <h2 className="font-display text-2xl font-medium text-navy-950 sm:text-3xl">
               Pick your itinerary
             </h2>
-            <p className="mt-2 max-w-2xl text-sm text-olive-600">
+            <p className="mt-2 max-w-2xl text-sm text-navy-600">
               Click a card to add it. Tap &quot;Learn more&quot; for the full story, photos, and links.
               Your total updates as you go.
             </p>
@@ -869,10 +869,10 @@ export function TourWizard({ token, initial }: Props) {
             {showTransferHint ? (
               <div
                 role="status"
-                className="mt-6 flex flex-col gap-3 rounded-2xl border border-clay-200 bg-clay-50/70 p-4 text-sm sm:flex-row sm:items-start sm:gap-4 sm:p-5"
+                className="mt-6 flex flex-col gap-3 rounded-2xl border border-orange-200 bg-orange-50/70 p-4 text-sm sm:flex-row sm:items-start sm:gap-4 sm:p-5"
               >
                 <span
-                  className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-clay-100 text-clay-700"
+                  className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-orange-100 text-orange-700"
                   aria-hidden="true"
                 >
                   <svg viewBox="0 0 16 16" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
@@ -880,14 +880,14 @@ export function TourWizard({ token, initial }: Props) {
                   </svg>
                 </span>
                 <div className="flex flex-1 flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                  <p className="text-clay-900">
+                  <p className="text-orange-900">
                     Antico Setificio and Stefanie Dux are about 25 minutes apart by foot —
                     consider adding the private transfer so you don&apos;t lose the day to logistics.
                   </p>
                   <button
                     type="button"
                     onClick={() => toggleSegment('seg_transport_private', false)}
-                    className="inline-flex shrink-0 items-center gap-2 rounded-full bg-clay-700 px-3.5 py-1.5 text-xs font-medium text-white shadow-sm transition hover:bg-clay-600"
+                    className="inline-flex shrink-0 items-center gap-2 rounded-full bg-orange-700 px-3.5 py-1.5 text-xs font-medium text-white shadow-sm transition hover:bg-orange-600"
                   >
                     Add transfer
                   </button>
@@ -896,7 +896,7 @@ export function TourWizard({ token, initial }: Props) {
             ) : null}
 
             {segments.length === 0 ? (
-              <p className="mt-8 rounded-2xl border border-dashed border-olive-300 bg-white p-8 text-center text-olive-500">
+              <p className="mt-8 rounded-2xl border border-dashed border-navy-300 bg-white p-8 text-center text-navy-500">
                 No itinerary parts have been set up yet. We&apos;ll be in touch directly.
               </p>
             ) : (
@@ -910,8 +910,8 @@ export function TourWizard({ token, initial }: Props) {
                       className={[
                         'group relative flex flex-col overflow-hidden rounded-2xl border bg-white text-left transition',
                         isSelected
-                          ? 'border-clay-500 ring-1 ring-clay-500/40 shadow-md'
-                          : 'border-olive-200 hover:border-olive-400 hover:shadow-sm',
+                          ? 'border-orange-500 ring-1 ring-orange-500/40 shadow-md'
+                          : 'border-navy-200 hover:border-navy-400 hover:shadow-sm',
                       ].join(' ')}
                     >
                       <button
@@ -922,7 +922,7 @@ export function TourWizard({ token, initial }: Props) {
                         disabled={isLocked}
                       >
                         {s.image_url ? (
-                          <div className="relative aspect-[4/3] w-full overflow-hidden bg-olive-100">
+                          <div className="relative aspect-[4/3] w-full overflow-hidden bg-navy-100">
                             <Image
                               src={s.image_url}
                               alt={s.title || s.id}
@@ -932,20 +932,20 @@ export function TourWizard({ token, initial }: Props) {
                             />
                           </div>
                         ) : (
-                          <div className="aspect-[4/3] w-full bg-gradient-to-br from-olive-100 via-clay-100 to-olive-200" />
+                          <div className="aspect-[4/3] w-full bg-gradient-to-br from-navy-100 via-orange-100 to-navy-200" />
                         )}
 
                         <div className="flex flex-1 flex-col gap-2 p-4">
                           <div className="flex items-start justify-between gap-2">
-                            <h3 className="font-display text-base font-medium text-olive-950">
+                            <h3 className="font-display text-base font-medium text-navy-950">
                               {s.title || s.id}
                             </h3>
                             <span
                               className={[
                                 'inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full border text-xs',
                                 isSelected
-                                  ? 'border-clay-500 bg-clay-500 text-white'
-                                  : 'border-olive-300 bg-white text-olive-400',
+                                  ? 'border-orange-500 bg-orange-500 text-white'
+                                  : 'border-navy-300 bg-white text-navy-400',
                               ].join(' ')}
                               aria-hidden="true"
                             >
@@ -954,15 +954,15 @@ export function TourWizard({ token, initial }: Props) {
                           </div>
 
                           {s.description ? (
-                            <p className="line-clamp-3 text-sm text-olive-600">{s.description}</p>
+                            <p className="line-clamp-3 text-sm text-navy-600">{s.description}</p>
                           ) : null}
 
-                          <div className="mt-auto flex flex-wrap items-center gap-3 pt-2 text-xs text-olive-500">
+                          <div className="mt-auto flex flex-wrap items-center gap-3 pt-2 text-xs text-navy-500">
                             {s.duration_minutes ? <span>{formatDuration(s.duration_minutes)}</span> : null}
                             {s.time_slot ? <span>{s.time_slot}</span> : null}
-                            {isLocked ? <span className="rounded bg-olive-100 px-2 py-0.5 text-olive-700">Included</span> : null}
+                            {isLocked ? <span className="rounded bg-navy-100 px-2 py-0.5 text-navy-700">Included</span> : null}
                             {typeof s.base_price === 'number' && s.base_price > 0 ? (
-                              <span className="ml-auto font-mono text-olive-800">
+                              <span className="ml-auto font-mono text-navy-800">
                                 +{formatMoney(s.base_price, s.currency || data.cost.currency)} / pax
                               </span>
                             ) : null}
@@ -973,7 +973,7 @@ export function TourWizard({ token, initial }: Props) {
                       <button
                         type="button"
                         onClick={() => setOpenSegment(s)}
-                        className="border-t border-olive-100 px-4 py-2 text-left text-xs text-clay-700 transition hover:bg-clay-50"
+                        className="border-t border-navy-100 px-4 py-2 text-left text-xs text-orange-700 transition hover:bg-orange-50"
                       >
                         Learn more →
                       </button>
@@ -989,10 +989,10 @@ export function TourWizard({ token, initial }: Props) {
 
         {currentStepId === 'details' ? (
           <section className="mx-auto max-w-3xl">
-            <h2 className="font-display text-2xl font-medium text-olive-950 sm:text-3xl">
+            <h2 className="font-display text-2xl font-medium text-navy-950 sm:text-3xl">
               A few details before we host you
             </h2>
-            <p className="mt-2 text-sm text-olive-600">
+            <p className="mt-2 text-sm text-navy-600">
               Anything you tell us here goes only to the guide leading your day.
             </p>
 
@@ -1093,7 +1093,7 @@ export function TourWizard({ token, initial }: Props) {
                 {answers.insurance === 'yes' ? (
                   <div className="mt-4">
                     <label className="flex flex-col gap-y-1.5">
-                      <span className="text-xs text-olive-700">Insurance provider</span>
+                      <span className="text-xs text-navy-700">Insurance provider</span>
                       <input
                         type="text"
                         placeholder="Optional"
@@ -1118,7 +1118,7 @@ export function TourWizard({ token, initial }: Props) {
                 />
                 <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
                   <label className="flex flex-col gap-y-1.5">
-                    <span className="text-xs text-olive-700">Arrival time (approx.)</span>
+                    <span className="text-xs text-navy-700">Arrival time (approx.)</span>
                     <input
                       type="text"
                       placeholder="14:30 on the 4th"
@@ -1128,7 +1128,7 @@ export function TourWizard({ token, initial }: Props) {
                     />
                   </label>
                   <label className="flex flex-col gap-y-1.5">
-                    <span className="text-xs text-olive-700">Where you&apos;re staying</span>
+                    <span className="text-xs text-navy-700">Where you&apos;re staying</span>
                     <input
                       type="text"
                       placeholder="Hotel name / neighbourhood"
@@ -1158,7 +1158,7 @@ export function TourWizard({ token, initial }: Props) {
               >
                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                   <label className="flex flex-col gap-y-1.5">
-                    <span className="text-xs text-olive-700">Name</span>
+                    <span className="text-xs text-navy-700">Name</span>
                     <input
                       type="text"
                       className={fieldInputClass}
@@ -1167,7 +1167,7 @@ export function TourWizard({ token, initial }: Props) {
                     />
                   </label>
                   <label className="flex flex-col gap-y-1.5">
-                    <span className="text-xs text-olive-700">Phone</span>
+                    <span className="text-xs text-navy-700">Phone</span>
                     <input
                       type="tel"
                       className={fieldInputClass}
@@ -1191,9 +1191,9 @@ export function TourWizard({ token, initial }: Props) {
 
                       return (
                         <label key={field.id} className="flex flex-col gap-y-1.5">
-                          <span className="text-sm font-medium text-olive-900">
+                          <span className="text-sm font-medium text-navy-900">
                             {field.label}
-                            {field.required ? <span className="ml-1 text-clay-600">*</span> : null}
+                            {field.required ? <span className="ml-1 text-orange-600">*</span> : null}
                           </span>
                           {field.type === 'textarea' ? (
                             <textarea
@@ -1232,7 +1232,7 @@ export function TourWizard({ token, initial }: Props) {
                             />
                           )}
                           {field.help_text ? (
-                            <span className="text-xs text-olive-500">{field.help_text}</span>
+                            <span className="text-xs text-navy-500">{field.help_text}</span>
                           ) : null}
                         </label>
                       );
@@ -1248,59 +1248,59 @@ export function TourWizard({ token, initial }: Props) {
 
         {currentStepId === 'review' && confirmed ? (
           <section className="mx-auto max-w-3xl">
-            <div className="rounded-3xl border border-olive-200 bg-white p-8 text-center shadow-sm sm:p-12">
+            <div className="rounded-3xl border border-navy-200 bg-white p-8 text-center shadow-sm sm:p-12">
               <div className="mx-auto inline-flex h-12 w-12 items-center justify-center rounded-full bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200">
                 <svg viewBox="0 0 16 16" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                   <path d="M3 8.5l3 3L13 4" />
                 </svg>
               </div>
-              <p className="mt-5 font-serif text-sm italic text-clay-700">Confirmed</p>
-              <h2 className="mt-2 font-display text-3xl font-medium text-olive-950 sm:text-4xl">
+              <p className="mt-5 font-serif text-sm italic text-orange-700">Confirmed</p>
+              <h2 className="mt-2 font-display text-3xl font-medium text-navy-950 sm:text-4xl">
                 We&apos;ve got your day, {data.traveller?.first_name || 'there'}.
               </h2>
-              <p className="mt-3 text-sm text-olive-600">
+              <p className="mt-3 text-sm text-navy-600">
                 Saved {formatRelativeTime(savedAt, now)} · You can come back to this link anytime to change your selections.
               </p>
             </div>
 
             <ol className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
-              <li className="rounded-2xl border border-olive-200 bg-white p-5">
-                <span className="font-mono text-xs text-olive-500">01</span>
-                <p className="mt-2 font-display text-base font-medium text-olive-950">
+              <li className="rounded-2xl border border-navy-200 bg-white p-5">
+                <span className="font-mono text-xs text-navy-500">01</span>
+                <p className="mt-2 font-display text-base font-medium text-navy-950">
                   We email your itinerary
                 </p>
-                <p className="mt-1 text-sm leading-6 text-olive-600">
+                <p className="mt-1 text-sm leading-6 text-navy-600">
                   A copy lands in your inbox so you can find this page later.
                 </p>
               </li>
-              <li className="rounded-2xl border border-olive-200 bg-white p-5">
-                <span className="font-mono text-xs text-olive-500">02</span>
-                <p className="mt-2 font-display text-base font-medium text-olive-950">
+              <li className="rounded-2xl border border-navy-200 bg-white p-5">
+                <span className="font-mono text-xs text-navy-500">02</span>
+                <p className="mt-2 font-display text-base font-medium text-navy-950">
                   Your guide reaches out
                 </p>
-                <p className="mt-1 text-sm leading-6 text-olive-600">
+                <p className="mt-1 text-sm leading-6 text-navy-600">
                   About 48 hours before your visit — meeting point, what to bring, any last questions.
                 </p>
               </li>
-              <li className="rounded-2xl border border-olive-200 bg-white p-5">
-                <span className="font-mono text-xs text-olive-500">03</span>
-                <p className="mt-2 font-display text-base font-medium text-olive-950">
+              <li className="rounded-2xl border border-navy-200 bg-white p-5">
+                <span className="font-mono text-xs text-navy-500">03</span>
+                <p className="mt-2 font-display text-base font-medium text-navy-950">
                   You show up & we host
                 </p>
-                <p className="mt-1 text-sm leading-6 text-olive-600">
+                <p className="mt-1 text-sm leading-6 text-navy-600">
                   Add-ons settle on the day with your guide — cash or card, whichever you prefer.
                 </p>
               </li>
             </ol>
 
-            <div className="mt-10 flex flex-wrap items-center justify-between gap-3 border-t border-olive-200 pt-6">
+            <div className="mt-10 flex flex-wrap items-center justify-between gap-3 border-t border-navy-200 pt-6">
               <button
                 type="button"
                 onClick={() => {
                   setConfirmed(false);
                   goToStep('itinerary', { skipSave: true });
                 }}
-                className="text-sm text-clay-700 underline-offset-2 hover:underline"
+                className="text-sm text-orange-700 underline-offset-2 hover:underline"
               >
                 ← Change my itinerary
               </button>
@@ -1309,7 +1309,7 @@ export function TourWizard({ token, initial }: Props) {
                   <button
                     type="button"
                     onClick={handleDownloadIcs}
-                    className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-medium text-olive-800 ring-1 ring-olive-200 transition hover:bg-olive-50"
+                    className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-medium text-navy-800 ring-1 ring-navy-200 transition hover:bg-navy-50"
                   >
                     <svg viewBox="0 0 16 16" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                       <rect x="2" y="3" width="12" height="11" rx="1.5" />
@@ -1320,7 +1320,7 @@ export function TourWizard({ token, initial }: Props) {
                 ) : null}
                 <a
                   href="/"
-                  className="inline-flex items-center gap-2 rounded-full bg-olive-50 px-4 py-2 text-sm font-medium text-olive-800 ring-1 ring-olive-200 transition hover:bg-olive-100"
+                  className="inline-flex items-center gap-2 rounded-full bg-navy-50 px-4 py-2 text-sm font-medium text-navy-800 ring-1 ring-navy-200 transition hover:bg-navy-100"
                 >
                   Back to JYT
                 </a>
@@ -1331,44 +1331,44 @@ export function TourWizard({ token, initial }: Props) {
 
         {currentStepId === 'review' && !confirmed ? (
           <section className="mx-auto max-w-3xl">
-            <h2 className="font-display text-2xl font-medium text-olive-950 sm:text-3xl">
+            <h2 className="font-display text-2xl font-medium text-navy-950 sm:text-3xl">
               Last look — does this feel right?
             </h2>
-            <p className="mt-2 text-sm text-olive-600">
+            <p className="mt-2 text-sm text-navy-600">
               You can come back to this link anytime to change your selections.
             </p>
 
-            <div className="mt-8 rounded-2xl border border-olive-200 bg-white">
-              <div className="flex items-center justify-between border-b border-olive-100 px-5 py-4">
-                <h3 className="font-display text-base font-medium text-olive-950">Your day</h3>
+            <div className="mt-8 rounded-2xl border border-navy-200 bg-white">
+              <div className="flex items-center justify-between border-b border-navy-100 px-5 py-4">
+                <h3 className="font-display text-base font-medium text-navy-950">Your day</h3>
                 <button
                   type="button"
                   onClick={() => goToStep('itinerary', { skipSave: true })}
-                  className="text-xs text-clay-700 hover:underline"
+                  className="text-xs text-orange-700 hover:underline"
                 >
                   Edit
                 </button>
               </div>
-              <ul className="divide-y divide-olive-100">
+              <ul className="divide-y divide-navy-100">
                 {projectedCost.by_segment.length === 0 ? (
-                  <li className="px-5 py-4 text-sm text-olive-500">No itinerary parts selected yet.</li>
+                  <li className="px-5 py-4 text-sm text-navy-500">No itinerary parts selected yet.</li>
                 ) : (
                   projectedCost.by_segment.map((line) => {
                     const seg = segmentById(line.id);
                     return (
                       <li key={line.id} className="flex items-center justify-between gap-4 px-5 py-3">
                         <div className="min-w-0">
-                          <p className="truncate text-sm font-medium text-olive-900">{line.title}</p>
-                          <p className="text-xs text-olive-500">
+                          <p className="truncate text-sm font-medium text-navy-900">{line.title}</p>
+                          <p className="text-xs text-navy-500">
                             {seg?.duration_minutes ? formatDuration(seg.duration_minutes) : ''}
                             {seg?.required ? ' · Always included' : ''}
                           </p>
                         </div>
                         <div className="text-right whitespace-nowrap">
-                          <p className="font-mono text-sm text-olive-900">
+                          <p className="font-mono text-sm text-navy-900">
                             {formatMoney(line.line_total, projectedCost.currency)}
                           </p>
-                          <p className="text-xs text-olive-500">
+                          <p className="text-xs text-navy-500">
                             {line.pax} × {formatMoney(line.base_price, projectedCost.currency)}
                           </p>
                         </div>
@@ -1379,10 +1379,10 @@ export function TourWizard({ token, initial }: Props) {
               </ul>
             </div>
 
-            <div className="mt-6 rounded-2xl border border-olive-200 bg-white">
-              <div className="flex items-center justify-between border-b border-olive-100 px-5 py-4">
-                <h3 className="font-display text-base font-medium text-olive-950">Payment</h3>
-                <span className="text-xs text-olive-500">via {sourceLabel(data.source)}</span>
+            <div className="mt-6 rounded-2xl border border-navy-200 bg-white">
+              <div className="flex items-center justify-between border-b border-navy-100 px-5 py-4">
+                <h3 className="font-display text-base font-medium text-navy-950">Payment</h3>
+                <span className="text-xs text-navy-500">via {sourceLabel(data.source)}</span>
               </div>
               {(() => {
                 const lv = data.payment.local_view;
@@ -1409,23 +1409,23 @@ export function TourWizard({ token, initial }: Props) {
 
                 return (
                   <>
-                    <dl className="divide-y divide-olive-100">
+                    <dl className="divide-y divide-navy-100">
                       {paid ? (
                         <div className="flex items-start justify-between gap-3 px-5 py-3">
-                          <dt className="text-sm text-olive-700">
+                          <dt className="text-sm text-navy-700">
                             Paid via {paid.provider}
-                            <span className="ml-2 text-xs text-olive-500">
+                            <span className="ml-2 text-xs text-navy-500">
                               (covers Lisio &amp; Tessitura LAB Casini Guidotti)
                             </span>
                           </dt>
                           <dd className="text-right">
-                            <div className="font-mono text-sm text-olive-900">
+                            <div className="font-mono text-sm text-navy-900">
                               {paidPrimary
                                 ? formatMoney(paidPrimary.amount, paidPrimary.currency)
                                 : formatMoney(paid.amount, paid.currency)}
                             </div>
                             {useLocal ? (
-                              <div className="text-xs text-olive-500">
+                              <div className="text-xs text-navy-500">
                                 Charged as {formatMoney(paid.amount, paid.currency)}
                               </div>
                             ) : null}
@@ -1433,32 +1433,32 @@ export function TourWizard({ token, initial }: Props) {
                         </div>
                       ) : null}
                       <div className="flex items-start justify-between gap-3 px-5 py-3">
-                        <dt className="text-sm text-olive-700">Add-ons today</dt>
+                        <dt className="text-sm text-navy-700">Add-ons today</dt>
                         <dd className="text-right">
-                          <div className="font-mono text-sm text-olive-900">
+                          <div className="font-mono text-sm text-navy-900">
                             {formatMoney(addOnsPrimary.amount, addOnsPrimary.currency)}
                           </div>
                           {useLocal && lv!.currency !== addOnsCurrency ? (
-                            <div className="text-xs text-olive-500">
+                            <div className="text-xs text-navy-500">
                               {formatMoney(projectedCost.subtotal, addOnsCurrency)} on the day
                             </div>
                           ) : null}
                         </dd>
                       </div>
                       {totalPrimary ? (
-                        <div className="flex items-start justify-between gap-3 bg-olive-50/40 px-5 py-3">
-                          <dt className="text-base font-medium text-olive-950">
+                        <div className="flex items-start justify-between gap-3 bg-navy-50/40 px-5 py-3">
+                          <dt className="text-base font-medium text-navy-950">
                             Total for the day
                           </dt>
                           <dd className="text-right">
-                            <div className="font-mono text-lg font-medium text-olive-950">
+                            <div className="font-mono text-lg font-medium text-navy-950">
                               {formatMoney(totalPrimary.amount, totalPrimary.currency)}
                             </div>
                           </dd>
                         </div>
                       ) : null}
                     </dl>
-                    <p className="px-5 py-3 text-xs text-olive-500">
+                    <p className="px-5 py-3 text-xs text-navy-500">
                       {useLocal
                         ? `Shown in ${lv!.currency} based on today's rate. Add-ons settle on the day with your guide — cash or card.`
                         : 'Add-ons settle on the day with your guide — cash or card.'}
@@ -1489,30 +1489,30 @@ export function TourWizard({ token, initial }: Props) {
                 )}`;
               };
               return (
-                <div className="mt-6 rounded-2xl border border-olive-200 bg-white">
-                  <div className="border-b border-olive-100 px-5 py-4">
-                    <h3 className="font-display text-base font-medium text-olive-950">
+                <div className="mt-6 rounded-2xl border border-navy-200 bg-white">
+                  <div className="border-b border-navy-100 px-5 py-4">
+                    <h3 className="font-display text-base font-medium text-navy-950">
                       Where you&apos;ll be
                     </h3>
-                    <p className="mt-1 text-xs text-olive-500">
+                    <p className="mt-1 text-xs text-navy-500">
                       Tap any site to open it in your maps app.
                     </p>
                   </div>
-                  <ol className="divide-y divide-olive-100">
+                  <ol className="divide-y divide-navy-100">
                     {sites.map((s, idx) => (
                       <li
                         key={s.id}
                         className="flex items-start gap-4 px-5 py-4"
                       >
-                        <span className="mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-olive-100 font-mono text-xs text-olive-700">
+                        <span className="mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-navy-100 font-mono text-xs text-navy-700">
                           {idx + 1}
                         </span>
                         <div className="flex-1 min-w-0">
-                          <p className="font-medium text-olive-900">
+                          <p className="font-medium text-navy-900">
                             {s.title || s.id}
                           </p>
                           {s.location?.address ? (
-                            <p className="mt-0.5 text-sm text-olive-600">
+                            <p className="mt-0.5 text-sm text-navy-600">
                               {s.location.address}
                             </p>
                           ) : null}
@@ -1521,7 +1521,7 @@ export function TourWizard({ token, initial }: Props) {
                               href={buildMapsUrl(s)}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="inline-flex items-center gap-1.5 rounded-full bg-olive-50 px-2.5 py-1 text-olive-800 ring-1 ring-olive-200 hover:bg-olive-100"
+                              className="inline-flex items-center gap-1.5 rounded-full bg-navy-50 px-2.5 py-1 text-navy-800 ring-1 ring-navy-200 hover:bg-navy-100"
                             >
                               <svg viewBox="0 0 12 12" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                                 <path d="M6 1.5C3.8 1.5 2 3.3 2 5.5c0 3 4 5 4 5s4-2 4-5c0-2.2-1.8-4-4-4Z M6 4.5a1.2 1.2 0 1 0 0 2.4 1.2 1.2 0 0 0 0-2.4Z" />
@@ -1529,7 +1529,7 @@ export function TourWizard({ token, initial }: Props) {
                               Open in Maps
                             </a>
                             {s.time_slot ? (
-                              <span className="inline-flex items-center gap-1 rounded-full bg-clay-50 px-2.5 py-1 text-clay-800 ring-1 ring-clay-200">
+                              <span className="inline-flex items-center gap-1 rounded-full bg-orange-50 px-2.5 py-1 text-orange-800 ring-1 ring-orange-200">
                                 {s.time_slot}
                               </span>
                             ) : null}
@@ -1555,13 +1555,13 @@ export function TourWizard({ token, initial }: Props) {
                     </svg>
                   </span>
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-display text-base font-medium text-olive-950">
+                    <h3 className="font-display text-base font-medium text-navy-950">
                       Not included
                     </h3>
-                    <p className="mt-1 text-xs text-olive-600">
+                    <p className="mt-1 text-xs text-navy-600">
                       Plan for these separately — they aren&apos;t covered by your booking.
                     </p>
-                    <ul className="mt-3 flex flex-col gap-1.5 text-sm text-olive-800">
+                    <ul className="mt-3 flex flex-col gap-1.5 text-sm text-navy-800">
                       {excluded.map((line, i) => (
                         <li key={i} className="flex items-baseline gap-2">
                           <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-amber-600" />
@@ -1579,52 +1579,52 @@ export function TourWizard({ token, initial }: Props) {
               practical.what_we_provide ||
               practical.what_to_bring ||
               practical.meeting_point) ? (
-              <div className="mt-6 rounded-2xl border border-olive-200 bg-white">
-                <div className="border-b border-olive-100 px-5 py-4">
-                  <h3 className="font-display text-base font-medium text-olive-950">
+              <div className="mt-6 rounded-2xl border border-navy-200 bg-white">
+                <div className="border-b border-navy-100 px-5 py-4">
+                  <h3 className="font-display text-base font-medium text-navy-950">
                     On the day
                   </h3>
-                  <p className="mt-1 text-xs text-olive-500">
+                  <p className="mt-1 text-xs text-navy-500">
                     Practical notes so you arrive ready and at ease.
                   </p>
                 </div>
-                <dl className="grid grid-cols-1 divide-y divide-olive-100 sm:grid-cols-2 sm:divide-x sm:divide-y-0">
+                <dl className="grid grid-cols-1 divide-y divide-navy-100 sm:grid-cols-2 sm:divide-x sm:divide-y-0">
                   {practical.meeting_point ? (
                     <div className="px-5 py-4 sm:py-5">
-                      <dt className="text-xs uppercase tracking-wide text-olive-500">
+                      <dt className="text-xs uppercase tracking-wide text-navy-500">
                         Meeting point
                       </dt>
-                      <dd className="mt-1.5 whitespace-pre-line text-sm leading-6 text-olive-800">
+                      <dd className="mt-1.5 whitespace-pre-line text-sm leading-6 text-navy-800">
                         {practical.meeting_point}
                       </dd>
                     </div>
                   ) : null}
                   {practical.what_to_wear ? (
                     <div className="px-5 py-4 sm:py-5">
-                      <dt className="text-xs uppercase tracking-wide text-olive-500">
+                      <dt className="text-xs uppercase tracking-wide text-navy-500">
                         What to wear
                       </dt>
-                      <dd className="mt-1.5 whitespace-pre-line text-sm leading-6 text-olive-800">
+                      <dd className="mt-1.5 whitespace-pre-line text-sm leading-6 text-navy-800">
                         {practical.what_to_wear}
                       </dd>
                     </div>
                   ) : null}
                   {practical.what_we_provide ? (
-                    <div className="border-t border-olive-100 px-5 py-4 sm:py-5">
-                      <dt className="text-xs uppercase tracking-wide text-olive-500">
+                    <div className="border-t border-navy-100 px-5 py-4 sm:py-5">
+                      <dt className="text-xs uppercase tracking-wide text-navy-500">
                         We provide
                       </dt>
-                      <dd className="mt-1.5 whitespace-pre-line text-sm leading-6 text-olive-800">
+                      <dd className="mt-1.5 whitespace-pre-line text-sm leading-6 text-navy-800">
                         {practical.what_we_provide}
                       </dd>
                     </div>
                   ) : null}
                   {practical.what_to_bring ? (
-                    <div className="border-t border-olive-100 px-5 py-4 sm:py-5">
-                      <dt className="text-xs uppercase tracking-wide text-olive-500">
+                    <div className="border-t border-navy-100 px-5 py-4 sm:py-5">
+                      <dt className="text-xs uppercase tracking-wide text-navy-500">
                         What to bring
                       </dt>
-                      <dd className="mt-1.5 whitespace-pre-line text-sm leading-6 text-olive-800">
+                      <dd className="mt-1.5 whitespace-pre-line text-sm leading-6 text-navy-800">
                         {practical.what_to_bring}
                       </dd>
                     </div>
@@ -1634,13 +1634,13 @@ export function TourWizard({ token, initial }: Props) {
             ) : null}
 
             {!isReadOnly ? (
-              <div className="mt-6 rounded-2xl border border-clay-200 bg-clay-50/50 px-5 py-4">
+              <div className="mt-6 rounded-2xl border border-orange-200 bg-orange-50/50 px-5 py-4">
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <div className="min-w-0 flex-1">
-                    <p className="text-sm font-medium text-olive-900">
+                    <p className="text-sm font-medium text-navy-900">
                       Travelling with someone?
                     </p>
-                    <p className="mt-0.5 text-xs text-olive-600">
+                    <p className="mt-0.5 text-xs text-navy-600">
                       Share a read-only copy so they can see the day without
                       changing your selections.
                     </p>
@@ -1649,15 +1649,15 @@ export function TourWizard({ token, initial }: Props) {
                     type="button"
                     onClick={handleShare}
                     disabled={sharePending}
-                    className="inline-flex items-center gap-2 rounded-full bg-white px-3.5 py-1.5 text-xs font-medium text-clay-800 ring-1 ring-clay-200 transition hover:bg-clay-100 disabled:opacity-60"
+                    className="inline-flex items-center gap-2 rounded-full bg-white px-3.5 py-1.5 text-xs font-medium text-orange-800 ring-1 ring-orange-200 transition hover:bg-orange-100 disabled:opacity-60"
                   >
                     {sharePending ? 'Creating link…' : shareUrl ? 'New share link' : 'Share with partner'}
                   </button>
                 </div>
                 {shareUrl ? (
                   <div className="mt-3 flex flex-wrap items-center gap-2 rounded-xl bg-white px-3 py-2 text-xs">
-                    <span className="text-olive-500 shrink-0">Copied:</span>
-                    <code className="flex-1 min-w-0 truncate font-mono text-olive-800">
+                    <span className="text-navy-500 shrink-0">Copied:</span>
+                    <code className="flex-1 min-w-0 truncate font-mono text-navy-800">
                       {shareUrl}
                     </code>
                     <button
@@ -1665,7 +1665,7 @@ export function TourWizard({ token, initial }: Props) {
                       onClick={() => {
                         navigator.clipboard?.writeText(shareUrl).catch(() => {});
                       }}
-                      className="shrink-0 rounded-full bg-olive-50 px-2.5 py-1 text-olive-800 ring-1 ring-olive-200 hover:bg-olive-100"
+                      className="shrink-0 rounded-full bg-navy-50 px-2.5 py-1 text-navy-800 ring-1 ring-navy-200 hover:bg-navy-100"
                     >
                       Copy again
                     </button>
@@ -1674,7 +1674,7 @@ export function TourWizard({ token, initial }: Props) {
 
                 {(data.shares || []).length > 0 ? (
                   <div className="mt-3 flex flex-col gap-1.5">
-                    <p className="text-xs font-medium text-olive-700">
+                    <p className="text-xs font-medium text-navy-700">
                       Active share links ({(data.shares || []).length}/3)
                     </p>
                     <ul className="flex flex-col gap-1.5">
@@ -1687,12 +1687,12 @@ export function TourWizard({ token, initial }: Props) {
                         return (
                           <li
                             key={share.token}
-                            className="flex flex-wrap items-center gap-2 rounded-xl bg-white px-3 py-2 text-xs ring-1 ring-clay-200"
+                            className="flex flex-wrap items-center gap-2 rounded-xl bg-white px-3 py-2 text-xs ring-1 ring-orange-200"
                           >
-                            <code className="flex-1 min-w-0 truncate font-mono text-olive-700">
+                            <code className="flex-1 min-w-0 truncate font-mono text-navy-700">
                               …/{share.token.slice(0, 12)}…
                             </code>
-                            <span className="text-olive-500">
+                            <span className="text-navy-500">
                               {isNaN(created.getTime())
                                 ? ''
                                 : created.toLocaleDateString(undefined, {
@@ -1705,7 +1705,7 @@ export function TourWizard({ token, initial }: Props) {
                               onClick={() => {
                                 navigator.clipboard?.writeText(url).catch(() => {});
                               }}
-                              className="shrink-0 rounded-full bg-olive-50 px-2.5 py-1 text-olive-800 ring-1 ring-olive-200 hover:bg-olive-100"
+                              className="shrink-0 rounded-full bg-navy-50 px-2.5 py-1 text-navy-800 ring-1 ring-navy-200 hover:bg-navy-100"
                             >
                               Copy
                             </button>
@@ -1729,26 +1729,26 @@ export function TourWizard({ token, initial }: Props) {
               <button
                 type="button"
                 onClick={goPrev}
-                className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-medium text-olive-700 ring-1 ring-olive-200 transition hover:bg-olive-50"
+                className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-medium text-navy-700 ring-1 ring-navy-200 transition hover:bg-navy-50"
               >
                 ← Back
               </button>
               <div className="flex items-center gap-3">
                 {error ? <span className="text-sm text-red-600">{error}</span> : null}
                 {!error && savedAt && !isReadOnly ? (
-                  <span className="text-sm text-olive-500">Saved</span>
+                  <span className="text-sm text-navy-500">Saved</span>
                 ) : null}
                 {!isReadOnly ? (
                   <button
                     type="button"
                     onClick={onSaveFinal}
                     disabled={saving}
-                    className="inline-flex items-center gap-2 rounded-full bg-clay-600 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-clay-500 disabled:opacity-60"
+                    className="inline-flex items-center gap-2 rounded-full bg-orange-600 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-orange-500 disabled:opacity-60"
                   >
                     {saving ? 'Saving…' : 'Confirm itinerary'}
                   </button>
                 ) : (
-                  <span className="text-sm text-olive-500">
+                  <span className="text-sm text-navy-500">
                     Read-only view — only the original recipient can confirm.
                   </span>
                 )}
@@ -1771,9 +1771,9 @@ export function TourWizard({ token, initial }: Props) {
 }
 
 const cardClass =
-  'rounded-2xl border border-olive-200 bg-white p-5 sm:p-6';
+  'rounded-2xl border border-navy-200 bg-white p-5 sm:p-6';
 const fieldInputClass =
-  'w-full min-w-0 rounded-xl border border-olive-200 bg-white px-3 py-2.5 text-sm text-olive-950 placeholder:text-olive-400 focus:border-clay-400 focus:outline-none focus:ring-2 focus:ring-clay-400/40';
+  'w-full min-w-0 rounded-xl border border-navy-200 bg-white px-3 py-2.5 text-sm text-navy-950 placeholder:text-navy-400 focus:border-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-400/40';
 
 function QuestionCard({
   title,
@@ -1789,16 +1789,16 @@ function QuestionCard({
   if (asFieldset) {
     return (
       <fieldset className={cardClass}>
-        <legend className="px-2 text-sm font-medium text-olive-900">{title}</legend>
-        {help ? <p className="mt-1.5 text-xs leading-5 text-olive-500">{help}</p> : null}
+        <legend className="px-2 text-sm font-medium text-navy-900">{title}</legend>
+        {help ? <p className="mt-1.5 text-xs leading-5 text-navy-500">{help}</p> : null}
         <div className="mt-4">{children}</div>
       </fieldset>
     );
   }
   return (
     <div className={cardClass}>
-      <p className="text-sm font-medium text-olive-900">{title}</p>
-      {help ? <p className="mt-1.5 text-xs leading-5 text-olive-500">{help}</p> : null}
+      <p className="text-sm font-medium text-navy-900">{title}</p>
+      {help ? <p className="mt-1.5 text-xs leading-5 text-navy-500">{help}</p> : null}
       <div className="mt-4">{children}</div>
     </div>
   );
@@ -1840,8 +1840,8 @@ function ChipRow({
             className={[
               'inline-flex max-w-full items-center gap-1.5 rounded-full px-3 py-1.5 text-sm leading-5 transition',
               active
-                ? 'bg-olive-900 text-white'
-                : 'bg-olive-50 text-olive-800 ring-1 ring-olive-200 hover:bg-olive-100',
+                ? 'bg-navy-900 text-white'
+                : 'bg-navy-50 text-navy-800 ring-1 ring-navy-200 hover:bg-navy-100',
             ].join(' ')}
           >
             {active ? (
@@ -1880,7 +1880,7 @@ function NavButtons({
       <button
         type="button"
         onClick={onBack}
-        className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-medium text-olive-700 ring-1 ring-olive-200 transition hover:bg-olive-50"
+        className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-medium text-navy-700 ring-1 ring-navy-200 transition hover:bg-navy-50"
       >
         ← Back
       </button>
@@ -1888,7 +1888,7 @@ function NavButtons({
         type="button"
         onClick={onNext}
         disabled={saving}
-        className="inline-flex items-center gap-2 rounded-full bg-clay-600 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-clay-500 disabled:opacity-60"
+        className="inline-flex items-center gap-2 rounded-full bg-orange-600 px-5 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-orange-500 disabled:opacity-60"
       >
         {saving ? 'Saving…' : 'Continue'}
         <svg viewBox="0 0 12 12" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
