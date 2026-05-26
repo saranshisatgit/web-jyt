@@ -25,10 +25,10 @@ export function BlueprintGrid() {
       {/* Vertical rails — aligned to the centered max-w-7xl column. */}
       <div className="absolute inset-0 flex justify-center">
         <div className="relative h-full w-full max-w-[80rem] px-6 lg:px-10">
-          <span className="absolute inset-y-0 left-6 w-px bg-olive-950/[0.04] lg:left-10" />
-          <span className="absolute inset-y-0 right-6 w-px bg-olive-950/[0.04] lg:right-10" />
-          <span className="absolute inset-y-0 left-1/3 hidden w-px bg-olive-950/[0.02] lg:block" />
-          <span className="absolute inset-y-0 left-2/3 hidden w-px bg-olive-950/[0.02] lg:block" />
+          <span className="absolute inset-y-0 left-6 w-px bg-navy-950/[0.04] lg:left-10" />
+          <span className="absolute inset-y-0 right-6 w-px bg-navy-950/[0.04] lg:right-10" />
+          <span className="absolute inset-y-0 left-1/3 hidden w-px bg-navy-950/[0.02] lg:block" />
+          <span className="absolute inset-y-0 left-2/3 hidden w-px bg-navy-950/[0.02] lg:block" />
         </div>
       </div>
 
@@ -36,7 +36,7 @@ export function BlueprintGrid() {
       {horizontalPercents.map((p) => (
         <span
           key={p}
-          className="absolute inset-x-0 h-px bg-olive-950/[0.03]"
+          className="absolute inset-x-0 h-px bg-navy-950/[0.03]"
           style={{ top: `${p}%` }}
         />
       ))}

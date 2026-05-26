@@ -69,15 +69,15 @@ function BrowserFrame({
   children: React.ReactNode
 }) {
   return (
-    <div className="overflow-hidden rounded-xl bg-white shadow-2xl shadow-olive-950/10 ring-1 ring-olive-200/80">
-      <div className="flex items-center gap-3 border-b border-olive-200/70 bg-olive-100/60 px-4 py-2.5">
+    <div className="overflow-hidden rounded-xl bg-white shadow-2xl shadow-navy-950/10 ring-1 ring-navy-200/80">
+      <div className="flex items-center gap-3 border-b border-navy-200/70 bg-navy-100/60 px-4 py-2.5">
         <div className="flex gap-1.5">
-          <span className="size-2.5 rounded-full bg-olive-300" />
-          <span className="size-2.5 rounded-full bg-olive-300" />
-          <span className="size-2.5 rounded-full bg-olive-300" />
+          <span className="size-2.5 rounded-full bg-navy-300" />
+          <span className="size-2.5 rounded-full bg-navy-300" />
+          <span className="size-2.5 rounded-full bg-navy-300" />
         </div>
-        <div className="mx-auto inline-flex max-w-[60%] items-center gap-2 truncate rounded-md bg-white px-3 py-1 text-[11px] font-medium text-olive-600 ring-1 ring-olive-200/70">
-          <svg viewBox="0 0 12 12" fill="none" className="size-3 text-olive-400" aria-hidden="true">
+        <div className="mx-auto inline-flex max-w-[60%] items-center gap-2 truncate rounded-md bg-white px-3 py-1 text-[11px] font-medium text-navy-600 ring-1 ring-navy-200/70">
+          <svg viewBox="0 0 12 12" fill="none" className="size-3 text-navy-400" aria-hidden="true">
             <path
               d="M3.5 5V3.5a2.5 2.5 0 0 1 5 0V5m-6 0h7v5h-7V5Z"
               stroke="currentColor"
@@ -89,7 +89,7 @@ function BrowserFrame({
           {url}
         </div>
       </div>
-      <div className="relative aspect-[16/10] w-full bg-olive-50">{children}</div>
+      <div className="relative aspect-[16/10] w-full bg-navy-50">{children}</div>
     </div>
   )
 }
@@ -103,10 +103,10 @@ export function ProductTour() {
       <Container>
         <div className="mx-auto max-w-3xl text-center">
           <Eyebrow className="mx-auto justify-center">A unified platform</Eyebrow>
-          <h2 className="mt-5 font-display text-3xl/[1.05] font-medium tracking-[-0.02em] text-balance text-olive-950 sm:text-5xl/[1.05]">
-            Three surfaces, <span className="font-serif font-normal italic text-clay-700">one source of truth</span>.
+          <h2 className="mt-5 font-display text-3xl/[1.05] font-medium tracking-[-0.02em] text-balance text-navy-950 sm:text-5xl/[1.05]">
+            Three surfaces, <span className="font-serif font-normal italic text-orange-700">one source of truth</span>.
           </h2>
-          <p className="mt-5 text-base/7 text-olive-600">
+          <p className="mt-5 text-base/7 text-navy-600">
             From the admin who plans a production run, to the partner who weaves it,
             to the storefront where it sells — every workflow is built on the same data model.
           </p>
@@ -116,7 +116,7 @@ export function ProductTour() {
         <div
           role="tablist"
           aria-label="Platform surfaces"
-          className="mx-auto mt-12 inline-flex w-full max-w-md items-center gap-1 rounded-full border border-olive-200/70 bg-white p-1 sm:flex"
+          className="mx-auto mt-12 inline-flex w-full max-w-md items-center gap-1 rounded-full border border-navy-200/70 bg-white p-1 sm:flex"
         >
           {tabs.map((tab) => {
             const isActive = tab.id === active
@@ -131,14 +131,14 @@ export function ProductTour() {
                 className={
                   'relative flex-1 rounded-full px-4 py-2 text-sm font-medium transition-colors ' +
                   (isActive
-                    ? 'text-olive-950'
-                    : 'text-olive-600 hover:text-olive-900')
+                    ? 'text-navy-950'
+                    : 'text-navy-600 hover:text-navy-900')
                 }
               >
                 {isActive && (
                   <motion.span
                     layoutId="tour-tab-pill"
-                    className="absolute inset-0 -z-0 rounded-full bg-clay-100/80 ring-1 ring-clay-200"
+                    className="absolute inset-0 -z-0 rounded-full bg-orange-100/80 ring-1 ring-orange-200"
                     transition={{ type: 'spring', stiffness: 400, damping: 30 }}
                   />
                 )}
@@ -164,16 +164,16 @@ export function ProductTour() {
                 exit={{ opacity: 0, y: -8 }}
                 transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
               >
-                <h3 className="font-display text-2xl/[1.15] font-medium tracking-[-0.02em] text-balance text-olive-950 sm:text-3xl/[1.15]">
+                <h3 className="font-display text-2xl/[1.15] font-medium tracking-[-0.02em] text-balance text-navy-950 sm:text-3xl/[1.15]">
                   {current.title}
                 </h3>
-                <p className="mt-4 text-base/7 text-olive-600">{current.description}</p>
-                <ul className="mt-6 space-y-3 text-sm/6 text-olive-700">
+                <p className="mt-4 text-base/7 text-navy-600">{current.description}</p>
+                <ul className="mt-6 space-y-3 text-sm/6 text-navy-700">
                   {current.bullets.map((b) => (
                     <li key={b} className="flex items-start gap-3">
                       <span
                         aria-hidden="true"
-                        className="mt-2 inline-block size-1.5 shrink-0 rounded-full bg-clay-500"
+                        className="mt-2 inline-block size-1.5 shrink-0 rounded-full bg-orange-500"
                       />
                       {b}
                     </li>

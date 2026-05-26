@@ -8,7 +8,7 @@ export function Text({ children, className, size = 'md', ...props }: ComponentPr
       className={clsx(
         size === 'md' && 'text-base/7',
         size === 'lg' && 'text-lg/8',
-        'text-olive-700 data-',
+        'text-navy-700 data-',
         className,
       )}
       {...props}
@@ -24,7 +24,7 @@ export function Lead({ className, ...props }: ComponentProps<'p'>) {
     <p
       className={clsx(
         className,
-        'text-lg/8 text-olive-700 data-',
+        'text-lg/8 text-navy-700 data-',
       )}
       {...props}
     />
@@ -37,7 +37,7 @@ export function Paragraph({ className, ...props }: ComponentProps<'p'>) {
     <p
       className={clsx(
         className,
-        'text-base/7 text-olive-700 data-',
+        'text-base/7 text-navy-700 data-',
       )}
       {...props}
     />
@@ -50,7 +50,7 @@ export function Small({ className, ...props }: ComponentProps<'span'>) {
     <span
       className={clsx(
         className,
-        'text-sm text-olive-600 data-',
+        'text-sm text-navy-600 data-',
       )}
       {...props}
     />
@@ -63,7 +63,7 @@ export function Heading({ children, className, as: Component = 'h1', dark, ...pr
     <Component
       data-dark={dark ? 'true' : undefined}
       className={clsx(
-        'font-display text-5xl/12 tracking-tight text-balance sm:text-[5rem]/20 text-olive-950 data-',
+        'font-display text-5xl/12 tracking-tight text-balance sm:text-[5rem]/20 text-navy-950 data-',
         className,
       )}
       {...props}
@@ -79,7 +79,7 @@ export function Subheading({ children, className, as: Component = 'h2', dark, ..
     <Component
       data-dark={dark ? 'true' : undefined}
       className={clsx(
-        'font-display text-[2rem]/10 tracking-tight text-pretty text-olive-950 sm:text-5xl/14 data-',
+        'font-display text-[2rem]/10 tracking-tight text-pretty text-navy-950 sm:text-5xl/14 data-',
         className,
       )}
       {...props}
@@ -92,7 +92,7 @@ export function Subheading({ children, className, as: Component = 'h2', dark, ..
 // Eyebrow component
 export function Eyebrow({ children, className, ...props }: ComponentProps<'div'>) {
   return (
-    <div className={clsx('text-sm/7 font-semibold text-olive-700 data-', className)} {...props}>
+    <div className={clsx('text-sm/7 font-semibold text-navy-700 data-', className)} {...props}>
       {children}
     </div>
   )

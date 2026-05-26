@@ -26,18 +26,18 @@ export default async function TourVisitPage({ params }: PageProps) {
       <div className="min-h-screen bg-hero-wash">
         <Navbar />
         <div className="mx-auto flex w-full max-w-2xl items-center justify-center px-6 py-16">
-          <div className="rounded-3xl border border-olive-200 bg-white p-10 text-center shadow-sm">
-            <p className="font-serif text-sm italic text-clay-700">
+          <div className="rounded-3xl border border-navy-200 bg-white p-10 text-center shadow-sm">
+            <p className="font-serif text-sm italic text-orange-700">
               {isExpired ? 'Link expired' : isNotFound ? "We couldn't find this visit" : 'Something went wrong'}
             </p>
-            <h1 className="mt-3 font-display text-2xl font-medium text-olive-950">
+            <h1 className="mt-3 font-display text-2xl font-medium text-navy-950">
               {isExpired
                 ? 'This visit link has expired'
                 : isNotFound
                   ? 'Visit not found'
                   : 'Unable to load your visit'}
             </h1>
-            <p className="mt-3 text-sm text-olive-600">
+            <p className="mt-3 text-sm text-navy-600">
               {isExpired
                 ? "Please reach out and we'll send you a fresh link."
                 : isNotFound

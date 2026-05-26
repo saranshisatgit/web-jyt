@@ -85,7 +85,7 @@ export default async function ContentPage({ params }: { params: PageParams }) {
       <section className="kt-section">
         <div className="container">
           <article
-            className="prose prose-olive"
+            className="prose prose-navy"
             style={{ maxWidth: '720px', margin: '0 auto' }}
             dangerouslySetInnerHTML={{ __html: data.html }}
           />

@@ -58,7 +58,7 @@ export function SegmentModal({ segment, onClose, onToggle, isSelected, isLocked,
       role="dialog"
       aria-modal="true"
       aria-labelledby="segment-modal-title"
-      className="fixed inset-0 z-50 flex items-center justify-center bg-olive-950/40 p-4 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-navy-950/40 p-4 backdrop-blur-sm"
       onClick={onClose}
     >
       <div
@@ -66,7 +66,7 @@ export function SegmentModal({ segment, onClose, onToggle, isSelected, isLocked,
         onClick={(e) => e.stopPropagation()}
       >
         {segment.image_url ? (
-          <div className="relative aspect-[16/9] w-full bg-olive-100">
+          <div className="relative aspect-[16/9] w-full bg-navy-100">
             <Image
               src={segment.image_url}
               alt={segment.title || segment.id}
@@ -76,14 +76,14 @@ export function SegmentModal({ segment, onClose, onToggle, isSelected, isLocked,
             />
           </div>
         ) : (
-          <div className="aspect-[16/9] w-full bg-gradient-to-br from-olive-100 via-clay-100 to-olive-200" />
+          <div className="aspect-[16/9] w-full bg-gradient-to-br from-navy-100 via-orange-100 to-navy-200" />
         )}
 
         <button
           type="button"
           aria-label="Close"
           onClick={onClose}
-          className="absolute right-4 top-4 inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-olive-800 shadow-md ring-1 ring-olive-200 transition hover:bg-white"
+          className="absolute right-4 top-4 inline-flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-navy-800 shadow-md ring-1 ring-navy-200 transition hover:bg-white"
         >
           <svg viewBox="0 0 16 16" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
             <path d="M3 3l10 10M13 3L3 13" />
@@ -92,27 +92,27 @@ export function SegmentModal({ segment, onClose, onToggle, isSelected, isLocked,
 
         <div className="flex-1 overflow-y-auto px-6 py-6 sm:px-8 sm:py-8">
           <div className="flex flex-wrap items-start justify-between gap-3">
-            <h2 id="segment-modal-title" className="font-display text-2xl font-medium text-olive-950 sm:text-3xl">
+            <h2 id="segment-modal-title" className="font-display text-2xl font-medium text-navy-950 sm:text-3xl">
               {segment.title || segment.id}
             </h2>
             {typeof segment.base_price === 'number' && segment.base_price > 0 ? (
-              <span className="inline-flex items-baseline gap-1 rounded-full bg-clay-50 px-3 py-1 text-sm text-clay-800 ring-1 ring-clay-200">
+              <span className="inline-flex items-baseline gap-1 rounded-full bg-orange-50 px-3 py-1 text-sm text-orange-800 ring-1 ring-orange-200">
                 <span className="font-mono">{formatMoney(segment.base_price, segCurrency)}</span>
-                <span className="text-xs text-clay-600">/ pax</span>
+                <span className="text-xs text-orange-600">/ pax</span>
               </span>
             ) : null}
           </div>
 
-          <div className="mt-2 flex flex-wrap items-center gap-3 text-xs text-olive-500">
+          <div className="mt-2 flex flex-wrap items-center gap-3 text-xs text-navy-500">
             {segment.duration_minutes ? <span>{formatDuration(segment.duration_minutes)}</span> : null}
             {segment.time_slot ? <span>{segment.time_slot}</span> : null}
             {isLocked ? (
-              <span className="rounded bg-olive-100 px-2 py-0.5 text-olive-700">Always included</span>
+              <span className="rounded bg-navy-100 px-2 py-0.5 text-navy-700">Always included</span>
             ) : null}
           </div>
 
           {segment.description ? (
-            <p className="mt-5 whitespace-pre-line text-base leading-relaxed text-olive-800">
+            <p className="mt-5 whitespace-pre-line text-base leading-relaxed text-navy-800">
               {segment.description}
             </p>
           ) : null}
@@ -120,7 +120,7 @@ export function SegmentModal({ segment, onClose, onToggle, isSelected, isLocked,
           {gallery.length > 0 ? (
             <div className="mt-6 grid grid-cols-2 gap-2 sm:grid-cols-3">
               {gallery.map((src, i) => (
-                <div key={i} className="relative aspect-square overflow-hidden rounded-xl bg-olive-100">
+                <div key={i} className="relative aspect-square overflow-hidden rounded-xl bg-navy-100">
                   <Image
                     src={src}
                     alt={`${segment.title || 'Segment'} photo ${i + 1}`}
@@ -135,7 +135,7 @@ export function SegmentModal({ segment, onClose, onToggle, isSelected, isLocked,
 
           {links.length > 0 ? (
             <div className="mt-6">
-              <h3 className="font-display text-sm font-medium text-olive-900">Related</h3>
+              <h3 className="font-display text-sm font-medium text-navy-900">Related</h3>
               <ul className="mt-2 flex flex-col gap-2">
                 {links.map((l, i) => (
                   <li key={i}>
@@ -143,7 +143,7 @@ export function SegmentModal({ segment, onClose, onToggle, isSelected, isLocked,
                       href={l.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 text-sm text-clay-700 underline-offset-2 hover:underline"
+                      className="inline-flex items-center gap-2 text-sm text-orange-700 underline-offset-2 hover:underline"
                     >
                       {l.label || l.url}
                       <svg viewBox="0 0 12 12" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
@@ -157,11 +157,11 @@ export function SegmentModal({ segment, onClose, onToggle, isSelected, isLocked,
           ) : null}
         </div>
 
-        <div className="flex items-center justify-between gap-3 border-t border-olive-200 bg-olive-50/50 px-6 py-4 sm:px-8">
+        <div className="flex items-center justify-between gap-3 border-t border-navy-200 bg-navy-50/50 px-6 py-4 sm:px-8">
           <button
             type="button"
             onClick={onClose}
-            className="text-sm text-olive-700 hover:text-olive-900"
+            className="text-sm text-navy-700 hover:text-navy-900"
           >
             Close
           </button>
@@ -175,10 +175,10 @@ export function SegmentModal({ segment, onClose, onToggle, isSelected, isLocked,
             className={[
               'inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium transition',
               isLocked
-                ? 'cursor-default bg-olive-100 text-olive-500'
+                ? 'cursor-default bg-navy-100 text-navy-500'
                 : isSelected
-                  ? 'bg-olive-900 text-white hover:bg-olive-700'
-                  : 'bg-clay-600 text-white hover:bg-clay-500',
+                  ? 'bg-navy-900 text-white hover:bg-navy-700'
+                  : 'bg-orange-600 text-white hover:bg-orange-500',
             ].join(' ')}
           >
             {isLocked ? 'Always included' : isSelected ? 'Remove from itinerary' : 'Add to itinerary'}

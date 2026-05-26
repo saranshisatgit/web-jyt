@@ -239,11 +239,11 @@ export default async function Partner() {
             <div>
               <div className="kt-eyebrow on-dark">Apply</div>
               <h3 className="kt-display s" style={{ color: 'var(--cream)', marginTop: '16px' }}>
-                Become a <em style={{ color: 'oklch(0.82 0.14 50)' }}>partner</em>.
+                Become a <em style={{ color: 'var(--accent-deep)' }}>partner</em>.
               </h3>
               <p
                 style={{
-                  color: 'oklch(0.82 0.018 75)',
+                  color: 'var(--ink-soft)',
                   marginTop: '12px',
                   maxWidth: '520px',
                   fontSize: '17px',

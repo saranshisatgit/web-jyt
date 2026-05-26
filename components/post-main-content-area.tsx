@@ -35,7 +35,7 @@ export function PostMainContentArea({
   generatedHtml,
 }: PostMainContentAreaProps) {
   return (
-    <div className="text-olive-700">
+    <div className="text-navy-700">
       <div className="max-w-2xl xl:mx-auto">
         {/* Display featured image if available */}
         {featuredImageUrl && (
@@ -58,19 +58,19 @@ export function PostMainContentArea({
 
         {/* Main Content Area: Handles TipTap rendering and final HTML display */}
         {!processedContent ? (
-          <div className="py-4 text-center text-olive-500">
+          <div className="py-4 text-center text-navy-500">
             Content not available or being processed...
           </div>
         ) : !generatedHtml ? (
           <div className="flex flex-col items-center justify-center py-10">
-            <div className="loader ease-linear rounded-full border-4 border-t-4 border-olive-200 h-12 w-12 mb-4"></div>
-            <p className="loading-text text-olive-500 text-lg">
+            <div className="loader ease-linear rounded-full border-4 border-t-4 border-navy-200 h-12 w-12 mb-4"></div>
+            <p className="loading-text text-navy-500 text-lg">
               Loading content...
             </p>
           </div>
         ) : (
           <div 
-            className="prose prose-olive prose-ol:list-decimal prose-ul:list-[square] prose-li:my-1 prose-li:pl-2 prose-p:my-4 prose-headings:mt-8 prose-headings:mb-4 prose-headings:font-medium prose-img:my-6 prose-img:rounded-lg prose-a:font-semibold prose-a:underline-offset-4 max-w-none"
+            className="prose prose-navy prose-ol:list-decimal prose-ul:list-[square] prose-li:my-1 prose-li:pl-2 prose-p:my-4 prose-headings:mt-8 prose-headings:mb-4 prose-headings:font-medium prose-img:my-6 prose-img:rounded-lg prose-a:font-semibold prose-a:underline-offset-4 max-w-none"
             dangerouslySetInnerHTML={{ __html: generatedHtml }}
           />
         )}
@@ -110,30 +110,30 @@ export function PostMainContentArea({
               {showDebug ? 'Hide' : 'Show'} Debug Info
             </Button>
             {showDebug && (
-              <div className="mt-4 space-y-4 rounded-md border border-dashed border-olive-300 bg-olive-50 p-4 text-xs">
+              <div className="mt-4 space-y-4 rounded-md border border-dashed border-navy-300 bg-navy-50 p-4 text-xs">
                 <div>
                   <h4 className="mb-2 font-medium">Post Object:</h4>
-                  <pre className="overflow-auto rounded-md bg-olive-100 p-4">
+                  <pre className="overflow-auto rounded-md bg-navy-100 p-4">
                     {JSON.stringify(post, null, 2)}
                   </pre>
                 </div>
                 <div>
                   <h4 className="mb-2 font-medium">Processed Content (JSON for TipTapRenderer):</h4>
-                  <pre className="overflow-auto rounded-md bg-olive-100 p-4">
+                  <pre className="overflow-auto rounded-md bg-navy-100 p-4">
                     {JSON.stringify(processedContent, null, 2)}
                   </pre>
                 </div>
                 {drawerNode && (
                   <div>
                     <h4 className="mb-2 font-medium">Extracted Drawer Node:</h4>
-                    <pre className="overflow-auto rounded-md bg-olive-100 p-4">
+                    <pre className="overflow-auto rounded-md bg-navy-100 p-4">
                       {JSON.stringify(drawerNode, null, 2)}
                     </pre>
                   </div>
                 )}
                 <div>
                   <h4 className="mb-2 font-medium">Generated HTML:</h4>
-                  <pre className="overflow-auto rounded-md bg-olive-100 p-4 text-xs">
+                  <pre className="overflow-auto rounded-md bg-navy-100 p-4 text-xs">
                     {generatedHtml}
                   </pre>
                 </div>

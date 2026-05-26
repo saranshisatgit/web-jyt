@@ -26,14 +26,14 @@ export default async function GuideDashboardPage({ params }: PageProps) {
         <Navbar />
         <div className="min-h-screen bg-hero-wash">
           <div className="mx-auto flex w-full max-w-2xl items-center justify-center px-6 py-16">
-            <div className="rounded-3xl border border-olive-200 bg-white p-10 text-center shadow-sm">
-              <p className="font-serif text-sm italic text-clay-700">
+            <div className="rounded-3xl border border-navy-200 bg-white p-10 text-center shadow-sm">
+              <p className="font-serif text-sm italic text-orange-700">
                 {isNotFound ? "We don't recognise this token" : 'Something went wrong'}
               </p>
-              <h1 className="mt-3 font-display text-2xl font-medium text-olive-950">
+              <h1 className="mt-3 font-display text-2xl font-medium text-navy-950">
                 {isNotFound ? 'Guide dashboard not found' : 'Unable to load your dashboard'}
               </h1>
-              <p className="mt-3 text-sm text-olive-600">
+              <p className="mt-3 text-sm text-navy-600">
                 {isNotFound
                   ? "Double-check the link from the team — tokens can be regenerated, in which case the previous link is revoked."
                   : result.message}
