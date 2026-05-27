@@ -840,21 +840,62 @@ function Benefits() {
 }
 
 // `UsingThePlatform` lives between <Benefits /> and <Compare />, mode-gated
-// to investor. Pulls quote cards from the CMS Testimonial block on the
-// home page (admin can edit live) and the live "what's actually happening"
-// numbers (carts + organic visitors in last 30d) from the marketing
-// metrics endpoint. Hidden entirely if neither has content.
+// to investor. Pulls quote cards from three sources, merged in this order:
+//   1. CMS Testimonial block on the home page (admin owns copy; non-partner
+//      quotes like LeAtelier, independent artisans, etc.)
+//   2. Live partner brands with a `story` populated — each rendered as a
+//      quote card with their storefront URL as the attribution link.
+//      Stories live on `partner.metadata.story`, surfaced via the existing
+//      /web/website/:domain/marketing/partners endpoint.
+//   3. Live "what's actually happening" numbers (carts + organic visitors
+//      in last 30d) from the marketing metrics endpoint.
+// Hidden entirely if neither quotes nor metric cards have content.
+type MergedTestimonial = {
+  name: string
+  quote: string
+  subtitle?: string
+  image_url?: string
+  storefront_url?: string
+  is_partner?: boolean
+}
+
 function UsingThePlatform() {
   const { data: testimonialsData } = useHomeTestimonials()
   const { data: metrics } = useMetrics()
-  const testimonials = testimonialsData?.testimonials ?? []
-  const title = testimonialsData?.title || 'Voices from the platform'
+  const { data: partners } = usePartners()
+
+  const cmsQuotes: MergedTestimonial[] = (
+    testimonialsData?.testimonials ?? []
+  ).map((t) => ({
+    name: t.name,
+    quote: t.quote,
+    subtitle: t.subtitle,
+    image_url: t.image_url,
+  }))
+
+  // Brand partners with a story → render as a quote card with the
+  // storefront URL as a link. Skip brands without a story (component
+  // never invents copy on the partner's behalf).
+  const brandQuotes: MergedTestimonial[] = (partners?.brands ?? [])
+    .filter((b) => !!b.story?.trim())
+    .map((b) => ({
+      name: b.name.trim(),
+      quote: b.story!.trim(),
+      subtitle: b.location
+        ? `${b.craft || 'Live storefront'} · ${b.location}`
+        : b.craft || 'Live partner storefront',
+      image_url: b.logo ?? undefined,
+      storefront_url: b.storefront_url ?? undefined,
+      is_partner: true,
+    }))
+
+  const allQuotes = [...cmsQuotes, ...brandQuotes]
   const cta = testimonialsData?.callToAction
 
   const carts = metrics?.intent?.carts_30d ?? 0
   const visitors = metrics?.traffic?.unique_visitors_30d ?? 0
   const hasIntent = carts > 0 || visitors > 0
-  const hasQuotes = testimonials.length > 0
+  const hasQuotes = allQuotes.length > 0
 
   if (!hasQuotes && !hasIntent) return null
 
@@ -870,7 +911,7 @@ function UsingThePlatform() {
 
         {hasQuotes && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4" style={{ marginTop: '32px' }}>
-            {testimonials.map((t, i) => (
+            {allQuotes.map((t, i) => (
               <article key={i} className="kt-card">
                 <p className="kt-card-body serif italic" style={{ fontSize: '17px', lineHeight: 1.5 }}>
                   &ldquo;{t.quote}&rdquo;
@@ -886,12 +927,41 @@ function UsingThePlatform() {
                       style={{ width: 40, height: 40, borderRadius: '50%', objectFit: 'cover', flexShrink: 0 }}
                     />
                   )}
-                  <div>
-                    <div className="kt-card-title" style={{ fontSize: '15px', margin: 0 }}>{t.name}</div>
+                  <div style={{ minWidth: 0, flex: 1 }}>
+                    <div className="kt-card-title" style={{ fontSize: '15px', margin: 0 }}>
+                      {t.storefront_url ? (
+                        <a
+                          href={t.storefront_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="kt-link"
+                          style={{ fontSize: '15px' }}
+                        >
+                          {t.name} →
+                        </a>
+                      ) : (
+                        t.name
+                      )}
+                    </div>
                     {t.subtitle && (
                       <div className="kt-meta" style={{ marginTop: '2px' }}>{t.subtitle}</div>
                     )}
                   </div>
+                  {t.is_partner && (
+                    <span
+                      className="kt-meta"
+                      style={{
+                        flexShrink: 0,
+                        padding: '2px 8px',
+                        borderRadius: 999,
+                        background: 'var(--accent-pale)',
+                        color: 'var(--accent-deep)',
+                        fontSize: '11px',
+                      }}
+                    >
+                      Live partner
+                    </span>
+                  )}
                 </div>
               </article>
             ))}
