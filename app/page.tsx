@@ -2,9 +2,11 @@
 
 import { useState, type FormEvent } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { useQuery } from '@tanstack/react-query'
 import { Navbar } from '@/components/navbar'
 import { useBrand } from '@/app/context/brand-context'
+import storefrontPreviews from '@/data/storefront-previews.json'
 
 // ----- DATA -----------------------------------------------------------------
 
@@ -935,8 +937,99 @@ function UsingThePlatform() {
             </a>
           </div>
         )}
+
+        <LiveStorefronts />
       </div>
     </section>
+  )
+}
+
+// `LiveStorefronts` is the visual-proof row below the quote cards.
+// Screenshots committed to /public/storefront-previews/{handle}.png +
+// data/storefront-previews.json by scripts/screenshot-storefronts.mjs
+// — re-run that script when partners redesign or when a new partner
+// goes live. Stays in jyt-web's repo (no runtime screenshot service).
+function LiveStorefronts() {
+  const storefronts =
+    (storefrontPreviews as { storefronts?: Array<{
+      partner_id: string
+      name: string
+      handle: string
+      storefront_url: string
+      screenshot_path: string
+      width: number
+      height: number
+    }> }).storefronts ?? []
+
+  if (storefronts.length === 0) return null
+
+  return (
+    <div style={{ marginTop: '48px' }}>
+      <div className="kt-eyebrow" style={{ marginBottom: '12px' }}>
+        Live storefronts
+      </div>
+      <p className="kt-card-body" style={{ maxWidth: '600px', marginBottom: '20px' }}>
+        Partner stores running on the platform today — each on their own
+        domain, their own products, their own checkout.
+      </p>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {storefronts.map((s) => (
+          <a
+            key={s.partner_id}
+            href={s.storefront_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="kt-card"
+            style={{
+              padding: 0,
+              overflow: 'hidden',
+              display: 'block',
+              textDecoration: 'none',
+              color: 'inherit',
+            }}
+          >
+            <div
+              style={{
+                position: 'relative',
+                width: '100%',
+                aspectRatio: `${s.width} / ${s.height}`,
+                background: 'var(--bg-muted, #f6f5f0)',
+                overflow: 'hidden',
+                borderBottom: '1px solid var(--rule, rgba(0,0,0,0.08))',
+              }}
+            >
+              <Image
+                src={s.screenshot_path}
+                alt={`${s.name} storefront preview`}
+                fill
+                sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                style={{ objectFit: 'cover', objectPosition: 'top' }}
+              />
+            </div>
+            <div style={{ padding: '12px 16px' }}>
+              <div className="kt-card-title" style={{ fontSize: '14px', margin: 0 }}>
+                {s.name}
+              </div>
+              <div
+                className="kt-meta"
+                style={{
+                  marginTop: '2px',
+                  fontSize: '12px',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  gap: '8px',
+                }}
+              >
+                <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                  {s.storefront_url.replace(/^https?:\/\//, '')}
+                </span>
+                <span style={{ color: 'var(--accent-deep, currentColor)', flexShrink: 0 }}>visit →</span>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
   )
 }
 

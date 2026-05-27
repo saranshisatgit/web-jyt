@@ -1,0 +1,67 @@
+{
+  "captured_at": "2026-05-27T12:13:22.530Z",
+  "source": "https://v3.jaalyantra.com/web/website/jaalyantra.com/marketing/partners",
+  "storefronts": [
+    {
+      "partner_id": "01K3GR25W86ZR7CXN1QSW8H0ZG",
+      "name": "Raja Shawls",
+      "handle": "Raja Shawls ",
+      "storefront_url": "https://aurumkashmir.com",
+      "screenshot_path": "/storefront-previews/raja-shawls.png",
+      "width": 1440,
+      "height": 900,
+      "captured_at": "2026-05-27T12:12:56.126Z"
+    },
+    {
+      "partner_id": "01K77RJJBE64S85VBHN3KFEQ9G",
+      "name": "Ghosh and Organic Fashionary",
+      "handle": "gof-asia",
+      "storefront_url": "https://gof.asia",
+      "screenshot_path": "/storefront-previews/gof-asia.png",
+      "width": 1440,
+      "height": 900,
+      "captured_at": "2026-05-27T12:13:03.766Z"
+    },
+    {
+      "partner_id": "01KKR2GYVNBCQ6YB424XB57DQG",
+      "name": "Perennial",
+      "handle": "Perennial",
+      "storefront_url": "https://perennial.cicilabel.com",
+      "screenshot_path": "/storefront-previews/perennial.png",
+      "width": 1440,
+      "height": 900,
+      "captured_at": "2026-05-27T12:13:09.216Z"
+    },
+    {
+      "partner_id": "01KM2NBY4RVR8Y5BSVRSB168DA",
+      "name": "Unique Pashmina",
+      "handle": "uniquepashmina",
+      "storefront_url": "https://uniquepashmina.com",
+      "screenshot_path": "/storefront-previews/uniquepashmina.png",
+      "width": 1440,
+      "height": 900,
+      "captured_at": "2026-05-27T12:13:15.415Z"
+    },
+    {
+      "partner_id": "01KPN68ZF5VBRFY17RX395PBXZ",
+      "name": "Ielo craft",
+      "handle": "Jayruparam and sons ",
+      "storefront_url": "https://ielocraft.in",
+      "screenshot_path": "/storefront-previews/jayruparam-and-sons.png",
+      "width": 1440,
+      "height": 900,
+      "captured_at": "2026-05-27T12:13:22.517Z"
+    },
+    {
+      "partner_id": "01K4PJMNMNRGMK0ZXMKBBDZDGD",
+      "name": "Sharlho",
+      "handle": "sharlho",
+      "storefront_url": "https://sharlho.cicilabel.com",
+      "screenshot_path": "/storefront-previews/sharlho.png",
+      "width": 1440,
+      "height": 900,
+      "captured_at": "2026-05-27T12:16:17.658Z",
+      "note": "Captured via cicilabel.com fallback — sharlho.com custom domain has no DNS (NXDOMAIN as of 2026-05-27)."
+    }
+  ]
+}
