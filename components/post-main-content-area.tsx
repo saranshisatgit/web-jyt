@@ -4,6 +4,7 @@
 import Image from 'next/image'
 import { TipTapRenderer } from '@/components/tiptap-renderer'
 import { ManualDrawer, type DrawerAttrs } from '@/components/manual-drawer'
+import { StatsPanelHydrator } from '@/components/stats-panel-hydrator'
 import { Button } from '@/components/button' // For debug toggle
 
 // Import shared types from centralized location
@@ -69,10 +70,17 @@ export function PostMainContentArea({
             </p>
           </div>
         ) : (
-          <div 
-            className="prose prose-navy prose-ol:list-decimal prose-ul:list-[square] prose-li:my-1 prose-li:pl-2 prose-p:my-4 prose-headings:mt-8 prose-headings:mb-4 prose-headings:font-medium prose-img:my-6 prose-img:rounded-lg prose-a:font-semibold prose-a:underline-offset-4 max-w-none"
-            dangerouslySetInnerHTML={{ __html: generatedHtml }}
-          />
+          <>
+            <div
+              className="blog-content prose prose-navy prose-ol:list-decimal prose-ul:list-[square] prose-li:my-1 prose-li:pl-2 prose-p:my-4 prose-headings:mt-8 prose-headings:mb-4 prose-headings:font-medium prose-img:my-6 prose-img:rounded-lg prose-a:font-semibold prose-a:underline-offset-4 max-w-none"
+              dangerouslySetInnerHTML={{ __html: generatedHtml }}
+            />
+            {/* Replaces every <div data-stats-panel> inside .blog-content
+                with the full React StatsPanelHydrated component (with
+                pagination, search, etc.). Scoped via selector so the
+                hidden TipTap editor's panels aren't double-mounted. */}
+            <StatsPanelHydrator rootSelector=".blog-content" />
+          </>
         )}
 
         {/* Display ManualDrawer if a drawer node exists AFTER main content */}
