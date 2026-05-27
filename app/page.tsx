@@ -119,7 +119,32 @@ type MetricsResponse = {
     window_days: number
     source?: 'actual' | 'projected'
   }
+  // Conversion-intent signals — carts started but not yet completed
+  // in the trailing window. Optional so an older backend without
+  // these fields can't crash the renderer.
+  intent?: {
+    carts_30d: number
+    carts_with_email_30d: number
+    window_days: number
+  }
+  // Organic traffic from in-house analytics.
+  traffic?: {
+    unique_visitors_30d: number
+    pageviews_30d: number
+    window_days: number
+  }
   last_updated: string | null
+}
+
+type HomeTestimonialsResponse = {
+  title: string
+  callToAction?: { text?: string; linkUrl?: string; linkText?: string }
+  testimonials: Array<{
+    name: string
+    quote: string
+    subtitle?: string
+    image_url?: string
+  }>
 }
 
 const EMPTY_PARTNERS: PartnersResponse = { artisans: [], brands: [] }
@@ -129,7 +154,15 @@ const EMPTY_METRICS: MetricsResponse = {
   hubs: 0,
   lead_time: { avg_days: null, sample_size: 0, window_days: 90 },
   gmv: { amount: 0, currency: 'USD', window_days: 90, source: 'projected' },
+  intent: { carts_30d: 0, carts_with_email_30d: 0, window_days: 30 },
+  traffic: { unique_visitors_30d: 0, pageviews_30d: 0, window_days: 30 },
   last_updated: null,
+}
+
+const EMPTY_TESTIMONIALS: HomeTestimonialsResponse = {
+  title: '',
+  callToAction: undefined,
+  testimonials: [],
 }
 
 function usePartners() {
@@ -150,15 +183,30 @@ function useMetrics() {
     queryFn: async () => {
       const res = await fetch('/api/metrics')
       if (!res.ok) return EMPTY_METRICS
-      // Normalize against EMPTY_METRICS so an older backend (without gmv)
-      // can't crash the page when components read metrics.gmv.amount.
+      // Normalize against EMPTY_METRICS so an older backend (without gmv
+      // / intent / traffic) can't crash the page when components read
+      // those fields.
       const json = (await res.json()) as Partial<MetricsResponse> | null
       return {
         ...EMPTY_METRICS,
         ...(json || {}),
         gmv: { ...EMPTY_METRICS.gmv, ...(json?.gmv || {}) },
         lead_time: { ...EMPTY_METRICS.lead_time!, ...(json?.lead_time || {}) },
+        intent: { ...EMPTY_METRICS.intent!, ...(json?.intent || {}) },
+        traffic: { ...EMPTY_METRICS.traffic!, ...(json?.traffic || {}) },
       }
+    },
+    staleTime: 60_000,
+  })
+}
+
+function useHomeTestimonials() {
+  return useQuery<HomeTestimonialsResponse>({
+    queryKey: ['home-testimonials'],
+    queryFn: async () => {
+      const res = await fetch('/api/home-testimonials')
+      if (!res.ok) return EMPTY_TESTIMONIALS
+      return (await res.json()) as HomeTestimonialsResponse
     },
     staleTime: 60_000,
   })
@@ -201,6 +249,7 @@ export default function Home() {
       <Flow />
       <Hypothesis />
       <Benefits />
+      <UsingThePlatform />
       <Compare />
       <Stats />
       <GmvHeadline />
@@ -785,6 +834,107 @@ function Benefits() {
             </article>
           ))}
         </div>
+      </div>
+    </section>
+  )
+}
+
+// `UsingThePlatform` lives between <Benefits /> and <Compare />, mode-gated
+// to investor. Pulls quote cards from the CMS Testimonial block on the
+// home page (admin can edit live) and the live "what's actually happening"
+// numbers (carts + organic visitors in last 30d) from the marketing
+// metrics endpoint. Hidden entirely if neither has content.
+function UsingThePlatform() {
+  const { data: testimonialsData } = useHomeTestimonials()
+  const { data: metrics } = useMetrics()
+  const testimonials = testimonialsData?.testimonials ?? []
+  const title = testimonialsData?.title || 'Voices from the platform'
+  const cta = testimonialsData?.callToAction
+
+  const carts = metrics?.intent?.carts_30d ?? 0
+  const visitors = metrics?.traffic?.unique_visitors_30d ?? 0
+  const hasIntent = carts > 0 || visitors > 0
+  const hasQuotes = testimonials.length > 0
+
+  if (!hasQuotes && !hasIntent) return null
+
+  return (
+    <section className="kt-section" data-aud="investor" id="using-the-platform">
+      <div className="container">
+        <div className="kt-section-head">
+          <div className="kt-eyebrow">Using the platform</div>
+          <h2 className="kt-display m">
+            What&apos;s <em>actually</em> happening.
+          </h2>
+        </div>
+
+        {hasQuotes && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4" style={{ marginTop: '32px' }}>
+            {testimonials.map((t, i) => (
+              <article key={i} className="kt-card">
+                <p className="kt-card-body serif italic" style={{ fontSize: '17px', lineHeight: 1.5 }}>
+                  &ldquo;{t.quote}&rdquo;
+                </p>
+                <div style={{ marginTop: '16px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  {t.image_url && (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={t.image_url}
+                      alt={t.name}
+                      width={40}
+                      height={40}
+                      style={{ width: 40, height: 40, borderRadius: '50%', objectFit: 'cover', flexShrink: 0 }}
+                    />
+                  )}
+                  <div>
+                    <div className="kt-card-title" style={{ fontSize: '15px', margin: 0 }}>{t.name}</div>
+                    {t.subtitle && (
+                      <div className="kt-meta" style={{ marginTop: '2px' }}>{t.subtitle}</div>
+                    )}
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        )}
+
+        {hasIntent && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4" style={{ marginTop: '32px' }}>
+            <div className="kt-card">
+              <div className="kt-meta" style={{ color: 'var(--accent-deep)', letterSpacing: '0.14em' }}>
+                LAST 30 DAYS
+              </div>
+              <div style={{ fontSize: '36px', fontWeight: 600, marginTop: '8px' }}>
+                {carts.toLocaleString()}
+              </div>
+              <div className="kt-card-body" style={{ marginTop: '4px' }}>
+                shopping carts started across partner storefronts
+              </div>
+            </div>
+            <div className="kt-card">
+              <div className="kt-meta" style={{ color: 'var(--accent-deep)', letterSpacing: '0.14em' }}>
+                LAST 30 DAYS
+              </div>
+              <div style={{ fontSize: '36px', fontWeight: 600, marginTop: '8px' }}>
+                {visitors.toLocaleString()}
+              </div>
+              <div className="kt-card-body" style={{ marginTop: '4px' }}>
+                unique visitors to partner storefronts
+              </div>
+            </div>
+          </div>
+        )}
+
+        {cta?.text && cta?.linkUrl && cta?.linkText && (
+          <div style={{ marginTop: '32px' }}>
+            <p className="kt-card-body" style={{ maxWidth: '600px', marginBottom: '16px' }}>
+              {cta.text}
+            </p>
+            <a href={cta.linkUrl} className="kt-link">
+              {cta.linkText} →
+            </a>
+          </div>
+        )}
       </div>
     </section>
   )
