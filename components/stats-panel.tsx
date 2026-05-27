@@ -376,6 +376,75 @@ function LabelView({ display }: { display: Display }) {
   )
 }
 
+/**
+ * Renders the panel body for a given type. Used by both the TipTap
+ * NodeView and the client-side hydrator (`stats-panel-hydrator.tsx`)
+ * so both render paths produce identical output — pagination, columns,
+ * everything.
+ */
+function PanelBody({
+  type,
+  data,
+  display,
+}: {
+  type: PanelType
+  data: PanelData | null
+  display: Display
+}) {
+  if (!data) {
+    return <div className="p-4 text-sm text-gray-500">Panel data unavailable.</div>
+  }
+  switch (type) {
+    case 'label':
+      return <LabelView display={display} />
+    case 'metric':
+      return <MetricView data={data} display={display} />
+    case 'list':
+      return <ListView data={data} display={display} />
+    case 'table':
+      return <TableView data={data} display={display} />
+    case 'bar':
+      return <BarView data={data} display={display} />
+    case 'line':
+      return <SparkView data={data} display={display} variant="line" />
+    case 'area':
+      return <SparkView data={data} display={display} variant="area" />
+    default:
+      return <div className="p-4 text-sm text-gray-500">Unknown panel type: {type}</div>
+  }
+}
+
+/**
+ * Public React entry point for hydrated panels — used by the
+ * `stats-panel-hydrator` to replace static HTML panels with the
+ * paginating/interactive React version on the blog page. Returns the
+ * full panel surface (border + title bar + body) so the hydrator can
+ * drop it directly into a wiped `[data-stats-panel]` container.
+ */
+export function StatsPanelHydrated({
+  panelType,
+  title,
+  data,
+  display,
+}: {
+  panelType?: PanelType | null
+  title?: string | null
+  data?: PanelData | null
+  display?: Display | null
+}) {
+  const type: PanelType = (panelType as PanelType) ?? 'metric'
+  return (
+    <div className="stats-panel my-6 border border-gray-200 rounded-lg overflow-hidden bg-white">
+      {title && (
+        <div className="px-4 py-2 border-b border-gray-200 bg-gray-50">
+          <div className="text-sm font-medium text-gray-700">{title}</div>
+        </div>
+      )}
+      <PanelBody type={type} data={data ?? null} display={display ?? {}} />
+    </div>
+  )
+}
+
 export const StatsPanelNodeView: React.FC<NodeViewProps> = ({ node }) => {
   const attrs = node.attrs as {
     panelId?: string
@@ -385,30 +454,7 @@ export const StatsPanelNodeView: React.FC<NodeViewProps> = ({ node }) => {
     panelType?: PanelType | null
     _resolvedAt?: string
   }
-
   const type: PanelType = (attrs.panelType as PanelType) ?? 'metric'
-  const display: Display = attrs.display ?? {}
-  const data: PanelData | null = attrs.data ?? null
-
-  const body = !data ? (
-    <div className="p-4 text-sm text-gray-500">Panel data unavailable.</div>
-  ) : type === 'label' ? (
-    <LabelView display={display} />
-  ) : type === 'metric' ? (
-    <MetricView data={data} display={display} />
-  ) : type === 'list' ? (
-    <ListView data={data} display={display} />
-  ) : type === 'table' ? (
-    <TableView data={data} display={display} />
-  ) : type === 'bar' ? (
-    <BarView data={data} display={display} />
-  ) : type === 'line' ? (
-    <SparkView data={data} display={display} variant="line" />
-  ) : type === 'area' ? (
-    <SparkView data={data} display={display} variant="area" />
-  ) : (
-    <div className="p-4 text-sm text-gray-500">Unknown panel type: {type}</div>
-  )
 
   return (
     <NodeViewWrapper
@@ -419,12 +465,10 @@ export const StatsPanelNodeView: React.FC<NodeViewProps> = ({ node }) => {
     >
       {attrs.title && (
         <div className="px-4 py-2 border-b border-gray-200 bg-gray-50">
-          <div className="text-sm font-medium text-gray-700">
-            {attrs.title}
-          </div>
+          <div className="text-sm font-medium text-gray-700">{attrs.title}</div>
         </div>
       )}
-      {body}
+      <PanelBody type={type} data={attrs.data ?? null} display={attrs.display ?? {}} />
     </NodeViewWrapper>
   )
 }
@@ -652,6 +696,26 @@ export const StatsPanelExtension = Node.create({
       ])
     }
     children.push(buildPanelBodySpec(type, data, display))
+
+    // Embed the full panel payload as a JSON `<script>` inside the
+    // container. The static HTML stays usable on its own (server-side
+    // slice of first page, no pagination — JS-disabled fallback), and
+    // `stats-panel-hydrator.tsx` reads this payload on mount to replace
+    // the container with the full React `<StatsPanelHydrated />` that
+    // has pagination + interactive bits.
+    //
+    // Escape `</script` so payload contents can't break out of the tag.
+    const payload = JSON.stringify({
+      panelType: type,
+      title: attrs.title ?? null,
+      data,
+      display,
+    }).replace(/<\/script/gi, '<\\/script')
+    children.push([
+      'script',
+      { type: 'application/json', 'data-panel-payload': '' },
+      payload,
+    ])
 
     return [
       'div',
