@@ -2,7 +2,7 @@
 
 import { Node, mergeAttributes } from '@tiptap/core'
 import { ReactNodeViewRenderer, NodeViewWrapper, NodeViewProps } from '@tiptap/react'
-import React from 'react'
+import React, { useMemo, useState } from 'react'
 
 /**
  * StatsPanel extension for the storefront renderer. Reads pre-resolved
@@ -20,8 +20,13 @@ type Display = {
   decimals?: number
   labelField?: string
   valueField?: string
-  columns?: string[]
-  limit?: number
+  columns?: string[]            // allowlist (table)
+  exclude_columns?: string[]    // denylist (table). Also applied server-side
+                                // by stripExcludedColumns in inject-panel-data.ts
+                                // — included here so client-only fallback path
+                                // still hides denied keys.
+  limit?: number                // legacy hard cap — treated as page_size
+  page_size?: number            // preferred — rows per page (paged client-side)
   xAxis?: string
   yAxis?: string
   title?: string
@@ -54,6 +59,76 @@ function formatValue(value: unknown, display: Display = {}): string {
   return out
 }
 
+// Resolves rows-per-page from display config. Honours legacy `limit`
+// (was a hard cap pre-pagination) when `page_size` isn't set.
+function resolvePageSize(display: Display, fallback: number): number {
+  const v = Number(display.page_size ?? display.limit)
+  return Number.isFinite(v) && v > 0 ? Math.floor(v) : fallback
+}
+
+// Filters the column list using `columns` (allowlist) and
+// `exclude_columns` (denylist). The injector already strips denied
+// keys server-side, so this is a belt-and-braces local pass for any
+// row that arrived with extra keys.
+function resolveColumns(allColumns: string[], display: Display): string[] {
+  const allow = Array.isArray(display.columns) ? display.columns : null
+  const deny = new Set<string>(
+    Array.isArray(display.exclude_columns) ? display.exclude_columns : []
+  )
+  const base = allow ?? allColumns
+  return base.filter((c) => !deny.has(c))
+}
+
+// Inline prev/next pager. Hidden when only one page so single-page
+// panels render the same as before.
+function Pager({
+  page,
+  pageCount,
+  pageSize,
+  total,
+  onChange,
+}: {
+  page: number
+  pageCount: number
+  pageSize: number
+  total: number
+  onChange: (next: number) => void
+}) {
+  if (pageCount <= 1) return null
+  const from = total === 0 ? 0 : page * pageSize + 1
+  const to = Math.min((page + 1) * pageSize, total)
+  return (
+    <div className="flex items-center justify-between px-4 py-2 border-t border-gray-200 bg-gray-50 text-xs">
+      <span className="text-gray-500">
+        {from}–{to} of {total}
+      </span>
+      <div className="flex items-center gap-2">
+        <button
+          type="button"
+          disabled={page === 0}
+          onClick={() => onChange(Math.max(0, page - 1))}
+          aria-label="Previous page"
+          className="w-6 h-6 inline-flex items-center justify-center rounded border border-gray-200 bg-white text-gray-600 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-100"
+        >
+          ‹
+        </button>
+        <span className="text-gray-500 tabular-nums">
+          {page + 1} / {pageCount}
+        </span>
+        <button
+          type="button"
+          disabled={page >= pageCount - 1}
+          onClick={() => onChange(Math.min(pageCount - 1, page + 1))}
+          aria-label="Next page"
+          className="w-6 h-6 inline-flex items-center justify-center rounded border border-gray-200 bg-white text-gray-600 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gray-100"
+        >
+          ›
+        </button>
+      </div>
+    </div>
+  )
+}
+
 function MetricView({ data, display }: { data: PanelData; display: Display }) {
   const field = display.valueField ?? 'value'
   const value = (data as any)[field] ?? data.value
@@ -75,59 +150,96 @@ function ListView({ data, display }: { data: PanelData; display: Display }) {
   const items = data.groups ?? data.records ?? []
   const labelField = display.labelField ?? 'key'
   const valueField = display.valueField ?? 'value'
-  const limit = display.limit ?? 20
+  const pageSize = resolvePageSize(display, 20)
+  const [page, setPage] = useState(0)
+  const pageCount = Math.max(1, Math.ceil(items.length / pageSize))
+  const safePage = Math.min(page, pageCount - 1)
+  const pageItems = useMemo(
+    () => items.slice(safePage * pageSize, (safePage + 1) * pageSize),
+    [items, safePage, pageSize]
+  )
+
   if (!items.length) {
     return <div className="p-4 text-sm text-gray-500">No results</div>
   }
   return (
-    <ul className="divide-y divide-gray-200">
-      {items.slice(0, limit).map((item: any, idx) => {
-        const label = item?.keys?.[labelField] ?? item?.[labelField] ?? item?.key
-        const value = item?.[valueField]
-        return (
-          <li key={idx} className="flex justify-between items-center px-4 py-2 text-sm">
-            <span className="truncate">{label !== undefined ? String(label) : '—'}</span>
-            <span className="font-medium tabular-nums">{formatValue(value, display)}</span>
-          </li>
-        )
-      })}
-    </ul>
+    <div className="flex flex-col">
+      <ul className="divide-y divide-gray-200">
+        {pageItems.map((item: any, idx) => {
+          const label = item?.keys?.[labelField] ?? item?.[labelField] ?? item?.key
+          const value = item?.[valueField]
+          return (
+            <li key={idx} className="flex justify-between items-center px-4 py-2 text-sm">
+              <span className="truncate">{label !== undefined ? String(label) : '—'}</span>
+              <span className="font-medium tabular-nums">{formatValue(value, display)}</span>
+            </li>
+          )
+        })}
+      </ul>
+      <Pager
+        page={safePage}
+        pageCount={pageCount}
+        pageSize={pageSize}
+        total={items.length}
+        onChange={setPage}
+      />
+    </div>
   )
 }
 
 function TableView({ data, display }: { data: PanelData; display: Display }) {
   const rows = data.groups ?? data.records ?? []
+  const allCols = rows.length ? Object.keys(rows[0] as object) : []
+  const columns = useMemo(() => resolveColumns(allCols, display), [allCols, display])
+
+  const pageSize = resolvePageSize(display, 25)
+  const [page, setPage] = useState(0)
+  const pageCount = Math.max(1, Math.ceil(rows.length / pageSize))
+  const safePage = Math.min(page, pageCount - 1)
+  const pageRows = useMemo(
+    () => rows.slice(safePage * pageSize, (safePage + 1) * pageSize),
+    [rows, safePage, pageSize]
+  )
+
   if (!rows.length) {
     return <div className="p-4 text-sm text-gray-500">No results</div>
   }
-  const columns = display.columns ?? Object.keys(rows[0] as object)
   return (
-    <div className="overflow-x-auto">
-      <table className="w-full text-sm text-left">
-        <thead className="bg-gray-50">
-          <tr>
-            {columns.map((c) => (
-              <th key={c} className="px-3 py-2 font-medium text-gray-600">
-                {c}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-gray-200">
-          {rows.slice(0, display.limit ?? 50).map((row: any, idx) => (
-            <tr key={idx}>
-              {columns.map((c) => {
-                const v = row?.keys?.[c] ?? row?.[c]
-                return (
-                  <td key={c} className="px-3 py-2 truncate max-w-[200px]">
-                    {typeof v === 'object' && v !== null ? JSON.stringify(v) : String(v ?? '—')}
-                  </td>
-                )
-              })}
+    <div className="flex flex-col">
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm text-left">
+          <thead className="bg-gray-50">
+            <tr>
+              {columns.map((c) => (
+                <th key={c} className="px-3 py-2 font-medium text-gray-600">
+                  {c}
+                </th>
+              ))}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody className="divide-y divide-gray-200">
+            {pageRows.map((row: any, idx) => (
+              <tr key={idx}>
+                {columns.map((c) => {
+                  const v = row?.keys?.[c] ?? row?.[c]
+                  return (
+                    <td key={c} className="px-3 py-2 truncate max-w-[200px]">
+                      {typeof v === 'object' && v !== null ? JSON.stringify(v) : String(v ?? '—')}
+                    </td>
+                  )
+                })}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <Pager
+        page={safePage}
+        pageCount={pageCount}
+        pageSize={pageSize}
+        total={rows.length}
+        onChange={setPage}
+      />
     </div>
   )
 }
@@ -343,11 +455,13 @@ function buildListSpec(data: PanelData, display: Display): RenderSpec {
   const items = data.groups ?? data.records ?? []
   const labelField = display.labelField ?? 'key'
   const valueField = display.valueField ?? 'value'
-  const limit = display.limit ?? 20
+  // SSR fallback path — no client state, so render only the first page.
+  // The client NodeView hydrates and adds pagination over the full set.
+  const pageSize = resolvePageSize(display, 20)
   if (!items.length) {
     return ['div', { class: 'p-4 text-sm text-gray-500' }, 'No results']
   }
-  const rows = items.slice(0, limit).map((item: any) => {
+  const rows = items.slice(0, pageSize).map((item: any) => {
     const label = item?.keys?.[labelField] ?? item?.[labelField] ?? item?.key
     const value = item?.[valueField]
     return [
@@ -365,7 +479,8 @@ function buildTableSpec(data: PanelData, display: Display): RenderSpec {
   if (!rows.length) {
     return ['div', { class: 'p-4 text-sm text-gray-500' }, 'No results']
   }
-  const columns = display.columns ?? Object.keys(rows[0] as object)
+  const allCols = Object.keys(rows[0] as object)
+  const columns = resolveColumns(allCols, display)
   const head = [
     'thead',
     { class: 'bg-gray-50' },
@@ -379,10 +494,11 @@ function buildTableSpec(data: PanelData, display: Display): RenderSpec {
       ]),
     ],
   ]
+  const pageSize = resolvePageSize(display, 25)
   const body = [
     'tbody',
     { class: 'divide-y divide-gray-200' },
-    ...rows.slice(0, display.limit ?? 50).map((row: any) => [
+    ...rows.slice(0, pageSize).map((row: any) => [
       'tr',
       {},
       ...columns.map((c) => {
