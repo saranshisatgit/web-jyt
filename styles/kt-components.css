@@ -1122,4 +1122,292 @@ body[data-mode="platform"] [data-aud="investor"] { display: none; }
   .kt-gmv-headline { padding: 48px 20px; }
 }
 
+/* ---------------- PARTNER PAGE — LIVE BRANDS STRIP ---------------- */
+.kt-live-brands-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  border: 1px solid var(--rule);
+  border-radius: var(--r-md);
+  overflow: hidden;
+  background: var(--cream);
+}
+.kt-live-brand-tile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 96px;
+  padding: 20px 24px;
+  background: var(--cream);
+  border-right: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  text-decoration: none;
+  color: var(--ink);
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.kt-live-brand-tile:hover {
+  background: oklch(0.96 0.01 60);
+  color: var(--accent-deep);
+}
+.kt-live-brand-wordmark {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  font-style: italic;
+  letter-spacing: -0.01em;
+  text-align: center;
+  line-height: 1.1;
+}
+.kt-live-brands-skeleton {
+  height: 96px;
+  border: 1px solid var(--rule);
+  border-radius: var(--r-md);
+  background: linear-gradient(90deg, var(--cream) 0%, oklch(0.96 0.005 220) 50%, var(--cream) 100%);
+  background-size: 200% 100%;
+  animation: kt-live-brands-shimmer 1.8s ease-in-out infinite;
+}
+@keyframes kt-live-brands-shimmer {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* ---------------- PARTNER PAGE — FEATURE TOUR (alternating rows) ---------------- */
+.kt-feature-tour {
+  display: flex;
+  flex-direction: column;
+  gap: 80px;
+}
+.kt-feature-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+  gap: 48px;
+  align-items: center;
+}
+.kt-feature-row[data-flip="true"] {
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+}
+.kt-feature-row[data-flip="true"] .kt-feature-copy { order: 2; }
+.kt-feature-row[data-flip="true"] .kt-feature-shot { order: 1; }
+.kt-feature-copy {
+  max-width: 460px;
+}
+.kt-feature-shot {
+  position: relative;
+  background: var(--cream);
+  border-radius: var(--r-md);
+  overflow: hidden;
+  box-shadow: 0 24px 48px -28px oklch(0 0 0 / 0.18);
+}
+@media (max-width: 880px) {
+  .kt-feature-tour { gap: 56px; }
+  .kt-feature-row,
+  .kt-feature-row[data-flip="true"] {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .kt-feature-row[data-flip="true"] .kt-feature-copy { order: 1; }
+  .kt-feature-row[data-flip="true"] .kt-feature-shot { order: 2; }
+}
+
+/* ---------------- PARTNER PAGE — FULL TRACING SECTION ---------------- */
+.kt-tracing {
+  background: var(--ink-dark-bg, oklch(0.18 0.025 220));
+  color: var(--cream);
+  border-radius: var(--r-lg);
+  padding: 64px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr);
+  gap: 56px;
+  align-items: center;
+}
+.kt-tracing-head { max-width: 420px; }
+.kt-tracing-shot {
+  background: oklch(0.22 0.025 220);
+  border-radius: var(--r-md);
+  padding: 16px;
+}
+.kt-tracing-caption {
+  margin-top: 14px;
+  color: oklch(0.78 0.04 145);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: 1.5;
+}
+@media (max-width: 880px) {
+  .kt-tracing {
+    grid-template-columns: 1fr;
+    padding: 32px 24px;
+    gap: 32px;
+  }
+}
+
+/* ---------------- PARTNER PAGE — APPLY CALLOUT (responsive) ---------------- */
+.kt-apply-callout {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 40px;
+  align-items: center;
+  padding: 48px;
+  border-radius: var(--r-lg);
+  background: var(--ink-dark-bg, oklch(0.18 0.025 220));
+}
+.kt-apply-callout-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+@media (max-width: 760px) {
+  .kt-apply-callout {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding: 32px 24px;
+  }
+}
+
+/* ---------------- INVESTOR PRINT FAB ---------------- */
+/* Floating bottom-right "Download as PDF" button. Renders only when
+   mode === "investor" (component-gated). On click, calls window.print() —
+   the print stylesheet below strips chrome and lays the page out on A4. */
+.kt-print-fab {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 40;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 18px;
+  background: var(--ink-dark-bg, oklch(0.18 0.025 220));
+  color: var(--cream, #fff);
+  border: 1px solid var(--ink-dark-bg, oklch(0.18 0.025 220));
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 8px 24px -8px oklch(0 0 0 / 0.35);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+.kt-print-fab:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 28px -8px oklch(0 0 0 / 0.42);
+  background: var(--accent-deep, oklch(0.55 0.14 60));
+  border-color: var(--accent-deep, oklch(0.55 0.14 60));
+}
+.kt-print-fab:focus-visible {
+  outline: 2px solid var(--accent-deep, oklch(0.55 0.14 60));
+  outline-offset: 3px;
+}
+.kt-print-fab svg { flex-shrink: 0; }
+
+@media (max-width: 600px) {
+  .kt-print-fab { padding: 10px 14px; font-size: 11px; }
+  .kt-print-fab span { display: none; }
+}
+
+/* ---------------- PRINT STYLES (investor PDF) ---------------- */
+/* Browser's "Save as PDF" output. Strips interactive chrome, drops
+   decorative bgs, forces solid backgrounds to render, and tightens
+   typography for paper-density. The button itself is only rendered in
+   investor mode, so when print fires body[data-mode] is already
+   "investor" and the existing data-aud rules hide consumer/platform
+   sections. */
+@media print {
+  /* Ensure colored backgrounds (Raise dark card, etc.) actually print. */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Reasonable margins for an A4 reader. */
+  @page {
+    size: A4;
+    margin: 16mm 14mm;
+  }
+
+  html, body {
+    background: #fff !important;
+    color: #111 !important;
+    font-size: 11pt;
+  }
+
+  /* Hide interactive / decorative chrome that has no place in a PDF. */
+  .kt-topbar,
+  .kt-mobile-nav,
+  .kt-mobile-modes,
+  .kt-mode-menu,
+  .kt-footer,
+  .kt-fork,
+  .kt-print-fab,
+  .bg-dot-grid,
+  .bg-hero-wash {
+    display: none !important;
+  }
+
+  /* BlueprintGrid is the fixed full-viewport mix-blend overlay — kill it. */
+  [class*="pointer-events-none"][class*="fixed"][class*="inset-0"] {
+    display: none !important;
+  }
+
+  /* Forms can't be filled in a PDF — collapse the CaptureForm. */
+  form input[type="email"],
+  form button[type="submit"] {
+    display: none !important;
+  }
+
+  /* Hero: reduce the giant clamp() display so it doesn't blow past one
+     page on its own. */
+  .kt-hero {
+    padding-top: 0 !important;
+    page-break-after: avoid;
+  }
+
+  /* Each major section starts on a fresh page; prevents mid-section
+     splits that lose visual context. */
+  section.kt-section {
+    page-break-inside: avoid;
+    break-inside: avoid;
+    padding-top: 32px !important;
+    padding-bottom: 32px !important;
+    border-top: 1px solid #ddd !important;
+  }
+
+  /* Cards and the live-storefronts grid shouldn't split across pages. */
+  .kt-card,
+  .kt-fork-card,
+  .grid > * {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Display headings — printed at a reasonable scale instead of the
+     viewport-clamped sizes used on screen. */
+  .kt-display.xl, .kt-display.l { font-size: 28pt !important; line-height: 1.1 !important; }
+  .kt-display.m { font-size: 22pt !important; line-height: 1.15 !important; }
+  .kt-display.s { font-size: 16pt !important; line-height: 1.2 !important; }
+
+  /* The raise number ("$X") and the Hero serif headline use clamp() for
+     screen sizes that translate badly onto paper — anchor them. */
+  .serif[style*="clamp"] { font-size: 64pt !important; line-height: 0.9 !important; }
+
+  /* Storefront preview images — cap at a reasonable printed width so
+     they don't dominate a single page. */
+  .kt-live-storefronts img { max-height: 200px !important; object-fit: cover; }
+
+  /* Anchor links: show the URL inline so the PDF stays useful when
+     printed. Skip in-page anchors and the analytics script. */
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-family: var(--font-mono);
+    font-size: 8pt;
+    color: #666;
+    word-break: break-all;
+  }
+  a[href^="#"]::after { content: ""; }
+
+  /* Avoid orphan section headers. */
+  h1, h2, h3 { page-break-after: avoid; break-after: avoid; }
+}
 

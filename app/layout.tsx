@@ -12,6 +12,7 @@ import { VisualEditorProvider } from './context/visual-editor-context'
 import { Footer } from '@/components/footer'
 import { ForkOverlay } from '@/components/fork-overlay'
 import { BlueprintGrid } from '@/components/blueprint-grid'
+import { InvestorPrintButton } from '@/components/investor-print-button'
 
 const rethinkSans = Rethink_Sans({
   subsets: ['latin'],
@@ -82,6 +83,7 @@ export default async function RootLayout({
                 <Footer />
                 <ForkOverlay />
                 <BlueprintGrid />
+                <InvestorPrintButton />
               </VisualEditorProvider>
               </ModeProvider>
             </CurrencyProvider>

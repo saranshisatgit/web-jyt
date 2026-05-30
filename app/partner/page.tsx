@@ -3,18 +3,14 @@ import Image from 'next/image'
 import { Navbar } from '@/components/navbar'
 import { fetchPagefromAPI } from '../actions'
 import { getBlockByName, getBlockByType, Block } from '@/medu/queries'
+import partnerUiPreviewsData from '@/data/partner-ui-previews.json'
+import { LiveBrandsStrip } from '@/components/partner-page/live-brands-strip'
 
 interface HeaderContent {
   title: string
   subtitle: string
   announcement?: string
   buttons?: { text: string; link: string }[]
-}
-
-interface LogoItem {
-  id: string
-  src: string
-  alt: string
 }
 
 interface FeatureSlide {
@@ -32,6 +28,23 @@ interface FeatureContent {
 interface BentoItem {
   title: string
   description: string
+}
+
+interface PartnerUiCapture {
+  slug: string
+  route: string
+  label: string
+  headline: string
+  caption: string
+  path: string
+  width: number
+  height: number
+}
+
+const partnerUiPreviews = partnerUiPreviewsData as {
+  captured_at: string
+  source: string
+  captures: PartnerUiCapture[]
 }
 
 export const dynamic = 'force-dynamic'
@@ -58,16 +71,23 @@ export default async function Partner() {
   }
 
   const headerBlock = getBlockByType(partnerPage.blocks, 'Header') as Block | undefined
-  const logoBlock = getBlockByName(partnerPage.blocks, 'Feature Section') as Block | undefined
   const featureBlock = getBlockByName(partnerPage.blocks, 'Partner Feature') as Block | undefined
   const bentoBlock = getBlockByName(partnerPage.blocks, 'Bento Section') as Block | undefined
 
   const header = (headerBlock?.content ?? {}) as unknown as HeaderContent
-  const logoContent = logoBlock?.content as Record<string, unknown> | undefined
-  const logos = ((logoContent?.logos as LogoItem[] | undefined) ?? []) as LogoItem[]
   const feature = (featureBlock?.content ?? {}) as unknown as FeatureContent
   const bentoRaw = bentoBlock?.content as Record<string, unknown> | undefined
   const bento = ((bentoRaw?.items ?? bentoRaw?.slideblocks ?? []) as BentoItem[])
+
+  const captures = partnerUiPreviews.captures
+  // The order-detail capture is the centerpiece of the tracing section,
+  // so we hold it back from the alternating tour so it isn't shown twice.
+  const tourCaptures = captures.filter((c) => c.slug !== 'inventory-order-detail')
+  const tracingCapture = captures.find((c) => c.slug === 'inventory-order-detail')
+
+  // Bento grid: snap to a column count that divides items cleanly so we
+  // don't get a ragged final row when CMS has 5 or 7 items.
+  const bentoCols = bento.length >= 8 ? 'lg:grid-cols-4' : bento.length >= 6 ? 'lg:grid-cols-3' : 'lg:grid-cols-2'
 
   return (
     <main>
@@ -111,85 +131,109 @@ export default async function Partner() {
         </div>
       </section>
 
-      {logos.length > 0 && (
-        <section className="kt-section">
+      <LiveBrandsStrip />
+
+      {/* ── Why partner — alternating screenshots from the actual partner UI.
+          Each row pairs one feature claim with a captured view. If the
+          capture manifest is empty, we fall back to the CMS feature block
+          so this page doesn't go blank when the seed/capture is stale. */}
+      {tourCaptures.length > 0 ? (
+        <section className="kt-section" id="why-partner">
           <div className="container">
-            <div className="kt-meta" style={{ marginBottom: '24px', textAlign: 'center' }}>
-              Brands shipping with us
+            <div className="kt-section-head">
+              <div className="kt-eyebrow">Why partner</div>
+              <h2 className="kt-display m">
+                {feature.title || 'Same rails. Both ends.'}
+              </h2>
             </div>
-            <div
-              className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6"
-              style={{ alignItems: 'center' }}
-            >
-              {logos.map((logo) => (
-                <div key={logo.id} style={{ display: 'flex', justifyContent: 'center' }}>
-                  <Image
-                    src={logo.src}
-                    alt={logo.alt}
-                    width={120}
-                    height={48}
-                    style={{
-                      objectFit: 'contain',
-                      maxHeight: '48px',
-                      width: 'auto',
-                      opacity: 0.7,
-                    }}
-                  />
-                </div>
+            {feature.subtitle && (
+              <p className="muted" style={{ fontSize: '19px', lineHeight: 1.55, maxWidth: '720px', marginBottom: '64px' }}>
+                {feature.subtitle}
+              </p>
+            )}
+            <div className="kt-feature-tour">
+              {tourCaptures.map((c, i) => (
+                <article key={c.slug} className="kt-feature-row" data-flip={i % 2 === 1 ? 'true' : undefined}>
+                  <div className="kt-feature-copy">
+                    <div className="kt-meta" style={{ color: 'var(--accent-deep)' }}>
+                      {String(i + 1).padStart(2, '0')} · {c.label}
+                    </div>
+                    <h3 className="kt-display s" style={{ marginTop: '12px' }}>{c.headline}</h3>
+                    <p className="muted" style={{ fontSize: '17px', lineHeight: 1.55, marginTop: '16px' }}>
+                      {c.caption}
+                    </p>
+                  </div>
+                  <div className="kt-feature-shot">
+                    <Image
+                      src={c.path}
+                      alt={c.label}
+                      width={c.width}
+                      height={c.height}
+                      sizes="(min-width: 960px) 56vw, 100vw"
+                      style={{ width: '100%', height: 'auto', display: 'block', borderRadius: 'var(--r-md)', border: '1px solid var(--rule)' }}
+                    />
+                  </div>
+                </article>
               ))}
             </div>
           </div>
         </section>
+      ) : (
+        (feature.title || feature.screenshot?.url) && (
+          <section className="kt-section">
+            <div className="container">
+              <div className="kt-section-head">
+                <div className="kt-eyebrow">Why partner</div>
+                <h2 className="kt-display m">{feature.title || 'Same rails. Both ends.'}</h2>
+              </div>
+              {feature.screenshot?.url && (
+                <div
+                  aria-hidden
+                  style={{
+                    aspectRatio: '4 / 3',
+                    backgroundImage: `url('${feature.screenshot.url}')`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    borderRadius: 'var(--r-md)',
+                    border: '1px solid var(--rule)',
+                  }}
+                />
+              )}
+            </div>
+          </section>
+        )
       )}
 
-      {(feature.title || feature.screenshot?.url) && (
-        <section className="kt-section">
-          <div className="container">
-            <div className="kt-section-head">
-              <div className="kt-eyebrow">Why partner</div>
-              <h2 className="kt-display m">{feature.title || 'Same rails. Both ends.'}</h2>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12" style={{ alignItems: 'center' }}>
-              <div>
-                {feature.subtitle && (
-                  <p className="muted" style={{ fontSize: '19px', lineHeight: 1.55, marginBottom: '24px' }}>
-                    {feature.subtitle}
-                  </p>
-                )}
-                {feature.slideblocks && feature.slideblocks.length > 0 && (
-                  <ul className="kt-list">
-                    {feature.slideblocks.map((slide, i) => {
-                      const t = slide?.content?.title || `Feature ${i + 1}`
-                      const d = slide?.content?.description || ''
-                      return (
-                        <li key={i}>
-                          <span className="n">{String(i + 1).padStart(2, '0')}</span>
-                          <div>
-                            <b>{t}</b>
-                            {d && <span>{d}</span>}
-                          </div>
-                        </li>
-                      )
-                    })}
-                  </ul>
-                )}
+      {/* ── Full tracing — the partner's activity timeline on one side,
+          the consumer storefront where the same trail surfaces back on
+          the other. The pitch the rest of the page builds toward. */}
+      {tracingCapture && (
+        <section className="kt-section flush" id="tracing">
+          <div className="container" style={{ paddingTop: '40px' }}>
+            <div className="kt-tracing">
+              <div className="kt-tracing-head">
+                <div className="kt-eyebrow on-dark">Full tracing</div>
+                <h2 className="kt-display m" style={{ color: 'var(--cream)', marginTop: '12px' }}>
+                  Same trail, <em style={{ color: 'var(--accent-deep)' }}>both ends</em>.
+                </h2>
+                <p style={{ color: 'oklch(0.78 0.04 145)', marginTop: '20px', maxWidth: '640px', fontSize: '17px', lineHeight: 1.55 }}>
+                  Every step you log against an order — <em>assigned</em>, <em>started</em>, <em>completed</em> — flows
+                  back to the customer&rsquo;s order page. They see the loom move; you see what you ship against. Nothing in
+                  between.
+                </p>
               </div>
-              <div>
-                {feature.screenshot?.url ? (
-                  <div
-                    aria-hidden
-                    style={{
-                      aspectRatio: '4 / 3',
-                      backgroundImage: `url('${feature.screenshot.url}')`,
-                      backgroundSize: 'cover',
-                      backgroundPosition: 'center',
-                      borderRadius: 'var(--r-md)',
-                      border: '1px solid var(--rule)',
-                    }}
-                  />
-                ) : (
-                  <div className="kt-card-img" style={{ height: '400px', margin: 0 }} />
-                )}
+              <div className="kt-tracing-shot">
+                <Image
+                  src={tracingCapture.path}
+                  alt="Inventory order detail showing the partner-side activity timeline"
+                  width={tracingCapture.width}
+                  height={tracingCapture.height}
+                  sizes="(min-width: 960px) 70vw, 100vw"
+                  style={{ width: '100%', height: 'auto', display: 'block', borderRadius: 'var(--r-md)', border: '1px solid oklch(0.42 0.025 220)' }}
+                />
+                <div className="kt-tracing-caption">
+                  Partner view, live. The activities log on the right is the source of truth that surfaces on the customer&rsquo;s tracking page.
+                </div>
               </div>
             </div>
           </div>
@@ -203,8 +247,8 @@ export default async function Partner() {
               <div className="kt-eyebrow">What you get</div>
               <h2 className="kt-display m">Everything to <em>run an atelier</em>.</h2>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {bento.slice(0, 8).map((item, i) => (
+            <div className={`grid grid-cols-1 md:grid-cols-2 ${bentoCols} gap-4`}>
+              {bento.slice(0, 12).map((item, i) => (
                 <article key={i} className="kt-card">
                   <div
                     className="kt-meta"
@@ -225,17 +269,7 @@ export default async function Partner() {
 
       <section className="kt-section flush">
         <div className="container" style={{ paddingTop: '40px', paddingBottom: '80px' }}>
-          <div
-            className="kt-callout dark"
-            style={{
-              display: 'grid',
-              gridTemplateColumns: '1fr auto',
-              gap: '40px',
-              alignItems: 'center',
-              padding: '48px',
-              borderRadius: 'var(--r-lg)',
-            }}
-          >
+          <div className="kt-apply-callout">
             <div>
               <div className="kt-eyebrow on-dark">Apply</div>
               <h3 className="kt-display s" style={{ color: 'var(--cream)', marginTop: '16px' }}>
@@ -252,7 +286,7 @@ export default async function Partner() {
                 Tell us about your craft. We&apos;ll get back within a week with an onboarding window.
               </p>
             </div>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px' }}>
+            <div className="kt-apply-callout-cta">
               <a href="/contact" className="kt-btn">Get in touch →</a>
             </div>
           </div>

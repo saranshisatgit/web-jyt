@@ -1,0 +1,36 @@
+{
+  "captured_at": "2026-05-30T07:58:19.779Z",
+  "source": "http://localhost:5173",
+  "captures": [
+    {
+      "slug": "inventory-orders",
+      "route": "/inventory-orders",
+      "label": "Inventory Orders",
+      "headline": "Every brand commission lands here, in one queue.",
+      "caption": "Cici Label, LeAtelier, GOF — they all push the same row shape. You see partner status, run status, last update. Filter, sort, search.",
+      "path": "/partner-ui-previews/inventory-orders.png",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "slug": "inventory-order-detail",
+      "route": "/inventory-orders/:id",
+      "label": "Order detail with activity timeline",
+      "headline": "Same trail, both ends. Customer sees what you ship against.",
+      "caption": "Requested · Fulfilled · Remaining for every line. An activities log on the right — assigned → started → completed — that mirrors back to the customer's tracking page.",
+      "path": "/partner-ui-previews/inventory-order-detail.png",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "slug": "products",
+      "route": "/products",
+      "label": "Products",
+      "headline": "Your catalogue, your variants, your stock.",
+      "caption": "One product per garment, variants for size and colour, sales channel pre-bound to your storefront. Stock travels with the inventory order, not a separate dance.",
+      "path": "/partner-ui-previews/products.png",
+      "width": 1440,
+      "height": 900
+    }
+  ]
+}
