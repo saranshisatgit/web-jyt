@@ -1333,71 +1333,174 @@ body[data-mode="platform"] [data-aud="investor"] { display: none; }
     font-size: 11pt;
   }
 
-  /* Hide interactive / decorative chrome that has no place in a PDF. */
+  /* ───── Chrome strip ─────
+     Top-level <header>, <nav>, <footer> never belong in a PDF —
+     hide them outright in addition to their kt-* variants so a
+     future renamed navbar doesn't leak through. */
+  header,
+  nav,
+  footer,
   .kt-topbar,
+  .kt-topbar-inner,
+  .kt-topbar-actions,
+  .kt-nav,
   .kt-mobile-nav,
   .kt-mobile-modes,
+  .kt-mobile-drawer,
   .kt-mode-menu,
   .kt-footer,
   .kt-fork,
   .kt-print-fab,
+  .kt-hamburger,
   .bg-dot-grid,
   .bg-hero-wash {
     display: none !important;
   }
 
-  /* BlueprintGrid is the fixed full-viewport mix-blend overlay — kill it. */
-  [class*="pointer-events-none"][class*="fixed"][class*="inset-0"] {
+  /* BlueprintGrid is the fixed full-viewport mix-blend overlay. Match it
+     by the combined utility-class signature so renamed sibling overlays
+     are also caught. */
+  [class*="pointer-events-none"][class*="fixed"][class*="inset-0"],
+  [class*="pointer-events-none"][class*="fixed"][class*="z-50"][class*="mix-blend"] {
     display: none !important;
   }
 
-  /* Forms can't be filled in a PDF — collapse the CaptureForm. */
-  form input[type="email"],
-  form button[type="submit"] {
+  /* Belt-and-braces: anything position-fixed that isn't a section/region
+     used for content layout. The page is being rasterised to paper —
+     floating UI has nowhere to go. */
+  body > div[class*="fixed"],
+  body > div[style*="position: fixed"],
+  body > div[style*="position:fixed"] {
     display: none !important;
   }
 
-  /* Hero: reduce the giant clamp() display so it doesn't blow past one
-     page on its own. */
+  /* Forms can't be filled in a PDF — collapse the entire CaptureForm
+     (the email input + submit button + idle hint paragraph). */
+  .kt-inline-form,
+  form.kt-inline-form {
+    display: none !important;
+  }
+
+  /* Strip the screen-mode "marker" strikethrough on hero/problem
+     headlines. <s> elements are used literarily ("what's missing") but
+     on paper a struck-through phrase reads as a typo. */
+  s,
+  .kt-quote s,
+  .kt-hero em,
+  .kt-hero .serif,
+  h1.kt-display em,
+  h2.kt-display em,
+  em.serif,
+  em.italic {
+    text-decoration: none !important;
+    background-image: none !important;
+  }
+
+  /* ───── Hero ───── */
   .kt-hero {
     padding-top: 0 !important;
+    padding-bottom: 24px !important;
     page-break-after: avoid;
   }
 
-  /* Each major section starts on a fresh page; prevents mid-section
-     splits that lose visual context. */
+  /* ───── Section containment ─────
+     Sections only get vertical breathing room — page-break-inside avoid
+     was orphaning the section header onto a previous page with an empty
+     border outline when the inner grid was too tall to fit. Let the
+     section split; protect only the inner panes/cards (rule below). */
   section.kt-section {
-    page-break-inside: avoid;
-    break-inside: avoid;
-    padding-top: 32px !important;
-    padding-bottom: 32px !important;
-    border-top: 1px solid #ddd !important;
+    padding-top: 28px !important;
+    padding-bottom: 28px !important;
   }
 
-  /* Cards and the live-storefronts grid shouldn't split across pages. */
+  /* Cards, fork cards, and direct grid children all keep their entire
+     content together — no mid-card splits. */
   .kt-card,
   .kt-fork-card,
+  .kt-feature-row,
+  .kt-tracing,
+  .kt-apply-callout,
   .grid > * {
     page-break-inside: avoid;
     break-inside: avoid;
   }
 
-  /* Display headings — printed at a reasonable scale instead of the
-     viewport-clamped sizes used on screen. */
-  .kt-display.xl, .kt-display.l { font-size: 28pt !important; line-height: 1.1 !important; }
-  .kt-display.m { font-size: 22pt !important; line-height: 1.15 !important; }
-  .kt-display.s { font-size: 16pt !important; line-height: 1.2 !important; }
+  /* ───── Grid layout at print width ─────
+     A4 effective width with 14mm side margins ≈ 688px which is BELOW
+     Tailwind's md (768) and lg (1024) breakpoints. Responsive grids
+     collapse to grid-cols-1 and stack vertically — fine on mobile but
+     wastes paper. Force the multi-column layout to apply at print
+     width so 4-card rows print as 4 cards, not 4 stacked rows. */
+  .grid.grid-cols-1.md\:grid-cols-2,
+  .grid.grid-cols-1.md\:grid-cols-2.gap-12 { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+  .grid.grid-cols-1.md\:grid-cols-3,
+  .grid.lg\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; }
+  .grid.grid-cols-1.md\:grid-cols-4,
+  .grid.grid-cols-2.md\:grid-cols-4,
+  .grid.lg\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; }
 
-  /* The raise number ("$X") and the Hero serif headline use clamp() for
-     screen sizes that translate badly onto paper — anchor them. */
-  .serif[style*="clamp"] { font-size: 64pt !important; line-height: 0.9 !important; }
+  /* Feature tour rows stay side-by-side at print width — the screen
+     mobile fallback would stack copy + screenshot, wasting space. */
+  .kt-feature-row,
+  .kt-feature-row[data-flip="true"] {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr) !important;
+    gap: 32px !important;
+  }
+  .kt-feature-row[data-flip="true"] {
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) !important;
+  }
 
-  /* Storefront preview images — cap at a reasonable printed width so
-     they don't dominate a single page. */
-  .kt-live-storefronts img { max-height: 200px !important; object-fit: cover; }
+  /* Tracing + apply callouts: keep their two-column layouts at print
+     width instead of stacking. */
+  .kt-tracing { grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr) !important; padding: 32px !important; gap: 32px !important; }
+  .kt-apply-callout { grid-template-columns: 1fr auto !important; padding: 32px !important; }
 
-  /* Anchor links: show the URL inline so the PDF stays useful when
-     printed. Skip in-page anchors and the analytics script. */
+  /* Stats panel — 4-col is too narrow at print width, the GMV number
+     (₹315.0K) gets clipped. Switch to 2x2 so each cell has room for
+     the big serif numeral + label + sublabel. */
+  #stats .grid.grid-cols-2.md\:grid-cols-4,
+  #stats .grid.md\:grid-cols-4 { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+  .kt-stat .num { font-size: 36pt !important; line-height: 1 !important; }
+  .kt-stat .lbl { font-size: 9pt !important; }
+
+  /* Strip inline `border: 1px solid var(--rule)` on grid wrappers
+     (e.g. the Hypothesis Gucci/Rukmini wrapper, the Surfaces 3-up
+     wrapper). When the inner panes break across pages, the wrapper's
+     border still paints on the previous page with empty space inside —
+     a visible ghost outline. The inner panes carry their own
+     backgrounds, so removing this border doesn't hurt screen carryover
+     in the printed copy. */
+  .grid[style*="border"],
+  .grid[style*="1px solid"] { border: 0 !important; }
+
+  /* Self-contained dark cards that should never split across pages —
+     The Raise (#raise) and any future similar "callout" cards. Without
+     this, the card pre-paints an empty top on the previous page and
+     the content rolls onto the next. */
+  #raise .grid,
+  #raise > .container > .grid { page-break-inside: avoid; break-inside: avoid; }
+
+  /* Hypothesis panes — direct children of the Gucci/Rukmini wrapper
+     keep their entire content (numbered list + outcome footer) on
+     a single page. */
+  section[data-aud="investor"] .grid.grid-cols-1.md\:grid-cols-2 > div { page-break-inside: avoid; break-inside: avoid; }
+
+  /* ───── Typography ───── */
+  .kt-display.xl, .kt-display.l { font-size: 26pt !important; line-height: 1.1 !important; }
+  .kt-display.m { font-size: 20pt !important; line-height: 1.15 !important; }
+  .kt-display.s { font-size: 15pt !important; line-height: 1.2 !important; }
+  .serif[style*="clamp"] { font-size: 56pt !important; line-height: 0.9 !important; }
+  h1, h2, h3 { page-break-after: avoid; break-after: avoid; }
+
+  /* Storefront previews + partner UI captures — bound max height so they
+     don't dominate a page on their own. */
+  .kt-live-storefronts img,
+  .kt-feature-shot img,
+  .kt-tracing-shot img { max-height: 240px !important; object-fit: cover; }
+
+  /* Anchor links: append URL so the PDF stays useful when printed.
+     Skip in-page anchors so the section navigation links don't get noisy
+     (#raise) tags. */
   a[href^="http"]::after {
     content: " (" attr(href) ")";
     font-family: var(--font-mono);
@@ -1406,8 +1509,5 @@ body[data-mode="platform"] [data-aud="investor"] { display: none; }
     word-break: break-all;
   }
   a[href^="#"]::after { content: ""; }
-
-  /* Avoid orphan section headers. */
-  h1, h2, h3 { page-break-after: avoid; break-after: avoid; }
 }
 
