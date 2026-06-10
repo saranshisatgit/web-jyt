@@ -175,17 +175,20 @@ export function BlogPostContent({
             style={{
               marginTop: '48px',
               display: 'grid',
-              gridTemplateColumns: '1fr',
+              // minmax(0, …) kills the track's min-content floor — a wide
+              // stats-panel table otherwise forces the whole column (and
+              // every <p> in it) past the viewport on mobile.
+              gridTemplateColumns: 'minmax(0, 1fr)',
               gap: '32px',
               paddingBottom: '64px',
             }}
-            className="lg:grid-cols-[15rem_1fr] xl:grid-cols-[15rem_1fr_15rem]"
+            className="lg:grid-cols-[15rem_minmax(0,1fr)] xl:grid-cols-[15rem_minmax(0,1fr)_15rem]"
           >
             <PostMetadataSidebar
               authorsBlock={authorsBlock}
               category={(post.public_metadata as { category?: string })?.category}
             />
-            <div>
+            <div className="min-w-0">
               <PostMainContentArea
                 post={post}
                 featuredImageUrl={featuredImageUrl}
