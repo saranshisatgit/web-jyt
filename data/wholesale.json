@@ -1,0 +1,40 @@
+{
+  "_note": "Content block for /solutions/wholesale (#605). Use-case page: wholesalers/buyers enter sustainable markets by sourcing verified inventory and creating their own designs from it in the partner studio, each piece carrying a Digital Product Passport. Lift into the CMS later without changing the component.",
+  "hero": {
+    "eyebrow": "Use case · Wholesale",
+    "title": "Source verified. Sell sustainable.",
+    "subtitle": "Wholesale is moving to provenance. Browse traceable, verified inventory from our maker network, design your own pieces from it in the partner studio, and sell into sustainable markets — every SKU carrying a Digital Product Passport.",
+    "primaryCta": { "label": "Talk to us", "href": "/contact" },
+    "secondaryCta": { "label": "Compare platforms", "href": "/compare" }
+  },
+  "shift": {
+    "eyebrow": "Why now",
+    "title": "Buyers are being asked to prove it.",
+    "body": "Green-claims rules (EU ESPR, the coming Digital Product Passport mandate) are turning ‘sustainable’ from a label into a receipt. Most wholesale platforms still just move orders — they can't tell you where a material came from or who made it. JYT starts from verified inventory, so the proof is built in before the first order."
+  },
+  "steps": {
+    "eyebrow": "How it works",
+    "title": "From verified inventory to your own line.",
+    "items": [
+      { "n": "01", "title": "Browse verified inventory", "body": "Source from traceable materials and vetted makers — each lot tied to its origin, artisan, and certification. Filter for what you can stand behind." },
+      { "n": "02", "title": "Design it in the partner studio", "body": "Use the partner studio to spin up your own products from that inventory — variants, pricing, and tech details — without a sample room or a PLM contract." },
+      { "n": "03", "title": "Sell with a passport on every piece", "body": "Each SKU ships with an EU ESPR-ready Digital Product Passport — provenance buyers and regulators can verify. Sustainable shelf-space, earned, not claimed." }
+    ]
+  },
+  "benefits": {
+    "eyebrow": "Why wholesalers choose it",
+    "title": "Approachable entry into sustainable markets.",
+    "items": [
+      { "title": "No greenwashing risk", "body": "You only sell what the inventory can prove. Provenance is the default, not an audit you scramble for later." },
+      { "title": "Your label, our rail", "body": "Create your own branded designs from verified stock — you own the line, JYT runs the production and traceability underneath." },
+      { "title": "Open the network", "body": "150+ vetted artisans across EU, India & Australia become your supply base — coordinated over WhatsApp and a mobile portal." },
+      { "title": "Transparent, atelier-friendly pricing", "body": "No enterprise contract, no sales-gate. Clear pricing, self-serve — unlike the wholesale incumbents." }
+    ]
+  },
+  "cta": {
+    "title": "Bring verified inventory to your buyers.",
+    "body": "We’ll walk you through sourcing verified stock, designing from it, and shipping with a passport on every piece.",
+    "primaryCta": { "label": "Book a walkthrough", "href": "/contact" },
+    "secondaryCta": { "label": "See the full atelier OS", "href": "/solutions" }
+  }
+}
