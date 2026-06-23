@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Product Creation · JYT Partner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Rethink+Sans:ital,wght@0,400;0,500;0,600;0,700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *,*::before,*::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --navy-50: oklch(98.5% 0.005 210);
+      --navy-100: oklch(96.2% 0.008 210);
+      --navy-200: oklch(91.5% 0.012 210);
+      --navy-300: oklch(85% 0.018 210);
+      --navy-400: oklch(70% 0.025 210);
+      --navy-500: oklch(55% 0.030 210);
+      --navy-600: oklch(43% 0.032 210);
+      --navy-700: oklch(34% 0.030 210);
+      --navy-800: oklch(24% 0.025 210);
+      --navy-900: oklch(16% 0.022 210);
+      --accent: oklch(54% 0.06 145);
+      --accent-deep: oklch(42% 0.08 145);
+      --accent-soft: oklch(80% 0.035 145);
+      --accent-pale: oklch(95% 0.015 145);
+      --orange-500: oklch(65% 0.165 60);
+      --orange-600: oklch(56% 0.170 60);
+      --bg: oklch(1 0 0);
+      --cream: oklch(99% 0.004 210);
+      --cream-warm: oklch(97% 0.010 210);
+      --ink: oklch(25% 0.025 210);
+      --ink-soft: oklch(45% 0.030 210);
+      --ink-mute: oklch(60% 0.025 210);
+      --rule: oklch(82% 0.018 210);
+      --rule-soft: oklch(88% 0.014 210);
+      --font-sans: 'Rethink Sans', system-ui, sans-serif;
+      --font-serif: 'Instrument Serif', Georgia, serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --r-sm: 4px;
+      --r-md: 8px;
+      --r-lg: 16px;
+      --r-pill: 999px;
+      --ease: cubic-bezier(.65,.05,.36,1);
+    }
+    body {
+      font-family: var(--font-sans);
+      background: var(--navy-50);
+      color: var(--ink);
+      font-size: 14px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      padding: 32px;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-mute);
+    }
+    .tag {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 2px 10px; border-radius: var(--r-pill);
+      font-family: var(--font-mono); font-size: 10px; font-weight: 500; letter-spacing: 0.05em;
+    }
+    .tag-sage { background: var(--accent-pale); color: var(--accent-deep); }
+    .tag-navy { background: var(--cream); color: var(--ink-soft); }
+    .tag-green { background: oklch(93% 0.04 145); color: var(--accent-deep); }
+    .tag-orange { background: oklch(93% 0.06 60); color: oklch(47% 0.165 60); }
+    .tag-white { background: var(--bg); color: var(--ink-soft); border: 1px solid var(--rule); }
+    .btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 10px 24px; border-radius: var(--r-pill);
+      font-family: var(--font-mono); font-size: 11px; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      border: none; cursor: pointer; transition: all 0.2s var(--ease);
+    }
+    .btn-primary { background: var(--ink); color: var(--cream); }
+    .btn-primary:hover { background: var(--accent-deep); }
+    .btn-secondary { background: var(--cream); color: var(--ink); border: 1px solid var(--rule); }
+    .btn-secondary:hover { border-color: var(--ink); }
+    .btn-ghost {
+      background: transparent; color: var(--ink-soft);
+      padding: 6px 12px; border: none; font-family: var(--font-mono);
+      font-size: 10px; letter-spacing: 0.05em; cursor: pointer;
+    }
+    .btn-ghost:hover { color: var(--ink); background: var(--cream); border-radius: var(--r-pill); }
+    .btn-sm { padding: 7px 16px; font-size: 10px; }
+    .card {
+      background: var(--bg); border: 1px solid var(--rule-soft);
+      border-radius: var(--r-lg); overflow: hidden;
+      box-shadow: 0 1px 4px oklch(0 0 0 / 0.04);
+    }
+    .card-head {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 24px; border-bottom: 1px solid var(--rule-soft);
+    }
+    .card-body { padding: 24px; }
+    .card-section { padding: 20px 24px; }
+    .card-section + .card-section { border-top: 1px solid var(--rule-soft); }
+    .fi {
+      width: 100%; padding: 9px 13px;
+      border: 1px solid var(--rule); border-radius: var(--r-md);
+      background: var(--bg); outline: none; font-family: var(--font-sans);
+      font-size: 13px; transition: border-color 0.15s var(--ease);
+    }
+    .fi:focus { border-color: var(--ink); }
+    .fi-label {
+      display: block; font-family: var(--font-mono); font-size: 10px;
+      letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-mute);
+      margin-bottom: 5px;
+    }
+    select.fi { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none' stroke='%238b909e' stroke-width='1.5'%3E%3Cpath d='M3 5l3 3 3-3'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; }
+    .flex { display: flex; }
+    .flex-1 { flex: 1; }
+    .items-center { align-items: center; }
+    .justify-between { justify-content: space-between; }
+    .gap-2 { gap: 8px; }
+    .gap-3 { gap: 12px; }
+    .gap-4 { gap: 16px; }
+    .mt-2 { margin-top: 8px; }
+    .mt-3 { margin-top: 12px; }
+    .mt-4 { margin-top: 16px; }
+    .mb-2 { margin-bottom: 8px; }
+    .mb-3 { margin-bottom: 12px; }
+    .mb-4 { margin-bottom: 16px; }
+    .text-muted { color: var(--ink-mute); }
+    .text-soft { color: var(--ink-soft); }
+    .divider { height: 1px; background: var(--rule-soft); margin: 12px 0; }
+    .divider-h { width: 1px; background: var(--rule-soft); }
+
+    /* Tabs */
+    .tab-bar {
+      display: flex; gap: 0; padding: 0 24px;
+      border-bottom: 1px solid var(--rule-soft);
+    }
+    .tab {
+      padding: 12px 20px; font-size: 13px; font-weight: 500;
+      color: var(--ink-mute); cursor: pointer; position: relative;
+      transition: color 0.15s var(--ease);
+    }
+    .tab:hover { color: var(--ink-soft); }
+    .tab.active { color: var(--ink); }
+    .tab.active::after {
+      content: ''; position: absolute; bottom: 0; left: 12px; right: 12px;
+      height: 2px; background: var(--ink); border-radius: 1px;
+    }
+    .tab .check { display: none; }
+    .tab.done { color: var(--accent-deep); }
+    .tab.done .check { display: inline; }
+
+    /* Progress dots */
+    .psteps {
+      display: flex; gap: 2px;
+    }
+    .pstep {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--rule-soft); transition: background 0.2s var(--ease);
+    }
+    .pstep.done { background: var(--accent); }
+    .pstep.active { background: var(--ink); }
+
+    /* Choice cards */
+    .choice-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+    }
+    .choice {
+      border: 1px solid var(--rule-soft); border-radius: var(--r-lg);
+      padding: 24px; cursor: pointer; transition: all 0.2s var(--ease);
+      background: var(--bg);
+    }
+    .choice:hover { border-color: var(--rule); box-shadow: 0 2px 8px oklch(0 0 0 / 0.06); }
+    .choice-icon {
+      width: 40px; height: 40px; border-radius: var(--r-md);
+      background: var(--cream); display: flex; align-items: center; justify-content: center;
+      margin-bottom: 12px; border: 1px solid var(--rule-soft);
+    }
+    .choice-title { font-size: 15px; font-weight: 600; }
+    .choice-desc { font-size: 12px; color: var(--ink-soft); margin-top: 4px; }
+    .choice-time { font-family: var(--font-mono); font-size: 10px; color: var(--ink-mute); margin-top: 8px; }
+
+    /* Upload zone */
+    .upload-zone {
+      border: 1px dashed var(--rule); border-radius: var(--r-md);
+      padding: 24px; text-align: center; cursor: pointer;
+      transition: all 0.15s var(--ease);
+    }
+    .upload-zone:hover { border-color: var(--ink); background: var(--cream); }
+
+    /* Switch */
+    .switch {
+      width: 36px; height: 20px; border-radius: 10px;
+      background: var(--rule); position: relative; cursor: pointer;
+      transition: background 0.2s var(--ease); flex-shrink: 0;
+    }
+    .switch.on { background: var(--accent); }
+    .switch::after {
+      content: ''; position: absolute; top: 2px; left: 2px;
+      width: 16px; height: 16px; border-radius: 50%;
+      background: white; transition: transform 0.2s var(--ease);
+    }
+    .switch.on::after { transform: translateX(16px); }
+
+    /* Chip */
+    .chip {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 4px 10px; border-radius: var(--r-pill);
+      background: var(--cream); border: 1px solid var(--rule-soft);
+      font-size: 12px;
+    }
+    .chip-remove { cursor: pointer; opacity: 0.4; }
+    .chip-remove:hover { opacity: 0.8; }
+
+    /* Modal overlay */
+    .screen { display: none; }
+    .screen.open { display: block; }
+
+    .empty-cell { color: var(--ink-mute); font-size: 12px; }
+
+    @media (max-width: 700px) {
+      body { padding: 16px; }
+      .choice-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- State toggle bar -->
+<div style="position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:200;">
+  <div style="display:flex;gap:4px;background:var(--cream);padding:4px;border-radius:var(--r-pill);border:1px solid var(--rule-soft);">
+    <button class="btn-ghost active" style="padding:6px 20px;border-radius:var(--r-pill);background:var(--bg);color:var(--ink);" onclick="showScreen('choice')">Choice</button>
+    <button class="btn-ghost" style="padding:6px 20px;border-radius:var(--r-pill);" onclick="showScreen('quick')">Quick</button>
+    <button class="btn-ghost" style="padding:6px 20px;border-radius:var(--r-pill);" onclick="showScreen('advanced')">Advanced</button>
+  </div>
+</div>
+
+<!-- ========== CHOICE SCREEN ========== -->
+<div class="screen open" id="s-choice">
+  <div style="max-width:560px;margin:80px auto 0;">
+    <div style="text-align:center;margin-bottom:28px;">
+      <div class="eyebrow" style="margin-bottom:6px;">New Product</div>
+      <div style="font-size:24px;font-weight:600;">How do you want to start?</div>
+      <div style="font-size:13px;color:var(--ink-soft);margin-top:6px;">Choose a method that fits what you're creating.</div>
+    </div>
+    <div class="choice-grid">
+      <div class="choice" onclick="showScreen('quick')">
+        <div class="choice-icon">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="var(--ink-soft)" stroke-width="1.5" stroke-linecap="round"><path d="M10 2v16M2 10h16"/></svg>
+        </div>
+        <div class="choice-title">Quick add</div>
+        <div class="choice-desc">One photo, title, price and stock. Creates a single-variant product in your default currency.</div>
+        <div class="choice-time">~30 seconds</div>
+      </div>
+      <div class="choice" onclick="showScreen('advanced')">
+        <div class="choice-icon">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="var(--ink-soft)" stroke-width="1.5"><rect x="2" y="2" width="16" height="16" rx="2"/><path d="M6 7h8M6 10h8M6 13h5"/></svg>
+        </div>
+        <div class="choice-title">Advanced</div>
+        <div class="choice-desc">Full creation with variants (size, colour), region-based prices, inventory tracking, SEO and organisation fields.</div>
+        <div class="choice-time">~3-5 minutes</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== QUICK CREATE ========== -->
+<div class="screen" id="s-quick">
+  <div style="max-width:500px;margin:80px auto 0;">
+    <div class="card">
+      <div class="card-head">
+        <span style="font-size:16px;font-weight:600;">Quick add product</span>
+        <button class="btn btn-ghost btn-sm" onclick="showScreen('choice')">Cancel</button>
+      </div>
+      <div class="card-body" style="display:flex;flex-direction:column;gap:16px;">
+
+        <!-- Photo -->
+        <div>
+          <label class="fi-label">Photos</label>
+          <div class="upload-zone">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--ink-mute)" stroke-width="1.3" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m3 16 5-5 3 3 3-4 7 7"/></svg>
+            <div style="font-size:12px;color:var(--ink-soft);margin-top:6px;">Drag & drop or click to upload</div>
+            <div style="font-size:10px;color:var(--ink-mute);font-family:var(--font-mono);margin-top:2px;">JPEG, PNG, WebP · Max 10 MB</div>
+          </div>
+        </div>
+
+        <!-- Title + AI -->
+        <div>
+          <label class="fi-label">Title <span style="color:var(--ink);">*</span></label>
+          <div style="display:flex;gap:6px;">
+            <input class="fi" type="text" placeholder="e.g. Handwoven Pashmina Shawl" style="flex:1;" />
+            <button class="btn btn-secondary btn-sm" style="white-space:nowrap;flex-shrink:0;font-size:9px;">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="6" cy="6" r="4.5"/><path d="M6 4v4M4 6h4"/></svg>
+              Describe from image
+            </button>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div>
+          <label class="fi-label">Description <span class="text-muted" style="font-weight:400;letter-spacing:0;text-transform:none;">(optional)</span></label>
+          <textarea class="fi" rows="3" placeholder="Brief description of the product..."></textarea>
+        </div>
+
+        <!-- Price + Stock -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div>
+            <label class="fi-label">Price <span style="color:var(--ink);">*</span></label>
+            <div style="position:relative;">
+              <input class="fi" type="number" placeholder="2000" />
+              <span style="position:absolute;right:12px;top:50%;transform:translateY(-50%);font-family:var(--font-mono);font-size:11px;color:var(--ink-mute);">INR</span>
+            </div>
+          </div>
+          <div>
+            <label class="fi-label">Stock Qty <span class="text-muted" style="font-weight:400;letter-spacing:0;text-transform:none;">(optional)</span></label>
+            <input class="fi" type="number" placeholder="50" />
+          </div>
+        </div>
+
+        <div style="display:flex;justify-content:flex-end;gap:8px;padding-top:8px;border-top:1px solid var(--rule-soft);">
+          <button class="btn btn-secondary btn-sm" onclick="showScreen('choice')">Cancel</button>
+          <button class="btn btn-primary btn-sm">Create Product</button>
+        </div>
+      </div>
+      <div style="padding:12px 24px;border-top:1px solid var(--rule-soft);font-size:11px;color:var(--ink-mute);line-height:1.6;">
+        This creates a single-variant product priced in INR with stock at your default warehouse.
+        <button class="btn-ghost" style="font-size:11px;color:var(--accent-deep);padding:0;text-decoration:underline;" onclick="showScreen('advanced')">Switch to Advanced</button>
+        if you need variants or regional pricing.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== ADVANCED CREATE ========== -->
+<div class="screen" id="s-advanced">
+  <div style="max-width:720px;margin:80px auto 0;">
+
+    <!-- Tab bar -->
+    <div class="card">
+      <div class="card-head" style="border:none;">
+        <span style="font-size:16px;font-weight:600;">Create Product</span>
+        <button class="btn btn-ghost btn-sm" onclick="showScreen('choice')">Cancel</button>
+      </div>
+      <div class="tab-bar" id="advTabs">
+        <div class="tab active" data-tab="0" onclick="switchAdvTab(0)"><span class="check" style="margin-right:4px;">✓</span> Details</div>
+        <div class="tab" data-tab="1" onclick="switchAdvTab(1)"><span class="check" style="margin-right:4px;">✓</span> Organize</div>
+        <div class="tab" data-tab="2" onclick="switchAdvTab(2)"><span class="check" style="margin-right:4px;">✓</span> Variants</div>
+        <div class="tab" data-tab="3" onclick="switchAdvTab(3)"><span class="check" style="margin-right:4px;">✓</span> Inventory</div>
+      </div>
+
+      <!-- Tab content -->
+      <div id="advContent">
+
+        <!-- ===== TAB 0: DETAILS ===== -->
+        <div class="adv-tab" data-tab="0">
+          <div class="card-section">
+            <div class="eyebrow mb-3">General</div>
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <div>
+                <label class="fi-label">Title <span style="color:var(--ink);">*</span></label>
+                <input class="fi" type="text" value="Handwoven Pashmina Shawl" />
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                <div>
+                  <label class="fi-label">Subtitle <span class="text-muted" style="font-weight:400;letter-spacing:0;text-transform:none;">(optional)</span></label>
+                  <input class="fi" type="text" placeholder="e.g. Pure Cashmere" />
+                </div>
+                <div>
+                  <label class="fi-label">Handle <span class="text-muted" style="font-weight:400;letter-spacing:0;text-transform:none;">(optional)</span></label>
+                  <div style="display:flex;align-items:center;border:1px solid var(--rule);border-radius:var(--r-md);">
+                    <span style="padding:0 0 0 10px;font-size:13px;color:var(--ink-mute);font-family:var(--font-mono);">/</span>
+                    <input class="fi" type="text" value="pashmina-shawl-crimson" style="border:none;" />
+                  </div>
+                </div>
+              </div>
+              <div>
+                <label class="fi-label">Description <span class="text-muted" style="font-weight:400;letter-spacing:0;text-transform:none;">(optional)</span></label>
+                <textarea class="fi" rows="3" placeholder="Product description...">Handwoven by artisans in Kashmir. Pure cashmere with hand-dyed crimson finish. 200 × 70 cm with fringed edges.</textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-section">
+            <div class="eyebrow mb-3">Media</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <div style="width:80px;height:80px;border-radius:var(--r-md);background:var(--cream);border:1px solid var(--rule-soft);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--ink-mute)" stroke-width="1.3"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m3 16 5-5 3 3 3-4 7 7"/></svg>
+                <span class="tag tag-sage" style="position:absolute;bottom:2px;right:2px;font-size:7px;padding:1px 4px;">T</span>
+              </div>
+              <div style="width:80px;height:80px;border-radius:var(--r-md);background:oklch(93% 0.01 210);border:1px solid var(--rule-soft);display:flex;align-items:center;justify-content:center;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--ink-mute)" stroke-width="1.3"><path d="M12 5v14M5 12h14"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-section">
+            <div class="flex items-center justify-between">
+              <div>
+                <div style="font-weight:600;font-size:13px;">Variants</div>
+                <div style="font-size:11px;color:var(--ink-soft);">Add size, colour, or other options</div>
+              </div>
+              <div class="switch on" id="variantSwitch" onclick="this.classList.toggle('on')"></div>
+            </div>
+            <div id="variantOptions" style="margin-top:12px;">
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                <div>
+                  <label class="fi-label">Option</label>
+                  <input class="fi" type="text" value="Colour" />
+                </div>
+                <div>
+                  <label class="fi-label">Values</label>
+                  <div style="display:flex;flex-wrap:wrap;gap:4px;padding:7px 11px;border:1px solid var(--rule);border-radius:var(--r-md);min-height:36px;">
+                    <span class="chip">Crimson <span class="chip-remove">✕</span></span>
+                    <span class="chip">Indigo <span class="chip-remove">✕</span></span>
+                    <span class="chip">Ivory <span class="chip-remove">✕</span></span>
+                    <input type="text" placeholder="Add..." style="border:none;outline:none;width:50px;font-size:12px;background:transparent;" />
+                  </div>
+                </div>
+              </div>
+              <button class="btn-ghost btn-sm mt-2">+ Add another option</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== TAB 1: ORGANIZE ===== -->
+        <div class="adv-tab" data-tab="1" style="display:none;">
+          <div class="card-section">
+            <div class="eyebrow mb-3">Organisation</div>
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <div class="flex items-center justify-between">
+                <div><div style="font-weight:500;font-size:13px;">Discountable</div><div style="font-size:11px;color:var(--ink-soft);">Allow discounts on this product</div></div>
+                <div class="switch on"></div>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                <div><label class="fi-label">Type</label><select class="fi"><option>Apparel</option><option>Accessories</option><option>Home</option></select></div>
+                <div><label class="fi-label">Collection</label><select class="fi"><option>Pashmina Collection</option><option>Summer Edit</option><option>Heritage</option></select></div>
+              </div>
+              <div>
+                <label class="fi-label">Categories</label>
+                <select class="fi"><option>Shawls & Wraps</option><option>Cashmere</option><option>Handloom</option></select>
+              </div>
+              <div>
+                <label class="fi-label">Tags</label>
+                <div style="display:flex;flex-wrap:wrap;gap:4px;padding:7px 11px;border:1px solid var(--rule);border-radius:var(--r-md);min-height:36px;">
+                  <span class="chip">handwoven <span class="chip-remove">✕</span></span>
+                  <span class="chip">cashmere <span class="chip-remove">✕</span></span>
+                  <span class="chip">limited-edition <span class="chip-remove">✕</span></span>
+                  <input type="text" placeholder="Add..." style="border:none;outline:none;width:60px;font-size:12px;background:transparent;" />
+                </div>
+              </div>
+              <div>
+                <label class="fi-label">Shipping Profile</label>
+                <select class="fi"><option>Standard</option><option>Express</option><option>Fragile</option></select>
+              </div>
+              <div>
+                <label class="fi-label">Sales Channels</label>
+                <div style="display:flex;flex-wrap:wrap;gap:4px;">
+                  <span class="chip">Default Sales Channel <span class="chip-remove">✕</span></span>
+                  <span class="chip">Partner Portal <span class="chip-remove">✕</span></span>
+                  <button class="btn-ghost btn-sm" style="font-size:11px;">+ Add</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== TAB 2: VARIANTS ===== -->
+        <div class="adv-tab" data-tab="2" style="display:none;">
+          <div class="card-section">
+            <div class="flex items-center justify-between mb-3">
+              <div>
+                <div class="eyebrow">Variants</div>
+                <div style="font-size:11px;color:var(--ink-soft);">3 variants generated from Colour</div>
+              </div>
+              <button class="btn btn-secondary btn-sm">+ Add Option</button>
+            </div>
+            <div style="border:1px solid var(--rule-soft);border-radius:var(--r-md);overflow:hidden;">
+              <table style="width:100%;border-collapse:collapse;font-size:12px;">
+                <thead>
+                  <tr style="background:var(--cream);border-bottom:1px solid var(--rule-soft);">
+                    <th style="padding:8px 12px;text-align:left;font-weight:500;font-family:var(--font-mono);font-size:10px;letter-spacing:0.05em;">Options</th>
+                    <th style="padding:8px 12px;text-align:left;font-weight:500;font-family:var(--font-mono);font-size:10px;letter-spacing:0.05em;">Title</th>
+                    <th style="padding:8px 12px;text-align:left;font-weight:500;font-family:var(--font-mono);font-size:10px;letter-spacing:0.05em;">SKU</th>
+                    <th style="padding:8px 12px;text-align:left;font-weight:500;font-family:var(--font-mono);font-size:10px;letter-spacing:0.05em;">Inventory</th>
+                    <th style="padding:8px 12px;text-align:left;font-weight:500;font-family:var(--font-mono);font-size:10px;letter-spacing:0.05em;">Price (INR)</th>
+                    <th style="padding:8px 12px;text-align:left;font-weight:500;font-family:var(--font-mono);font-size:10px;letter-spacing:0.05em;">Backorder</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr style="border-bottom:1px solid var(--rule-soft);">
+                    <td style="padding:10px 12px;"><span class="tag tag-sage" style="font-size:10px;">Crimson</span></td>
+                    <td style="padding:10px 12px;">Crimson Pashmina</td>
+                    <td style="padding:10px 12px;"><span style="font-family:var(--font-mono);font-size:11px;">PSM-CRM-001</span></td>
+                    <td style="padding:10px 12px;"><span style="font-family:var(--font-mono);font-size:11px;">25</span></td>
+                    <td style="padding:10px 12px;"><span style="font-family:var(--font-mono);font-size:11px;">₹ 2,400</span></td>
+                    <td style="padding:10px 12px;"><div class="switch" style="width:28px;height:16px;transform:scale(0.8);transform-origin:left center;"></div></td>
+                  </tr>
+                  <tr style="border-bottom:1px solid var(--rule-soft);">
+                    <td style="padding:10px 12px;"><span class="tag tag-sage" style="font-size:10px;">Indigo</span></td>
+                    <td style="padding:10px 12px;">Indigo Pashmina</td>
+                    <td style="padding:10px 12px;"><span style="font-family:var(--font-mono);font-size:11px;">PSM-IND-001</span></td>
+                    <td style="padding:10px 12px;"><span style="font-family:var(--font-mono);font-size:11px;">18</span></td>
+                    <td style="padding:10px 12px;"><span style="font-family:var(--font-mono);font-size:11px;">₹ 2,400</span></td>
+                    <td style="padding:10px 12px;"><div class="switch" style="width:28px;height:16px;transform:scale(0.8);transform-origin:left center;"></div></td>
+                  </tr>
+                  <tr>
+                    <td style="padding:10px 12px;"><span class="tag tag-sage" style="font-size:10px;">Ivory</span></td>
+                    <td style="padding:10px 12px;">Ivory Pashmina</td>
+                    <td style="padding:10px 12px;"><span style="font-family:var(--font-mono);font-size:11px;">PSM-IVR-001</span></td>
+                    <td style="padding:10px 12px;"><span style="font-family:var(--font-mono);font-size:11px;">30</span></td>
+                    <td style="padding:10px 12px;"><span style="font-family:var(--font-mono);font-size:11px;">₹ 2,400</span></td>
+                    <td style="padding:10px 12px;"><div class="switch" style="width:28px;height:16px;transform:scale(0.8);transform-origin:left center;"></div></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== TAB 3: INVENTORY ===== -->
+        <div class="adv-tab" data-tab="3" style="display:none;">
+          <div class="card-section">
+            <div class="eyebrow mb-3">Inventory Kit</div>
+            <div style="font-size:12px;color:var(--ink-soft);margin-bottom:12px;">Define raw materials or components that make up each variant.</div>
+            <div style="border:1px solid var(--rule-soft);border-radius:var(--r-md);padding:16px;">
+              <div class="flex items-center justify-between mb-3">
+                <span style="font-weight:600;font-size:13px;">Crimson Pashmina</span>
+                <span class="tag tag-sage" style="font-size:10px;">Variant</span>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:8px;">
+                <div class="flex items-center gap-3">
+                  <select class="fi" style="flex:1;"><option>Pashmina Base Fabric</option><option>Silk Thread — Gold</option></select>
+                  <input class="fi" type="number" value="1" style="width:70px;" />
+                  <select class="fi" style="width:80px;"><option>Meter</option><option>Piece</option></select>
+                  <button class="btn-ghost btn-sm" style="color:var(--ink-mute);">Remove</button>
+                </div>
+                <div class="flex items-center gap-3">
+                  <select class="fi" style="flex:1;"><option selected>Eco-Friendly Dye — Crimson</option></select>
+                  <input class="fi" type="number" value="0.5" style="width:70px;" />
+                  <select class="fi" style="width:80px;"><option>Kilogram</option></select>
+                  <button class="btn-ghost btn-sm" style="color:var(--ink-mute);">Remove</button>
+                </div>
+              </div>
+              <button class="btn-ghost btn-sm mt-2">+ Add item</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Footer -->
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 24px;border-top:1px solid var(--rule-soft);">
+        <div class="psteps" id="advSteps">
+          <div class="pstep done"></div>
+          <div class="pstep"></div>
+          <div class="pstep"></div>
+          <div class="pstep"></div>
+        </div>
+        <div class="flex gap-2">
+          <button class="btn btn-secondary btn-sm" onclick="showScreen('choice')">Cancel</button>
+          <button class="btn btn-secondary btn-sm">Save as Draft</button>
+          <button class="btn btn-primary btn-sm" id="advNextBtn" onclick="advNext()">Continue</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  let advTab = 0;
+
+  function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('open'));
+    document.getElementById('s-' + id).classList.add('open');
+    document.querySelectorAll('[style*="position:fixed"] .btn-ghost').forEach(b => {
+      b.style.background = b.textContent.trim().toLowerCase() === id ? 'var(--bg)' : '';
+      b.style.color = b.textContent.trim().toLowerCase() === id ? 'var(--ink)' : '';
+      b.style.boxShadow = b.textContent.trim().toLowerCase() === id ? '0 1px 3px rgba(0,0,0,0.06)' : '';
+    });
+  }
+
+  function switchAdvTab(n) {
+    advTab = n;
+    document.querySelectorAll('.adv-tab').forEach(t => t.style.display = t.dataset.tab == n ? '' : 'none');
+    document.querySelectorAll('#advTabs .tab').forEach(t => {
+      t.classList.toggle('active', t.dataset.tab == n);
+    });
+    // Progress dots
+    document.querySelectorAll('.pstep').forEach((d, i) => {
+      d.classList.toggle('done', i < n);
+      d.classList.toggle('active', i === n);
+    });
+    document.getElementById('advNextBtn').textContent = n < 3 ? 'Continue' : 'Publish';
+  }
+
+  function advNext() {
+    if (advTab < 3) switchAdvTab(advTab + 1);
+    else alert('Product published!');
+  }
+</script>
+
+</body>
+</html>
