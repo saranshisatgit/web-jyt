@@ -5,8 +5,10 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useQuery } from '@tanstack/react-query'
 import { Navbar } from '@/components/navbar'
+import { SolutionBlock, FeaturedMockup } from '@/components/solution-block'
 import { useBrand } from '@/app/context/brand-context'
 import storefrontPreviews from '@/data/storefront-previews.json'
+import { AUDIENCE_CALLOUT, SOLUTION_BLOCKS } from '@/data/solutions'
 
 // ----- DATA -----------------------------------------------------------------
 
@@ -242,6 +244,7 @@ export default function Home() {
         <Navbar />
         <Hero />
       </div>
+      <SolutionsShowcase />
       <Problem />
       <Thesis />
       <Surfaces />
@@ -260,6 +263,55 @@ export default function Home() {
       <Raise />
       <Demo />
     </>
+  )
+}
+
+// ----- SOLUTIONS SHOWCASE (brands-first audience callout + animated tour) ----
+// Reuses data/solutions.ts and the SolutionBlock component so the home page and
+// the /solutions page stay in lockstep. Surfaced high on the page so the
+// animated product mockups are among the first things a visitor sees.
+
+function SolutionsShowcase() {
+  return (
+    <section className="kt-section" id="solutions">
+      <div className="container">
+        <div className="kt-section-head">
+          <div className="kt-eyebrow">{AUDIENCE_CALLOUT.eyebrow}</div>
+          <h2 className="kt-display m">{AUDIENCE_CALLOUT.title}</h2>
+        </div>
+        <p className="muted" style={{ fontSize: '19px', lineHeight: 1.55, maxWidth: '720px' }}>
+          {AUDIENCE_CALLOUT.body}
+        </p>
+        <div style={{ margin: '40px 0 72px' }}>
+          <FeaturedMockup />
+        </div>
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+            gap: '24px',
+            marginBottom: '72px',
+          }}
+        >
+          {AUDIENCE_CALLOUT.audiences.map((a) => (
+            <div className="kt-card" key={a.tag}>
+              <div className="kt-meta" style={{ color: 'var(--accent-deep)' }}>{a.tag}</div>
+              <p className="muted" style={{ marginTop: '10px' }}>{a.line}</p>
+            </div>
+          ))}
+        </div>
+        <div className="kt-feature-tour">
+          {SOLUTION_BLOCKS.map((b, i) => (
+            <SolutionBlock key={b.id} block={b} index={i} />
+          ))}
+        </div>
+        <div style={{ marginTop: '48px' }}>
+          <Link className="kt-btn ghost" href="/solutions">
+            See the full atelier OS →
+          </Link>
+        </div>
+      </div>
+    </section>
   )
 }
 

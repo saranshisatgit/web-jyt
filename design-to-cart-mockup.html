@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Design to Cart · JYT</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Rethink+Sans:ital,wght@0,400;0,500;0,600;0,700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *,*::before,*::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --navy-50: oklch(98.5% 0.005 210);
+      --navy-900: oklch(16% 0.022 210);
+      --accent: oklch(54% 0.06 145);
+      --accent-deep: oklch(42% 0.08 145);
+      --accent-soft: oklch(80% 0.035 145);
+      --accent-pale: oklch(95% 0.015 145);
+      --orange-500: oklch(65% 0.165 60);
+      --bg: oklch(1 0 0);
+      --cream: oklch(99% 0.004 210);
+      --cream-warm: oklch(97% 0.010 210);
+      --ink: oklch(25% 0.025 210);
+      --ink-soft: oklch(45% 0.030 210);
+      --ink-mute: oklch(60% 0.025 210);
+      --rule: oklch(82% 0.018 210);
+      --rule-soft: oklch(88% 0.014 210);
+      --font-sans: 'Rethink Sans', system-ui, sans-serif;
+      --font-serif: 'Instrument Serif', Georgia, serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --r-sm: 4px; --r-md: 8px; --r-lg: 16px; --r-pill: 999px;
+      --ease: cubic-bezier(.65,.05,.36,1);
+    }
+    body {
+      font-family: var(--font-sans); background: var(--navy-50); color: var(--ink);
+      font-size: 14px; line-height: 1.5; -webkit-font-smoothing: antialiased;
+      padding: 40px 32px; min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    }
+    .stage { width: 100%; max-width: 720px; }
+    .eyebrow { font-family: var(--font-mono); font-size: 10px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-mute); }
+    .serif { font-family: var(--font-serif); font-weight: 400; }
+    .tag { display: inline-flex; align-items: center; gap: 4px; padding: 3px 11px; border-radius: var(--r-pill); font-family: var(--font-mono); font-size: 10px; font-weight: 500; letter-spacing: 0.05em; }
+    .tag-green { background: oklch(93% 0.04 145); color: var(--accent-deep); }
+    .tag-orange { background: oklch(93% 0.06 60); color: oklch(47% 0.165 60); }
+    .tag-white { background: var(--bg); color: var(--ink-soft); border: 1px solid var(--rule); }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 26px; border-radius: var(--r-pill); font-family: var(--font-mono); font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; border: none; cursor: pointer; transition: all 0.2s var(--ease); width: 100%; }
+    .btn-primary { background: var(--ink); color: var(--cream); }
+    .btn-primary:hover { background: var(--accent-deep); }
+    .btn-pressed { background: var(--accent-deep); transform: translateY(1px); }
+    .card { background: var(--bg); border: 1px solid var(--rule-soft); border-radius: var(--r-lg); overflow: hidden; box-shadow: 0 12px 40px -24px oklch(0 0 0 / 0.30); }
+    .card-head { display: flex; align-items: center; justify-content: space-between; padding: 18px 22px; border-bottom: 1px solid var(--rule-soft); }
+    .card-body { padding: 22px; }
+    .row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 11px 0; border-bottom: 1px solid var(--rule-soft); }
+    .row:last-child { border-bottom: none; }
+    .k { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-mute); }
+    .v { font-size: 13px; color: var(--ink); font-weight: 500; }
+    .flex { display: flex; } .items-center { align-items: center; } .gap-2 { gap: 8px; } .gap-3 { gap: 12px; }
+    .muted { color: var(--ink-mute); } .soft { color: var(--ink-soft); }
+    .swatch { width: 64px; height: 64px; border-radius: var(--r-md); flex-shrink: 0; border: 1px solid var(--rule); background: linear-gradient(135deg, oklch(72% 0.04 60), oklch(58% 0.05 30)); }
+    .swatch.lg { width: 100%; height: 188px; border-radius: var(--r-md); background: linear-gradient(135deg, oklch(74% 0.045 60), oklch(55% 0.06 28)); position: relative; }
+    .swatch.lg::after { content: 'Handwoven · Bagru'; position: absolute; left: 14px; bottom: 12px; font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; color: oklch(99% 0.01 60); text-transform: uppercase; }
+    .check { width: 18px; height: 18px; border-radius: 50%; background: var(--accent); color: white; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; flex-shrink: 0; }
+    .checklist li { display: flex; align-items: center; gap: 10px; padding: 9px 0; font-size: 13px; }
+    .price { font-family: var(--font-serif); font-size: 30px; color: var(--ink); }
+    .scene-label { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+    .scene-num { font-family: var(--font-mono); font-size: 11px; font-weight: 500; color: var(--accent-deep); letter-spacing: 0.1em; }
+    .scene-line { flex: 1; height: 1px; background: var(--rule-soft); }
+    .screen { display: none; animation: fade 0.3s var(--ease); }
+    .screen.open { display: block; }
+    @keyframes fade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+    /* Cart drawer */
+    .drawer { background: var(--bg); border-radius: var(--r-lg); overflow: hidden; box-shadow: 0 12px 40px -24px oklch(0 0 0 / 0.30); border: 1px solid var(--rule-soft); }
+    .drawer-head { display: flex; align-items: center; gap: 10px; padding: 18px 22px; background: var(--accent-pale); border-bottom: 1px solid var(--rule-soft); }
+    .line-item { display: flex; gap: 14px; align-items: center; padding: 18px 22px; }
+    ul { list-style: none; }
+    .ul-list li { display: flex; align-items: center; gap: 8px; padding: 6px 0; font-size: 12px; color: var(--ink-soft); }
+    .ul-list li::before { content: '—'; color: var(--accent); }
+  </style>
+</head>
+<body>
+
+<div class="stage">
+
+  <!-- ========== SCENE 1 — DESIGN ========== -->
+  <div class="screen open" id="s-design">
+    <div class="scene-label"><span class="scene-num">01 · DESIGN</span><span class="scene-line"></span><span class="eyebrow">Atelier</span></div>
+    <div class="card">
+      <div class="card-head">
+        <div>
+          <div class="eyebrow">Design · DSG-2261</div>
+          <div class="serif" style="font-size:22px;margin-top:2px;">Pashmina Shawl — AW26</div>
+        </div>
+        <span class="tag tag-green"><span class="check" style="width:13px;height:13px;font-size:9px;">✓</span> Design ready</span>
+      </div>
+      <div class="card-body">
+        <div class="flex gap-3" style="align-items:stretch;">
+          <div class="swatch"></div>
+          <div style="flex:1;">
+            <div class="row"><span class="k">Fabric</span><span class="v">Cashmere 80 / Silk 20</span></div>
+            <div class="row"><span class="k">Artisan</span><span class="v">Rukmini · Bagru, IN</span></div>
+            <div class="row"><span class="k">Material lot</span><span class="v">LOT-CSH-0098</span></div>
+          </div>
+        </div>
+        <div style="margin-top:18px;">
+          <button class="btn btn-primary" id="publishBtn" onclick="showScreen('publish')">Publish to storefront →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== SCENE 2 — PUBLISH ========== -->
+  <div class="screen" id="s-publish">
+    <div class="scene-label"><span class="scene-num">02 · PUBLISH</span><span class="scene-line"></span><span class="eyebrow">One click</span></div>
+    <div class="card">
+      <div class="card-head">
+        <div>
+          <div class="eyebrow">Publishing</div>
+          <div class="serif" style="font-size:22px;margin-top:2px;">From design to live product</div>
+        </div>
+        <span class="tag tag-green">Live</span>
+      </div>
+      <div class="card-body">
+        <ul class="checklist">
+          <li><span class="check">✓</span> Product created from design</li>
+          <li><span class="check">✓</span> Variants &amp; region pricing set</li>
+          <li><span class="check">✓</span> Digital Product Passport minted</li>
+          <li><span class="check">✓</span> Live on your branded storefront</li>
+        </ul>
+        <div style="margin-top:18px;">
+          <button class="btn btn-primary" onclick="showScreen('store')">View on storefront →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== SCENE 3 — STOREFRONT ========== -->
+  <div class="screen" id="s-store">
+    <div class="scene-label"><span class="scene-num">03 · STOREFRONT</span><span class="scene-line"></span><span class="eyebrow">Your label</span></div>
+    <div class="card">
+      <div class="card-head">
+        <div class="flex items-center gap-2"><span style="width:9px;height:9px;border-radius:50%;background:var(--accent);"></span><span class="serif" style="font-size:16px;">LeAtelier</span></div>
+        <span class="tag tag-white">leatelier.com</span>
+      </div>
+      <div class="card-body">
+        <div class="swatch lg"></div>
+        <div style="margin-top:16px;">
+          <div class="serif" style="font-size:24px;">Pashmina Shawl</div>
+          <div class="soft" style="margin-top:2px;">Handwoven in Bagru · full provenance on the passport</div>
+          <div class="flex items-center" style="justify-content:space-between;margin-top:14px;">
+            <span class="price">€420</span>
+            <span class="tag tag-orange">In stock</span>
+          </div>
+          <div style="margin-top:16px;">
+            <button class="btn btn-primary" id="addBtn" onclick="showScreen('added')">Add to cart</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== SCENE 4 — ADDED ========== -->
+  <div class="screen" id="s-added">
+    <div class="scene-label"><span class="scene-num">04 · SOLD</span><span class="scene-line"></span><span class="eyebrow">Same rail</span></div>
+    <div class="drawer">
+      <div class="drawer-head"><span class="check">✓</span><span class="v" style="font-size:14px;">Added to cart</span></div>
+      <div class="line-item">
+        <div class="swatch"></div>
+        <div style="flex:1;">
+          <div class="v">Pashmina Shawl</div>
+          <div class="soft" style="font-size:12px;">Cashmere 80 / Silk 20 · Qty 1</div>
+          <ul class="ul-list" style="margin-top:6px;"><li>Made by Rukmini, Bagru</li><li>Passport: DPP-2261</li></ul>
+        </div>
+        <span class="price" style="font-size:22px;">€420</span>
+      </div>
+      <div style="padding:0 22px 22px;">
+        <button class="btn btn-primary" style="background:var(--accent-deep);">Checkout →</button>
+        <div class="eyebrow" style="text-align:center;margin-top:14px;">Design → sale on one rail</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function showScreen(name) {
+    document.querySelectorAll('.screen').forEach(function (s) { s.classList.remove('open') })
+    var el = document.getElementById('s-' + name)
+    if (el) el.classList.add('open')
+  }
+</script>
+</body>
+</html>

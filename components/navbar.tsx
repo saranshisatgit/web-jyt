@@ -10,6 +10,7 @@ import { ModeToggle } from './mode-toggle'
 type NavLink = { href: string; text: string }
 
 const NAV_LINKS: NavLink[] = [
+  { href: '/solutions', text: 'Solutions' },
   { href: '/#makers', text: 'Makers' },
   { href: '/#how-it-works', text: 'How it works' },
   { href: '/blog', text: 'Journal' },
