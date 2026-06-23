@@ -404,6 +404,70 @@ export function Coordinate() {
   )
 }
 
+// ─────────────────────────── wholesale: verified inventory → design → passport ───────────────────────────
+
+export function WholesaleFlow() {
+  return (
+    <ScenePlayer
+      holdMs={[2800, 2800, 3000]}
+      scenes={[
+        {
+          label: 'Verified inventory',
+          render: () => (
+            <Card>
+              <CardHead eyebrow="Source" title="Verified inventory" right={<Tag kind="green"><Check size={13} /> Traceable</Tag>} />
+              <CardBody>
+                <StockRow name="Cashmere 80 / Silk 20" where="Rukmini · Bagru, IN" qty="GOTS" />
+                <StockRow name="Mulberry silk" where="Lorenzo · Florence, IT" qty="Verified" />
+                <StockRow name="Natural indigo" where="Bagru cooperative" qty="Verified" />
+                <Btn>Select for design →</Btn>
+              </CardBody>
+            </Card>
+          ),
+        },
+        {
+          label: 'Design in studio',
+          render: () => (
+            <Card>
+              <CardHead eyebrow="Partner studio" title="New product from stock" right={<Tag kind="navy">Draft</Tag>} />
+              <CardBody>
+                <div style={{ display: 'flex', gap: 12 }}>
+                  <Swatch h={64} w={64} hue={40} />
+                  <div style={{ flex: 1 }}>
+                    <Row k="From lot" v="LOT-CSH-0098" />
+                    <Row k="Your product" v="Verified Pashmina" />
+                    <Row k="Price" v="€420" last />
+                  </div>
+                </div>
+                <Btn>Create from inventory →</Btn>
+              </CardBody>
+            </Card>
+          ),
+        },
+        {
+          label: 'Passport',
+          render: () => (
+            <Card>
+              <CardHead eyebrow="DPP-2261" title="Digital Product Passport" right={<Tag kind="green">EU ESPR</Tag>} />
+              <CardBody>
+                {[
+                  'Material: Cashmere 80 / Silk 20 — Bagru',
+                  'Maker: Rukmini, third-generation artisan',
+                  'Certification: GOTS verified',
+                  'Provenance: traceable, on the product page',
+                ].map((t, i) => (
+                  <StaggerItem key={t} i={i}><Check size={15} /> {t}</StaggerItem>
+                ))}
+                <Btn accent>View passport →</Btn>
+              </CardBody>
+            </Card>
+          ),
+        },
+      ]}
+    />
+  )
+}
+
 // ─────────────────────────── registry ───────────────────────────
 
 /** Map a SolutionBlock id → its live animation (undefined for ids without one). */
