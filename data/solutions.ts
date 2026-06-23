@@ -131,6 +131,18 @@ export const SOLUTION_BLOCKS: SolutionBlock[] = [
   },
 ]
 
+/**
+ * Flagship "create → sell on one rail" reel — the lead visual. Walks one piece
+ * from atelier design → publish → branded storefront → added to cart.
+ * Source mockup: design-to-cart-mockup.html (→ public/mockups/design-to-cart.*).
+ */
+export const FLAGSHIP_MOCKUP = {
+  webm: "/mockups/design-to-cart.webm",
+  gif: "/mockups/design-to-cart.gif",
+  caption: "One piece, one rail — designed in the atelier, published to a branded storefront, sold.",
+  alt: "A Pashmina shawl moving from atelier design to a published storefront product and into the cart.",
+} as const
+
 export const SOLUTIONS_CTA = {
   title: "Same rails, both ends of the trade.",
   body:

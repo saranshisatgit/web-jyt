@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Navbar } from '@/components/navbar'
-import { SolutionBlock } from '@/components/solution-block'
+import { SolutionBlock, FeaturedMockup } from '@/components/solution-block'
 import {
   SOLUTIONS_HERO,
   AUDIENCE_CALLOUT,
@@ -43,6 +43,9 @@ export default function SolutionsPage() {
             <Link className="kt-link" href={SOLUTIONS_HERO.secondaryCta.href}>
               {SOLUTIONS_HERO.secondaryCta.label}
             </Link>
+          </div>
+          <div style={{ marginTop: '56px' }}>
+            <FeaturedMockup />
           </div>
         </div>
       </section>

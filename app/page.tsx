@@ -5,7 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useQuery } from '@tanstack/react-query'
 import { Navbar } from '@/components/navbar'
-import { SolutionBlock } from '@/components/solution-block'
+import { SolutionBlock, FeaturedMockup } from '@/components/solution-block'
 import { useBrand } from '@/app/context/brand-context'
 import storefrontPreviews from '@/data/storefront-previews.json'
 import { AUDIENCE_CALLOUT, SOLUTION_BLOCKS } from '@/data/solutions'
@@ -282,12 +282,15 @@ function SolutionsShowcase() {
         <p className="muted" style={{ fontSize: '19px', lineHeight: 1.55, maxWidth: '720px' }}>
           {AUDIENCE_CALLOUT.body}
         </p>
+        <div style={{ margin: '40px 0 72px' }}>
+          <FeaturedMockup />
+        </div>
         <div
           style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
             gap: '24px',
-            margin: '40px 0 72px',
+            marginBottom: '72px',
           }}
         >
           {AUDIENCE_CALLOUT.audiences.map((a) => (

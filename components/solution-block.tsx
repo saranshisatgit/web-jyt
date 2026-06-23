@@ -1,4 +1,33 @@
+import { FLAGSHIP_MOCKUP } from '@/data/solutions'
 import type { SolutionBlock as SolutionBlockData } from '@/data/solutions'
+
+/**
+ * The flagship lead reel (design → publish → storefront → sold). Rendered wide,
+ * with a caption, as the first important visual on the home and /solutions pages.
+ */
+export function FeaturedMockup() {
+  return (
+    <figure style={{ margin: 0 }}>
+      <div className="kt-feature-shot">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          poster={FLAGSHIP_MOCKUP.gif}
+          aria-label={FLAGSHIP_MOCKUP.alt}
+          style={{ width: '100%', height: 'auto', display: 'block', borderRadius: 'var(--r-md)', border: '1px solid var(--rule)' }}
+        >
+          <source src={FLAGSHIP_MOCKUP.webm} type="video/webm" />
+          <img src={FLAGSHIP_MOCKUP.gif} alt={FLAGSHIP_MOCKUP.alt} style={{ width: '100%', height: 'auto', display: 'block', borderRadius: 'var(--r-md)', border: '1px solid var(--rule)' }} />
+        </video>
+      </div>
+      <figcaption className="kt-meta" style={{ marginTop: '14px', color: 'var(--ink-mute)' }}>
+        {FLAGSHIP_MOCKUP.caption}
+      </figcaption>
+    </figure>
+  )
+}
 
 export function SolutionBlock({ block, index }: { block: SolutionBlockData; index: number }) {
   return (
