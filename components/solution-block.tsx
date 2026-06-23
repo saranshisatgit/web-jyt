@@ -1,27 +1,17 @@
 import { FLAGSHIP_MOCKUP } from '@/data/solutions'
 import type { SolutionBlock as SolutionBlockData } from '@/data/solutions'
+import { DesignToCartAnimation } from './design-to-cart-animation'
 
 /**
- * The flagship lead reel (design → publish → storefront → sold). Rendered wide,
- * with a caption, as the first important visual on the home and /solutions pages.
+ * The flagship lead visual (design → publish → storefront → sold), as a LIVE
+ * React animation (themed, crisp, theme-aware) — not the baked gif/webm. The
+ * design-to-cart-mockup.html + public/mockups/design-to-cart.* assets are kept
+ * as the source-of-truth content / pipeline fallback.
  */
 export function FeaturedMockup() {
   return (
     <figure style={{ margin: 0 }}>
-      <div className="kt-feature-shot">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          poster={FLAGSHIP_MOCKUP.gif}
-          aria-label={FLAGSHIP_MOCKUP.alt}
-          style={{ width: '100%', height: 'auto', display: 'block', borderRadius: 'var(--r-md)', border: '1px solid var(--rule)' }}
-        >
-          <source src={FLAGSHIP_MOCKUP.webm} type="video/webm" />
-          <img src={FLAGSHIP_MOCKUP.gif} alt={FLAGSHIP_MOCKUP.alt} style={{ width: '100%', height: 'auto', display: 'block', borderRadius: 'var(--r-md)', border: '1px solid var(--rule)' }} />
-        </video>
-      </div>
+      <DesignToCartAnimation />
       <figcaption className="kt-meta" style={{ marginTop: '14px', color: 'var(--ink-mute)' }}>
         {FLAGSHIP_MOCKUP.caption}
       </figcaption>
