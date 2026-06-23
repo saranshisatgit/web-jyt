@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Navbar } from '@/components/navbar'
+import { WholesaleFlow } from '@/components/mockup-animations'
 import wholesale from '@/data/wholesale.json'
 
 export const metadata: Metadata = {
@@ -26,6 +27,9 @@ export default function WholesalePage() {
           <div style={{ marginTop: '36px', display: 'flex', gap: '16px', alignItems: 'center', flexWrap: 'wrap' }}>
             <Link className="kt-btn" href={hero.primaryCta.href}>{hero.primaryCta.label}</Link>
             <Link className="kt-link" href={hero.secondaryCta.href}>{hero.secondaryCta.label}</Link>
+          </div>
+          <div style={{ marginTop: '56px', maxWidth: '560px' }}>
+            <WholesaleFlow />
           </div>
         </div>
       </section>
