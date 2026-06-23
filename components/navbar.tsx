@@ -11,6 +11,7 @@ type NavLink = { href: string; text: string }
 
 const NAV_LINKS: NavLink[] = [
   { href: '/solutions', text: 'Solutions' },
+  { href: '/compare', text: 'Compare' },
   { href: '/#makers', text: 'Makers' },
   { href: '/#how-it-works', text: 'How it works' },
   { href: '/blog', text: 'Journal' },
