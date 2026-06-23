@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Navbar } from '@/components/navbar'
-import { WholesaleFlow } from '@/components/mockup-animations'
+import { WholesaleFlow, Coordinate } from '@/components/mockup-animations'
 import wholesale from '@/data/wholesale.json'
 
 export const metadata: Metadata = {
@@ -60,6 +60,19 @@ export default function WholesalePage() {
                 <p className="muted" style={{ marginTop: '10px', lineHeight: 1.55 }}>{s.body}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Sell-side mockup */}
+      <section className="kt-section">
+        <div className="container">
+          <div className="kt-section-head">
+            <div className="kt-eyebrow">Sell &amp; coordinate</div>
+            <h2 className="kt-display m">Branded, traceable, on every channel.</h2>
+          </div>
+          <div style={{ maxWidth: '560px' }}>
+            <Coordinate />
           </div>
         </div>
       </section>
