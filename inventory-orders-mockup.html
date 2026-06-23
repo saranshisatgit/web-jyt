@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inventory Order · JYT Partner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Rethink+Sans:ital,wght@0,400;0,500;0,600;0,700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+    :root {
+      --navy-50: oklch(98.5% 0.005 210);
+      --navy-100: oklch(96.2% 0.008 210);
+      --navy-200: oklch(91.5% 0.012 210);
+      --navy-300: oklch(85% 0.018 210);
+      --navy-400: oklch(70% 0.025 210);
+      --navy-500: oklch(55% 0.030 210);
+      --navy-600: oklch(43% 0.032 210);
+      --navy-700: oklch(34% 0.030 210);
+      --navy-800: oklch(24% 0.025 210);
+      --navy-900: oklch(16% 0.022 210);
+      --orange-500: oklch(65% 0.165 60);
+      --orange-600: oklch(56% 0.170 60);
+      --orange-700: oklch(47% 0.165 60);
+      --accent: oklch(54% 0.06 145);
+      --accent-deep: oklch(42% 0.08 145);
+      --accent-soft: oklch(80% 0.035 145);
+      --accent-pale: oklch(95% 0.015 145);
+      --bg: oklch(1 0 0);
+      --cream: oklch(99% 0.004 210);
+      --ink: oklch(25% 0.025 210);
+      --ink-soft: oklch(45% 0.030 210);
+      --ink-mute: oklch(60% 0.025 210);
+      --rule: oklch(82% 0.018 210);
+      --rule-soft: oklch(88% 0.014 210);
+      --font-sans: 'Rethink Sans', system-ui, sans-serif;
+      --font-serif: 'Instrument Serif', Georgia, serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --r-sm: 4px;
+      --r-md: 8px;
+      --r-lg: 16px;
+      --r-pill: 999px;
+      --ease: cubic-bezier(.65,.05,.36,1);
+    }
+    body {
+      font-family: var(--font-sans);
+      background: var(--navy-50);
+      color: var(--ink);
+      font-size: 14px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      padding: 32px;
+    }
+    .page { max-width: 960px; margin: 0 auto; }
+    .state-bar {
+      display: flex; gap: 4px; background: var(--cream); padding: 4px;
+      border-radius: var(--r-pill); border: 1px solid var(--rule-soft); width: fit-content;
+    }
+    .state-btn {
+      padding: 6px 20px; border-radius: var(--r-pill); border: none;
+      font-family: var(--font-mono); font-size: 11px; font-weight: 500;
+      letter-spacing: 0.05em; background: transparent; color: var(--ink-mute);
+      cursor: pointer; transition: all 0.2s var(--ease);
+    }
+    .state-btn:hover { color: var(--ink); }
+    .state-btn.active { background: var(--bg); color: var(--ink); box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+    .card {
+      background: var(--bg); border: 1px solid var(--rule-soft);
+      border-radius: var(--r-lg); overflow: hidden;
+    }
+    .card-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 24px; border-bottom: 1px solid var(--rule-soft);
+    }
+    .card-body { padding: 20px 24px; }
+    .card-section { padding: 20px 24px; }
+    .card-section + .card-section { border-top: 1px solid var(--rule-soft); }
+    .eyebrow {
+      font-family: var(--font-mono); font-size: 10px; font-weight: 500;
+      letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-mute);
+    }
+    .tag {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 2px 10px; border-radius: var(--r-pill);
+      font-family: var(--font-mono); font-size: 10px; font-weight: 500; letter-spacing: 0.05em;
+    }
+    .tag-sage { background: var(--accent-pale); color: var(--accent-deep); }
+    .tag-orange { background: oklch(93% 0.06 60); color: var(--orange-700); }
+    .tag-navy { background: var(--cream); color: var(--ink-soft); }
+    .tag-green { background: oklch(93% 0.04 145); color: var(--accent-deep); }
+    .tag-red { background: oklch(93% 0.06 30); color: oklch(45% 0.12 30); }
+    .tag-white { background: var(--bg); color: var(--ink-soft); border: 1px solid var(--rule); }
+    .btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 10px 24px; border-radius: var(--r-pill);
+      font-family: var(--font-mono); font-size: 11px; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      border: none; cursor: pointer; transition: all 0.2s var(--ease);
+    }
+    .btn-primary { background: var(--ink); color: var(--cream); }
+    .btn-primary:hover { background: var(--accent-deep); }
+    .btn-secondary { background: var(--cream); color: var(--ink); border: 1px solid var(--rule); }
+    .btn-secondary:hover { border-color: var(--ink); }
+    .btn-ghost { background: transparent; color: var(--ink-soft); padding: 6px 12px; }
+    .btn-ghost:hover { color: var(--ink); background: var(--cream); }
+    .btn-sm { padding: 6px 16px; font-size: 10px; }
+    .icon-btn {
+      width: 32px; height: 32px; border-radius: var(--r-pill);
+      border: 1px solid var(--rule); background: var(--bg);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: var(--ink-mute); transition: all 0.15s var(--ease);
+    }
+    .icon-btn:hover { border-color: var(--ink); color: var(--ink); }
+    .action-menu {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 6px 12px; border-radius: var(--r-pill);
+      border: 1px solid var(--rule-soft); font-family: var(--font-mono);
+      font-size: 10px; letter-spacing: 0.05em; color: var(--ink-mute);
+      cursor: pointer; transition: all 0.15s var(--ease);
+    }
+    .action-menu:hover { border-color: var(--rule); color: var(--ink); }
+    .info-banner {
+      display: flex; gap: 12px; padding: 14px 16px;
+      border: 1px solid var(--rule-soft); border-radius: var(--r-lg);
+      background: var(--cream); align-items: flex-start;
+    }
+    .info-banner-icon { flex-shrink: 0; color: var(--ink-mute); margin-top: 2px; }
+    .info-banner-title { font-size: 13px; font-weight: 600; }
+    .info-banner-desc { font-size: 12px; color: var(--ink-soft); margin-top: 2px; }
+    .tl-item {
+      display: flex; gap: 12px; padding: 6px 0;
+    }
+    .tl-track {
+      display: flex; flex-direction: column; align-items: center;
+      width: 14px; flex-shrink: 0;
+    }
+    .tl-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: var(--accent); border: 2px solid var(--bg);
+      box-shadow: 0 0 0 1px var(--rule); flex-shrink: 0; z-index: 1;
+    }
+    .tl-dot.empty { background: var(--cream); box-shadow: 0 0 0 1px var(--rule-soft); }
+    .tl-line {
+      width: 1px; flex: 1; min-height: 16px;
+      background: var(--rule-soft); margin: 2px 0;
+    }
+    .tl-title { font-size: 13px; font-weight: 500; }
+    .tl-meta { font-family: var(--font-mono); font-size: 10px; color: var(--ink-mute); }
+    .tl-dur { font-family: var(--font-mono); font-size: 10px; color: var(--ink-mute); }
+    .row {
+      display: grid; grid-template-columns: 160px 1fr; gap: 12px; align-items: center; padding: 7px 0;
+    }
+    .row-label { font-size: 12px; color: var(--ink-mute); }
+    .row-value { font-size: 13px; font-weight: 500; }
+    .gap-2 { gap: 8px; }
+    .gap-3 { gap: 12px; }
+    .gap-4 { gap: 16px; }
+    .mt-2 { margin-top: 8px; }
+    .mt-3 { margin-top: 12px; }
+    .mt-4 { margin-top: 16px; }
+    .mb-3 { margin-bottom: 12px; }
+    .mb-4 { margin-bottom: 16px; }
+    .flex { display: flex; }
+    .flex-1 { flex: 1; }
+    .items-center { align-items: center; }
+    .justify-between { justify-content: space-between; }
+    .text-muted { color: var(--ink-mute); }
+    .text-soft { color: var(--ink-soft); }
+    .divider { height: 1px; background: var(--rule-soft); margin: 12px 0; }
+    .modal-overlay {
+      display: none; position: fixed; inset: 0;
+      background: oklch(0 0 0 / 0.35); z-index: 100;
+      animation: fadeIn 0.2s var(--ease);
+    }
+    .modal-overlay.open { display: flex; align-items: center; justify-content: center; }
+    .modal {
+      background: var(--bg); border-radius: var(--r-lg);
+      width: 100%; max-width: 500px;
+      box-shadow: 0 20px 60px oklch(0 0 0 / 0.15);
+      animation: modalIn 0.25s var(--ease);
+    }
+    .modal-head {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 24px; border-bottom: 1px solid var(--rule-soft);
+    }
+    .modal-title { font-size: 16px; font-weight: 600; }
+    .modal-body { padding: 24px; max-height: 70vh; overflow-y: auto; }
+    .modal-foot {
+      display: flex; align-items: center; justify-content: flex-end;
+      gap: 8px; padding: 16px 24px; border-top: 1px solid var(--rule-soft);
+    }
+    .stepper {
+      display: flex; padding: 8px 0 12px;
+    }
+    .step {
+      flex: 1; display: flex; flex-direction: column; align-items: center; position: relative;
+    }
+    .step-bar {
+      position: absolute; top: 12px; left: calc(50% + 14px); right: calc(50% + 14px);
+      height: 2px; background: var(--rule-soft); transition: background 0.3s var(--ease);
+    }
+    .step-bar.done { background: var(--accent); }
+    .step-dot {
+      width: 24px; height: 24px; border-radius: 50%; background: var(--cream);
+      border: 2px solid var(--rule); display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-mono); font-size: 10px; font-weight: 500;
+      color: var(--ink-mute); z-index: 1; transition: all 0.3s var(--ease);
+    }
+    .step.done .step-dot { background: var(--accent); border-color: var(--accent); color: white; }
+    .step.active .step-dot { border-color: var(--accent); color: var(--accent); background: var(--bg); }
+    .step-label {
+      font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.05em;
+      color: var(--ink-mute); margin-top: 6px;
+    }
+    .step.done .step-label { color: var(--ink-soft); }
+    .step.active .step-label { color: var(--accent); }
+
+    .fi {
+      width: 100%; padding: 8px 12px; border: 1px solid var(--rule);
+      border-radius: var(--r-md); background: var(--bg); outline: none;
+      font-family: var(--font-sans); font-size: 13px; transition: border-color 0.15s var(--ease);
+    }
+    .fi:focus { border-color: var(--ink); }
+    .fi-label {
+      display: block; font-family: var(--font-mono); font-size: 10px;
+      letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-mute); margin-bottom: 5px;
+    }
+    select.fi { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none' stroke='%238b909e' stroke-width='1.5'%3E%3Cpath d='M3 5l3 3 3-3'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; }
+    input, select, textarea { font-family: var(--font-sans); font-size: 13px; }
+
+    .task {
+      border: 1px solid var(--rule-soft); border-radius: var(--r-lg);
+      padding: 14px; background: var(--cream);
+    }
+    .task-head { display: flex; align-items: center; justify-content: space-between; }
+    .task-title { font-size: 13px; font-weight: 600; }
+
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes modalIn { from { opacity: 0; transform: translateY(8px) scale(0.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
+    @media (max-width: 700px) { body { padding: 16px; } }
+  </style>
+</head>
+<body>
+
+<div style="position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:200;">
+  <div class="state-bar">
+    <button class="state-btn active" onclick="goState('pending')">Pending</button>
+    <button class="state-btn" onclick="goState('processing')">Processing</button>
+    <button class="state-btn" onclick="goState('delivered')">Delivered</button>
+  </div>
+</div>
+
+<div class="page" style="padding-top:64px;">
+
+  <!-- Header -->
+  <div class="card" style="margin-bottom:12px;">
+    <div class="card-header">
+      <div>
+        <div class="flex items-center gap-3">
+          <span style="font-size:17px;font-weight:600;">#INV-2024-0093</span>
+          <span class="tag tag-sage">Inventory Order</span>
+          <span class="tag tag-navy" id="statusTag"><span style="display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--orange-500);margin-right:2px;"></span>Pending</span>
+        </div>
+        <div style="font-size:12px;color:var(--ink-mute);margin-top:4px;">
+          Pashmina Base Fabric · 25 Meter · Supplier: Jaipur Textiles · Est. Delivery: Jun 28
+        </div>
+      </div>
+      <div class="action-menu" onclick="alert('Actions menu')">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6" cy="2.5" r="1"/><circle cx="6" cy="6" r="1"/><circle cx="6" cy="9.5" r="1"/></svg>
+        More
+      </div>
+    </div>
+  </div>
+
+  <!-- Main card -->
+  <div class="card">
+
+    <!-- Summary -->
+    <div class="card-section">
+      <div class="eyebrow" style="margin-bottom:8px;">Order Summary</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px;font-size:12px;">
+        <div><span class="text-muted">Items</span><br><span style="font-weight:500;">3 lines</span></div>
+        <div><span class="text-muted">Total Qty</span><br><span style="font-weight:500;">35 units</span></div>
+        <div><span class="text-muted">Total Price</span><br><span style="font-family:var(--font-mono);font-weight:500;">₹ 41,260</span></div>
+        <div><span class="text-muted">Sample</span><br><span class="tag tag-white">No</span></div>
+      </div>
+    </div>
+
+    <!-- Stepper + Actions -->
+    <div class="card-section">
+      <div class="stepper" id="stepper">
+        <div class="step done"><div class="step-bar done"></div><div class="step-dot">✓</div><div class="step-label">Ordered</div></div>
+        <div class="step active" id="step2"><div class="step-bar" id="bar2"></div><div class="step-dot">2</div><div class="step-label">Process</div></div>
+        <div class="step" id="step3"><div class="step-bar" id="bar3"></div><div class="step-dot">3</div><div class="step-label">Delivered</div></div>
+      </div>
+
+      <div id="actionArea">
+        <button class="btn btn-primary" onclick="openStart()">Start Processing</button>
+      </div>
+
+      <div class="info-banner mt-3" id="banner">
+        <div class="info-banner-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="8" cy="8" r="6"/><path d="M8 5v3.5"/><circle cx="8" cy="11.5" r=".5" fill="currentColor"/></svg></div>
+        <div>
+          <div class="info-banner-title" id="bannerTitle">Awaiting processing</div>
+          <div class="info-banner-desc" id="bannerDesc">This order is ready to process. Verify the materials and start when ready.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Order Lines -->
+    <div class="card-section">
+      <div class="flex items-center justify-between mb-3">
+        <span class="eyebrow">Order Lines · 3</span>
+      </div>
+      <div style="border:1px solid var(--rule-soft);border-radius:var(--r-md);overflow:hidden;">
+        <table style="width:100%;border-collapse:collapse;font-size:12px;">
+          <thead>
+            <tr style="background:var(--cream);border-bottom:1px solid var(--rule-soft);">
+              <th style="padding:8px 12px;text-align:left;font-weight:500;font-family:var(--font-mono);font-size:9px;letter-spacing:0.05em;">Item</th>
+              <th style="padding:8px 12px;text-align:right;font-weight:500;font-family:var(--font-mono);font-size:9px;letter-spacing:0.05em;">Qty</th>
+              <th style="padding:8px 12px;text-align:right;font-weight:500;font-family:var(--font-mono);font-size:9px;letter-spacing:0.05em;">Price</th>
+              <th style="padding:8px 12px;text-align:right;font-weight:500;font-family:var(--font-mono);font-size:9px;letter-spacing:0.05em;">Total</th>
+              <th style="padding:8px 12px;text-align:right;font-weight:500;font-family:var(--font-mono);font-size:9px;letter-spacing:0.05em;" id="recvHead">Recv</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom:1px solid var(--rule-soft);">
+              <td style="padding:10px 12px;">
+                <div style="font-weight:500;">Pashmina Base Fabric</div>
+                <div style="font-family:var(--font-mono);font-size:10px;color:var(--ink-mute);">MAT-001</div>
+              </td>
+              <td style="padding:10px 12px;text-align:right;font-family:var(--font-mono);">25</td>
+              <td style="padding:10px 12px;text-align:right;font-family:var(--font-mono);">₹ 1,200</td>
+              <td style="padding:10px 12px;text-align:right;font-family:var(--font-mono);font-weight:500;">₹ 30,000</td>
+              <td style="padding:10px 12px;text-align:right;"><span class="tag tag-green" id="recv1">25</span></td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--rule-soft);">
+              <td style="padding:10px 12px;">
+                <div style="font-weight:500;">Eco-Dye — Crimson</div>
+                <div style="font-family:var(--font-mono);font-size:10px;color:var(--ink-mute);">MAT-004</div>
+              </td>
+              <td style="padding:10px 12px;text-align:right;font-family:var(--font-mono);">5</td>
+              <td style="padding:10px 12px;text-align:right;font-family:var(--font-mono);">₹ 320</td>
+              <td style="padding:10px 12px;text-align:right;font-family:var(--font-mono);font-weight:500;">₹ 1,600</td>
+              <td style="padding:10px 12px;text-align:right;"><span class="tag tag-orange" id="recv2">0</span></td>
+            </tr>
+            <tr>
+              <td style="padding:10px 12px;">
+                <div style="font-weight:500;">Silk Thread — Gold</div>
+                <div style="font-family:var(--font-mono);font-size:10px;color:var(--ink-mute);">MAT-007</div>
+              </td>
+              <td style="padding:10px 12px;text-align:right;font-family:var(--font-mono);">8</td>
+              <td style="padding:10px 12px;text-align:right;font-family:var(--font-mono);">₹ 1,200</td>
+              <td style="padding:10px 12px;text-align:right;font-family:var(--font-mono);font-weight:500;">₹ 9,600</td>
+              <td style="padding:10px 12px;text-align:right;"><span class="tag tag-white" id="recv3">—</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Delivery Record (shown in delivered state) -->
+    <div class="card-section" id="deliveryBlock" style="display:none;">
+      <div class="eyebrow mb-3">Delivery Record</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div class="flex items-center justify-between" style="font-size:12px;">
+          <span>Received</span>
+          <span style="font-family:var(--font-mono);">25 of 38 units</span>
+        </div>
+        <div class="flex items-center justify-between" style="font-size:12px;">
+          <span>Status</span>
+          <span class="tag tag-orange">Partial</span>
+        </div>
+        <div class="flex items-center justify-between" style="font-size:12px;">
+          <span>Received on</span>
+          <span style="font-family:var(--font-mono);font-size:11px;">Jun 22 · 11:30 AM</span>
+        </div>
+        <div class="divider"></div>
+        <div class="flex items-center justify-between" style="font-size:12px;">
+          <span>Order Total</span>
+          <span style="font-family:var(--font-mono);font-weight:600;">₹ 41,260</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Payment (shown in delivered state) -->
+    <div class="card-section" id="paymentBlock" style="display:none;">
+      <div class="eyebrow mb-3">Payment</div>
+      <div class="row"><span class="row-label">Amount Paid</span><span class="row-value" style="font-family:var(--font-mono);">₹ 25,000</span></div>
+      <div class="row"><span class="row-label">Method</span><span class="tag tag-navy">Bank Transfer</span></div>
+      <div class="row"><span class="row-label">Balance Due</span><span style="font-family:var(--font-mono);font-weight:500;color:var(--orange-700);">₹ 16,260</span></div>
+    </div>
+
+    <!-- Tasks -->
+    <div class="card-section">
+      <div class="flex items-center justify-between mb-3">
+        <span class="eyebrow">Tasks · 2</span>
+      </div>
+      <div class="flex gap-2" style="flex-direction:column;">
+        <div class="task">
+          <div class="task-head">
+            <span class="task-title">Receive & inspect materials</span>
+            <span class="tag tag-orange" id="task1Tag">In Progress</span>
+          </div>
+          <div style="font-size:12px;color:var(--ink-soft);margin-top:4px;">Count all received items, check against PO, inspect for damage.</div>
+        </div>
+        <div class="task">
+          <div class="task-head">
+            <span class="task-title">Assign to stock location</span>
+            <span class="tag tag-white" id="task2Tag">Pending</span>
+          </div>
+          <div style="font-size:12px;color:var(--ink-soft);margin-top:4px;">Move received inventory to the designated warehouse location.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Timeline -->
+    <div class="card-section">
+      <div class="eyebrow mb-3">Timeline</div>
+      <div class="tl-item"><div class="tl-track"><div class="tl-dot empty"></div><div class="tl-line"></div></div><div><div class="tl-title">Delivered</div><div class="tl-meta">—</div></div></div>
+      <div class="tl-item"><div class="tl-track"><div class="tl-dot empty"></div><div class="tl-line"></div></div><div><div class="tl-title">Processing</div><div class="tl-meta">—</div></div></div>
+      <div class="tl-item"><div class="tl-track"><div class="tl-dot"></div><div class="tl-line" style="background:transparent;"></div></div><div><div class="tl-title">Ordered</div><div class="tl-meta">Jun 16 · 10:24 AM</div></div></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Start Processing Modal -->
+<div class="modal-overlay" id="startOverlay" onclick="closeStart()"></div>
+<div class="modal" id="startModal" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:101;max-width:420px;">
+  <div class="modal-head">
+    <span class="modal-title">Start Processing</span>
+    <button class="icon-btn" onclick="closeStart()"><svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1.5 1.5l10 10M11.5 1.5l-10 10"/></svg></button>
+  </div>
+  <div class="modal-body">
+    <div class="info-banner" style="margin-bottom:12px;">
+      <div class="info-banner-icon"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M8 5v3.5"/><circle cx="8" cy="11.5" r=".5" fill="currentColor"/></svg></div>
+      <div>
+        <div class="info-banner-title">Begin material processing</div>
+        <div class="info-banner-desc">Mark this order as in progress. Tasks for receiving and inspection will be activated.</div>
+      </div>
+    </div>
+    <div><label class="fi-label">Notes <span class="text-muted" style="font-weight:400;text-transform:none;letter-spacing:0;">(optional)</span></label><textarea class="fi" rows="3" placeholder="Any initial notes..."></textarea></div>
+  </div>
+  <div class="modal-foot">
+    <button class="btn btn-secondary btn-sm" onclick="closeStart()">Cancel</button>
+    <button class="btn btn-primary btn-sm" onclick="confirmStart()">Start Processing</button>
+  </div>
+</div>
+
+<!-- Record Delivery Modal -->
+<div class="modal-overlay" id="deliverOverlay" onclick="closeDeliver()"></div>
+<div class="modal" id="deliverModal" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:101;max-width:520px;">
+  <div class="modal-head">
+    <span class="modal-title">Record Delivery</span>
+    <button class="icon-btn" onclick="closeDeliver()"><svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1.5 1.5l10 10M11.5 1.5l-10 10"/></svg></button>
+  </div>
+  <div class="modal-body">
+    <div style="font-size:12px;color:var(--ink-soft);margin-bottom:12px;">Enter the quantities received for each line item. Leave blank to mark as pending.</div>
+    <div style="display:flex;flex-direction:column;gap:10px;">
+      <div style="border:1px solid var(--rule-soft);border-radius:var(--r-md);padding:10px;">
+        <div class="flex items-center justify-between">
+          <span style="font-size:12px;font-weight:500;">Pashmina Base Fabric</span>
+          <span style="font-family:var(--font-mono);font-size:10px;color:var(--ink-mute);">25 ordered</span>
+        </div>
+        <div class="flex items-center gap-3 mt-2">
+          <label class="fi-label" style="margin:0;white-space:nowrap;">Received</label>
+          <input class="fi" type="number" value="25" style="width:80px;" />
+          <span style="font-size:11px;color:var(--ink-soft);">of 25</span>
+        </div>
+      </div>
+      <div style="border:1px solid var(--rule-soft);border-radius:var(--r-md);padding:10px;">
+        <div class="flex items-center justify-between">
+          <span style="font-size:12px;font-weight:500;">Eco-Dye — Crimson</span>
+          <span style="font-family:var(--font-mono);font-size:10px;color:var(--ink-mute);">5 ordered</span>
+        </div>
+        <div class="flex items-center gap-3 mt-2">
+          <label class="fi-label" style="margin:0;white-space:nowrap;">Received</label>
+          <input class="fi" type="number" value="5" style="width:80px;" />
+          <span style="font-size:11px;color:var(--ink-soft);">of 5</span>
+        </div>
+      </div>
+      <div style="border:1px solid var(--rule-soft);border-radius:var(--r-md);padding:10px;">
+        <div class="flex items-center justify-between">
+          <span style="font-size:12px;font-weight:500;">Silk Thread — Gold</span>
+          <span style="font-family:var(--font-mono);font-size:10px;color:var(--ink-mute);">8 ordered</span>
+        </div>
+        <div class="flex items-center gap-3 mt-2">
+          <label class="fi-label" style="margin:0;white-space:nowrap;">Received</label>
+          <input class="fi" type="number" value="0" style="width:80px;" />
+          <span style="font-size:11px;color:var(--ink-soft);">of 8</span>
+        </div>
+        <div style="font-size:10px;color:var(--orange-700);margin-top:4px;">⚠ Backordered — supplier split shipment</div>
+      </div>
+    </div>
+    <div class="mt-3"><label class="fi-label">Delivery Notes <span class="text-muted" style="font-weight:400;text-transform:none;letter-spacing:0;">(optional)</span></label><textarea class="fi" rows="2" placeholder="Notes about this delivery..."></textarea></div>
+  </div>
+  <div class="modal-foot">
+    <button class="btn btn-secondary btn-sm" onclick="closeDeliver()">Cancel</button>
+    <button class="btn btn-primary btn-sm" onclick="confirmDeliver()">Confirm Delivery</button>
+  </div>
+</div>
+
+<!-- Submit Payment Modal -->
+<div class="modal-overlay" id="paymentOverlay" onclick="closePayment()"></div>
+<div class="modal" id="paymentModal" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:101;max-width:460px;">
+  <div class="modal-head">
+    <span class="modal-title">Submit Payment</span>
+    <button class="icon-btn" onclick="closePayment()"><svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1.5 1.5l10 10M11.5 1.5l-10 10"/></svg></button>
+  </div>
+  <div class="modal-body">
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div>
+        <label class="fi-label">Amount</label>
+        <div style="display:flex;gap:6px;align-items:center;">
+          <input class="fi" type="number" value="25000" style="flex:1;" />
+          <span style="font-family:var(--font-mono);font-size:11px;color:var(--ink-mute);">INR</span>
+        </div>
+      </div>
+      <div>
+        <label class="fi-label">Payment Method</label>
+        <div style="display:flex;gap:6px;">
+          <button class="btn btn-sm" id="payMethod" style="flex:1;background:var(--ink);color:var(--cream);border-radius:var(--r-pill);" onclick="selectPay(this)">Bank Transfer</button>
+          <button class="btn btn-sm" style="flex:1;background:var(--cream);color:var(--ink);border:1px solid var(--rule);border-radius:var(--r-pill);" onclick="selectPay(this)">Cash</button>
+          <button class="btn btn-sm" style="flex:1;background:var(--cream);color:var(--ink);border:1px solid var(--rule);border-radius:var(--r-pill);" onclick="selectPay(this)">Digital Wallet</button>
+        </div>
+      </div>
+      <div>
+        <label class="fi-label">Reference <span class="text-muted" style="font-weight:400;text-transform:none;letter-spacing:0;">(optional)</span></label>
+        <input class="fi" type="text" placeholder="e.g. Transaction ID" />
+      </div>
+    </div>
+  </div>
+  <div class="modal-foot">
+    <button class="btn btn-secondary btn-sm" onclick="closePayment()">Cancel</button>
+    <button class="btn btn-primary btn-sm" onclick="confirmPayment()">Submit Payment</button>
+  </div>
+</div>
+
+<script>
+let state = 'pending';
+
+function goState(s) {
+  state = s;
+  document.querySelectorAll('.state-btn').forEach(b => b.classList.toggle('active', b.textContent.toLowerCase().trim() === s));
+  render(s);
+}
+
+function render(s) {
+  const steps = document.querySelectorAll('#stepper .step');
+  const st = { pending:0, processing:1, delivered:2 }[s];
+  steps.forEach((step, i) => {
+    step.classList.toggle('done', i < st);
+    step.classList.toggle('active', i === st);
+  });
+  document.querySelectorAll('.step-bar').forEach((b, i) => b.classList.toggle('done', i < st));
+
+  const data = {
+    pending: {
+      tag: ['tag-orange', 'Pending'],
+      action: '<button class="btn btn-primary" onclick="openStart()">Start Processing</button>',
+      banner: ['Awaiting processing', 'This order is ready to process. Verify the materials and start when ready.'],
+      tl: { p: '', d: '' },
+      tasks: ['In Progress', 'Pending']
+    },
+    processing: {
+      tag: ['tag-navy', 'Processing'],
+      action: '<div class="flex gap-2"><button class="btn btn-primary" onclick="openDeliver()">Record Delivery</button><button class="btn btn-secondary" onclick="openPayment()">Submit Payment</button></div>',
+      banner: ['Processing in progress', 'Receive and inspect materials. Submit payment when ready.'],
+      tl: { p: 'Jun 18 · 09:15 AM', d: '' },
+      tasks: ['In Progress', 'Pending']
+    },
+    delivered: {
+      tag: ['tag-green', 'Delivered'],
+      action: '<span class="tag tag-green" style="padding:8px 20px;font-size:11px;">✓ Delivered</span>',
+      banner: ['Order delivered with partial', '25 of 38 units received. ₹ 25,000 paid via Bank Transfer.'],
+      tl: { p: 'Jun 18 · 09:15 AM', d: 'Jun 22 · 11:30 AM' },
+      tasks: ['Completed', 'Completed'],
+      showExtra: true
+    }
+  };
+
+  const d = data[s];
+  const stTag = document.getElementById('statusTag');
+  stTag.className = 'tag ' + d.tag[0];
+  const dotMap = { pending: 'var(--orange-500)', processing: 'var(--accent)', delivered: 'var(--accent-deep)' };
+  stTag.innerHTML = '<span style="display:inline-block;width:5px;height:5px;border-radius:50%;background:' + dotMap[s] + ';margin-right:2px;"></span>' + d.tag[1];
+  document.getElementById('actionArea').innerHTML = d.action;
+  document.getElementById('bannerTitle').textContent = d.banner[0];
+  document.getElementById('bannerDesc').textContent = d.banner[1];
+
+  // Task tags
+  document.getElementById('task1Tag').textContent = d.tasks[0];
+  document.getElementById('task1Tag').className = 'tag ' + (d.tasks[0] === 'Completed' ? 'tag-green' : d.tasks[0] === 'In Progress' ? 'tag-orange' : 'tag-white');
+  document.getElementById('task2Tag').textContent = d.tasks[1];
+  document.getElementById('task2Tag').className = 'tag ' + (d.tasks[1] === 'Completed' ? 'tag-green' : d.tasks[1] === 'In Progress' ? 'tag-orange' : 'tag-white');
+
+  // Delivery & Payment blocks
+  document.getElementById('deliveryBlock').style.display = s === 'delivered' ? 'block' : 'none';
+  document.getElementById('paymentBlock').style.display = s === 'delivered' ? 'block' : 'none';
+
+  // Recv column header
+  document.getElementById('recvHead').textContent = s === 'delivered' ? 'Done' : 'Recv';
+
+  // Timeline
+  const tls = [
+    { title: 'Delivered', meta: d.tl.d || '—', dot: !!d.tl.d },
+    { title: 'Processing', meta: d.tl.p || '—', dot: !!d.tl.p, dur: d.tl.p ? '4 days' : '' },
+    { title: 'Ordered', meta: 'Jun 16 · 10:24 AM', dot: true },
+  ];
+  const container = document.querySelector('.card-section:last-child .tl-item').parentNode;
+  container.innerHTML = tls.map(function(t) {
+    return '<div class="tl-item"><div class="tl-track"><div class="tl-dot ' + (t.dot ? '' : 'empty') + '"></div><div class="tl-line"></div></div><div><div class="tl-title">' + t.title + '</div><div class="tl-meta">' + t.meta + '</div>' + (t.dur ? '<div class="tl-dur">' + t.dur + '</div>' : '') + '</div></div>';
+  }).join('');
+  var lastLine = container.querySelector('.tl-item:last-child .tl-line');
+  if (lastLine) lastLine.style.background = 'transparent';
+}
+
+function openStart() { document.getElementById('startOverlay').classList.add('open'); document.getElementById('startModal').style.display = 'block'; }
+function closeStart() { document.getElementById('startOverlay').classList.remove('open'); document.getElementById('startModal').style.display = 'none'; }
+function confirmStart() { closeStart(); goState('processing'); }
+
+function openDeliver() { document.getElementById('deliverOverlay').classList.add('open'); document.getElementById('deliverModal').style.display = 'block'; }
+function closeDeliver() { document.getElementById('deliverOverlay').classList.remove('open'); document.getElementById('deliverModal').style.display = 'none'; }
+function confirmDeliver() { closeDeliver(); goState('delivered'); }
+
+function openPayment() { document.getElementById('paymentOverlay').classList.add('open'); document.getElementById('paymentModal').style.display = 'block'; }
+function closePayment() { document.getElementById('paymentOverlay').classList.remove('open'); document.getElementById('paymentModal').style.display = 'none'; }
+function confirmPayment() { closePayment(); }
+
+function selectPay(el) {
+  document.querySelectorAll('#paymentModal .btn-sm').forEach(function(b) {
+    b.style.background = 'var(--cream)';
+    b.style.color = 'var(--ink)';
+    b.style.border = '1px solid var(--rule)';
+  });
+  el.style.background = 'var(--ink)';
+  el.style.color = 'var(--cream)';
+  el.style.border = 'none';
+}
+
+render('pending');
+</script>
+</body>
+</html>
