@@ -1,0 +1,415 @@
+'use client'
+
+import type { CSSProperties, ReactNode } from 'react'
+import { Btn, Card, CardBody, CardHead, Check, Row, ScenePlayer, StaggerItem, Swatch, Tag, serif } from './mockup-kit'
+
+/**
+ * Live-React animated product mockups (replacing the baked gif/webm reels).
+ * One component per /solutions feature block, plus the flagship design→cart
+ * reel. All themed with the kt-* tokens via the shared mockup-kit primitives.
+ */
+
+const muted: CSSProperties = { color: 'var(--ink-soft)', fontSize: 13 }
+const price = (n: number): CSSProperties => ({ fontFamily: 'var(--font-serif)', fontSize: n })
+
+function Bar({ pct, tone = 'accent' }: { pct: number; tone?: 'accent' | 'rule' }) {
+  return (
+    <div style={{ height: 6, borderRadius: 'var(--r-pill)', background: 'var(--rule-soft)', overflow: 'hidden' }}>
+      <div style={{ width: `${pct}%`, height: '100%', background: tone === 'accent' ? 'var(--accent)' : 'var(--ink-mute)' }} />
+    </div>
+  )
+}
+
+// ─────────────────────────── FLAGSHIP: design → sold ───────────────────────────
+
+export function DesignToCart() {
+  return (
+    <ScenePlayer
+      holdMs={[2400, 2300, 2600, 3200]}
+      scenes={[
+        {
+          label: 'Design',
+          render: () => (
+            <Card>
+              <CardHead eyebrow="Design · DSG-2261" title="Pashmina Shawl — AW26" right={<Tag kind="green"><Check size={13} /> Design ready</Tag>} />
+              <CardBody>
+                <div style={{ display: 'flex', gap: 12 }}>
+                  <Swatch h={64} w={64} hue={40} />
+                  <div style={{ flex: 1 }}>
+                    <Row k="Fabric" v="Cashmere 80 / Silk 20" />
+                    <Row k="Artisan" v="Rukmini · Bagru, IN" />
+                    <Row k="Material lot" v="LOT-CSH-0098" last />
+                  </div>
+                </div>
+                <Btn>Publish to storefront →</Btn>
+              </CardBody>
+            </Card>
+          ),
+        },
+        {
+          label: 'Publish',
+          render: () => (
+            <Card>
+              <CardHead eyebrow="Publishing" title="From design to live product" right={<Tag kind="green">Live</Tag>} />
+              <CardBody>
+                {['Product created from design', 'Variants & region pricing set', 'Digital Product Passport minted', 'Live on your branded storefront'].map((t, i) => (
+                  <StaggerItem key={t} i={i}><Check /> {t}</StaggerItem>
+                ))}
+                <Btn>View on storefront →</Btn>
+              </CardBody>
+            </Card>
+          ),
+        },
+        {
+          label: 'Storefront',
+          render: () => (
+            <Card>
+              <CardHead eyebrow="leatelier.com" title="LeAtelier" right={<Tag kind="orange">In stock</Tag>} />
+              <CardBody>
+                <Swatch h={150} label="Handwoven · Bagru" hue={40} />
+                <div style={{ ...serif, fontSize: 23, marginTop: 14 }}>Pashmina Shawl</div>
+                <div style={muted}>Handwoven in Bagru · full provenance on the passport</div>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 12 }}>
+                  <span style={price(28)}>€420</span>
+                </div>
+                <Btn>Add to cart</Btn>
+              </CardBody>
+            </Card>
+          ),
+        },
+        {
+          label: 'Sold',
+          render: () => (
+            <Card>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '16px 20px', background: 'var(--accent-pale)', borderBottom: '1px solid var(--rule-soft)' }}>
+                <Check /> <span style={{ fontSize: 14, fontWeight: 500 }}>Added to cart</span>
+              </div>
+              <div style={{ display: 'flex', gap: 14, alignItems: 'center', padding: '18px 20px' }}>
+                <Swatch h={56} w={56} hue={40} />
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontSize: 13, fontWeight: 500 }}>Pashmina Shawl</div>
+                  <div style={{ ...muted, fontSize: 12 }}>Cashmere 80 / Silk 20 · Qty 1</div>
+                  <div style={{ ...muted, fontSize: 12, marginTop: 4 }}>— Made by Rukmini · Passport DPP-2261</div>
+                </div>
+                <span style={price(21)}>€420</span>
+              </div>
+              <div style={{ padding: '0 20px 20px' }}>
+                <Btn accent>Checkout →</Btn>
+              </div>
+            </Card>
+          ),
+        },
+      ]}
+    />
+  )
+}
+
+// ─────────────────────────── 01 · product-create ───────────────────────────
+
+function Choice({ title, desc, time, on }: { title: string; desc: string; time: string; on?: boolean }) {
+  return (
+    <div
+      style={{
+        border: `1px solid ${on ? 'var(--accent)' : 'var(--rule-soft)'}`,
+        background: on ? 'var(--accent-pale)' : 'var(--bg)',
+        borderRadius: 'var(--r-lg)',
+        padding: 16,
+      }}
+    >
+      <div style={{ fontSize: 14, fontWeight: 600 }}>{title}</div>
+      <div style={{ ...muted, fontSize: 12, marginTop: 4 }}>{desc}</div>
+      <div style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: 'var(--ink-mute)', marginTop: 10 }}>{time}</div>
+    </div>
+  )
+}
+
+export function ProductCreate() {
+  return (
+    <ScenePlayer
+      holdMs={[2800, 2800, 2800]}
+      scenes={[
+        {
+          label: 'New product',
+          render: () => (
+            <Card>
+              <CardHead eyebrow="Create" title="Start a new piece" />
+              <CardBody>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                  <Choice title="Quick add" desc="One variant, default currency" time="~30 sec" on />
+                  <Choice title="Advanced" desc="Variants, pricing, SEO" time="Full control" />
+                </div>
+              </CardBody>
+            </Card>
+          ),
+        },
+        {
+          label: 'Quick add',
+          render: () => (
+            <Card>
+              <CardHead eyebrow="Quick add" title="Pashmina Shawl" right={<Tag kind="navy">Draft</Tag>} />
+              <CardBody>
+                <Row k="Title" v="Pashmina Shawl — AW26" />
+                <Row k="Price" v="€420.00" />
+                <Row k="Stock" v="12" last />
+                <Btn>Create product →</Btn>
+              </CardBody>
+            </Card>
+          ),
+        },
+        {
+          label: 'Brief',
+          render: () => (
+            <Card>
+              <CardHead eyebrow="Design board" title="Mood & references" right={<Tag kind="green">Attached</Tag>} />
+              <CardBody>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10 }}>
+                  <Swatch h={72} hue={40} />
+                  <Swatch h={72} hue={150} />
+                  <Swatch h={72} hue={250} />
+                </div>
+                <div style={{ marginTop: 14 }}>
+                  {['Describe-from-image → draft copy', 'SEO title & handle set', 'Organised into AW26 collection'].map((t, i) => (
+                    <StaggerItem key={t} i={i}><Check size={15} /> {t}</StaggerItem>
+                  ))}
+                </div>
+              </CardBody>
+            </Card>
+          ),
+        },
+      ]}
+    />
+  )
+}
+
+// ─────────────────────────── 02 · production-run ───────────────────────────
+
+function Task({ name, state }: { name: string; state: 'done' | 'active' | 'todo' }) {
+  const dot = state === 'done' ? 'var(--accent)' : state === 'active' ? 'var(--ink)' : 'var(--rule)'
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '7px 0', fontSize: 13 }}>
+      {state === 'done' ? <Check size={16} /> : <span style={{ width: 16, height: 16, borderRadius: '50%', border: `2px solid ${dot}`, flexShrink: 0 }} />}
+      <span style={{ color: state === 'todo' ? 'var(--ink-mute)' : 'var(--ink)' }}>{name}</span>
+      {state === 'active' && <Tag kind="navy">In progress</Tag>}
+    </div>
+  )
+}
+
+export function ProductionRun() {
+  return (
+    <ScenePlayer
+      holdMs={[2800, 2800, 3000]}
+      scenes={[
+        {
+          label: 'Run',
+          render: () => (
+            <Card>
+              <CardHead eyebrow="Run · RUN-0442" title="Pashmina Shawl ×12" right={<Tag kind="navy">Rukmini</Tag>} />
+              <CardBody>
+                <Task name="Cut & prep" state="done" />
+                <Task name="Dye — indigo" state="done" />
+                <Task name="Handweave" state="active" />
+                <Task name="Finish & QC" state="todo" />
+              </CardBody>
+            </Card>
+          ),
+        },
+        {
+          label: 'Lifecycle',
+          render: () => (
+            <Card>
+              <CardHead eyebrow="Progress" title="Accept → start → finish" right={<Tag kind="green">On track</Tag>} />
+              <CardBody>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontFamily: 'var(--font-mono)', fontSize: 10, color: 'var(--ink-mute)', marginBottom: 8 }}>
+                  <span>Accepted</span><span>Started</span><span>Finished</span>
+                </div>
+                <Bar pct={68} />
+                <div style={{ marginTop: 16 }}>
+                  {['Partner accepted on WhatsApp', 'Live progress from the portal', 'Output & cost captured per run'].map((t, i) => (
+                    <StaggerItem key={t} i={i}><Check size={15} /> {t}</StaggerItem>
+                  ))}
+                </div>
+              </CardBody>
+            </Card>
+          ),
+        },
+        {
+          label: 'Run cost',
+          render: () => (
+            <Card>
+              <CardHead eyebrow="Cost / run" title="Rolled up per piece" />
+              <CardBody>
+                <Row k="Materials" v="€186.00" />
+                <Row k="Labour" v="€92.00" />
+                <Row k="Overhead" v="€28.00" />
+                <Row k="Partner fee" v="€44.00" />
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: 12, marginTop: 6, borderTop: '1px solid var(--rule)' }}>
+                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--ink)' }}>Total / piece</span>
+                  <span style={price(22)}>€350.00</span>
+                </div>
+              </CardBody>
+            </Card>
+          ),
+        },
+      ]}
+    />
+  )
+}
+
+// ─────────────────────────── 03 · inventory-orders ───────────────────────────
+
+function StockRow({ name, where, qty, low }: { name: string; where: string; qty: string; low?: boolean }) {
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, padding: '9px 0', borderBottom: '1px solid var(--rule-soft)' }}>
+      <div>
+        <div style={{ fontSize: 13, fontWeight: 500 }}>{name}</div>
+        <div style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: 'var(--ink-mute)' }}>{where}</div>
+      </div>
+      {low ? <Tag kind="orange">Low · {qty}</Tag> : <span style={{ fontSize: 13, fontWeight: 500 }}>{qty}</span>}
+    </div>
+  )
+}
+
+export function InventoryOrders() {
+  return (
+    <ScenePlayer
+      holdMs={[2800, 2800, 2800]}
+      scenes={[
+        {
+          label: 'By location',
+          render: () => (
+            <Card>
+              <CardHead eyebrow="Inventory" title="Raw materials by location" />
+              <CardBody>
+                <StockRow name="Cashmere yarn" where="Bagru hub" qty="84 kg" />
+                <StockRow name="Mulberry silk" where="Florence hub" qty="40 m" />
+                <StockRow name="Indigo dye" where="Bagru hub" qty="6 kg" low />
+              </CardBody>
+            </Card>
+          ),
+        },
+        {
+          label: 'Reorder',
+          render: () => (
+            <Card>
+              <CardHead eyebrow="Inbound order" title="Indigo dye · restock" right={<Tag kind="orange">Reorder</Tag>} />
+              <CardBody>
+                <Row k="Supplier" v="Bagru Naturals" />
+                <Row k="Quantity" v="20 kg" />
+                <Row k="ETA" v="6 days" last />
+                <div style={{ marginTop: 14 }}>
+                  {['Reorder alert fired automatically', 'Supplier notified', 'Receiving tracked on arrival'].map((t, i) => (
+                    <StaggerItem key={t} i={i}><Check size={15} /> {t}</StaggerItem>
+                  ))}
+                </div>
+              </CardBody>
+            </Card>
+          ),
+        },
+        {
+          label: 'Cost flows',
+          render: () => (
+            <Card>
+              <CardHead eyebrow="Unit cost" title="Flows into run economics" right={<Tag kind="green">Linked</Tag>} />
+              <CardBody>
+                <Row k="Cashmere yarn" v="€42.00 / kg" />
+                <Row k="Last inbound" v="ORD-2208" />
+                <Row k="Feeds" v="Run cost → margin" last />
+                <Bar pct={82} />
+              </CardBody>
+            </Card>
+          ),
+        },
+      ]}
+    />
+  )
+}
+
+// ─────────────────────────── 04 · whatsapp / coordinate ───────────────────────────
+
+function Bubble({ side, children, time }: { side: 'in' | 'out'; children: ReactNode; time: string }) {
+  const out = side === 'out'
+  return (
+    <div style={{ display: 'flex', justifyContent: out ? 'flex-end' : 'flex-start', marginBottom: 8 }}>
+      <div
+        style={{
+          maxWidth: '78%',
+          padding: '9px 13px',
+          borderRadius: 14,
+          borderBottomRightRadius: out ? 4 : 14,
+          borderBottomLeftRadius: out ? 14 : 4,
+          background: out ? 'oklch(90% 0.06 145)' : 'var(--bg)',
+          border: out ? 'none' : '1px solid var(--rule-soft)',
+          fontSize: 13,
+        }}
+      >
+        {children}
+        <div style={{ fontFamily: 'var(--font-mono)', fontSize: 9, color: 'var(--ink-mute)', marginTop: 4, textAlign: 'right' }}>{time}</div>
+      </div>
+    </div>
+  )
+}
+
+export function Coordinate() {
+  return (
+    <ScenePlayer
+      holdMs={[2800, 3000, 2600]}
+      scenes={[
+        {
+          label: 'Publish',
+          render: () => (
+            <Card>
+              <CardHead eyebrow="leatelier.com" title="Branded storefront" right={<Tag kind="green">Live</Tag>} />
+              <CardBody>
+                <Swatch h={120} label="Pashmina Shawl" hue={40} />
+                <div style={{ marginTop: 14 }}>
+                  {['Headless storefront + custom domain', 'Digital Product Passport per SKU', 'EU ESPR-ready provenance'].map((t, i) => (
+                    <StaggerItem key={t} i={i}><Check size={15} /> {t}</StaggerItem>
+                  ))}
+                </div>
+              </CardBody>
+            </Card>
+          ),
+        },
+        {
+          label: 'WhatsApp',
+          render: () => (
+            <Card>
+              <CardHead eyebrow="WhatsApp" title="Rukmini · Bagru" right={<Tag kind="green">Online</Tag>} />
+              <CardBody>
+                <Bubble side="out" time="09:14">New run RUN-0442 — Pashmina ×12. Accept?</Bubble>
+                <Bubble side="in" time="09:16">Accepted ✓ starting today</Bubble>
+                <Bubble side="in" time="14:02">Handweave done — photos attached</Bubble>
+              </CardBody>
+            </Card>
+          ),
+        },
+        {
+          label: 'Sync',
+          render: () => (
+            <Card>
+              <CardHead eyebrow="Channels" title="Sync where buyers are" />
+              <CardBody>
+                <Row k="Instagram" v="Product synced" />
+                <Row k="Facebook" v="Catalog updated" />
+                <Row k="Storefront" v="Custom domain live" last />
+                <div style={{ marginTop: 14 }}>
+                  <StaggerItem i={0}><Check size={15} /> Coordinate where makers already are</StaggerItem>
+                </div>
+              </CardBody>
+            </Card>
+          ),
+        },
+      ]}
+    />
+  )
+}
+
+// ─────────────────────────── registry ───────────────────────────
+
+/** Map a SolutionBlock id → its live animation (undefined for ids without one). */
+export const MOCKUP_ANIMATIONS: Record<string, (() => ReactNode) | undefined> = {
+  'product-create': ProductCreate,
+  'production-run': ProductionRun,
+  'inventory-orders': InventoryOrders,
+  whatsapp: Coordinate,
+}
