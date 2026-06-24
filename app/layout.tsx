@@ -43,6 +43,24 @@ export const metadata: Metadata = {
     template: '%s - Jaal Yantra Textiles',
     default: 'JYT - Close every gap',
   },
+  description:
+    'A garment with provenance, made by hands you can name. JYT is the production OS for fashion — design, produce, and sell with verifiable traceability.',
+  openGraph: {
+    type: 'website',
+    locale: 'en_IN',
+    siteName: 'Jaal Yantra Textiles',
+    title: 'JYT - Close every gap',
+    description:
+      'A garment with provenance, made by hands you can name. JYT is the production OS for fashion — design, produce, and sell with verifiable traceability.',
+    images: [{ url: 'https://www.jaalyantra.com/opengraph-image', width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'JYT - Close every gap',
+    description:
+      'A garment with provenance, made by hands you can name. JYT is the production OS for fashion — design, produce, and sell with verifiable traceability.',
+    images: ['https://www.jaalyantra.com/opengraph-image'],
+  },
 }
 
 export default async function RootLayout({
@@ -67,11 +85,29 @@ export default async function RootLayout({
             title="The JYT Blog"
             href="/blog/feed.xml"
           />
+          <link rel="icon" href="/favicon.ico" sizes="any" />
           {/* JYT Analytics - Production */}
           <script
             src="https://automatic.jaalyantra.com/analytics.min.js"
             data-website-id="01JRTP1DETZ58GHJGMZ604PREH"
             defer
+          />
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify({
+                '@context': 'https://schema.org',
+                '@type': 'Organization',
+                name: 'Jaal Yantra Textiles',
+                url: 'https://www.jaalyantra.com',
+                logo: 'https://www.jaalyantra.com/favicon.ico',
+                description:
+                  'A garment with provenance, made by hands you can name. Production OS for fashion — design, produce, and sell with verifiable traceability.',
+                foundingYear: '2025',
+                location: { '@type': 'Place', address: { '@type': 'PostalAddress', addressLocality: 'Dharamshala', addressRegion: 'HP', addressCountry: 'IN' } },
+                sameAs: [],
+              }),
+            }}
           />
         </head>
         <body className="antialiased" data-mode="consumer">

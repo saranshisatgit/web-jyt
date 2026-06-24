@@ -13,7 +13,12 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const post = await getSinglePost((await params).slug)
 
-  return post ? { title: post.title } : {}
+  return post
+    ? {
+        title: post.title,
+        description: post.content?.replace(/<[^>]*>/g, '').substring(0, 160) || undefined,
+      }
+    : {}
 }
 
 // Server Component to fetch data
@@ -40,13 +45,34 @@ export default async function BlogPost({
   const authorsBlock = post.blocks?.find(block => 
     block.content && Array.isArray(block.content.authors) && block.content.authors.length > 0
   )
+
+  const imageUrl = imageBlock?.content?.image?.content
+  const authors = authorsBlock?.content?.authors || []
+  const blogPostingSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.title,
+    description: post.content?.replace(/<[^>]*>/g, '').substring(0, 200),
+    datePublished: post.published_at,
+    author: authors.map((name: string) => ({
+      '@type': 'Person',
+      name,
+    })),
+    image: imageUrl || undefined,
+  }
   
   return (
-    <BlogPostContent 
-      post={post} 
-      contentBlock={contentBlock} 
-      imageBlock={imageBlock} 
-      authorsBlock={authorsBlock} 
-    />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingSchema) }}
+      />
+      <BlogPostContent 
+        post={post} 
+        contentBlock={contentBlock} 
+        imageBlock={imageBlock} 
+        authorsBlock={authorsBlock} 
+      />
+    </>
   );
 }
