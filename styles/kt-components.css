@@ -642,9 +642,9 @@
   background:
     linear-gradient(
       90deg,
-      rgba(8, 8, 10, 0.82) 0%,
-      rgba(8, 8, 10, 0.55) 45%,
-      rgba(8, 8, 10, 0.25) 100%
+      rgba(8, 8, 10, 0.88) 0%,
+      rgba(8, 8, 10, 0.70) 50%,
+      rgba(8, 8, 10, 0.30) 100%
     );
 }
 .kt-hero-content {
@@ -652,19 +652,29 @@
   z-index: 1;
   width: 100%;
 }
-.kt-hero.has-video { color: #f6f3ee; }
+.kt-hero.has-video,
+.kt-hero:has(.kt-hero-scrim) { color: #f6f3ee; }
 .kt-hero.has-video .muted,
-.kt-hero.has-video .kt-eyebrow { color: rgba(246, 243, 238, 0.82); }
-.kt-hero.has-video .kt-display { color: #fff; }
-.kt-hero.has-video .kt-hero-side { border-top-color: rgba(246, 243, 238, 0.28); }
-.kt-hero.has-video .kt-hero-side .row { border-bottom-color: rgba(246, 243, 238, 0.18); }
-.kt-hero.has-video .kt-hero-side .row .k { color: rgba(246, 243, 238, 0.68); }
-.kt-hero.has-video .kt-hero-side .row .v { color: #fff; }
-.kt-hero.has-video .kt-btn.ghost {
+.kt-hero.has-video .kt-eyebrow,
+.kt-hero:has(.kt-hero-scrim) .muted,
+.kt-hero:has(.kt-hero-scrim) .kt-eyebrow { color: rgba(246, 243, 238, 0.82); }
+.kt-hero.has-video .kt-display,
+.kt-hero:has(.kt-hero-scrim) .kt-display { color: #fff; }
+.kt-hero.has-video .kt-hero-side,
+.kt-hero:has(.kt-hero-scrim) .kt-hero-side { border-top-color: rgba(246, 243, 238, 0.28); }
+.kt-hero.has-video .kt-hero-side .row,
+.kt-hero:has(.kt-hero-scrim) .kt-hero-side .row { border-bottom-color: rgba(246, 243, 238, 0.18); }
+.kt-hero.has-video .kt-hero-side .row .k,
+.kt-hero:has(.kt-hero-scrim) .kt-hero-side .row .k { color: rgba(246, 243, 238, 0.68); }
+.kt-hero.has-video .kt-hero-side .row .v,
+.kt-hero:has(.kt-hero-scrim) .kt-hero-side .row .v { color: #fff; }
+.kt-hero.has-video .kt-btn.ghost,
+.kt-hero:has(.kt-hero-scrim) .kt-btn.ghost {
   border-color: rgba(246, 243, 238, 0.45);
   color: #fff;
 }
-.kt-hero.has-video .kt-btn.ghost:hover {
+.kt-hero.has-video .kt-btn.ghost:hover,
+.kt-hero:has(.kt-hero-scrim) .kt-btn.ghost:hover {
   border-color: #fff;
   background: rgba(246, 243, 238, 0.12);
 }
