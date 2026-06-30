@@ -1,17 +1,17 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Navbar } from '@/components/navbar'
-import { WholesaleFlow, Coordinate } from '@/components/mockup-animations'
-import wholesale from '@/data/wholesale.json'
+import { AgentCheckout } from '@/components/mockup-animations'
+import sellOnAi from '@/data/sell-on-ai.json'
 
 export const metadata: Metadata = {
-  title: 'Wholesale — source verified inventory, sell sustainable | JYT',
+  title: 'Sell on AI — your store, addressable by agents | JYT',
   description:
-    'Wholesalers enter sustainable markets with JYT: browse verified, traceable inventory, design your own pieces in the partner studio, and sell with a Digital Product Passport on every SKU.',
+    'JYT ships a Model Context Protocol server for every storefront. An AI agent can discover your store, search the catalogue, build a cart, onboard the shopper, and take payment — PayU for INR, Stripe for the rest.',
 }
 
-export default function WholesalePage() {
-  const { hero, shift, steps, sell, benefits, cta } = wholesale
+export default function SellOnAiPage() {
+  const { hero, shift, steps, benefits, clients, cta } = sellOnAi
   return (
     <main>
       <Navbar />
@@ -29,7 +29,7 @@ export default function WholesalePage() {
             <Link className="kt-link" href={hero.secondaryCta.href}>{hero.secondaryCta.label}</Link>
           </div>
           <div style={{ marginTop: '56px' }}>
-            <WholesaleFlow />
+            <AgentCheckout />
           </div>
         </div>
       </section>
@@ -64,30 +64,6 @@ export default function WholesalePage() {
         </div>
       </section>
 
-      {/* Sell & coordinate */}
-      <section className="kt-section">
-        <div className="container">
-          <div className="kt-section-head">
-            <div className="kt-eyebrow">{sell.eyebrow}</div>
-            <h2 className="kt-display m">{sell.title}</h2>
-          </div>
-          <p className="muted" style={{ fontSize: '18px', lineHeight: 1.6, maxWidth: '760px', marginTop: '12px' }}>{sell.subtitle}</p>
-          <div className="kt-mockup-split">
-            <div style={{ display: 'grid', gap: '28px', alignContent: 'center' }}>
-              {sell.items.map((s) => (
-                <div key={s.title}>
-                  <h3 className="kt-display s" style={{ fontSize: '20px' }}>{s.title}</h3>
-                  <p className="muted" style={{ marginTop: '8px', lineHeight: 1.55 }}>{s.body}</p>
-                </div>
-              ))}
-            </div>
-            <div>
-              <Coordinate />
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Benefits */}
       <section className="kt-section">
         <div className="container">
@@ -101,6 +77,21 @@ export default function WholesalePage() {
                 <div className="kt-meta" style={{ color: 'var(--accent-deep)' }}>{b.title}</div>
                 <p className="muted" style={{ marginTop: '10px', lineHeight: 1.55 }}>{b.body}</p>
               </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Works with */}
+      <section className="kt-section">
+        <div className="container">
+          <div className="kt-section-head">
+            <div className="kt-eyebrow">{clients.eyebrow}</div>
+            <h2 className="kt-display m">{clients.title}</h2>
+          </div>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', marginTop: '8px' }}>
+            {clients.items.map((c) => (
+              <span key={c} className="kt-foot-badge" style={{ fontSize: 14, padding: '8px 16px' }}>{c}</span>
             ))}
           </div>
         </div>

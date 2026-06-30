@@ -3,7 +3,7 @@
   "hero": {
     "eyebrow": "Use case · Wholesale",
     "title": "Source verified. Sell sustainable.",
-    "subtitle": "Wholesale is moving to provenance. Browse traceable, verified inventory from our maker network, design your own pieces from it in the partner studio, and sell into sustainable markets — every SKU carrying a Digital Product Passport.",
+    "subtitle": "Browse traceable, verified inventory from our maker network, design your own pieces in the partner studio, and sell into sustainable markets — every SKU carrying a Digital Product Passport.",
     "primaryCta": { "label": "Talk to us", "href": "/contact" },
     "secondaryCta": { "label": "Compare platforms", "href": "/compare" }
   },
@@ -19,6 +19,16 @@
       { "n": "01", "title": "Browse verified inventory", "body": "Source from traceable materials and vetted makers — each lot tied to its origin, artisan, and certification. Filter for what you can stand behind." },
       { "n": "02", "title": "Design it in the partner studio", "body": "Use the partner studio to spin up your own products from that inventory — variants, pricing, and tech details — without a sample room or a PLM contract." },
       { "n": "03", "title": "Sell with a passport on every piece", "body": "Each SKU ships with an EU ESPR-ready Digital Product Passport — provenance buyers and regulators can verify. Sustainable shelf-space, earned, not claimed." }
+    ]
+  },
+  "sell": {
+    "eyebrow": "Sell & coordinate",
+    "title": "Branded, traceable, on every channel.",
+    "subtitle": "Your products carry the passport and your label across every sales channel — from your own storefront to the partner network — with inventory, compliance, and orders managed in one place.",
+    "items": [
+      { "title": "Branded storefront, on your domain", "body": "Your own headless storefront with a custom domain, themed to your label. Every SKU pulls from the same production data and carries its passport." },
+      { "title": "Sell within the partner network", "body": "Other JYT partners can discover and buy your line through the network — a built-in wholesale channel with traceable inventory and automated compliance." },
+      { "title": "Orders & fulfilment, unified", "body": "Every channel feeds into one order dashboard — capture payment, fulfil, and manage returns without re-keying between sales surfaces." }
     ]
   },
   "benefits": {

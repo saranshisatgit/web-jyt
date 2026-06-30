@@ -16,6 +16,8 @@ const NAV_LINKS: NavLink[] = [
     children: [
       { href: '/solutions', text: 'Overview' },
       { href: '/solutions/wholesale', text: 'Wholesale' },
+      { href: '/solutions/ecommerce', text: 'Ecommerce' },
+      { href: '/solutions/sell-on-ai', text: 'Sell on AI' },
     ],
   },
   { href: '/compare', text: 'Compare' },

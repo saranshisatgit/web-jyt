@@ -1,0 +1,72 @@
+{
+  "_note": "Content block for /solutions/ecommerce (#605). Use-case page: the partner storefront surface — headless commerce with a custom domain, a Digital Product Passport on every SKU, and channel sync (Instagram/Facebook). Mirrors data/wholesale.json so the page component is symmetric. Lift into the CMS later without changing the component.",
+  "hero": {
+    "eyebrow": "Use case · Ecommerce",
+    "title": "A storefront that you can own.",
+    "subtitle": "A headless storefront on a custom domain, pulled from the same rails as production. Every SKU carries a Digital Product Passport — so the product page sells the story and the receipts together.",
+    "primaryCta": { "label": "Talk to us", "href": "/contact" },
+    "secondaryCta": { "label": "See wholesale", "href": "/solutions/wholesale" }
+  },
+  "shift": {
+    "eyebrow": "Why now",
+    "title": "Buyers want the receipt, not the claim.",
+    "body": "Headless commerce is table stakes; provenance is the new differentiator. EU ESPR and the Digital Product Passport mandate turn ‘who made this’ into a question a store has to answer on the page. JYT bakes the passport into the product at publish time — the storefront never has to bolt it on."
+  },
+  "steps": {
+    "eyebrow": "How it works",
+    "title": "From published design to a live, branded store.",
+    "items": [
+      { "n": "01", "title": "Publish from the atelier OS", "body": "A design approved in production becomes a live product — variants, region pricing, and passport minted in one step. No re-keying, no separate PIM." },
+      { "n": "02", "title": "Sell on your own domain", "body": "A headless storefront on a custom domain, themed to your label. SEO-friendly, fast, and deployable per partner from the same codebase." },
+      { "n": "03", "title": "Show the passport on the page", "body": "Each product page renders its Digital Product Passport — maker, material lot, certifications. Provenance buyers and regulators verify without leaving the store." }
+    ]
+  },
+  "benefits": {
+    "eyebrow": "Why brands choose it",
+    "title": "Commerce with compliance built in.",
+    "items": [
+      { "title": "One rail, design to sold", "body": "The same platform that runs production runs your store. No sync drift between PLM, inventory, and the shelf." },
+      { "title": "Passport per SKU, native", "body": "EU ESPR-ready Digital Product Passport on every piece — not a separate subscription like standalone provenance tools." },
+      { "title": "Sell where buyers are", "body": "Instagram and Facebook catalog sync out of the box, plus a custom-domain storefront for direct demand." },
+      { "title": "Headless, so it's yours", "body": "Custom themes, custom domain, your label front and centre. The storefront is a Vercel-deployed Next.js app you can extend." }
+    ]
+  },
+  "cta": {
+    "title": "Open a storefront that already knows the story.",
+    "body": "We'll show you publishing a design to a branded store with a passport on every SKU — live, on your domain.",
+    "primaryCta": { "label": "Book a walkthrough", "href": "/contact" },
+    "secondaryCta": { "label": "See the full atelier OS", "href": "/solutions" }
+  },
+  "starter": {
+    "eyebrow": "Main feature · Starters",
+    "title": "Starters to start your fashion brand.",
+    "subtitle": "Skip the agency. Pick a starter tuned for fashion — your label name, your palette, your domain — and you're live in an afternoon. Each starter ships with a storefront theme, a product catalogue seeded from your atelier, and the admin panel wired up.",
+    "items": [
+      { "title": "Your label, live today", "body": "Enter your brand name, pick a palette, connect a domain. The starter deploys a themed Next.js storefront to Vercel in one click." },
+      { "title": "Catalogue from the atelier", "body": "Products published in production flow straight in — variants, pricing, passport. No CSV imports, no PIM migration." },
+      { "title": "Theme it your way", "body": "The starter is a codebase you own, not a page builder. Edit the theme, swap components, extend the checkout — it's yours." }
+    ]
+  },
+  "admin": {
+    "eyebrow": "Main feature · Admin",
+    "title": "A brilliant admin to manage products.",
+    "subtitle": "The admin panel is where the storefront meets the atelier OS. Manage products, variants, and passports in one place — with the same data that runs production, inventory, and wholesale.",
+    "items": [
+      { "title": "Products & variants", "body": "Create, edit, and organise products with full variant support — colour, size, material. Stock and pricing sync to every channel automatically." },
+      { "title": "Passport per SKU", "body": "Attach and edit Digital Product Passport data — artisan, material lot, certification — directly on the product. Changes appear on the storefront instantly." },
+      { "title": "Orders & fulfilment", "body": "See every order, capture payment, and fulfil from one screen. Returns and exchanges flow back into inventory without re-keying." }
+    ]
+  },
+  "integrations": {
+    "eyebrow": "Integrations",
+    "title": "Built on a commerce engine you can extend.",
+    "subtitle": "The storefront and admin run on Medusa JS — a modular, open-source commerce framework. Ship with the modules you need, customise the framework, and orchestrate flows visually.",
+    "items": [
+      { "title": "Built on Medusa JS", "body": "A headless, API-first commerce engine. Every entity is a module — extend or replace without forking the core." },
+      { "title": "Shipped with Modules", "body": "Cart, checkout, payment, fulfilment, inventory, tax — production-ready modules that work out of the box and swap cleanly." },
+      { "title": "Customisable Framework", "body": "Subscribers, workflows, and custom logic hook into the event bus. Build your edge without fighting the framework." },
+      { "title": "Visual Flow Editor", "body": "Drag-and-drop workflow builder for automation — reorder logic, add steps, and ship flows without writing code." },
+      { "title": "Marketing Inbuilt", "body": "Email campaigns, discounts, and gift cards ship with the engine. Segments and triggers tie back to real purchase data." }
+    ]
+  }
+}

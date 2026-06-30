@@ -90,7 +90,7 @@ export function CardHead({ eyebrow, title, right }: { eyebrow: string; title: Re
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        padding: '16px 20px',
+        padding: '12px 16px',
         borderBottom: '1px solid var(--rule-soft)',
         gap: 12,
       }}
@@ -99,7 +99,7 @@ export function CardHead({ eyebrow, title, right }: { eyebrow: string; title: Re
         <div style={{ fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--ink-mute)' }}>
           {eyebrow}
         </div>
-        <div style={{ ...serif, fontSize: 20, marginTop: 2 }}>{title}</div>
+        <div style={{ ...serif, fontSize: 18, marginTop: 2 }}>{title}</div>
       </div>
       {right}
     </div>
@@ -107,7 +107,7 @@ export function CardHead({ eyebrow, title, right }: { eyebrow: string; title: Re
 }
 
 export function CardBody({ children }: { children: ReactNode }) {
-  return <div style={{ padding: 20 }}>{children}</div>
+  return <div style={{ padding: 14 }}>{children}</div>
 }
 
 export function Row({ k, v, last }: { k: ReactNode; v: ReactNode; last?: boolean }) {
@@ -167,8 +167,8 @@ export function Btn({ accent, children }: { accent?: boolean; children: ReactNod
         justifyContent: 'center',
         gap: 8,
         width: '100%',
-        marginTop: 18,
-        padding: '12px 24px',
+        marginTop: 14,
+        padding: '10px 20px',
         borderRadius: 'var(--r-pill)',
         fontFamily: 'var(--font-mono)',
         fontSize: 11,
@@ -200,7 +200,7 @@ export function StaggerItem({ i, children }: { i: number; children: ReactNode })
 export type Scene = { label: string; render: () => ReactNode }
 
 /** Cycles scenes with a calm dwell, crossfade, and clickable step pips. */
-export function ScenePlayer({ scenes, holdMs = 2800 }: { scenes: Scene[]; holdMs?: number | number[] }) {
+export function ScenePlayer({ scenes, holdMs = 3600 }: { scenes: Scene[]; holdMs?: number | number[] }) {
   const [i, setI] = useState(0)
   const reduce = useReducedMotion()
   const dwell = (n: number) => (Array.isArray(holdMs) ? holdMs[n] ?? 2800 : holdMs)
@@ -218,16 +218,16 @@ export function ScenePlayer({ scenes, holdMs = 2800 }: { scenes: Scene[]; holdMs
           background: 'var(--cream)',
           border: '1px solid var(--rule)',
           borderRadius: 'var(--r-md)',
-          padding: 'clamp(20px, 4vw, 44px)',
-          height: 420,
+          padding: 'clamp(20px, 2.5vw, 32px)',
+          height: 500,
           overflow: 'hidden',
           display: 'flex',
           alignItems: 'center',
           boxShadow: '0 24px 60px -40px oklch(0 0 0 / 0.30)',
         }}
       >
-        <div style={{ width: '100%', maxWidth: 460, margin: '0 auto' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14 }}>
+        <div style={{ width: '100%', maxWidth: 560, margin: '0 auto' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
             <span style={{ fontFamily: 'var(--font-mono)', fontSize: 11, fontWeight: 500, letterSpacing: '0.1em', color: 'var(--accent-deep)' }}>
               {String(i + 1).padStart(2, '0')} · {scenes[i].label.toUpperCase()}
             </span>
@@ -246,7 +246,7 @@ export function ScenePlayer({ scenes, holdMs = 2800 }: { scenes: Scene[]; holdMs
           </AnimatePresence>
         </div>
       </div>
-      <div style={{ display: 'flex', gap: 8, marginTop: 16, alignItems: 'center', flexWrap: 'wrap' }}>
+      <div style={{ display: 'flex', gap: 8, marginTop: 12, alignItems: 'center', flexWrap: 'wrap' }}>
         {scenes.map((s, n) => (
           <button
             key={s.label}

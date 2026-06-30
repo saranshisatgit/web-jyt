@@ -1,17 +1,17 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Navbar } from '@/components/navbar'
-import { WholesaleFlow, Coordinate } from '@/components/mockup-animations'
-import wholesale from '@/data/wholesale.json'
+import { Storefront, BrandStarter, AdminPanel } from '@/components/mockup-animations'
+import ecommerce from '@/data/ecommerce.json'
 
 export const metadata: Metadata = {
-  title: 'Wholesale — source verified inventory, sell sustainable | JYT',
+  title: 'Ecommerce — a storefront with the truth on every SKU | JYT',
   description:
-    'Wholesalers enter sustainable markets with JYT: browse verified, traceable inventory, design your own pieces in the partner studio, and sell with a Digital Product Passport on every SKU.',
+    'Every partner gets a headless storefront on a custom domain, pulled from the same rails as production. Each SKU carries a Digital Product Passport — artisan, village, material lot — so the product page sells the story and the receipts.',
 }
 
-export default function WholesalePage() {
-  const { hero, shift, steps, sell, benefits, cta } = wholesale
+export default function EcommercePage() {
+  const { hero, shift, steps, starter, admin, integrations, benefits, cta } = ecommerce
   return (
     <main>
       <Navbar />
@@ -29,7 +29,7 @@ export default function WholesalePage() {
             <Link className="kt-link" href={hero.secondaryCta.href}>{hero.secondaryCta.label}</Link>
           </div>
           <div style={{ marginTop: '56px' }}>
-            <WholesaleFlow />
+            <Storefront />
           </div>
         </div>
       </section>
@@ -64,17 +64,17 @@ export default function WholesalePage() {
         </div>
       </section>
 
-      {/* Sell & coordinate */}
+      {/* Main feature: Brand starter */}
       <section className="kt-section">
         <div className="container">
           <div className="kt-section-head">
-            <div className="kt-eyebrow">{sell.eyebrow}</div>
-            <h2 className="kt-display m">{sell.title}</h2>
+            <div className="kt-eyebrow">{starter.eyebrow}</div>
+            <h2 className="kt-display m">{starter.title}</h2>
           </div>
-          <p className="muted" style={{ fontSize: '18px', lineHeight: 1.6, maxWidth: '760px', marginTop: '12px' }}>{sell.subtitle}</p>
+          <p className="muted" style={{ fontSize: '18px', lineHeight: 1.6, maxWidth: '760px', marginTop: '12px' }}>{starter.subtitle}</p>
           <div className="kt-mockup-split">
             <div style={{ display: 'grid', gap: '28px', alignContent: 'center' }}>
-              {sell.items.map((s) => (
+              {starter.items.map((s) => (
                 <div key={s.title}>
                   <h3 className="kt-display s" style={{ fontSize: '20px' }}>{s.title}</h3>
                   <p className="muted" style={{ marginTop: '8px', lineHeight: 1.55 }}>{s.body}</p>
@@ -82,8 +82,52 @@ export default function WholesalePage() {
               ))}
             </div>
             <div>
-              <Coordinate />
+              <BrandStarter />
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Main feature: Admin panel */}
+      <section className="kt-section">
+        <div className="container">
+          <div className="kt-section-head">
+            <div className="kt-eyebrow">{admin.eyebrow}</div>
+            <h2 className="kt-display m">{admin.title}</h2>
+          </div>
+          <p className="muted" style={{ fontSize: '18px', lineHeight: 1.6, maxWidth: '760px', marginTop: '12px' }}>{admin.subtitle}</p>
+          <div className="kt-mockup-split">
+            <div>
+              <AdminPanel />
+            </div>
+            <div style={{ display: 'grid', gap: '28px', alignContent: 'center' }}>
+              {admin.items.map((s) => (
+                <div key={s.title}>
+                  <h3 className="kt-display s" style={{ fontSize: '20px' }}>{s.title}</h3>
+                  <p className="muted" style={{ marginTop: '8px', lineHeight: 1.55 }}>{s.body}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Integrations */}
+      <section className="kt-section">
+        <div className="container">
+          <div className="kt-section-head">
+            <div className="kt-eyebrow">{integrations.eyebrow}</div>
+            <h2 className="kt-display m">{integrations.title}</h2>
+          </div>
+          <p className="muted" style={{ fontSize: '18px', lineHeight: 1.6, maxWidth: '760px', marginTop: '12px' }}>{integrations.subtitle}</p>
+          <div className="kt-integrations-grid">
+            {integrations.items.map((item) => (
+              <div className="kt-card kt-integration-card" key={item.title}>
+                <div className="kt-integration-icon" aria-hidden />
+                <h3 className="kt-display s" style={{ fontSize: '18px' }}>{item.title}</h3>
+                <p className="muted" style={{ marginTop: '8px', lineHeight: 1.55, fontSize: '14px' }}>{item.body}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
