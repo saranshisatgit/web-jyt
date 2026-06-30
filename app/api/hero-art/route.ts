@@ -56,7 +56,7 @@ export async function GET(request: NextRequest) {
   try {
     // Same query-param pattern as hero-media – the folder endpoint
     // requires a share token, but ?folder_id= works without auth.
-    const params = new URLSearchParams({ limit: "20", id: folderId })
+    const params = new URLSearchParams({ limit: "20", album_id: folderId })
     const res = await fetch(`${apiBase}/media?${params.toString()}`, {
       next: { revalidate: 60 },
     })
