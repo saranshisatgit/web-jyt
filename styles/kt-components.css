@@ -590,6 +590,53 @@
   color: var(--ink);
 }
 
+/* Full-bleed autoplaying video background. The <video> sits behind the
+   content (negative z-index under .kt-hero-content), covers the section
+   edge-to-edge, and a gradient scrim keeps the headline legible. The
+   .has-video modifier flips the hero to light-on-dark only while a
+   video is present; with no video it renders exactly as before. */
+.kt-hero-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -2;
+}
+.kt-hero-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(8, 8, 10, 0.82) 0%,
+      rgba(8, 8, 10, 0.55) 45%,
+      rgba(8, 8, 10, 0.25) 100%
+    );
+}
+.kt-hero-content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+}
+.kt-hero.has-video { color: #f6f3ee; }
+.kt-hero.has-video .muted,
+.kt-hero.has-video .kt-eyebrow { color: rgba(246, 243, 238, 0.82); }
+.kt-hero.has-video .kt-display { color: #fff; }
+.kt-hero.has-video .kt-hero-side { border-top-color: rgba(246, 243, 238, 0.28); }
+.kt-hero.has-video .kt-hero-side .row { border-bottom-color: rgba(246, 243, 238, 0.18); }
+.kt-hero.has-video .kt-hero-side .row .k { color: rgba(246, 243, 238, 0.68); }
+.kt-hero.has-video .kt-hero-side .row .v { color: #fff; }
+.kt-hero.has-video .kt-btn.ghost {
+  border-color: rgba(246, 243, 238, 0.45);
+  color: #fff;
+}
+.kt-hero.has-video .kt-btn.ghost:hover {
+  border-color: #fff;
+  background: rgba(246, 243, 238, 0.12);
+}
+
 /* Minimal restraint hero — pair with a photo below for the photo-led variant. */
 .kt-hero.minimal {
   padding: 100px 0 80px;

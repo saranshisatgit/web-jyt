@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, type FormEvent } from 'react'
+import { useState, useEffect, useRef, type FormEvent } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useQuery } from '@tanstack/react-query'
@@ -140,6 +140,17 @@ type MetricsResponse = {
   last_updated: string | null
 }
 
+type HeroVideo = {
+  url: string
+  mime_type?: string
+  width?: number
+  height?: number
+  alt: string
+  credit: string | null
+}
+type HeroMediaResponse = { videos: HeroVideo[] }
+const EMPTY_HERO_MEDIA: HeroMediaResponse = { videos: [] }
+
 type HomeTestimonialsResponse = {
   title: string
   callToAction?: { text?: string; linkUrl?: string; linkText?: string }
@@ -167,6 +178,18 @@ const EMPTY_TESTIMONIALS: HomeTestimonialsResponse = {
   title: '',
   callToAction: undefined,
   testimonials: [],
+}
+
+function useHeroVideos() {
+  return useQuery<HeroMediaResponse>({
+    queryKey: ['hero-media'],
+    queryFn: async () => {
+      const res = await fetch('/api/hero-media')
+      if (!res.ok) return EMPTY_HERO_MEDIA
+      return (await res.json()) as HeroMediaResponse
+    },
+    staleTime: 60_000,
+  })
 }
 
 function usePartners() {
@@ -320,14 +343,54 @@ function SolutionsShowcase() {
 function Hero() {
   const brand = useBrand()
   const { data: metrics } = useMetrics()
+  const { data: heroMedia } = useHeroVideos()
+  const videos = heroMedia?.videos ?? []
+  const hasVideo = videos.length > 0
   const artisanCount = metrics && metrics.artisans > 0 ? metrics.artisans : 150
   const hubCount = metrics && metrics.hubs > 0 ? metrics.hubs : brand.geographies.length
   const brandsCount = metrics && metrics.brands_live > 0 ? String(metrics.brands_live) : '3+'
   const gmvCount = metrics && metrics.gmv.amount > 0 ? formatGmv(metrics.gmv.amount, metrics.gmv.currency) : null
   const leadDays = metrics?.lead_time?.avg_days ?? null
+
+  // Cycle through the fetched videos one-by-one. Without `loop` the
+  // `ended` event fires per clip, so we advance to the next; with a
+  // single clip we let the browser loop it natively.
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const [idx, setIdx] = useState(0)
+  useEffect(() => {
+    setIdx(0)
+  }, [videos.length])
+  const current = videos[Math.min(idx, videos.length - 1)]
+  const onEnded = () => {
+    if (videos.length > 1) setIdx((i) => (i + 1) % videos.length)
+  }
+  // .m4v (Apple Photos exports) is H.264 in an MP4 container — browsers
+  // play it fine, but the `video/x-m4v` mime hint makes some refuse the
+  // <source>. Coerce to video/mp4 so every browser accepts it.
+  const sourceType = (current?.mime_type || 'video/mp4').replace(/video\/(x-)?m4v$/i, 'video/mp4')
+
   return (
-    <section className="kt-hero relative isolate">
-      <div className="container">
+    <section className={`kt-hero relative isolate${hasVideo ? ' has-video' : ''}`}>
+      {hasVideo && current && (
+        <>
+          <video
+            key={current.url}
+            ref={videoRef}
+            className="kt-hero-video"
+            autoPlay
+            muted
+            playsInline
+            loop={videos.length === 1}
+            onEnded={onEnded}
+            poster=""
+            aria-hidden
+          >
+            <source src={current.url} type={sourceType} />
+          </video>
+          <div className="kt-hero-scrim" aria-hidden />
+        </>
+      )}
+      <div className="container kt-hero-content">
         <div className="kt-hero-grid">
           <div>
             <span className="kt-eyebrow">
@@ -336,7 +399,7 @@ function Hero() {
               <span data-aud="investor">{brand.raise.round} · {brand.raise.year} · open round</span>
               <span data-aud="platform">{brand.platformBrandName} · Medo · v3 live</span>
             </span>
-            <h1 className="kt-display xl" style={{ marginTop: '20px', marginBottom: '16px' }}>
+            <h1 className="kt-display l" style={{ marginTop: '20px', marginBottom: '16px' }}>
               <span data-aud="consumer">A garment with <em className="serif italic">provenance</em>, made by hands you can name.</span>
               <span data-aud="investor">A confidence engine for <em className="serif italic">custom clothing</em>.</span>
               <span data-aud="platform">Three surfaces. <em className="serif italic">One source of truth.</em></span>
