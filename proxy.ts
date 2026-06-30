@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { brandFromHostOrOverride } from "@/lib/brand";
 import { currencyFromCountry } from "@/lib/currency";
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const host = request.headers.get("host");
   const override = request.nextUrl.searchParams.get("brand");
   const brand = brandFromHostOrOverride(host, override);
