@@ -103,9 +103,25 @@ export default async function IntegrationsPage() {
               maxWidth: '720px',
             }}
           >
-            Browse community-contributed integrations and plugins for your Medusa
-            storefront. Filter by category or search to find exactly what you need.
+            Medusa v2–compatible integrations and plugins for your JYT storefront.
+            Browse the library, then install any package directly from your
+            SaaS Cloud dashboard.
           </p>
+          <div
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px',
+              marginTop: '24px',
+              padding: '8px 16px',
+              borderRadius: 'var(--r-md)',
+              background: 'var(--accent-pale)',
+              fontSize: 13,
+              color: 'var(--accent-deep)',
+            }}
+          >
+            Available on JYT SaaS Cloud
+          </div>
         </div>
       </section>
 
