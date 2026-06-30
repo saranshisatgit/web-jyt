@@ -46,7 +46,7 @@ const EMPTY: HeroArtResponse = { items: [] }
 const FOLDER_ID = "01KS74M4JABCFKHB4WTF90KQYS"
 
 export async function GET(request: NextRequest) {
-  const apiBase = process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, "").replace(/\/web$/, "")
+  const apiBase = process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, "")
   if (!apiBase) {
     return NextResponse.json({ ...EMPTY, error: "no_backend" }, { status: 503 })
   }
@@ -54,7 +54,10 @@ export async function GET(request: NextRequest) {
   const folderId = request.nextUrl.searchParams.get("folder_id") || FOLDER_ID
 
   try {
-    const res = await fetch(`${apiBase}/web/media/folder/${folderId}`, {
+    // Same query-param pattern as hero-media – the folder endpoint
+    // requires a share token, but ?folder_id= works without auth.
+    const params = new URLSearchParams({ limit: "20", folder_id: folderId })
+    const res = await fetch(`${apiBase}/media?${params.toString()}`, {
       next: { revalidate: 60 },
     })
 
