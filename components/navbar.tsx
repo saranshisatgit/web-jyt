@@ -21,8 +21,6 @@ const NAV_LINKS: NavLink[] = [
     ],
   },
   { href: '/compare', text: 'Compare' },
-  { href: '/#makers', text: 'Makers' },
-  { href: '/#how-it-works', text: 'How it works' },
   { href: '/blog', text: 'Journal' },
   { href: '/about', text: 'About' },
 ]

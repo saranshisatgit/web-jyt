@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Navbar } from '@/components/navbar'
+import { HeroArt } from '@/components/hero-art'
 import { AgentCheckout } from '@/components/mockup-animations'
 import sellOnAi from '@/data/sell-on-ai.json'
 
@@ -17,8 +18,9 @@ export default function SellOnAiPage() {
       <Navbar />
 
       {/* Hero */}
-      <section className="kt-section">
-        <div className="container">
+      <section className="kt-hero relative isolate">
+        <HeroArt />
+        <div className="container kt-hero-content">
           <div className="kt-eyebrow">{hero.eyebrow}</div>
           <h1 className="kt-display l" style={{ marginTop: '16px' }}>{hero.title}</h1>
           <p className="muted" style={{ fontSize: '19px', lineHeight: 1.55, marginTop: '20px', maxWidth: '760px' }}>
@@ -94,6 +96,12 @@ export default function SellOnAiPage() {
               <span key={c} className="kt-foot-badge" style={{ fontSize: 14, padding: '8px 16px' }}>{c}</span>
             ))}
           </div>
+          <p className="muted" style={{ marginTop: '32px', fontSize: '13px' }}>
+            Payment processing powered by{' '}
+            <a href="https://pay2.cash" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--accent-deep)' }}>
+              pay2.cash
+            </a>
+          </p>
         </div>
       </section>
 

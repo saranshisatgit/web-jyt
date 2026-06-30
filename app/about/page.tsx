@@ -1,6 +1,7 @@
 import React, { Suspense } from 'react'
 import { AnimatedNumber } from '@/components/animated-number'
 import { Navbar } from '@/components/navbar'
+import { HeroArt } from '@/components/hero-art'
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import { fetchPagefromAPI } from '../actions'
@@ -76,8 +77,9 @@ function AboutHero({ data }: { data?: Block }) {
   if (!content) return null
 
   return (
-    <section className="kt-hero">
-      <div className="container">
+    <section className="kt-hero relative isolate">
+      <HeroArt />
+      <div className="container kt-hero-content">
         <div className="kt-hero-grid">
           <div>
             <span className="kt-eyebrow">

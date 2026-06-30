@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Navbar } from '@/components/navbar'
+import { HeroArt } from '@/components/hero-art'
 import { WholesaleFlow, Coordinate } from '@/components/mockup-animations'
 import wholesale from '@/data/wholesale.json'
 
@@ -17,8 +18,9 @@ export default function WholesalePage() {
       <Navbar />
 
       {/* Hero */}
-      <section className="kt-section">
-        <div className="container">
+      <section className="kt-hero relative isolate">
+        <HeroArt />
+        <div className="container kt-hero-content">
           <div className="kt-eyebrow">{hero.eyebrow}</div>
           <h1 className="kt-display l" style={{ marginTop: '16px' }}>{hero.title}</h1>
           <p className="muted" style={{ fontSize: '19px', lineHeight: 1.55, marginTop: '20px', maxWidth: '760px' }}>

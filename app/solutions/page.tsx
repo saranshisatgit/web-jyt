@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Navbar } from '@/components/navbar'
+import { HeroArt } from '@/components/hero-art'
 import { SolutionBlock, FeaturedMockup } from '@/components/solution-block'
 import {
   SOLUTIONS_HERO,
@@ -19,8 +20,9 @@ export default function SolutionsPage() {
     <main>
       <Navbar />
 
-      <section className="kt-section">
-        <div className="container">
+      <section className="kt-hero relative isolate">
+        <HeroArt />
+        <div className="container kt-hero-content">
           <div className="kt-eyebrow">{SOLUTIONS_HERO.eyebrow}</div>
           <h1 className="kt-display l" style={{ marginTop: '16px' }}>
             {SOLUTIONS_HERO.title}
