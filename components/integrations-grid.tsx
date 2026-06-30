@@ -9,6 +9,12 @@ function formatDownloads(n: number): string {
   return `${n}/mo`
 }
 
+function gitHubOwner(repoUrl?: string): string | null {
+  if (!repoUrl) return null
+  const m = repoUrl.match(/github\.com[/:]([^/.#]+)/)
+  return m ? m[1] : null
+}
+
 export function IntegrationsGrid({
   categories,
   initialCount,
@@ -157,12 +163,45 @@ export function IntegrationsGrid({
                 <div
                   style={{
                     display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'flex-start',
-                    marginBottom: '8px',
+                    alignItems: 'center',
+                    gap: '12px',
+                    marginBottom: '10px',
                   }}
                 >
-                  <span style={{ fontWeight: 600, fontSize: 15, wordBreak: 'break-all' }}>
+                  {(() => {
+                    const owner = gitHubOwner(pkg.links.repository)
+                    return owner ? (
+                      <img
+                        src={`https://github.com/${owner}.png?size=40`}
+                        alt=""
+                        width={32}
+                        height={32}
+                        style={{
+                          borderRadius: 'var(--r-sm)',
+                          flexShrink: 0,
+                        }}
+                      />
+                    ) : (
+                      <div
+                        style={{
+                          width: 32,
+                          height: 32,
+                          borderRadius: 'var(--r-sm)',
+                          background: 'var(--accent-pale)',
+                          flexShrink: 0,
+                        }}
+                      />
+                    )
+                  })()}
+                  <span
+                    style={{
+                      fontWeight: 600,
+                      fontSize: 14,
+                      lineHeight: 1.3,
+                      wordBreak: 'break-all',
+                      flex: 1,
+                    }}
+                  >
                     {pkg.name.replace(/^@/, '').replace(/\//, ' / ')}
                   </span>
                   {pkg.downloads.monthly > 0 && (
@@ -174,7 +213,6 @@ export function IntegrationsGrid({
                         borderRadius: 'var(--r-sm)',
                         background: 'var(--accent-pale)',
                         color: 'var(--accent-deep)',
-                        marginLeft: 8,
                         flexShrink: 0,
                       }}
                     >
@@ -188,17 +226,6 @@ export function IntegrationsGrid({
                 >
                   {pkg.description || 'No description'}
                 </p>
-                {pkg.publisher?.username && (
-                  <div
-                    style={{
-                      fontSize: 12,
-                      opacity: 0.5,
-                      marginTop: '10px',
-                    }}
-                  >
-                    By {pkg.publisher.username}
-                  </div>
-                )}
               </a>
             ))}
           </div>
