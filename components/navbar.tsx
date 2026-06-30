@@ -18,6 +18,7 @@ const NAV_LINKS: NavLink[] = [
       { href: '/solutions/wholesale', text: 'Wholesale' },
       { href: '/solutions/ecommerce', text: 'Ecommerce' },
       { href: '/solutions/sell-on-ai', text: 'Sell on AI' },
+      { href: '/solutions/integrations', text: 'Integrations' },
     ],
   },
   { href: '/compare', text: 'Compare' },
