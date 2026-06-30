@@ -10,7 +10,7 @@
   "shift": {
     "eyebrow": "Why now",
     "title": "Buying is moving into the chat.",
-    "body": "Shoppers are increasingly buying inside AI clients — Claude, Cursor, assistants yet to ship. Most stores can't be reached there at all. JYT exposes your catalogue and checkout as MCP tools, so an agent can complete a real purchase (cart, customer, payment, order) without you building a single integration."
+    "body": "Shoppers buy inside AI clients — Claude, Cursor, and future assistants. Most stores can't be reached there. JYT exposes your catalogue and checkout as MCP tools. An agent can complete a real purchase (cart, customer, payment, order) with no integration work."
   },
   "steps": {
     "eyebrow": "How it works",
@@ -26,7 +26,7 @@
     "eyebrow": "Why it matters",
     "title": "Agent-ready, not agent-afterthought.",
     "items": [
-      { "title": "No integration to build", "body": "The MCP server is part of the platform. Onboard as a partner and your storefront is agent-addressable from day one — read tools open, write tools gated behind a publishable key." },
+      { "title": "No integration to build", "body": "The MCP server is part of the platform. Onboard as a partner and your storefront is agent-addressable from day one. Read tools are open; write tools need a publishable key." },
       { "title": "Real checkout, not a link out", "body": "Agents drive the full cart→payment→order flow with PayU INR (link, UPI intent, QR) and Stripe hosted checkout — Apple/Google Pay included." },
       { "title": "Provenance travels with it", "body": "Custom tools expose raw materials and the production story, so an agent can answer ‘who made this?’ with the passport, not a guess." },
       { "title": "Multi-tenant by design", "body": "Agents address stores by name across the network. Your storefront, the core store, and every partner sit on the same agent-ready rail." }

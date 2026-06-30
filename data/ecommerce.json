@@ -3,14 +3,14 @@
   "hero": {
     "eyebrow": "Use case · Ecommerce",
     "title": "A storefront that you can own.",
-    "subtitle": "A headless storefront on a custom domain, pulled from the same rails as production. Every SKU carries a Digital Product Passport — so the product page sells the story and the receipts together.",
+    "subtitle": "A headless storefront on a custom domain, pulled from the same rails as production. Every SKU carries a Digital Product Passport that puts provenance on the page.",
     "primaryCta": { "label": "Talk to us", "href": "/contact" },
     "secondaryCta": { "label": "See wholesale", "href": "/solutions/wholesale" }
   },
   "shift": {
     "eyebrow": "Why now",
     "title": "Buyers want the receipt, not the claim.",
-    "body": "Headless commerce is table stakes; provenance is the new differentiator. EU ESPR and the Digital Product Passport mandate turn ‘who made this’ into a question a store has to answer on the page. JYT bakes the passport into the product at publish time — the storefront never has to bolt it on."
+    "body": "Headless commerce is table stakes; provenance is the new differentiator. EU ESPR and the Digital Product Passport mandate make 'who made this' a required answer on the page. JYT bakes the passport into the product at publish time — the storefront never bolts it on."
   },
   "steps": {
     "eyebrow": "How it works",
@@ -40,7 +40,7 @@
   "starter": {
     "eyebrow": "Main feature · Starters",
     "title": "Starters to start your fashion brand.",
-    "subtitle": "Skip the agency. Pick a starter tuned for fashion — your label name, your palette, your domain — and you're live in an afternoon. Each starter ships with a storefront theme, a product catalogue seeded from your atelier, and the admin panel wired up.",
+    "subtitle": "Skip the agency. Pick a starter tuned for fashion — your label name, your palette, your domain — and you're live in an afternoon. Each starter includes a storefront theme, a product catalogue seeded from your atelier, and the admin panel ready to go.",
     "items": [
       { "title": "Your label, live today", "body": "Enter your brand name, pick a palette, connect a domain. The starter deploys a themed Next.js storefront to Vercel in one click." },
       { "title": "Catalogue from the atelier", "body": "Products published in production flow straight in — variants, pricing, passport. No CSV imports, no PIM migration." },

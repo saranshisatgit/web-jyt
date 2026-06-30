@@ -3,14 +3,14 @@
   "hero": {
     "eyebrow": "Use case · Wholesale",
     "title": "Source verified. Sell sustainable.",
-    "subtitle": "Browse traceable, verified inventory from our maker network, design your own pieces in the partner studio, and sell into sustainable markets — every SKU carrying a Digital Product Passport.",
+    "subtitle": "Browse verified inventory from our maker network, design your own pieces in the partner studio, and sell into sustainable markets. Every SKU carries a Digital Product Passport.",
     "primaryCta": { "label": "Talk to us", "href": "/contact" },
     "secondaryCta": { "label": "Compare platforms", "href": "/compare" }
   },
   "shift": {
     "eyebrow": "Why now",
     "title": "Buyers are being asked to prove it.",
-    "body": "Green-claims rules (EU ESPR, the coming Digital Product Passport mandate) are turning ‘sustainable’ from a label into a receipt. Most wholesale platforms still just move orders — they can't tell you where a material came from or who made it. JYT starts from verified inventory, so the proof is built in before the first order."
+    "body": "Green-claims rules (EU ESPR, the Digital Product Passport mandate) turn 'sustainable' from a label into a receipt. Most wholesale platforms move orders — they can't trace a material or its maker. JYT starts from verified inventory, so the proof is built in."
   },
   "steps": {
     "eyebrow": "How it works",
@@ -24,7 +24,7 @@
   "sell": {
     "eyebrow": "Sell & coordinate",
     "title": "Branded, traceable, on every channel.",
-    "subtitle": "Your products carry the passport and your label across every sales channel — from your own storefront to the partner network — with inventory, compliance, and orders managed in one place.",
+    "subtitle": "Your products carry the passport and your label across every sales channel. Inventory, compliance, and orders are managed in one place — from your storefront to the partner network.",
     "items": [
       { "title": "Branded storefront, on your domain", "body": "Your own headless storefront with a custom domain, themed to your label. Every SKU pulls from the same production data and carries its passport." },
       { "title": "Sell within the partner network", "body": "Other JYT partners can discover and buy your line through the network — a built-in wholesale channel with traceable inventory and automated compliance." },
@@ -35,7 +35,7 @@
     "eyebrow": "Why wholesalers choose it",
     "title": "Approachable entry into sustainable markets.",
     "items": [
-      { "title": "No greenwashing risk", "body": "You only sell what the inventory can prove. Provenance is the default, not an audit you scramble for later." },
+      { "title": "No greenwashing risk", "body": "You only sell what the inventory can prove. Provenance is the default, not an afterthought." },
       { "title": "Your label, our rail", "body": "Create your own branded designs from verified stock — you own the line, JYT runs the production and traceability underneath." },
       { "title": "Open the network", "body": "150+ vetted artisans across EU, India & Australia become your supply base — coordinated over WhatsApp and a mobile portal." },
       { "title": "Transparent, atelier-friendly pricing", "body": "No enterprise contract, no sales-gate. Clear pricing, self-serve — unlike the wholesale incumbents." }
