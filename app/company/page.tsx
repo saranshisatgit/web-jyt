@@ -1,5 +1,6 @@
 import { Suspense } from 'react'
 import { Navbar } from '@/components/navbar'
+import { HeroArt } from '@/components/hero-art'
 import { SectionLoading } from '@/components/section-loading'
 import { fetchPagefromAPI } from '@/app/actions'
 import { getBlockByName } from '@/medu/queries'
@@ -54,7 +55,8 @@ export default async function CompanyPage() {
 
 function CompanyHero({ header }: { header?: HeaderBlockContent }) {
   return (
-    <section className="kt-hero relative isolate" style={{ background: 'var(--bg-soft)' }}>
+    <section className="kt-hero relative isolate">
+      <HeroArt />
       <div className="container kt-hero-content" style={{ paddingBottom: 0 }}>
         <div className="kt-eyebrow">Legal</div>
         <h1 className="kt-display l" style={{ marginTop: '16px' }}>
