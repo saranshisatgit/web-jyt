@@ -1,0 +1,69 @@
+{
+  "_note": "Company registration & compliance data used by /company page. Covers India & EU (Latvia) jurisdictions.",
+  "india": {
+    "label": "India",
+    "sections": {
+      "registration": {
+        "heading": "Registration Details",
+        "fields": [
+          { "key": "companyName", "label": "Company Name", "value": "Jaal Yantra Textiles Private Limited" },
+          { "key": "cin", "label": "CIN (Corporate Identity Number)", "value": "U18109HP2025PTCXXXXXX" },
+          { "key": "incorporationDate", "label": "Date of Incorporation", "value": "15 January 2025" },
+          { "key": "registeredAddress", "label": "Registered Office", "value": "Dharamshala, Himachal Pradesh 176057, India" },
+          { "key": "status", "label": "Status", "value": "Active & Compliant" }
+        ]
+      },
+      "tax": {
+        "heading": "Tax Information",
+        "fields": [
+          { "key": "gst", "label": "GSTIN", "value": "02AAHCJ4643R1ZB" },
+          { "key": "pan", "label": "PAN", "value": "AAHCJ4643R" },
+          { "key": "tan", "label": "TAN", "value": "DELJXXXXXX" },
+          { "key": "msme", "label": "MSME Registration", "value": "UDYAM-HP-XX-XXXXXX" }
+        ]
+      },
+      "filing": {
+        "heading": "Filing & Compliance",
+        "fields": [
+          { "key": "financialYear", "label": "Current Financial Year", "value": "2025–26" },
+          { "key": "lastAnnualReturn", "label": "Last Annual Return", "value": "FY 2024–25 (to be filed)" },
+          { "key": "nextGstReturn", "label": "GST Return Schedule", "value": "20th of every month" },
+          { "key": "auditor", "label": "Statutory Auditor", "value": "To be appointed" }
+        ]
+      }
+    }
+  },
+  "eu": {
+    "label": "European Union (Latvia)",
+    "sections": {
+      "registration": {
+        "heading": "Registration Details",
+        "fields": [
+          { "key": "companyName", "label": "Company Name", "value": "Jaal Yantra Textiles SIA" },
+          { "key": "registrationNumber", "label": "Registration Number", "value": "LV40203XXXXXXXXX" },
+          { "key": "incorporationDate", "label": "Date of Registration", "value": "20 March 2025" },
+          { "key": "registeredAddress", "label": "Registered Office", "value": "Riga, LV-10XX, Latvia" },
+          { "key": "legalForm", "label": "Legal Form", "value": "SIA (Sabiedrība ar ierobežotu atbildību)" },
+          { "key": "status", "label": "Status", "value": "Registered & Compliant" }
+        ]
+      },
+      "tax": {
+        "heading": "Tax Information",
+        "fields": [
+          { "key": "vatNumber", "label": "VAT Registration", "value": "LVXXXXXXXXX" },
+          { "key": "euTaxId", "label": "EU Tax ID", "value": "LVXXXXXXXXX" },
+          { "key": "taxAuthority", "label": "Tax Authority", "value": "VID (Valsts ieņēmumu dienests)" }
+        ]
+      },
+      "filing": {
+        "heading": "Filing & Compliance",
+        "fields": [
+          { "key": "financialYear", "label": "Financial Year", "value": "1 January – 31 December" },
+          { "key": "lastAnnualReturn", "label": "Last Annual Return", "value": "FY 2025 (pending first filing)" },
+          { "key": "nextVatReturn", "label": "VAT Return Schedule", "value": "Quarterly" },
+          { "key": "auditor", "label": "Auditor", "value": "To be appointed" }
+        ]
+      }
+    }
+  }
+}

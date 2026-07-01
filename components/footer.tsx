@@ -87,6 +87,7 @@ export function Footer() {
             <h4>{t("footer.building")}</h4>
             <ul>
               <li><Link href="/about">{t("nav.about")}</Link></li>
+              <li><Link href="/company">{t("footer.company")}</Link></li>
               <li><Link href="/contact">{t("footer.getADemo")}</Link></li>
               <li>
                 <a href="https://github.com/Jaal-Yantra-Textiles/v2" target="_blank" rel="noopener noreferrer">
