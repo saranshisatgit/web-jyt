@@ -1,6 +1,5 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 
 type HeroArtItem = {
@@ -58,26 +57,17 @@ export function HeroArt() {
   const { data } = useHeroArt()
   const images = (data?.items ?? []).filter((i) => i.type === 'image')
   const current = images[0]
-  const imgRef = useRef<HTMLImageElement>(null)
-  const [loaded, setLoaded] = useState(false)
-
-  useEffect(() => {
-    if (imgRef.current?.complete) setLoaded(true)
-  }, [])
 
   if (!current) return null
 
   return (
     <>
-      {!loaded && <div className="kt-hero-placeholder" aria-hidden />}
       <img
-        ref={imgRef}
         src={current.url}
         alt=""
-        className={`kt-hero-video${loaded ? ' kt-hero-video--loaded' : ''}`}
+        className="kt-hero-video"
         aria-hidden
         style={{ objectFit: 'cover' }}
-        onLoad={() => setLoaded(true)}
       />
       <div className="kt-hero-scrim" aria-hidden />
     </>
