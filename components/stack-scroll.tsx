@@ -28,7 +28,7 @@ function StackCard({ step, i }: { step: StackStep; i: number }) {
         display: 'flex',
         alignItems: 'center',
         background: 'var(--bg)',
-        zIndex: STEPS.length - i,
+        zIndex: i + 1,
       }}
     >
       <div
@@ -67,7 +67,7 @@ export function StackScroll() {
           <h2 className="kt-display m">One system. <em>Sketch to shipment.</em></h2>
         </div>
       </div>
-      <div style={{ height: `${STEPS.length * 100}vh`, position: 'relative' }}>
+      <div style={{ height: `${(STEPS.length + 1) * 100}vh`, position: 'relative' }}>
         {STEPS.map((step, i) => (
           <StackCard key={step.stage} step={step} i={i} />
         ))}
