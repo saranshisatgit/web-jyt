@@ -1,0 +1,106 @@
+{
+  "_note": "Content block for the /solutions page + home SolutionsShowcase (#605). Brands-first, by workflow stage, mockup-as-block-header. Consumed via data/solutions.ts (typed re-export). CMS-liftable.",
+  "hero": {
+    "eyebrow": "Il sistema operativo dell'atelier",
+    "title": "Un unico OS per il tuo atelier.",
+    "subtitle": "Progetta, produci, fornisci e vendi su un unico binario — dal primo schizzo a un storefront brandizzato, con ogni artigiano, lotto di materiale e SKU tracciati.",
+    "primaryCta": { "label": "Prenota una demo", "href": "/contact" },
+    "secondaryCta": { "label": "Vedi i prezzi", "href": "/pricing" }
+  },
+  "audienceCallout": {
+    "eyebrow": "A chi è rivolto",
+    "title": "Progettato per case di moda e atelier indipendenti.",
+    "body": "Che tu gestisca una maison con una sala campioni o un atelier in solitaria con un telefono, JYT è il sistema operativo di produzione dietro il marchio — e la rete di artigiani qualificati con cui produci.",
+    "audiences": [
+      { "tag": "Maison e brand", "line": "Gestisci design, produzione, inventario e storefront su un unico sistema." },
+      { "tag": "Atelier indipendenti", "line": "Inizia da solo, affida il lavoro a artigiani verificati, vendi senza creare un sito." },
+      { "tag": "La rete di artigiani", "line": "Oltre 150 artigiani in UE · IN · AU — l'altro lato del tuo binario." }
+    ]
+  },
+  "flagshipMockup": {
+    "webm": "/mockups/design-to-cart.webm",
+    "gif": "/mockups/design-to-cart.gif",
+    "caption": "Un capo, un binario — progettato in atelier, pubblicato su un storefront brandizzato, venduto.",
+    "alt": "Uno scialle Pashmina che passa dal design in atelier a un prodotto pubblicato su storefront e inserito nel carrello."
+  },
+  "blocks": [
+    {
+      "id": "product-create",
+      "stage": "01 · Design",
+      "title": "Schizza, brief e crea il capo.",
+      "body": "Inizia un prodotto come inizi un capo — velocemente o in modo completo. Aggiunta rapida di un articolo monovariante nella tua valuta predefinita, oppure apri il flusso avanzato per varianti, prezzi regionali, SEO e campi organizzativi. I board di design e i riferimenti d'umore tengono il brief in un unico posto.",
+      "features": [
+        "Creazione rapida vs. avanzata del prodotto",
+        "Varianti, prezzi regionali, campi SEO",
+        "Board di design e asset pre-produzione",
+        "Descrivi da immagine per abbozzare testi"
+      ],
+      "mockup": {
+        "webm": "/mockups/product-create.webm",
+        "gif": "/mockups/product-create.gif",
+        "source": "product-create-mockup.html",
+        "alt": "Creazione di un nuovo prodotto — scelta tra rapida e avanzata, poi compilazione di titolo, prezzo e stock."
+      }
+    },
+    {
+      "id": "production-run",
+      "stage": "02 · Produci",
+      "title": "Assegna compiti ad artigiani verificati, traccia ogni lotto.",
+      "body": "Trasforma un ordine di design in una commessa di produzione con modelli di attività, dipendenze e un partner verificato assegnato. Guardalo passare da accettato a completato, cattura output reale e costo per lotto, e vedi materiali, manodopera, spese generali e commissioni del partner confluire in un unico numero.",
+      "features": [
+        "Modelli di attività e dipendenze",
+        "Costo per lotto: materiali · manodopera · spese · commissione partner",
+        "Ciclo di vita: accetta → inizia → completa",
+        "Avanzamento live dal portale del partner"
+      ],
+      "mockup": {
+        "webm": "/mockups/production-run.webm",
+        "gif": "/mockups/production-run.gif",
+        "source": "production-run-mockup.html",
+        "alt": "Una commessa di produzione per uno scialle Pashmina — completamento con ripartizione dei costi per pezzo e checklist delle attività."
+      }
+    },
+    {
+      "id": "inventory-orders",
+      "stage": "03 · Fornisci",
+      "title": "Traccia le materie prime dall'inizio alla fine.",
+      "body": "Sappi cosa hai e cosa sta arrivando. Inventario per sede, avvisi di riordino e notifiche ai fornitori mantengono le materie prime in produzione — con costi unitari che confluiscono direttamente nei tuoi economics di produzione.",
+      "features": [
+        "Inventario per sede",
+        "Avvisi di riordino e notifiche ai fornitori",
+        "Costi unitari confluiscono nel costo di produzione",
+        "Ordini in entrata e ricevimento merci"
+      ],
+      "mockup": {
+        "webm": "/mockups/inventory-orders.webm",
+        "gif": "/mockups/inventory-orders.gif",
+        "source": "inventory-orders-mockup.html",
+        "alt": "Gestione degli ordini di inventario — ricezione materie prime e tracciamento stock per sede."
+      }
+    },
+    {
+      "id": "whatsapp",
+      "stage": "04 · Vendi e coordina",
+      "title": "Pubblica brandizzato, coordina sui canali che gli artigiani già usano.",
+      "body": "Consegna a un storefront headless con domini personalizzati e un Passaporto Digitale del Prodotto per SKU — pubblica senza ricostruire un sito. Dietro le quinte, i partner ricevono compiti e aggiornamenti su WhatsApp e tramite un portale mobile-first, così il coordinamento avviene dove i tuoi artigiani sono già presenti.",
+      "features": [
+        "Storefront headless + domini personalizzati",
+        "Passaporto Digitale del Prodotto per SKU (pronto per EU ESPR)",
+        "WhatsApp + portale partner mobile-first",
+        "Sincronizzazione prodotti Instagram e Facebook"
+      ],
+      "mockup": {
+        "webm": "/mockups/whatsapp.webm",
+        "gif": "/mockups/whatsapp.gif",
+        "source": "whatsapp-mockup.html",
+        "alt": "Coordinamento con un partner via WhatsApp — aggiornamenti attività e conferme su mobile."
+      }
+    }
+  ],
+  "cta": {
+    "title": "Stessi binari, entrambi i lati del commercio.",
+    "body": "Gestisci il tuo marchio su un unico OS di produzione — e attingi a una rete di artigiani verificati mentre lo fai.",
+    "primaryCta": { "label": "Prenota una demo", "href": "/contact" },
+    "secondaryCta": { "label": "Contattaci", "href": "/contact" }
+  }
+}

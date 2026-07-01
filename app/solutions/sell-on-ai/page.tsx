@@ -1,9 +1,11 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { headers } from 'next/headers'
 import { Navbar } from '@/components/navbar'
 import { HeroArt } from '@/components/hero-art'
 import { AgentCheckout } from '@/components/mockup-animations'
-import sellOnAi from '@/data/sell-on-ai.json'
+import { getPageContent } from '@/lib/page-content'
+import { DEFAULT_LOCALE } from '@/lib/i18n/config'
 
 export const metadata: Metadata = {
   title: 'Sell on AI — your store, addressable by agents | JYT',
@@ -11,7 +13,10 @@ export const metadata: Metadata = {
     'JYT ships a Model Context Protocol server for every storefront. An AI agent can discover your store, search the catalogue, build a cart, onboard the shopper, and take payment — PayU for INR, Stripe for the rest.',
 }
 
-export default function SellOnAiPage() {
+export default async function SellOnAiPage() {
+  const h = await headers()
+  const locale = h.get('x-locale') || DEFAULT_LOCALE
+  const sellOnAi = await getPageContent('sell-on-ai', locale) as any
   const { hero, shift, steps, benefits, clients, cta } = sellOnAi
   return (
     <main>
@@ -55,7 +60,7 @@ export default function SellOnAiPage() {
             <h2 className="kt-display m">{steps.title}</h2>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '24px', marginTop: '8px' }}>
-            {steps.items.map((s) => (
+            {(steps.items as any[]).map((s) => (
               <div className="kt-card" key={s.n}>
                 <div className="kt-meta" style={{ color: 'var(--accent-deep)' }}>{s.n}</div>
                 <h3 className="kt-display s" style={{ marginTop: '10px', fontSize: '20px' }}>{s.title}</h3>
@@ -74,7 +79,7 @@ export default function SellOnAiPage() {
             <h2 className="kt-display m">{benefits.title}</h2>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '24px' }}>
-            {benefits.items.map((b) => (
+            {(benefits.items as any[]).map((b) => (
               <div className="kt-card" key={b.title}>
                 <div className="kt-meta" style={{ color: 'var(--accent-deep)' }}>{b.title}</div>
                 <p className="muted" style={{ marginTop: '10px', lineHeight: 1.55 }}>{b.body}</p>
@@ -92,7 +97,7 @@ export default function SellOnAiPage() {
             <h2 className="kt-display m">{clients.title}</h2>
           </div>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', marginTop: '8px' }}>
-            {clients.items.map((c) => (
+            {(clients.items as any[]).map((c) => (
               <span key={c} className="kt-foot-badge" style={{ fontSize: 14, padding: '8px 16px' }}>{c}</span>
             ))}
           </div>

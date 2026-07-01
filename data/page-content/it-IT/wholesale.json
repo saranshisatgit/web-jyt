@@ -1,0 +1,50 @@
+{
+  "_note": "Content block for /solutions/wholesale (#605). Use-case page: wholesalers/buyers enter sustainable markets by sourcing verified inventory and creating their own designs from it in the partner studio, each piece carrying a Digital Product Passport. Lift into the CMS later without changing the component.",
+  "hero": {
+    "eyebrow": "Caso d'uso · Wholesale",
+    "title": "Approvvigiona verificato. Vendi sostenibile.",
+    "subtitle": "Esplora l'inventario verificato dalla nostra rete di artigiani, progetta i tuoi capi nel partner studio e vendi nei mercati sostenibili. Ogni SKU porta un Passaporto Digitale del Prodotto.",
+    "primaryCta": { "label": "Contattaci", "href": "/contact" },
+    "secondaryCta": { "label": "Confronta piattaforme", "href": "/compare" }
+  },
+  "shift": {
+    "eyebrow": "Perché ora",
+    "title": "Ai compratori viene chiesto di dimostrarlo.",
+    "body": "Le norme sulle dichiarazioni verdi (EU ESPR, il mandato del Passaporto Digitale del Prodotto) trasformano 'sostenibile' da un'etichetta in una ricevuta. La maggior parte delle piattaforme wholesale sposta ordini — non possono tracciare un materiale o il suo creatore. JYT parte dall'inventario verificato, quindi la prova è incorporata."
+  },
+  "steps": {
+    "eyebrow": "Come funziona",
+    "title": "Dall'inventario verificato alla tua linea personale.",
+    "items": [
+      { "n": "01", "title": "Esplora l'inventario verificato", "body": "Approvvigiona da materiali tracciabili e artigiani verificati — ogni lotto legato alla sua origine, artigiano e certificazione. Filtra per ciò che puoi sostenere." },
+      { "n": "02", "title": "Progetta nel partner studio", "body": "Usa il partner studio per creare i tuoi prodotti da quell'inventario — varianti, prezzi e dettagli tecnici — senza una sala campioni né un contratto PLM." },
+      { "n": "03", "title": "Vendi con un passaporto su ogni capo", "body": "Ogni SKU viene distribuito con un Passaporto Digitale del Prodotto pronto per EU ESPR — i compratori attenti alla provenienza e i regolatori possono verificare. Spazio sugli scaffali sostenibili, guadagnato, non dichiarato." }
+    ]
+  },
+  "sell": {
+    "eyebrow": "Vendi e coordina",
+    "title": "Brandizzato, tracciabile, su ogni canale.",
+    "subtitle": "I tuoi prodotti portano il passaporto e il tuo marchio attraverso ogni canale di vendita. Inventario, conformità e ordini sono gestiti in un unico posto — dal tuo storefront alla rete di partner.",
+    "items": [
+      { "title": "Storefront brandizzato, sul tuo dominio", "body": "Il tuo storefront headless con un dominio personalizzato, tematizzato sul tuo marchio. Ogni SKU attinge dagli stessi dati di produzione e porta il suo passaporto." },
+      { "title": "Vendi all'interno della rete di partner", "body": "Altri partner JYT possono scoprire e acquistare la tua linea attraverso la rete — un canale wholesale integrato con inventario tracciabile e conformità automatizzata." },
+      { "title": "Ordini e evasione, unificati", "body": "Ogni canale confluisce in un'unica dashboard ordini — incassa pagamenti, evadi e gestisci resi senza re-immettere dati tra le varie superfici di vendita." }
+    ]
+  },
+  "benefits": {
+    "eyebrow": "Perché i grossisti lo scelgono",
+    "title": "Un ingresso accessibile nei mercati sostenibili.",
+    "items": [
+      { "title": "Nessun rischio di greenwashing", "body": "Vendi solo ciò che l'inventario può dimostrare. La provenienza è il default, non un ripensamento." },
+      { "title": "Il tuo marchio, il nostro binario", "body": "Crea i tuoi design brandizzati da stock verificato — possiedi la linea, JYT gestisce la produzione e la tracciabilità sottostanti." },
+      { "title": "Apri la rete", "body": "Oltre 150 artigiani verificati in UE, India e Australia diventano la tua base di fornitura — coordinati via WhatsApp e un portale mobile." },
+      { "title": "Prezzi trasparenti, adatti all'atelier", "body": "Nessun contratto enterprise, nessun blocco commerciale. Prezzi chiari, self-service — a differenza degli incumbent wholesale." }
+    ]
+  },
+  "cta": {
+    "title": "Porta l'inventario verificato ai tuoi acquirenti.",
+    "body": "Ti guideremo nell'approvvigionamento di stock verificato, nella progettazione e nella spedizione con un passaporto su ogni capo.",
+    "primaryCta": { "label": "Prenota una demo", "href": "/contact" },
+    "secondaryCta": { "label": "Vedi l'atelier OS completo", "href": "/solutions" }
+  }
+}

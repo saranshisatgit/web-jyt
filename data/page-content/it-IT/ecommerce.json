@@ -1,0 +1,72 @@
+{
+  "_note": "Content block for /solutions/ecommerce (#605). Use-case page: the partner storefront surface — headless commerce with a custom domain, a Digital Product Passport on every SKU, and channel sync (Instagram/Facebook). Mirrors data/wholesale.json so the page component is symmetric. Lift into the CMS later without changing the component.",
+  "hero": {
+    "eyebrow": "Caso d'uso · Ecommerce",
+    "title": "Uno storefront che puoi possedere.",
+    "subtitle": "Uno storefront headless su un dominio personalizzato, alimentato dagli stessi binari della produzione. Ogni SKU porta un Passaporto Digitale del Prodotto che mette la provenienza in pagina.",
+    "primaryCta": { "label": "Contattaci", "href": "/contact" },
+    "secondaryCta": { "label": "Vedi wholesale", "href": "/solutions/wholesale" }
+  },
+  "shift": {
+    "eyebrow": "Perché ora",
+    "title": "I compratori vogliono la ricevuta, non la dichiarazione.",
+    "body": "Il commercio headless è il minimo sindacale; la provenienza è il nuovo differenziatore. L'EU ESPR e il mandato del Passaporto Digitale del Prodotto rendono 'chi lo ha fatto' una risposta obbligatoria in pagina. JYT incorpora il passaporto nel prodotto al momento della pubblicazione — lo storefront non lo aggiunge mai dopo."
+  },
+  "steps": {
+    "eyebrow": "Come funziona",
+    "title": "Dal design pubblicato a un negozio brandizzato live.",
+    "items": [
+      { "n": "01", "title": "Pubblica dall'OS dell'atelier", "body": "Un design approvato in produzione diventa un prodotto live — varianti, prezzi regionali e passaporto coniati in un unico passaggio. Nessuna re-immissione, nessun PIM separato." },
+      { "n": "02", "title": "Vendi sul tuo dominio", "body": "Uno storefront headless su un dominio personalizzato, tematizzato sul tuo marchio. SEO-friendly, veloce e distribuibile per partner dallo stesso codebase." },
+      { "n": "03", "title": "Mostra il passaporto in pagina", "body": "Ogni pagina prodotto mostra il suo Passaporto Digitale del Prodotto — artigiano, lotto di materiale, certificazioni. I compratori attenti alla provenienza e i regolatori verificano senza lasciare il negozio." }
+    ]
+  },
+  "benefits": {
+    "eyebrow": "Perché i brand lo scelgono",
+    "title": "Commercio con conformità inclusa.",
+    "items": [
+      { "title": "Un binario, dal design alla vendita", "body": "La stessa piattaforma che gestisce la produzione gestisce il tuo negozio. Nessun disallineamento tra PLM, inventario e scaffale." },
+      { "title": "Passaporto per SKU, nativo", "body": "Passaporto Digitale del Prodotto pronto per EU ESPR su ogni capo — non un abbonamento separato come gli strumenti di provenienza standalone." },
+      { "title": "Vendi dove sono i compratori", "body": "Sincronizzazione catalogo Instagram e Facebook pronta all'uso, più uno storefront con dominio personalizzato per la domanda diretta." },
+      { "title": "Headless, quindi è tuo", "body": "Temi personalizzati, dominio personalizzato, il tuo marchio al centro. Lo storefront è un'app Next.js distribuita su Vercel che puoi estendere." }
+    ]
+  },
+  "cta": {
+    "title": "Apri uno storefront che conosce già la storia.",
+    "body": "Ti mostreremo la pubblicazione di un design su un negozio brandizzato con un passaporto su ogni SKU — live, sul tuo dominio.",
+    "primaryCta": { "label": "Prenota una demo", "href": "/contact" },
+    "secondaryCta": { "label": "Vedi l'atelier OS completo", "href": "/solutions" }
+  },
+  "starter": {
+    "eyebrow": "Funzione principale · Starter",
+    "title": "Starter per avviare il tuo brand di moda.",
+    "subtitle": "Salta l'agenzia. Scegli uno starter pensato per la moda — il nome del tuo marchio, la tua palette, il tuo dominio — e sei online in un pomeriggio. Ogni starter include un tema storefront, un catalogo prodotti seminato dal tuo atelier e il pannello di amministrazione pronto all'uso.",
+    "items": [
+      { "title": "Il tuo marchio, online oggi", "body": "Inserisci il nome del tuo brand, scegli una palette, collega un dominio. Lo starter distribuisce uno storefront Next.js tematizzato su Vercel in un clic." },
+      { "title": "Catalogo dall'atelier", "body": "I prodotti pubblicati in produzione confluiscono direttamente — varianti, prezzi, passaporto. Nessun import CSV, nessuna migrazione PIM." },
+      { "title": "Personalizza il tema a tuo piacimento", "body": "Lo starter è un codebase che possiedi, non un page builder. Modifica il tema, scambia componenti, estendi il checkout — è tuo." }
+    ]
+  },
+  "admin": {
+    "eyebrow": "Funzione principale · Admin",
+    "title": "Un pannello amministrativo brillante per gestire i prodotti.",
+    "subtitle": "Il pannello admin è il punto d'incontro tra storefront e atelier OS. Gestisci prodotti, varianti e passaporti in un unico posto — con gli stessi dati che alimentano produzione, inventario e wholesale.",
+    "items": [
+      { "title": "Prodotti e varianti", "body": "Crea, modifica e organizza prodotti con supporto completo per varianti — colore, taglia, materiale. Stock e prezzi si sincronizzano automaticamente su ogni canale." },
+      { "title": "Passaporto per SKU", "body": "Allega e modifica i dati del Passaporto Digitale del Prodotto — artigiano, lotto di materiale, certificazione — direttamente sul prodotto. Le modifiche appaiono sullo storefront istantaneamente." },
+      { "title": "Ordini e evasione", "body": "Vedi ogni ordine, incassa il pagamento ed evadi da un'unica schermata. Resi e cambi confluiscono nell'inventario senza re-immissione." }
+    ]
+  },
+  "integrations": {
+    "eyebrow": "Integrazioni",
+    "title": "Costruito su un motore commerciale che puoi estendere.",
+    "subtitle": "Lo storefront e l'admin sono basati su Medusa JS — un framework commerciale modulare e open-source. Distribuisci con i moduli di cui hai bisogno, personalizza il framework e orchestra i flussi visivamente.",
+    "items": [
+      { "title": "Basato su Medusa JS", "body": "Un motore commerciale headless, API-first. Ogni entità è un modulo — estendi o sostituisci senza fare fork del core." },
+      { "title": "Distribuito con moduli", "body": "Carrello, checkout, pagamento, evasione, inventario, tasse — moduli pronti per la produzione che funzionano subito e si sostituiscono pulitamente." },
+      { "title": "Framework personalizzabile", "body": "Subscriber, flussi di lavoro e logica personalizzata si agganciano al bus degli eventi. Costruisci le tue peculiarità senza combattere il framework." },
+      { "title": "Editor di flussi visivo", "body": "Costruttore di flussi drag-and-drop per l'automazione — riordina la logica, aggiungi passaggi e spedisci flussi senza scrivere codice." },
+      { "title": "Marketing integrato", "body": "Campagne email, sconti e gift card sono inclusi nel motore. Segmenti e trigger si collegano ai dati reali di acquisto." }
+    ]
+  }
+}

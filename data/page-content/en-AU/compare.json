@@ -1,0 +1,66 @@
+{
+  "_note": "Content block for the /compare page (#605). Grounded in notes/competitive-positioning.md + notes/competitive-pricing.md (daemon-researched, Claude-verified against live sites 2026-06-23). Lift into the CMS later without changing the page component. coverage/values use: yes | no | partial.",
+  "hero": {
+    "eyebrow": "Compare",
+    "title": "One rail, not four tools.",
+    "subtitle": "Wholesale platforms only sell. PLM tools only design. Provenance apps only verify. JYT runs the whole atelier — design to sale — on one system, built for independent houses, not enterprises.",
+    "primaryCta": { "label": "Book a walkthrough", "href": "/contact" },
+    "secondaryCta": { "label": "See pricing", "href": "/pricing" }
+  },
+  "lifecycle": {
+    "eyebrow": "Lifecycle coverage",
+    "title": "Who covers what.",
+    "subtitle": "No competitor spans design through sale. They each own a slice; JYT owns the rail.",
+    "stages": ["Design", "Produce", "Supply", "Sell", "Passport"],
+    "rows": [
+      { "name": "JYT", "highlight": true, "coverage": ["yes", "yes", "yes", "yes", "yes"], "note": "One rail, design to sale" },
+      { "name": "NuORDER", "coverage": ["no", "no", "yes", "yes", "no"], "note": "Wholesale only" },
+      { "name": "JOOR", "coverage": ["no", "no", "yes", "yes", "no"], "note": "Wholesale only" },
+      { "name": "Bamboo Rose (Backbone)", "coverage": ["yes", "yes", "yes", "no", "no"], "note": "PLM — stops before selling" },
+      { "name": "Provenance", "coverage": ["no", "no", "no", "no", "yes"], "note": "Claims layer only" },
+      { "name": "Shopify", "coverage": ["no", "no", "no", "yes", "no"], "note": "Storefront + B2B (Plus)" }
+    ]
+  },
+  "comparison": {
+    "eyebrow": "Feature by feature",
+    "title": "What you actually get.",
+    "columns": ["JYT", "NuORDER", "JOOR", "Bamboo Rose", "Provenance", "Shopify"],
+    "rows": [
+      { "feature": "Design boards & product creation", "values": ["yes", "no", "no", "yes", "no", "partial"] },
+      { "feature": "Production runs & maker tasks", "values": ["yes", "no", "no", "yes", "no", "no"] },
+      { "feature": "Raw-material inventory & run costing", "values": ["yes", "no", "no", "yes", "no", "partial"] },
+      { "feature": "Wholesale / B2B selling", "values": ["yes", "yes", "yes", "partial", "no", "yes"] },
+      { "feature": "Branded D2C storefront", "values": ["yes", "no", "no", "no", "no", "yes"] },
+      { "feature": "Vetted artisan / maker network", "values": ["yes", "no", "no", "no", "no", "no"] },
+      { "feature": "Built-in Digital Product Passport", "values": ["yes", "no", "no", "no", "yes", "no"] },
+      { "feature": "WhatsApp + mobile partner portal", "values": ["yes", "no", "no", "no", "no", "no"] },
+      { "feature": "Built for independent ateliers", "values": ["yes", "no", "no", "no", "partial", "partial"] },
+      { "feature": "Transparent public pricing", "values": ["yes", "no", "no", "no", "no", "yes"] }
+    ]
+  },
+  "pricing": {
+    "eyebrow": "Pricing",
+    "title": "No sales call required.",
+    "subtitle": "Every wholesale and PLM rival hides pricing behind a sales call. Shopify is transparent — but sell-side only. JYT publishes atelier-friendly tiers for the whole rail.",
+    "rows": [
+      { "name": "JYT", "highlight": true, "model": "Transparent tiers", "price": "Atelier-friendly", "note": "Self-serve — no sales call" },
+      { "name": "NuORDER", "model": "Enterprise", "price": "Hidden", "note": "Pricing page returns 404" },
+      { "name": "JOOR", "model": "Tiered", "price": "Hidden", "note": "Tiers shown, every price is “Request Pricing”" },
+      { "name": "Bamboo Rose", "model": "Enterprise PLM", "price": "Hidden", "note": "“Talk to a TotalPLM expert”" },
+      { "name": "Provenance", "model": "Enterprise", "price": "Hidden", "note": "Contact sales" },
+      { "name": "Shopify", "model": "Tiered SaaS", "price": "€19–€2,100+/mo", "note": "Public — but sell-side only" }
+    ]
+  },
+  "differentiators": [
+    { "title": "One rail, not four tools", "body": "Design, produce, supply, and sell on a single system — no stitching a PLM to a wholesale platform to a storefront to a compliance app." },
+    { "title": "Built for ateliers, not enterprises", "body": "The wholesale and PLM incumbents are priced and built for global retail. JYT is for independent houses of 5–200 people." },
+    { "title": "The maker network is the product", "body": "150+ vetted artisans across EU, India & Australia, with routing and coordination built in. No rival offers this." },
+    { "title": "Passport built in, not bolted on", "body": "EU ESPR-ready Digital Product Passport per SKU — native, not a separate subscription like standalone provenance tools." }
+  ],
+  "cta": {
+    "title": "See it on your own pieces.",
+    "body": "Book a walkthrough and we’ll run one of your products from sketch to storefront — on one rail.",
+    "primaryCta": { "label": "Book a walkthrough", "href": "/contact" },
+    "secondaryCta": { "label": "See pricing", "href": "/pricing" }
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "_note": "Content block for the /compare page (#605). Grounded in notes/competitive-positioning.md + notes/competitive-pricing.md (daemon-researched, Claude-verified against live sites 2026-06-23). Lift into the CMS later without changing the page component. coverage/values use: yes | no | partial.",
+  "hero": {
+    "eyebrow": "Confronta",
+    "title": "Un binario, non quattro strumenti.",
+    "subtitle": "Le piattaforme wholesale vendono e basta. Gli strumenti PLM progettano e basta. Le app di provenienza verificano e basta. JYT gestisce l'intero atelier — dal design alla vendita — su un unico sistema, costruito per case indipendenti, non per grandi imprese.",
+    "primaryCta": { "label": "Prenota una demo", "href": "/contact" },
+    "secondaryCta": { "label": "Vedi i prezzi", "href": "/pricing" }
+  },
+  "lifecycle": {
+    "eyebrow": "Copertura del ciclo di vita",
+    "title": "Chi copre cosa.",
+    "subtitle": "Nessun concorrente copre dall'ideazione alla vendita. Ognuno possiede una fetta; JYT possiede l'intero binario.",
+    "stages": ["Design", "Produci", "Fornisci", "Vendi", "Passaporto"],
+    "rows": [
+      { "name": "JYT", "highlight": true, "coverage": ["yes", "yes", "yes", "yes", "yes"], "note": "Un binario, dal design alla vendita" },
+      { "name": "NuORDER", "coverage": ["no", "no", "yes", "yes", "no"], "note": "Solo wholesale" },
+      { "name": "JOOR", "coverage": ["no", "no", "yes", "yes", "no"], "note": "Solo wholesale" },
+      { "name": "Bamboo Rose (Backbone)", "coverage": ["yes", "yes", "yes", "no", "no"], "note": "PLM — si ferma prima della vendita" },
+      { "name": "Provenance", "coverage": ["no", "no", "no", "no", "yes"], "note": "Solo livello dichiarazioni" },
+      { "name": "Shopify", "coverage": ["no", "no", "no", "yes", "no"], "note": "Storefront + B2B (Plus)" }
+    ]
+  },
+  "comparison": {
+    "eyebrow": "Caratteristica per caratteristica",
+    "title": "Cosa ottieni realmente.",
+    "columns": ["JYT", "NuORDER", "JOOR", "Bamboo Rose", "Provenance", "Shopify"],
+    "rows": [
+      { "feature": "Board di design e creazione prodotti", "values": ["yes", "no", "no", "yes", "no", "partial"] },
+      { "feature": "Commesse di produzione e attività artigiani", "values": ["yes", "no", "no", "yes", "no", "no"] },
+      { "feature": "Inventario materie prime e costing produzione", "values": ["yes", "no", "no", "yes", "no", "partial"] },
+      { "feature": "Vendita wholesale / B2B", "values": ["yes", "yes", "yes", "partial", "no", "yes"] },
+      { "feature": "Storefront D2C brandizzato", "values": ["yes", "no", "no", "no", "no", "yes"] },
+      { "feature": "Rete artigiani / maker verificati", "values": ["yes", "no", "no", "no", "no", "no"] },
+      { "feature": "Passaporto Digitale del Prodotto integrato", "values": ["yes", "no", "no", "no", "yes", "no"] },
+      { "feature": "WhatsApp + portale partner mobile", "values": ["yes", "no", "no", "no", "no", "no"] },
+      { "feature": "Costruito per atelier indipendenti", "values": ["yes", "no", "no", "no", "partial", "partial"] },
+      { "feature": "Prezzi pubblici trasparenti", "values": ["yes", "no", "no", "no", "no", "yes"] }
+    ]
+  },
+  "pricing": {
+    "eyebrow": "Prezzi",
+    "title": "Nessuna chiamata commerciale necessaria.",
+    "subtitle": "Ogni concorrente wholesale e PLM nasconde i prezzi dietro una chiamata commerciale. Shopify è trasparente — ma solo lato vendita. JYT pubblica piani tariffari adatti all'atelier per l'intero binario.",
+    "rows": [
+      { "name": "JYT", "highlight": true, "model": "Piani trasparenti", "price": "Adatti all'atelier", "note": "Self-service — nessuna chiamata commerciale" },
+      { "name": "NuORDER", "model": "Enterprise", "price": "Nascosti", "note": "La pagina dei prezzi restituisce 404" },
+      { "name": "JOOR", "model": "A livelli", "price": "Nascosti", "note": "I livelli sono mostrati, ogni prezzo è \"Richiedi Prezzo\"" },
+      { "name": "Bamboo Rose", "model": "PLM Enterprise", "price": "Nascosti", "note": "\"Parla con un esperto TotalPLM\"" },
+      { "name": "Provenance", "model": "Enterprise", "price": "Nascosti", "note": "Contatta le vendite" },
+      { "name": "Shopify", "model": "SaaS a livelli", "price": "€19–€2.100+/mese", "note": "Pubblici — ma solo lato vendita" }
+    ]
+  },
+  "differentiators": [
+    { "title": "Un binario, non quattro strumenti", "body": "Progetta, produci, fornisci e vendi su un unico sistema — niente più cuciture tra PLM, piattaforma wholesale, storefront e app di conformità." },
+    { "title": "Costruito per atelier, non per grandi imprese", "body": "Gli incumbent wholesale e PLM sono tariffati e costruiti per il retail globale. JYT è per case indipendenti di 5–200 persone." },
+    { "title": "La rete di artigiani è il prodotto", "body": "Oltre 150 artigiani verificati in UE, India e Australia, con instradamento e coordinamento integrati. Nessun rivale offre questo." },
+    { "title": "Passaporto integrato, non aggiunto", "body": "Passaporto Digitale del Prodotto pronto per EU ESPR per SKU — nativo, non un abbonamento separato come gli strumenti di provenienza standalone." }
+  ],
+  "cta": {
+    "title": "Vedilo sui tuoi stessi capi.",
+    "body": "Prenota una demo e faremo passare uno dei tuoi prodotti dallo schizzo allo storefront — su un unico binario.",
+    "primaryCta": { "label": "Prenota una demo", "href": "/contact" },
+    "secondaryCta": { "label": "Vedi i prezzi", "href": "/pricing" }
+  }
+}

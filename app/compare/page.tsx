@@ -1,9 +1,11 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { headers } from 'next/headers'
 import { Navbar } from '@/components/navbar'
 import { HeroArt } from '@/components/hero-art'
 import { FeaturedMockup } from '@/components/solution-block'
-import compare from '@/data/compare.json'
+import { getPageContent } from '@/lib/page-content'
+import { DEFAULT_LOCALE } from '@/lib/i18n/config'
 
 export const metadata: Metadata = {
   title: 'Compare — JYT vs wholesale, PLM & provenance tools',
@@ -52,7 +54,10 @@ const th: React.CSSProperties = {
 const thHi: React.CSSProperties = { ...th, color: 'var(--accent-deep)', background: 'var(--accent-pale)', borderTopLeftRadius: 'var(--r-md)', borderTopRightRadius: 'var(--r-md)' }
 const featTd: React.CSSProperties = { padding: '14px 16px 14px 0', borderTop: '1px solid var(--rule-soft)', fontSize: 14, color: 'var(--ink)', minWidth: 220 }
 
-export default function ComparePage() {
+export default async function ComparePage() {
+  const h = await headers()
+  const locale = h.get('x-locale') || DEFAULT_LOCALE
+  const compare = await getPageContent('compare', locale) as any
   const { hero, lifecycle, comparison, pricing, differentiators, cta } = compare
   return (
     <main>
@@ -90,17 +95,17 @@ export default function ComparePage() {
               <thead>
                 <tr>
                   <th style={{ ...th, textAlign: 'left' }} />
-                  {lifecycle.stages.map((s) => (<th key={s} style={th}>{s}</th>))}
+                  {(lifecycle.stages as string[]).map((s) => (<th key={s} style={th}>{s}</th>))}
                   <th style={{ ...th, textAlign: 'left' }} />
                 </tr>
               </thead>
               <tbody>
-                {lifecycle.rows.map((r) => (
+                {(lifecycle.rows as any[]).map((r) => (
                   <tr key={r.name}>
                     <td style={{ padding: '14px 16px 14px 0', borderTop: '1px solid var(--rule-soft)', fontWeight: r.highlight ? 600 : 500, color: r.highlight ? 'var(--accent-deep)' : 'var(--ink)', whiteSpace: 'nowrap' }}>
                       {r.name}
                     </td>
-                    {r.coverage.map((v, i) => (<Cell key={i} v={v} highlight={r.highlight} />))}
+                    {(r.coverage as any[]).map((v, i) => (<Cell key={i} v={v} highlight={r.highlight} />))}
                     <td style={{ padding: '14px 0 14px 16px', borderTop: '1px solid var(--rule-soft)', fontSize: 13, color: 'var(--ink-mute)', whiteSpace: 'nowrap' }}>{r.note}</td>
                   </tr>
                 ))}
@@ -122,14 +127,14 @@ export default function ComparePage() {
               <thead>
                 <tr>
                   <th style={{ ...th, textAlign: 'left' }} />
-                  {comparison.columns.map((c, i) => (<th key={c} style={i === 0 ? thHi : th}>{c}</th>))}
+                  {(comparison.columns as string[]).map((c, i) => (<th key={c} style={i === 0 ? thHi : th}>{c}</th>))}
                 </tr>
               </thead>
               <tbody>
-                {comparison.rows.map((row) => (
+                {(comparison.rows as any[]).map((row) => (
                   <tr key={row.feature}>
                     <td style={featTd}>{row.feature}</td>
-                    {row.values.map((v, i) => (<Cell key={i} v={v} highlight={i === 0} />))}
+                    {(row.values as any[]).map((v, i) => (<Cell key={i} v={v} highlight={i === 0} />))}
                   </tr>
                 ))}
               </tbody>
@@ -154,7 +159,7 @@ export default function ComparePage() {
                 </tr>
               </thead>
               <tbody>
-                {pricing.rows.map((r) => (
+                {(pricing.rows as any[]).map((r) => (
                   <tr key={r.name} style={r.highlight ? { background: 'var(--accent-pale)' } : undefined}>
                     <td style={{ padding: '14px 16px', borderTop: '1px solid var(--rule-soft)', fontWeight: r.highlight ? 600 : 500, color: r.highlight ? 'var(--accent-deep)' : 'var(--ink)', whiteSpace: 'nowrap' }}>{r.name}</td>
                     <td style={{ padding: '14px 12px', borderTop: '1px solid var(--rule-soft)', textAlign: 'center', fontSize: 13, color: 'var(--ink-soft)' }}>{r.model}</td>
@@ -172,7 +177,7 @@ export default function ComparePage() {
       <section className="kt-section">
         <div className="container">
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '24px' }}>
-            {differentiators.map((d) => (
+            {(differentiators as any[]).map((d) => (
               <div className="kt-card" key={d.title}>
                 <div className="kt-meta" style={{ color: 'var(--accent-deep)' }}>{d.title}</div>
                 <p className="muted" style={{ marginTop: '10px', lineHeight: 1.55 }}>{d.body}</p>

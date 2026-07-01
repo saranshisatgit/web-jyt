@@ -1,9 +1,11 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { headers } from 'next/headers'
 import { Navbar } from '@/components/navbar'
 import { HeroArt } from '@/components/hero-art'
 import { WholesaleFlow, Coordinate } from '@/components/mockup-animations'
-import wholesale from '@/data/wholesale.json'
+import { getPageContent } from '@/lib/page-content'
+import { DEFAULT_LOCALE } from '@/lib/i18n/config'
 
 export const metadata: Metadata = {
   title: 'Wholesale — source verified inventory, sell sustainable | JYT',
@@ -11,7 +13,10 @@ export const metadata: Metadata = {
     'Wholesalers enter sustainable markets with JYT: browse verified, traceable inventory, design your own pieces in the partner studio, and sell with a Digital Product Passport on every SKU.',
 }
 
-export default function WholesalePage() {
+export default async function WholesalePage() {
+  const h = await headers()
+  const locale = h.get('x-locale') || DEFAULT_LOCALE
+  const wholesale = await getPageContent('wholesale', locale) as any
   const { hero, shift, steps, sell, benefits, cta } = wholesale
   return (
     <main>
@@ -55,7 +60,7 @@ export default function WholesalePage() {
             <h2 className="kt-display m">{steps.title}</h2>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '24px', marginTop: '8px' }}>
-            {steps.items.map((s) => (
+            {(steps.items as any[]).map((s) => (
               <div className="kt-card" key={s.n}>
                 <div className="kt-meta" style={{ color: 'var(--accent-deep)' }}>{s.n}</div>
                 <h3 className="kt-display s" style={{ marginTop: '10px', fontSize: '20px' }}>{s.title}</h3>
@@ -76,7 +81,7 @@ export default function WholesalePage() {
           <p className="muted" style={{ fontSize: '18px', lineHeight: 1.6, maxWidth: '760px', marginTop: '12px' }}>{sell.subtitle}</p>
           <div className="kt-mockup-split">
             <div style={{ display: 'grid', gap: '28px', alignContent: 'center' }}>
-              {sell.items.map((s) => (
+              {(sell.items as any[]).map((s) => (
                 <div key={s.title}>
                   <h3 className="kt-display s" style={{ fontSize: '20px' }}>{s.title}</h3>
                   <p className="muted" style={{ marginTop: '8px', lineHeight: 1.55 }}>{s.body}</p>
@@ -98,7 +103,7 @@ export default function WholesalePage() {
             <h2 className="kt-display m">{benefits.title}</h2>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '24px' }}>
-            {benefits.items.map((b) => (
+            {(benefits.items as any[]).map((b) => (
               <div className="kt-card" key={b.title}>
                 <div className="kt-meta" style={{ color: 'var(--accent-deep)' }}>{b.title}</div>
                 <p className="muted" style={{ marginTop: '10px', lineHeight: 1.55 }}>{b.body}</p>

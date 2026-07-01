@@ -1,0 +1,46 @@
+{
+  "_note": "Content block for /solutions/sell-on-ai. Use-case page for the store MCP server (PRs #743–#761): every partner storefront is agent-addressable, so an AI agent can discover a store, search the catalogue, build a cart, onboard the shopper, and take payment end-to-end. Accurate to the shipped tools — no overclaiming.",
+  "hero": {
+    "eyebrow": "Use case · Sell on AI",
+    "title": "Your store, addressable by agents.",
+    "subtitle": "Every storefront ships with a Model Context Protocol server. An AI agent can discover your store, search the catalogue, build a cart, onboard the shopper, and take payment — PayU for INR, Stripe for the rest.",
+    "primaryCta": { "label": "Talk to us", "href": "/contact" },
+    "secondaryCta": { "label": "See the platform", "href": "/solutions" }
+  },
+  "shift": {
+    "eyebrow": "Why now",
+    "title": "Buying is moving into the chat.",
+    "body": "Shoppers buy inside AI clients — Claude, Cursor, and future assistants. Most stores can't be reached there. JYT exposes your catalogue and checkout as MCP tools. An agent can complete a real purchase (cart, customer, payment, order) with no integration work."
+  },
+  "steps": {
+    "eyebrow": "How it works",
+    "title": "An agent checkout, end to end.",
+    "items": [
+      { "n": "01", "title": "Discover your store", "body": "An agent calls list_stores and resolves yours by name, domain, or handle — no API keys to hand-hold. The platform's core store is the default." },
+      { "n": "02", "title": "Search and add to cart", "body": "semantic_search takes natural language (‘handwoven indigo scarf’) and returns ranked matches. The agent creates a cart and adds the line item in two tool calls." },
+      { "n": "03", "title": "Onboard the shopper", "body": "set_customer_details asks the user for name, email, and address, then reports what's missing. One-step onboarding, inside the conversation." },
+      { "n": "04", "title": "Take payment, confirm the order", "body": "The agent initialises a payment session — a PayU link or UPI QR for INR, a Stripe hosted page elsewhere — then polls until the cart becomes an order." }
+    ]
+  },
+  "benefits": {
+    "eyebrow": "Why it matters",
+    "title": "Agent-ready, not agent-afterthought.",
+    "items": [
+      { "title": "No integration to build", "body": "The MCP server is part of the platform. Onboard as a partner and your storefront is agent-addressable from day one. Read tools are open; write tools need a publishable key." },
+      { "title": "Real checkout, not a link out", "body": "Agents drive the full cart→payment→order flow with PayU INR (link, UPI intent, QR) and Stripe hosted checkout — Apple/Google Pay included." },
+      { "title": "Provenance travels with it", "body": "Custom tools expose raw materials and the production story, so an agent can answer ‘who made this?’ with the passport, not a guess." },
+      { "title": "Multi-tenant by design", "body": "Agents address stores by name across the network. Your storefront, the core store, and every partner sit on the same agent-ready rail." }
+    ]
+  },
+  "clients": {
+    "eyebrow": "Works with",
+    "title": "Any MCP-speaking client.",
+    "items": ["Claude Code", "Claude Desktop", "Cursor", "Any @modelcontextprotocol SDK client"]
+  },
+  "cta": {
+    "title": "Put your store where the agents are.",
+    "body": "We’ll connect an agent to a demo storefront and walk it through a full purchase — search, cart, payment, order — live.",
+    "primaryCta": { "label": "Book a walkthrough", "href": "/contact" },
+    "secondaryCta": { "label": "See the full atelier OS", "href": "/solutions" }
+  }
+}

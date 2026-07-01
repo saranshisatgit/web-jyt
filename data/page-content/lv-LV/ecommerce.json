@@ -1,0 +1,72 @@
+{
+  "_note": "Content block for /solutions/ecommerce (#605). Use-case page: the partner storefront surface — headless commerce with a custom domain, a Digital Product Passport on every SKU, and channel sync (Instagram/Facebook). Mirrors data/wholesale.json so the page component is symmetric. Lift into the CMS later without changing the component.",
+  "hero": {
+    "eyebrow": "Lietošanas gadījums · E-komercija",
+    "title": "Veikals, kas pieder jums.",
+    "subtitle": "Bezgalvas veikals uz pielāgota domēna, kas iegūts no tām pašām sliedēm kā ražošana. Katrs SKU nes Digitālo produktu pasi, kas izceļ izcelsmi lapā.",
+    "primaryCta": { "label": "Sazinieties ar mums", "href": "/contact" },
+    "secondaryCta": { "label": "Skatīt vairumtirdzniecību", "href": "/solutions/wholesale" }
+  },
+  "shift": {
+    "eyebrow": "Kāpēc tagad",
+    "title": "Pircēji vēlas kvīti, nevis apgalvojumu.",
+    "body": "Bezgalvas komercija ir pamatprasība; izcelsme ir jaunais atšķirības faktors. ES ESPR un Digitālās produkta pases prasība padara 'kas to izgatavoja' par obligātu atbildi lapā. JYT iekļauj pasi produktā publicēšanas brīdī — veikals to nekad nepievieno vēlāk."
+  },
+  "steps": {
+    "eyebrow": "Kā tas darbojas",
+    "title": "No publicēta dizaina līdz dzīvam, zīmola veikalam.",
+    "items": [
+      { "n": "01", "title": "Publicēt no ateljē OS", "body": "Dizains, kas apstiprināts ražošanā, kļūst par dzīvu produktu — varianti, reģionālās cenas un pase izveidotas vienā solī. Bez atkārtotas ievadīšanas, bez atsevišķas PIM." },
+      { "n": "02", "title": "Pārdodiet savā domēnā", "body": "Bezgalvas veikals uz pielāgota domēna, veidots jūsu zīmolam. SEO draudzīgs, ātrs un izvietojams katram partnerim no vienas koda bāzes." },
+      { "n": "03", "title": "Rādīt pasi lapā", "body": "Katra produkta lapa attēlo savu Digitālo produktu pasi — meistars, materiāla partija, sertifikāti. Izcelsmes pircēji un regulatori pārbauda, neizejot no veikala." }
+    ]
+  },
+  "benefits": {
+    "eyebrow": "Kāpēc zīmoli to izvēlas",
+    "title": "Komercija ar iebūvētu atbilstību.",
+    "items": [
+      { "title": "Viena sliede, no dizaina līdz pārdošanai", "body": "Tā pati platforma, kas vada ražošanu, vada jūsu veikalu. Nav sinhronizācijas nobīdes starp PLM, krājumiem un plauktu." },
+      { "title": "Pase uz katru SKU, vietējā", "body": "ES ESPR gatava Digitālā produkta pase uz katra gabala — nevis atsevišķs abonements kā atsevišķiem izcelsmes rīkiem." },
+      { "title": "Pārdodiet tur, kur ir pircēji", "body": "Instagram un Facebook kataloga sinhronizācija jau sākotnēji, plus veikals ar pielāgotu domēnu tiešam pieprasījumam." },
+      { "title": "Bezgalvas, tāpēc tas ir jūsu", "body": "Pielāgotas tēmas, pielāgots domēns, jūsu zīmols priekšplānā. Veikals ir Vercel izvietota Next.js lietotne, ko varat paplašināt." }
+    ]
+  },
+  "cta": {
+    "title": "Atveriet veikalu, kas jau zina stāstu.",
+    "body": "Mēs jums parādīsim, kā publicēt dizainu zīmola veikalā ar pasi uz katra SKU — tiešraidē, jūsu domēnā.",
+    "primaryCta": { "label": "Pieteikt demonstrāciju", "href": "/contact" },
+    "secondaryCta": { "label": "Skatīt pilno ateljē OS", "href": "/solutions" }
+  },
+  "starter": {
+    "eyebrow": "Galvenā funkcija · Sākuma komplekti",
+    "title": "Sākuma komplekti jūsu modes zīmola uzsākšanai.",
+    "subtitle": "Izlaidiet aģentūru. Izvēlieties sākuma komplektu, kas pielāgots modei — jūsu zīmola nosaukums, jūsu palete, jūsu domēns — un esat tiešsaistē pēcpusdienā. Katrs sākuma komplekts ietver veikala tēmu, produktu katalogu no jūsu ateljē un administrēšanas paneli, gatavu darbam.",
+    "items": [
+      { "title": "Jūsu zīmols, tiešsaistē šodien", "body": "Ievadiet sava zīmola nosaukumu, izvēlieties paleti, pievienojiet domēnu. Sākuma komplekts izvieto tematisku Next.js veikalu Vercel vienā klikšķī." },
+      { "title": "Katalogs no ateljē", "body": "Produkti, kas publicēti ražošanā, ieplūst tieši — varianti, cenas, pase. Nav CSV importu, nav PIM migrācijas." },
+      { "title": "Veidojiet savā veidā", "body": "Sākuma komplekts ir jums piederoša koda bāze, nevis lapu veidotājs. Rediģējiet tēmu, nomainiet komponentus, paplašiniet norēķinu — tas ir jūsu." }
+    ]
+  },
+  "admin": {
+    "eyebrow": "Galvenā funkcija · Administrēšana",
+    "title": "Lieliska administrēšana produktu pārvaldībai.",
+    "subtitle": "Administrēšanas panelis ir vieta, kur veikals satiekas ar ateljē OS. Pārvaldiet produktus, variantus un pases vienuviet — ar tiem pašiem datiem, kas vada ražošanu, krājumus un vairumtirdzniecību.",
+    "items": [
+      { "title": "Produkti un varianti", "body": "Izveidojiet, rediģējiet un organizējiet produktus ar pilnu variantu atbalstu — krāsa, izmērs, materiāls. Krājumi un cenas automātiski sinhronizējas uz visiem kanāliem." },
+      { "title": "Pase uz katru SKU", "body": "Pievienojiet un rediģējiet Digitālās produkta pases datus — amatnieks, materiāla partija, sertifikāts — tieši uz produkta. Izmaiņas uzreiz parādās veikalā." },
+      { "title": "Pasūtījumi un izpilde", "body": "Redziet visus pasūtījumus, saņemiet maksājumus un izpildiet no viena ekrāna. Atgriešanas un apmaiņas automātiski atgriežas krājumos bez atkārtotas ievadīšanas." }
+    ]
+  },
+  "integrations": {
+    "eyebrow": "Integrācijas",
+    "title": "Uzbūvēts uz komercijas dzinēja, ko varat paplašināt.",
+    "subtitle": "Veikals un administrēšana darbojas uz Medusa JS — modulāra, atvērtā koda komercijas ietvara. Piegādājiet ar nepieciešamajiem moduļiem, pielāgojiet ietvaru un vizuāli orķestrējiet plūsmas.",
+    "items": [
+      { "title": "Uzbūvēts uz Medusa JS", "body": "Bezgalvas, API pirmā komercijas dzinējs. Katra vienība ir modulis — paplašiniet vai nomainiet bez kodola atzarojuma." },
+      { "title": "Piegādāts ar moduļiem", "body": "Grozs, norēķins, maksājums, izpilde, krājumi, nodoklis — ražošanai gatavi moduļi, kas darbojas uzreiz un tiek tīri nomainīti." },
+      { "title": "Pielāgojams ietvars", "body": "Abonenti, darba plūsmas un pielāgota loģika pieslēdzas notikumu kopnei. Veidojiet savas īpašās funkcijas bez cīņas ar ietvaru." },
+      { "title": "Vizuālais plūsmu redaktors", "body": "Vilkšanas un nomešanas darba plūsmu veidotājs automatizācijai — pārkārtojiet loģiku, pievienojiet soļus un izvietojiet plūsmas bez koda rakstīšanas." },
+      { "title": "Iebūvēts mārketings", "body": "E-pasta kampaņas, atlaides un dāvanu kartes tiek piegādātas ar dzinēju. Segmenti un trigeri atsaucas uz reāliem pirkumu datiem." }
+    ]
+  }
+}

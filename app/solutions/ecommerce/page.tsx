@@ -1,9 +1,11 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { headers } from 'next/headers'
 import { Navbar } from '@/components/navbar'
 import { HeroArt } from '@/components/hero-art'
 import { Storefront, BrandStarter, AdminPanel } from '@/components/mockup-animations'
-import ecommerce from '@/data/ecommerce.json'
+import { getPageContent } from '@/lib/page-content'
+import { DEFAULT_LOCALE } from '@/lib/i18n/config'
 
 export const metadata: Metadata = {
   title: 'Ecommerce — a storefront with the truth on every SKU | JYT',
@@ -11,7 +13,10 @@ export const metadata: Metadata = {
     'Every partner gets a headless storefront on a custom domain, pulled from the same rails as production. Each SKU carries a Digital Product Passport — artisan, village, material lot — so the product page sells the story and the receipts.',
 }
 
-export default function EcommercePage() {
+export default async function EcommercePage() {
+  const h = await headers()
+  const locale = h.get('x-locale') || DEFAULT_LOCALE
+  const ecommerce = await getPageContent('ecommerce', locale) as any
   const { hero, shift, steps, starter, admin, integrations, benefits, cta } = ecommerce
   return (
     <main>
@@ -55,7 +60,7 @@ export default function EcommercePage() {
             <h2 className="kt-display m">{steps.title}</h2>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '24px', marginTop: '8px' }}>
-            {steps.items.map((s) => (
+            {(steps.items as any[]).map((s) => (
               <div className="kt-card" key={s.n}>
                 <div className="kt-meta" style={{ color: 'var(--accent-deep)' }}>{s.n}</div>
                 <h3 className="kt-display s" style={{ marginTop: '10px', fontSize: '20px' }}>{s.title}</h3>
@@ -76,7 +81,7 @@ export default function EcommercePage() {
           <p className="muted" style={{ fontSize: '18px', lineHeight: 1.6, maxWidth: '760px', marginTop: '12px' }}>{starter.subtitle}</p>
           <div className="kt-mockup-split">
             <div style={{ display: 'grid', gap: '28px', alignContent: 'center' }}>
-              {starter.items.map((s) => (
+              {(starter.items as any[]).map((s) => (
                 <div key={s.title}>
                   <h3 className="kt-display s" style={{ fontSize: '20px' }}>{s.title}</h3>
                   <p className="muted" style={{ marginTop: '8px', lineHeight: 1.55 }}>{s.body}</p>
@@ -103,7 +108,7 @@ export default function EcommercePage() {
               <AdminPanel />
             </div>
             <div style={{ display: 'grid', gap: '28px', alignContent: 'center' }}>
-              {admin.items.map((s) => (
+              {(admin.items as any[]).map((s) => (
                 <div key={s.title}>
                   <h3 className="kt-display s" style={{ fontSize: '20px' }}>{s.title}</h3>
                   <p className="muted" style={{ marginTop: '8px', lineHeight: 1.55 }}>{s.body}</p>
@@ -123,7 +128,7 @@ export default function EcommercePage() {
           </div>
           <p className="muted" style={{ fontSize: '18px', lineHeight: 1.6, maxWidth: '760px', marginTop: '12px' }}>{integrations.subtitle}</p>
           <div className="kt-integrations-grid">
-            {integrations.items.map((item) => (
+            {(integrations.items as any[]).map((item) => (
               <div className="kt-card kt-integration-card" key={item.title}>
                 <div className="kt-integration-icon" aria-hidden />
                 <h3 className="kt-display s" style={{ fontSize: '18px' }}>{item.title}</h3>
@@ -142,7 +147,7 @@ export default function EcommercePage() {
             <h2 className="kt-display m">{benefits.title}</h2>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '24px' }}>
-            {benefits.items.map((b) => (
+            {(benefits.items as any[]).map((b) => (
               <div className="kt-card" key={b.title}>
                 <div className="kt-meta" style={{ color: 'var(--accent-deep)' }}>{b.title}</div>
                 <p className="muted" style={{ marginTop: '10px', lineHeight: 1.55 }}>{b.body}</p>

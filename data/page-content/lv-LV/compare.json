@@ -1,0 +1,66 @@
+{
+  "_note": "Content block for the /compare page (#605). Grounded in notes/competitive-positioning.md + notes/competitive-pricing.md (daemon-researched, Claude-verified against live sites 2026-06-23). Lift into the CMS later without changing the page component. coverage/values use: yes | no | partial.",
+  "hero": {
+    "eyebrow": "Salīdzināt",
+    "title": "Viena sliede, nevis četri rīki.",
+    "subtitle": "Vairumtirdzniecības platformas tikai pārdod. PLM rīki tikai projektē. Izcelsmes lietotnes tikai verificē. JYT vada visu ateljē — no dizaina līdz pārdošanai — vienā sistēmā, veidotā neatkarīgiem namiem, nevis uzņēmumiem.",
+    "primaryCta": { "label": "Pieteikt demonstrāciju", "href": "/contact" },
+    "secondaryCta": { "label": "Skatīt cenas", "href": "/pricing" }
+  },
+  "lifecycle": {
+    "eyebrow": "Dzīves cikla aptvērums",
+    "title": "Kas ko aptver.",
+    "subtitle": "Neviens konkurents neaptver dizainu līdz pārdošanai. Katram pieder daļa; JYT pieder sliede.",
+    "stages": ["Dizains", "Ražošana", "Piegāde", "Pārdošana", "Pase"],
+    "rows": [
+      { "name": "JYT", "highlight": true, "coverage": ["yes", "yes", "yes", "yes", "yes"], "note": "Viena sliede, no dizaina līdz pārdošanai" },
+      { "name": "NuORDER", "coverage": ["no", "no", "yes", "yes", "no"], "note": "Tikai vairumtirdzniecība" },
+      { "name": "JOOR", "coverage": ["no", "no", "yes", "yes", "no"], "note": "Tikai vairumtirdzniecība" },
+      { "name": "Bamboo Rose (Backbone)", "coverage": ["yes", "yes", "yes", "no", "no"], "note": "PLM — apstājas pirms pārdošanas" },
+      { "name": "Provenance", "coverage": ["no", "no", "no", "no", "yes"], "note": "Tikai apgalvojumu slānis" },
+      { "name": "Shopify", "coverage": ["no", "no", "no", "yes", "no"], "note": "Veikals + B2B (Plus)" }
+    ]
+  },
+  "comparison": {
+    "eyebrow": "Funkcija pa funkcijai",
+    "title": "Ko jūs patiešām saņemat.",
+    "columns": ["JYT", "NuORDER", "JOOR", "Bamboo Rose", "Provenance", "Shopify"],
+    "rows": [
+      { "feature": "Dizaina dēļi un produktu izveide", "values": ["yes", "no", "no", "yes", "no", "partial"] },
+      { "feature": "Ražošanas cikli un meistaru uzdevumi", "values": ["yes", "no", "no", "yes", "no", "no"] },
+      { "feature": "Izejmateriālu krājumi un cikla izmaksas", "values": ["yes", "no", "no", "yes", "no", "partial"] },
+      { "feature": "Vairumtirdzniecība / B2B pārdošana", "values": ["yes", "yes", "yes", "partial", "no", "yes"] },
+      { "feature": "Zīmola D2C veikals", "values": ["yes", "no", "no", "no", "no", "yes"] },
+      { "feature": "Pārbaudītu amatnieku / meistaru tīkls", "values": ["yes", "no", "no", "no", "no", "no"] },
+      { "feature": "Iebūvēta Digitālā produkta pase", "values": ["yes", "no", "no", "no", "yes", "no"] },
+      { "feature": "WhatsApp + mobilais partneru portāls", "values": ["yes", "no", "no", "no", "no", "no"] },
+      { "feature": "Izstrādāts neatkarīgiem ateljē", "values": ["yes", "no", "no", "no", "partial", "partial"] },
+      { "feature": "Caurspīdīga publiska cenošana", "values": ["yes", "no", "no", "no", "no", "yes"] }
+    ]
+  },
+  "pricing": {
+    "eyebrow": "Cenas",
+    "title": "Nav nepieciešams pārdošanas zvans.",
+    "subtitle": "Katrs vairumtirdzniecības un PLM konkurents slēpj cenas aiz pārdošanas zvana. Shopify ir caurspīdīgs — bet tikai pārdošanas pusē. JYT publicē ateljē draudzīgas kategorijas visai sliedei.",
+    "rows": [
+      { "name": "JYT", "highlight": true, "model": "Caurspīdīgas kategorijas", "price": "Ateljē draudzīgas", "note": "Pašapkalpošanās — bez pārdošanas zvana" },
+      { "name": "NuORDER", "model": "Uzņēmumiem", "price": "Slēptas", "note": "Cenu lapa atgriež 404" },
+      { "name": "JOOR", "model": "Kategorijās", "price": "Slēptas", "note": "Kategorijas redzamas, katra cena ir \"Pieprasīt cenu\"" },
+      { "name": "Bamboo Rose", "model": "Uzņēmuma PLM", "price": "Slēptas", "note": "\"Runājiet ar TotalPLM ekspertu\"" },
+      { "name": "Provenance", "model": "Uzņēmumiem", "price": "Slēptas", "note": "Sazinieties ar pārdošanas nodaļu" },
+      { "name": "Shopify", "model": "Kategorijās SaaS", "price": "€19–€2,100+/mo", "note": "Publiska — bet tikai pārdošanas pusē" }
+    ]
+  },
+  "differentiators": [
+    { "title": "Viena sliede, nevis četri rīki", "body": "Projektējiet, ražojiet, piegādājiet un pārdodiet vienā sistēmā — bez PLM savienošanas ar vairumtirdzniecības platformu, veikalu un atbilstības lietotni." },
+    { "title": "Izstrādāts ateljē, nevis uzņēmumiem", "body": "Esošie vairumtirdzniecības un PLM risinājumi ir veidoti un cenoti globālajam mazumtirdzniecībai. JYT ir neatkarīgiem namiem ar 5–200 cilvēkiem." },
+    { "title": "Meistaru tīkls ir produkts", "body": "150+ pārbaudītu amatnieku visā ES, Indijā un Austrālijā ar maršrutēšanu un koordināciju. Neviens konkurents to nepiedāvā." },
+    { "title": "Pase iebūvēta, nevis pievienota vēlāk", "body": "ES ESPR gatava Digitālā produkta pase uz katru SKU — vietējā, nevis atsevišķs abonements kā atsevišķiem izcelsmes rīkiem." }
+  ],
+  "cta": {
+    "title": "Redziet to uz saviem gabaliem.",
+    "body": "Piesakiet demonstrāciju, un mēs izvadīsim vienu no jūsu produktiem no skices līdz veikalam — uz vienas sliedes.",
+    "primaryCta": { "label": "Pieteikt demonstrāciju", "href": "/contact" },
+    "secondaryCta": { "label": "Skatīt cenas", "href": "/pricing" }
+  }
+}

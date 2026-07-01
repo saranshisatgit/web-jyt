@@ -1,0 +1,106 @@
+{
+  "_note": "Content block for the /solutions page + home SolutionsShowcase (#605). Brands-first, by workflow stage, mockup-as-block-header. Consumed via data/solutions.ts (typed re-export). CMS-liftable.",
+  "hero": {
+    "eyebrow": "Ateljē operētājsistēma",
+    "title": "Viena OS jūsu ateljē.",
+    "subtitle": "Projektējiet, ražojiet, piegādājiet un pārdodiet uz vienas sliedes — no pirmās skices līdz zīmola veikalam, ar katru meistaru, materiālu partiju un SKU uzskaitītu.",
+    "primaryCta": { "label": "Pieteikt demonstrāciju", "href": "/contact" },
+    "secondaryCta": { "label": "Skatīt cenas", "href": "/pricing" }
+  },
+  "audienceCallout": {
+    "eyebrow": "Kam tas paredzēts",
+    "title": "Izstrādāts modes namiem un neatkarīgiem ateljē.",
+    "body": "Neatkarīgi no tā, vai vadāt modes namu ar paraugu telpu vai strādājat viens pats ateljē, JYT ir ražošanas OS aiz jūsu zīmola — un pārbaudītu amatnieku tīkls, ar kuriem ražot.",
+    "audiences": [
+      { "tag": "Modes nami & zīmoli", "line": "Vadiet dizainu, ražošanu, krājumus un veikalu vienā sistēmā." },
+      { "tag": "Neatkarīgi ateljē", "line": "Sāciet viens pats, novirziet darbu pārbaudītiem meistariem, pārdodiet bez tīmekļa vietnes veidošanas." },
+      { "tag": "Meistaru tīkls", "line": "150+ amatnieki ES · IN · AU — jūsu sliedes otra puse." }
+    ]
+  },
+  "flagshipMockup": {
+    "webm": "/mockups/design-to-cart.webm",
+    "gif": "/mockups/design-to-cart.gif",
+    "caption": "Viens gabals, viena sliede — izstrādāts ateljē, publicēts zīmola veikalā, pārdots.",
+    "alt": "Pashminas šalle ceļā no ateljē dizaina uz publicētu veikala produktu un grozā."
+  },
+  "blocks": [
+    {
+      "id": "product-create",
+      "stage": "01 · Dizains",
+      "title": "Skicējiet, noformulējiet un izveidojiet gabalu.",
+      "body": "Sāciet produktu tā, kā sākat apģērbu — ātri vai pilnvērtīgi. Ātri pievienojiet viena varianta gabalu noklusējuma valūtā vai atveriet papildināto plūsmu variantiem, reģionālajām cenām, SEO un organizācijas laukiem. Dizaina dēļi un noskaņu atsauces tur informāciju vienuviet.",
+      "features": [
+        "Ātra pievienošana pret papildināto produktu izveidi",
+        "Varianti, reģionālās cenas, SEO lauki",
+        "Dizaina dēļi un pirmsražošanas materiāli",
+        "Apraksts no attēla teksta uzmetumam"
+      ],
+      "mockup": {
+        "webm": "/mockups/product-create.webm",
+        "gif": "/mockups/product-create.gif",
+        "source": "product-create-mockup.html",
+        "alt": "Jauna produkta izveide — izvēloties ātru pievienošanu vai papildināto versiju, pēc tam aizpildot nosaukumu, cenu un krājumus."
+      }
+    },
+    {
+      "id": "production-run",
+      "stage": "02 · Ražošana",
+      "title": "Novirziet uzdevumus pārbaudītiem amatniekiem, izsekojiet katru ražošanas ciklu.",
+      "body": "Pārvērtiet dizaina pasūtījumu ražošanas ciklā ar uzdevumu veidnēm, atkarībām un pārbaudītu partneri. Vērojiet tā gaitu no pieņemšanas līdz pabeigšanai, fiksējiet reālo iznākumu un izmaksas par ciklu, un redziet materiālus, darbu, pieskaitāmās izmaksas un partnera maksu vienā skaitlī.",
+      "features": [
+        "Uzdevumu veidnes un atkarības",
+        "Izmaksas par ciklu: materiāli · darbs · pieskaitāmās · partnera maksa",
+        "Pieņemt → sākt → pabeigt dzīves cikls",
+        "Tiešraides progress no partnera portāla"
+      ],
+      "mockup": {
+        "webm": "/mockups/production-run.webm",
+        "gif": "/mockups/production-run.gif",
+        "source": "production-run-mockup.html",
+        "alt": "Ražošanas cikls Pashminas šallei — cikla pabeigšana ar izmaksu sadalījumu pa gabalu un uzdevumu sarakstu."
+      }
+    },
+    {
+      "id": "inventory-orders",
+      "stage": "03 · Piegāde",
+      "title": "Izsekojiet izejmateriāliem no sākuma līdz beigām.",
+      "body": "Ziniet, kas jums ir un kas ir ceļā. Krājumi pēc atrašanās vietas, atkārtota pasūtījuma brīdinājumi un piegādātāju paziņojumi nodrošina izejmateriālu plūsmu ražošanā — ar vienības izmaksām, kas tieši atgriežas jūsu cikla ekonomikā.",
+      "features": [
+        "Krājumi pēc atrašanās vietas",
+        "Atkārtota pasūtījuma brīdinājumi un piegādātāju paziņojumi",
+        "Vienības izmaksas ieplūst cikla izmaksās",
+        "Ienākošie pasūtījumi un saņemšana"
+      ],
+      "mockup": {
+        "webm": "/mockups/inventory-orders.webm",
+        "gif": "/mockups/inventory-orders.gif",
+        "source": "inventory-orders-mockup.html",
+        "alt": "Krājumu pasūtījumu pārvaldība — izejmateriālu saņemšana un krājumu izsekošana pēc atrašanās vietas."
+      }
+    },
+    {
+      "id": "whatsapp",
+      "stage": "04 · Pārdošana un koordinācija",
+      "title": "Publicējiet ar zīmolu, koordinējiet kanālos, kurus meistari jau izmanto.",
+      "body": "Nosūtiet uz bezgalvas veikalu ar pielāgotiem domēniem un Digitālo produktu pasi uz katru SKU — publicējiet bez vietnes pārbūves. Aiz tā partneri saņem uzdevumus un atjauninājumus WhatsApp un mobilā portālā, tāpēc koordinācija notiek tur, kur jūsu meistari jau ir.",
+      "features": [
+        "Bezgalvas veikals + pielāgoti domēni",
+        "Digitālā produkta pase uz katru SKU (ES ESPR gatavs)",
+        "WhatsApp + mobilā portāls",
+        "Instagram un Facebook produktu sinhronizācija"
+      ],
+      "mockup": {
+        "webm": "/mockups/whatsapp.webm",
+        "gif": "/mockups/whatsapp.gif",
+        "source": "whatsapp-mockup.html",
+        "alt": "Koordinācija ar partneri WhatsApp — uzdevumu atjauninājumi un apstiprinājumi mobilajā ierīcē."
+      }
+    }
+  ],
+  "cta": {
+    "title": "Vienas sliedes, abi tirdzniecības gali.",
+    "body": "Vadiet savu zīmolu uz vienas ražošanas OS — un vienlaikus izmantojiet pārbaudītu meistaru tīklu.",
+    "primaryCta": { "label": "Pieteikt demonstrāciju", "href": "/contact" },
+    "secondaryCta": { "label": "Sazinieties ar mums", "href": "/contact" }
+  }
+}

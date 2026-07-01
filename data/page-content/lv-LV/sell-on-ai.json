@@ -1,0 +1,46 @@
+{
+  "_note": "Content block for /solutions/sell-on-ai. Use-case page for the store MCP server (PRs #743–#761): every partner storefront is agent-addressable, so an AI agent can discover a store, search the catalogue, build a cart, onboard the shopper, and take payment end-to-end. Accurate to the shipped tools — no overclaiming.",
+  "hero": {
+    "eyebrow": "Lietošanas gadījums · Pārdošana ar AI",
+    "title": "Jūsu veikals, pieejams aģentiem.",
+    "subtitle": "Katrs veikals tiek piegādāts ar MCP serveri. AI aģents var atklāt jūsu veikalu, meklēt katalogā, izveidot grozu, reģistrēt pircēju un saņemt maksājumu — PayU INR, Stripe pārējiem.",
+    "primaryCta": { "label": "Sazinieties ar mums", "href": "/contact" },
+    "secondaryCta": { "label": "Skatīt platformu", "href": "/solutions" }
+  },
+  "shift": {
+    "eyebrow": "Kāpēc tagad",
+    "title": "Pirkšana pāriet uz čatu.",
+    "body": "Pircēji iepērkas AI klientos — Claude, Cursor un nākotnes asistentos. Lielākā daļa veikalu tur nav sasniedzami. JYT atklāj jūsu katalogu un norēķinu kā MCP rīkus. Aģents var veikt reālu pirkumu (grozs, klients, maksājums, pasūtījums) bez integrācijas darba."
+  },
+  "steps": {
+    "eyebrow": "Kā tas darbojas",
+    "title": "Aģenta norēķins, no sākuma līdz beigām.",
+    "items": [
+      { "n": "01", "title": "Atklājiet savu veikalu", "body": "Aģents izsauc list_stores un atrod jūsējo pēc nosaukuma, domēna vai identifikatora — bez API atslēgām. Platformas pamata veikals ir noklusējuma." },
+      { "n": "02", "title": "Meklēt un pievienot grozam", "body": "semantic_search pieņem dabisko valodu ('rokām austs indigo lakats') un atgriež sarindotus rezultātus. Aģents izveido grozu un pievieno rindas vienumu divos rīka izsaukumos." },
+      { "n": "03", "title": "Reģistrēt pircēju", "body": "set_customer_details prasa lietotājam vārdu, e-pastu un adresi, tad ziņo, kā trūkst. Vienas darbības reģistrācija sarunas ietvaros." },
+      { "n": "04", "title": "Saņemt maksājumu, apstiprināt pasūtījumu", "body": "Aģents inicializē maksājuma sesiju — PayU saiti vai UPI QR INR, Stripe lapu citur — tad aptaujā, līdz grozs kļūst par pasūtījumu." }
+    ]
+  },
+  "benefits": {
+    "eyebrow": "Kāpēc tas ir svarīgi",
+    "title": "Gatavs aģentiem, nevis aģenti kā vēlāka piebilde.",
+    "items": [
+      { "title": "Nav jāveido integrācija", "body": "MCP serveris ir platformas daļa. Pievienojieties kā partneris un jūsu veikals ir pieejams aģentiem no pirmās dienas. Lasīšanas rīki ir atvērti; rakstīšanas rīkiem nepieciešama publicējama atslēga." },
+      { "title": "Īsts norēķins, nevis ārēja saite", "body": "Aģenti vada pilnu grozs→maksājums→pasūtījums plūsmu ar PayU INR (saite, UPI nodoms, QR) un Stripe norēķinu — Apple/Google Pay iekļauts." },
+      { "title": "Izcelsme ceļo līdzi", "body": "Pielāgoti rīki atklāj izejmateriālus un ražošanas stāstu, tāpēc aģents var atbildēt 'kurš to izgatavoja?' ar pasi, nevis minējumu." },
+      { "title": "Daudzlietotāju pēc dizaina", "body": "Aģenti uzrunā veikalus pēc nosaukuma visā tīklā. Jūsu veikals, pamata veikals un katrs partneris atrodas uz vienas aģentiem gatavas sliedes." }
+    ]
+  },
+  "clients": {
+    "eyebrow": "Darbojas ar",
+    "title": "Jebkurš MCP runājošs klients.",
+    "items": ["Claude Code", "Claude Desktop", "Cursor", "Jebkurš @modelcontextprotocol SDK klients"]
+  },
+  "cta": {
+    "title": "Novietojiet savu veikalu tur, kur ir aģenti.",
+    "body": "Mēs savienosim aģentu ar demonstrācijas veikalu un izvadīsim cauri pilnam pirkumam — meklēšana, grozs, maksājums, pasūtījums — tiešraidē.",
+    "primaryCta": { "label": "Pieteikt demonstrāciju", "href": "/contact" },
+    "secondaryCta": { "label": "Skatīt pilno ateljē OS", "href": "/solutions" }
+  }
+}

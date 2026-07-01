@@ -1,0 +1,46 @@
+{
+  "_note": "Content block for /solutions/sell-on-ai. Use-case page for the store MCP server (PRs #743–#761): every partner storefront is agent-addressable, so an AI agent can discover a store, search the catalogue, build a cart, onboard the shopper, and take payment end-to-end. Accurate to the shipped tools — no overclaiming.",
+  "hero": {
+    "eyebrow": "Caso d'uso · Vendi su AI",
+    "title": "Il tuo negozio, raggiungibile dagli agenti.",
+    "subtitle": "Ogni storefront viene distribuito con un server Model Context Protocol. Un agente AI può scoprire il tuo negozio, cercare nel catalogo, creare un carrello, registrare l'acquirente e incassare il pagamento — PayU per INR, Stripe per il resto.",
+    "primaryCta": { "label": "Contattaci", "href": "/contact" },
+    "secondaryCta": { "label": "Vedi la piattaforma", "href": "/solutions" }
+  },
+  "shift": {
+    "eyebrow": "Perché ora",
+    "title": "Lo shopping si sta spostando nella chat.",
+    "body": "Gli acquirenti comprano all'interno dei client AI — Claude, Cursor e futuri assistenti. La maggior parte dei negozi non è raggiungibile lì. JYT espone il tuo catalogo e il checkout come strumenti MCP. Un agente può completare un acquisto reale (carrello, cliente, pagamento, ordine) senza alcun lavoro di integrazione."
+  },
+  "steps": {
+    "eyebrow": "Come funziona",
+    "title": "Un checkout tramite agente, dall'inizio alla fine.",
+    "items": [
+      { "n": "01", "title": "Scopri il tuo negozio", "body": "Un agente chiama list_stores e individua il tuo per nome, dominio o handle — nessuna chiave API da gestire. Il negozio principale della piattaforma è il default." },
+      { "n": "02", "title": "Cerca e aggiungi al carrello", "body": "semantic_search accetta linguaggio naturale ('sciarpa indaco tessuta a mano') e restituisce risultati classificati. L'agente crea un carrello e aggiunge l'articolo in due chiamate strumento." },
+      { "n": "03", "title": "Registra l'acquirente", "body": "set_customer_details chiede all'utente nome, email e indirizzo, poi segnala cosa manca. Onboarding in un unico passaggio, all'interno della conversazione." },
+      { "n": "04", "title": "Incassa il pagamento, conferma l'ordine", "body": "L'agente inizializza una sessione di pagamento — un link PayU o QR UPI per INR, una pagina ospitata Stripe altrove — poi verifica fino a quando il carrello diventa un ordine." }
+    ]
+  },
+  "benefits": {
+    "eyebrow": "Perché è importante",
+    "title": "Pronto per agenti, non un ripensamento per agenti.",
+    "items": [
+      { "title": "Nessuna integrazione da costruire", "body": "Il server MCP fa parte della piattaforma. Diventa partner e il tuo storefront è raggiungibile dagli agenti dal giorno uno. Gli strumenti di lettura sono aperti; quelli di scrittura necessitano di una chiave pubblicabile." },
+      { "title": "Checkout reale, non un link esterno", "body": "Gli agenti guidano l'intero flusso carrello→pagamento→ordine con PayU INR (link, intento UPI, QR) e checkout ospitato Stripe — inclusi Apple/Google Pay." },
+      { "title": "La provenienza viaggia con esso", "body": "Strumenti personalizzati espongono le materie prime e la storia produttiva, così un agente può rispondere 'chi lo ha fatto?' con il passaporto, non con una supposizione." },
+      { "title": "Multi-tenant per design", "body": "Gli agenti individuano i negozi per nome attraverso la rete. Il tuo storefront, il negozio principale e ogni partner sono sullo stesso binario pronto per agenti." }
+    ]
+  },
+  "clients": {
+    "eyebrow": "Funziona con",
+    "title": "Qualsiasi client che parli MCP.",
+    "items": ["Claude Code", "Claude Desktop", "Cursor", "Qualsiasi client SDK @modelcontextprotocol"]
+  },
+  "cta": {
+    "title": "Metti il tuo negozio dove sono gli agenti.",
+    "body": "Collegheremo un agente a uno storefront demo e lo guideremo attraverso un acquisto completo — ricerca, carrello, pagamento, ordine — live.",
+    "primaryCta": { "label": "Prenota una demo", "href": "/contact" },
+    "secondaryCta": { "label": "Vedi l'atelier OS completo", "href": "/solutions" }
+  }
+}

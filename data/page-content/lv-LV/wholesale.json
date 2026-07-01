@@ -1,0 +1,50 @@
+{
+  "_note": "Content block for /solutions/wholesale (#605). Use-case page: wholesalers/buyers enter sustainable markets by sourcing verified inventory and creating their own designs from it in the partner studio, each piece carrying a Digital Product Passport. Lift into the CMS later without changing the component.",
+  "hero": {
+    "eyebrow": "Lietošanas gadījums · Vairumtirdzniecība",
+    "title": "Iegūstiet pārbaudītu. Pārdodiet ilgtspējīgi.",
+    "subtitle": "Pārlūkojiet pārbaudītu krājumu no mūsu meistaru tīkla, veidojiet savus gabalus partneru studijā un pārdodiet ilgtspējīgos tirgos. Katrs SKU nes Digitālo produktu pasi.",
+    "primaryCta": { "label": "Sazinieties ar mums", "href": "/contact" },
+    "secondaryCta": { "label": "Salīdzināt platformas", "href": "/compare" }
+  },
+  "shift": {
+    "eyebrow": "Kāpēc tagad",
+    "title": "Pircējiem tiek prasīts to pierādīt.",
+    "body": "Zaļo apgalvojumu noteikumi (ES ESPR, Digitālās produkta pases prasība) pārvērš 'ilgtspējīgs' no etiķetes kvītī. Lielākā daļa vairumtirdzniecības platformu apstrādā pasūtījumus — tās nevar izsekot materiālam vai tā izgatavotājam. JYT sākas no pārbaudīta krājuma, tāpēc pierādījums ir iebūvēts."
+  },
+  "steps": {
+    "eyebrow": "Kā tas darbojas",
+    "title": "No pārbaudīta krājuma līdz jūsu pašu kolekcijai.",
+    "items": [
+      { "n": "01", "title": "Pārlūkot pārbaudītu krājumu", "body": "Iegūstiet no izsekojamiem materiāliem un pārbaudītiem meistariem — katra partija saistīta ar tās izcelsmi, amatnieku un sertifikāciju. Filtrējiet pēc tā, aiz kā varat stāvēt." },
+      { "n": "02", "title": "Veidojiet to partneru studijā", "body": "Izmantojiet partneru studiju, lai izveidotu savus produktus no šī krājuma — varianti, cenas un tehniskās detaļas — bez paraugu telpas vai PLM līguma." },
+      { "n": "03", "title": "Pārdodiet ar pasi uz katra gabala", "body": "Katrs SKU tiek piegādāts ar ES ESPR gatavu Digitālo produktu pasi — izcelsmes pircēji un regulatori var pārbaudīt. Ilgtspējīga plaukta vieta, nopelnīta, nevis apgalvota." }
+    ]
+  },
+  "sell": {
+    "eyebrow": "Pārdošana un koordinācija",
+    "title": "Ar zīmolu, izsekojams, katrā kanālā.",
+    "subtitle": "Jūsu produkti nes pasi un jūsu zīmolu caur katru pārdošanas kanālu. Krājumi, atbilstība un pasūtījumi tiek pārvaldīti vienuviet — no jūsu veikala līdz partneru tīklam.",
+    "items": [
+      { "title": "Zīmola veikals, jūsu domēnā", "body": "Jūsu pašu bezgalvas veikals ar pielāgotu domēnu, veidots jūsu zīmolam. Katrs SKU iegūts no tiem pašiem ražošanas datiem un nes savu pasi." },
+      { "title": "Pārdodiet partneru tīklā", "body": "Citi JYT partneri var atklāt un iegādāties jūsu kolekciju caur tīklu — iebūvēts vairumtirdzniecības kanāls ar izsekojamu krājumu un automatizētu atbilstību." },
+      { "title": "Pasūtījumi un izpilde, vienoti", "body": "Katrs kanāls ieplūst vienā pasūtījumu panelī — saņemiet maksājumu, izpildiet un pārvaldiet atgriešanas bez atkārtotas ievadīšanas starp pārdošanas virsmām." }
+    ]
+  },
+  "benefits": {
+    "eyebrow": "Kāpēc vairumtirgotāji to izvēlas",
+    "title": "Pieejams ieejas punkts ilgtspējīgos tirgos.",
+    "items": [
+      { "title": "Nav zaļās mazgāšanas riska", "body": "Jūs pārdodat tikai to, ko krājums var pierādīt. Izcelsme ir noklusējuma stāvoklis, nevis vēlāka piebilde." },
+      { "title": "Jūsu zīmols, mūsu sliede", "body": "Izveidojiet savus zīmola dizainus no pārbaudīta krājuma — jums pieder kolekcija, JYT nodrošina ražošanu un izsekojamību." },
+      { "title": "Atveriet tīklu", "body": "150+ pārbaudītu amatnieku visā ES, Indijā un Austrālijā kļūst par jūsu piegādes bāzi — koordinēti caur WhatsApp un mobilo portālu." },
+      { "title": "Caurspīdīga, ateljē draudzīga cenošana", "body": "Nav uzņēmuma līguma, nav pārdošanas vārtejas. Skaidras cenas, pašapkalpošanās — atšķirībā no esošajiem vairumtirdzniecības risinājumiem." }
+    ]
+  },
+  "cta": {
+    "title": "Piedāvājiet pārbaudītu krājumu saviem pircējiem.",
+    "body": "Mēs jūs izvadīsim cauri pārbaudīta krājuma iegūšanai, dizaina veidošanai no tā un piegādei ar pasi uz katra gabala.",
+    "primaryCta": { "label": "Pieteikt demonstrāciju", "href": "/contact" },
+    "secondaryCta": { "label": "Skatīt pilno ateljē OS", "href": "/solutions" }
+  }
+}

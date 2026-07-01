@@ -1,21 +1,24 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { headers } from 'next/headers'
 import { Navbar } from '@/components/navbar'
 import { HeroArt } from '@/components/hero-art'
 import { SolutionBlock, FeaturedMockup } from '@/components/solution-block'
-import {
-  SOLUTIONS_HERO,
-  AUDIENCE_CALLOUT,
-  SOLUTION_BLOCKS,
-  SOLUTIONS_CTA,
-} from '@/data/solutions'
+import { getPageContent } from '@/lib/page-content'
+import { DEFAULT_LOCALE } from '@/lib/i18n/config'
+import type { SolutionBlock as SolutionBlockData } from '@/data/solutions'
 
 export const metadata: Metadata = {
-  title: SOLUTIONS_HERO.title,
-  description: SOLUTIONS_HERO.subtitle,
+  title: 'One OS for your atelier — design, produce, supply, sell | JYT',
+  description:
+    'Design, produce, supply, and sell on a single rail — from the first sketch to a branded storefront, with every artisan, material lot, and SKU accounted for.',
 }
 
-export default function SolutionsPage() {
+export default async function SolutionsPage() {
+  const h = await headers()
+  const locale = h.get('x-locale') || DEFAULT_LOCALE
+  const content = await getPageContent('solutions', locale) as any
+  const { hero: SOLUTIONS_HERO, audienceCallout: AUDIENCE_CALLOUT, blocks: SOLUTION_BLOCKS, cta: SOLUTIONS_CTA } = content
   return (
     <main>
       <Navbar />
@@ -67,7 +70,7 @@ export default function SolutionsPage() {
               marginTop: '40px',
             }}
           >
-            {AUDIENCE_CALLOUT.audiences.map((a) => (
+            {(AUDIENCE_CALLOUT.audiences as any[]).map((a) => (
               <div className="kt-card" key={a.tag}>
                 <div className="kt-meta">{a.tag}</div>
                 <p className="muted">{a.line}</p>
@@ -80,7 +83,7 @@ export default function SolutionsPage() {
       <section className="kt-section">
         <div className="container">
           <div className="kt-feature-tour">
-            {SOLUTION_BLOCKS.map((b, i) => (
+            {(SOLUTION_BLOCKS as any[]).map((b, i) => (
               <SolutionBlock key={b.id} block={b} index={i} />
             ))}
           </div>
