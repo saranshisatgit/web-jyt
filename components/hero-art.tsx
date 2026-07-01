@@ -43,7 +43,7 @@ function useHeroArt() {
         if (!url) continue
         items.push({
           url,
-          type: m.type === 'image' || m.mime_type?.startsWith('image/') ? 'image' : 'video',
+          type: m.mime_type?.startsWith('image/') || m.type === 'image' ? 'image' : 'video',
           alt: m.alt_text || m.title || 'JYT',
         })
       }
@@ -55,10 +55,30 @@ function useHeroArt() {
 
 export function HeroArt() {
   const { data } = useHeroArt()
-  const images = (data?.items ?? []).filter((i) => i.type === 'image')
-  const current = images[0]
+  const items = data?.items ?? []
+  const video = items.find((i) => i.type === 'video')
+  const image = items.find((i) => i.type === 'image')
+  const current = video ?? image
 
   if (!current) return null
+
+  if (current.type === 'video') {
+    return (
+      <>
+        <video
+          src={current.url}
+          className="kt-hero-video"
+          aria-hidden
+          autoPlay
+          muted
+          loop
+          playsInline
+          style={{ objectFit: 'cover' }}
+        />
+        <div className="kt-hero-scrim" aria-hidden />
+      </>
+    )
+  }
 
   return (
     <>
