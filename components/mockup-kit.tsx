@@ -74,7 +74,6 @@ export function Card({ children }: { children: ReactNode }) {
         background: 'var(--bg)',
         border: '1px solid var(--rule-soft)',
         borderRadius: 'var(--r-lg)',
-        overflow: 'hidden',
         boxShadow: '0 18px 50px -30px oklch(0 0 0 / 0.35)',
       }}
     >

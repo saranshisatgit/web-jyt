@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, type FormEvent } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { motion } from 'framer-motion'
 import { useQuery } from '@tanstack/react-query'
 import { Navbar } from '@/components/navbar'
 import { SolutionBlock, FeaturedMockup } from '@/components/solution-block'
@@ -806,10 +807,6 @@ function Surfaces() {
   )
 }
 
-// Side-by-side: traditional ops vs platform. Marketing pages call this a
-// "compare table"; we keep the kt-compare CSS lighter — two columns of
-// numbered rows, the right column on the dark accent so the contrast does
-// the rhetorical work.
 type ComparePair = { traditional: string; platform: string }
 const COMPARE_ROWS: ComparePair[] = [
   { traditional: 'Spreadsheets in 4 tabs, two timezones out of date', platform: 'One source of truth, live across admin / partner / storefront' },
@@ -818,6 +815,11 @@ const COMPARE_ROWS: ComparePair[] = [
   { traditional: 'Provenance claims with no receipt', platform: 'Digital Product Passport per SKU, EU ESPR ready' },
   { traditional: 'Custom site rebuild for every brand', platform: 'Headless storefront on custom domains, switched on day one' },
 ]
+
+const staggerItem = {
+  hidden: { opacity: 0, y: 24 },
+  visible: (i: number) => ({ opacity: 1, y: 0, transition: { delay: i * 0.1, duration: 0.5 } }),
+}
 
 function Compare() {
   return (
@@ -829,20 +831,28 @@ function Compare() {
         </div>
         <div className="kt-compare">
           <div className="kt-compare-head">
-            <div className="kt-compare-head-cell muted">The way most ateliers run</div>
-            <div className="kt-compare-head-cell accent">On the platform</div>
+            <div className="kt-compare-head-cell muted">Without us</div>
+            <div className="kt-compare-head-cell accent">With us</div>
           </div>
           {COMPARE_ROWS.map((row, i) => (
-            <div key={i} className="kt-compare-row">
+            <motion.div
+              key={i}
+              className="kt-compare-row"
+              custom={i}
+              variants={staggerItem}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: '-80px' }}
+            >
               <div className="kt-compare-cell traditional">
-                <span className="n">{String(i + 1).padStart(2, '0')}</span>
+                <span className="kt-compare-icon kt-compare-icon--bad">&#x2717;</span>
                 <span>{row.traditional}</span>
               </div>
               <div className="kt-compare-cell platform">
-                <span className="n">{String(i + 1).padStart(2, '0')}</span>
+                <span className="kt-compare-icon kt-compare-icon--good">&#x2713;</span>
                 <span>{row.platform}</span>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>

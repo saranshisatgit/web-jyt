@@ -976,6 +976,12 @@ body[data-mode="platform"] [data-aud="investor"] { display: none; }
   color: var(--ink-soft);
 }
 
+/* ---------------- STACK SCROLL (Home page "how it works") ---------------- */
+.kt-stack-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
 /* ---------------- COMPARE TABLE (Building "without/with us") ---------------- */
 .kt-compare {
   border: 1px solid var(--rule);
@@ -1036,6 +1042,17 @@ body[data-mode="platform"] [data-aud="investor"] { display: none; }
   min-width: 28px;
 }
 .kt-compare-cell.platform .n { color: oklch(0.78 0.06 145); }
+.kt-compare-icon {
+  font-size: 16px;
+  line-height: 1.4;
+  min-width: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.kt-compare-icon--bad { color: oklch(0.65 0.12 25); }
+.kt-compare-icon--good { color: oklch(0.78 0.06 145); }
 
 /* ---------------- GMV HEADLINE (Building) ---------------- */
 .kt-gmv-headline {
@@ -1201,6 +1218,9 @@ body[data-mode="platform"] [data-aud="investor"] { display: none; }
   .kt-compare-row { grid-template-columns: 1fr; }
   .kt-compare-head-cell.muted { border-right: 0; border-bottom: 1px solid var(--rule); }
   .kt-compare-cell.traditional { border-right: 0; border-bottom: 1px solid var(--rule-soft); }
+
+  /* Stack scroll — text on top, mockup below on mobile. */
+  .kt-stack-grid { grid-template-columns: 1fr; }
 
   /* Footer ateliers row — stack label above links. */
   .kt-foot-ateliers { flex-direction: column; gap: 16px; align-items: flex-start; }
