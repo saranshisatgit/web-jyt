@@ -1,0 +1,30 @@
+{
+  "nav": {
+    "solutions": "Soluzioni",
+    "overview": "Panoramica",
+    "wholesale": "Ingrosso",
+    "ecommerce": "E-commerce",
+    "sellOnAi": "Vendi con AI",
+    "integrations": "Integrazioni",
+    "compare": "Confronta",
+    "journal": "Blog",
+    "about": "Chi siamo"
+  },
+  "mode": {
+    "consumer": "Vestire",
+    "investor": "Investire",
+    "platform": "Costruire",
+    "label": "Sei"
+  },
+  "footer": {
+    "makers": "Artigiani",
+    "meetTheMakers": "Incontra gli artigiani",
+    "howItWorks": "Come funziona",
+    "building": "Azienda",
+    "getADemo": "Richiedi una demo",
+    "reach": "Contatti",
+    "ateliersPowered": "Atelier supportati",
+    "wasPartOf": "Ha fatto parte di",
+    "poweredByMedo": "Powered by Medo · open source"
+  }
+}

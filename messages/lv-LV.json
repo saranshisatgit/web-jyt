@@ -1,0 +1,30 @@
+{
+  "nav": {
+    "solutions": "Risinājumi",
+    "overview": "Pārskats",
+    "wholesale": "Vairumtirdzniecība",
+    "ecommerce": "E-komercija",
+    "sellOnAi": "Pārdot ar AI",
+    "integrations": "Integrācijas",
+    "compare": "Salīdzināt",
+    "journal": "Žurnāls",
+    "about": "Par mums"
+  },
+  "mode": {
+    "consumer": "Valkāt",
+    "investor": "Atbalstīt",
+    "platform": "Būvēt",
+    "label": "Tu esi"
+  },
+  "footer": {
+    "makers": "Raidītāji",
+    "meetTheMakers": "Iepazīstieties ar ražotājiem",
+    "howItWorks": "Kā tas darbojas",
+    "building": "Uzņēmums",
+    "getADemo": "Pieprasīt demo",
+    "reach": "Kontakti",
+    "ateliersPowered": "Ateljē darbināmi",
+    "wasPartOf": "Bija daļa no",
+    "poweredByMedo": "Powered by Medo · open source"
+  }
+}

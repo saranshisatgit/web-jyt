@@ -4,11 +4,15 @@ import { Rethink_Sans, Instrument_Serif, JetBrains_Mono } from 'next/font/google
 import { headers } from 'next/headers'
 import { brandFromKey } from '@/lib/brand'
 import { currencyFromCode } from '@/lib/currency'
+import { DEFAULT_LOCALE, LOCALES, COOKIE_NAME } from '@/lib/i18n/config'
+import { loadTranslations } from '@/lib/i18n/translations'
+import type { LocaleCode } from '@/lib/i18n/config'
 import { ApiQueryClientProvider } from './context/api-context'
 import { BrandProvider } from './context/brand-context'
 import { CurrencyProvider } from './context/currency-context'
 import { ModeProvider } from './context/mode-context'
 import { VisualEditorProvider } from './context/visual-editor-context'
+import { LocaleProvider } from './context/locale-context'
 import { Footer } from '@/components/footer'
 import { ForkOverlay } from '@/components/fork-overlay'
 import { BlueprintGrid } from '@/components/blueprint-grid'
@@ -72,10 +76,13 @@ export default async function RootLayout({
   const brand = brandFromKey(headersList.get('x-brand'))
   const currency = currencyFromCode(headersList.get('x-currency'))
 
+  const locale = (headersList.get('x-locale') as LocaleCode) || DEFAULT_LOCALE
+  const messages = await loadTranslations(locale)
+
   return (
     <ApiQueryClientProvider>
       <html
-        lang="en"
+        lang={locale}
         className={`${rethinkSans.variable} ${instrumentSerif.variable} ${jetbrainsMono.variable}`}
       >
         <head>
@@ -115,11 +122,13 @@ export default async function RootLayout({
             <CurrencyProvider value={currency}>
               <ModeProvider>
               <VisualEditorProvider>
+              <LocaleProvider initialLocale={locale} initialMessages={messages}>
                 <main className="relative">{children}</main>
                 <Footer />
                 <ForkOverlay />
                 <BlueprintGrid />
                 <InvestorPrintButton />
+              </LocaleProvider>
               </VisualEditorProvider>
               </ModeProvider>
             </CurrencyProvider>

@@ -1,0 +1,30 @@
+{
+  "nav": {
+    "solutions": "Solutions",
+    "overview": "Overview",
+    "wholesale": "Wholesale",
+    "ecommerce": "Ecommerce",
+    "sellOnAi": "Sell on AI",
+    "integrations": "Integrations",
+    "compare": "Compare",
+    "journal": "Journal",
+    "about": "About"
+  },
+  "mode": {
+    "consumer": "Wearing",
+    "investor": "Backing",
+    "platform": "Building",
+    "label": "You're"
+  },
+  "footer": {
+    "makers": "Makers",
+    "meetTheMakers": "Meet the makers",
+    "howItWorks": "How it works",
+    "building": "Building",
+    "getADemo": "Get a demo",
+    "reach": "Reach",
+    "ateliersPowered": "Ateliers powered",
+    "wasPartOf": "Was part of",
+    "poweredByMedo": "Powered by Medo · open source"
+  }
+}

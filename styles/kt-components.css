@@ -652,8 +652,6 @@
   z-index: 1;
   width: 100%;
 }
-.kt-hero.has-video,
-.kt-hero:has(.kt-hero-scrim) { color: #f6f3ee; }
 .kt-hero.has-video .muted,
 .kt-hero.has-video .kt-eyebrow,
 .kt-hero:has(.kt-hero-scrim) .muted,
