@@ -6,6 +6,7 @@ import Image from 'next/image'
 import { useQuery } from '@tanstack/react-query'
 import { Navbar } from '@/components/navbar'
 import { SolutionBlock, FeaturedMockup } from '@/components/solution-block'
+import { StackScroll } from '@/components/stack-scroll'
 import { useBrand } from '@/app/context/brand-context'
 import storefrontPreviews from '@/data/storefront-previews.json'
 import { AUDIENCE_CALLOUT, SOLUTION_BLOCKS } from '@/data/solutions'
@@ -274,7 +275,7 @@ export default function Home() {
       <Makers />
       <Brands />
       <BrandSites />
-      <Flow />
+      <StackScroll />
       <Hypothesis />
       <Benefits />
       <UsingThePlatform />
