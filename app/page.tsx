@@ -20,14 +20,6 @@ const MAKERS: Maker[] = [
   { name: 'Mei', craft: 'Hand embroidery', location: 'Sydney, AU', story: 'Goldwork specialist. Works on bridal couture and slow-fashion capsule collections.' },
 ]
 
-type FlowStep = { stage: string; title: string; items: string[]; dark?: boolean }
-const FLOW: FlowStep[] = [
-  { stage: '01 · Design', title: 'Sketch & brief the piece.', items: ['Design & mood boards', 'Pre-production assets', 'Partner assignment'] },
-  { stage: '02 · Produce', title: 'Route tasks to vetted artisans.', items: ['Task templates & dependencies', 'Mobile-first partner portal', 'Live progress updates'] },
-  { stage: '03 · Supply', title: 'Track raw materials end to end.', items: ['Inventory by location', 'Reorder alerts', 'Supplier notifications'] },
-  { stage: '04 · Sell', title: 'Ship & publish, branded.', items: ['Headless storefront', 'Instagram & Facebook sync', 'Full traceability per SKU'], dark: true },
-]
-
 type Benefit = { n: string; title: string; body: string }
 const BENEFITS: Benefit[] = [
   { n: '01', title: 'Verifiable provenance', body: 'Artisan, village, material lot — auditable on the product page.' },
@@ -1226,50 +1218,6 @@ function Testimonials() {
 }
 
 // ----- SHARED SECTIONS ------------------------------------------------------
-
-function Flow() {
-  return (
-    <section className="kt-section" id="how-it-works">
-      <div className="container">
-        <div className="kt-section-head">
-          <div className="kt-eyebrow">The stack · Medo</div>
-          <h2 className="kt-display m">One system. <em>Sketch to shipment.</em></h2>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4" style={{ border: '1px solid var(--rule)' }}>
-          {FLOW.map((step, i) => {
-            const isDark = step.dark
-            const isLast = i === FLOW.length - 1
-            return (
-              <div
-                key={step.stage}
-                style={{
-                  padding: '28px 24px',
-                  background: isDark ? 'var(--ink-dark-bg)' : 'var(--cream)',
-                  color: isDark ? 'var(--cream)' : 'var(--ink)',
-                  borderRight: isLast ? 'none' : '1px solid var(--rule)',
-                }}
-              >
-                <div className="kt-meta" style={{ color: isDark ? 'oklch(0.78 0.06 145)' : 'var(--accent-deep)' }}>
-                  {step.stage}
-                </div>
-                <h3 className="serif" style={{ fontSize: '26px', margin: '12px 0 16px', lineHeight: 1.1, fontWeight: 400 }}>
-                  {step.title}
-                </h3>
-                <ul className="kt-dash-list">
-                  {step.items.map((it) => (
-                    <li key={it} style={isDark ? { color: 'oklch(0.72 0.04 145)' } : undefined}>
-                      {it}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )
-          })}
-        </div>
-      </div>
-    </section>
-  )
-}
 
 function Stats() {
   const brand = useBrand()
