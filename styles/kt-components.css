@@ -627,6 +627,12 @@
    edge-to-edge, and a gradient scrim keeps the headline legible. The
    .has-video modifier flips the hero to light-on-dark only while a
    video is present; with no video it renders exactly as before. */
+.kt-hero-placeholder {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background: var(--bg-deep);
+}
 .kt-hero-video {
   position: absolute;
   inset: 0;
@@ -634,6 +640,11 @@
   height: 100%;
   object-fit: cover;
   z-index: -2;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+.kt-hero-video--loaded {
+  opacity: 1;
 }
 .kt-hero-scrim {
   position: absolute;
