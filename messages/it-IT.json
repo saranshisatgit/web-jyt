@@ -14,7 +14,10 @@
     "consumer": "Vestire",
     "investor": "Investire",
     "platform": "Costruire",
-    "label": "Sei"
+    "label": "Sei",
+    "consumerBlurb": "Per acquirenti — storia, artigiani, negozi",
+    "investorBlurb": "Per investitori — tesi, trazione, raccolta fondi",
+    "platformBlurb": "Per sviluppatori — funzionalità, demo, GMV"
   },
   "footer": {
     "makers": "Artigiani",

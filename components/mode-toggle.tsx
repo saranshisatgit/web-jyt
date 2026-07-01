@@ -1,19 +1,13 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { useMode, MODE_LABELS, type Mode } from '@/app/context/mode-context'
+import { useMode, type Mode } from '@/app/context/mode-context'
+import { useT } from '@/lib/i18n/use-t'
 
 const MODES: Mode[] = ['consumer', 'investor', 'platform']
 
-// One-line blurbs that explain what each mode reframes the site as. Kept
-// short so the dropdown stays compact on narrow viewports.
-const MODE_BLURBS: Record<Mode, string> = {
-  consumer: 'For buyers — story, makers, storefronts',
-  investor: 'For backers — thesis, traction, raise',
-  platform: 'For builders — features, demo, GMV',
-}
-
 export function ModeToggle() {
+  const { t } = useT()
   const { mode, setMode } = useMode()
   const [open, setOpen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
@@ -54,7 +48,7 @@ export function ModeToggle() {
         onClick={() => setOpen((v) => !v)}
       >
         <span className="dot" aria-hidden />
-        <span>{MODE_LABELS[mode]}</span>
+        <span>{t("mode." + mode)}</span>
         <svg width="10" height="6" viewBox="0 0 10 6" aria-hidden fill="none" className="kt-mode-caret" data-open={open}>
           <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
@@ -70,8 +64,8 @@ export function ModeToggle() {
               onClick={() => pick(m)}
               className={mode === m ? 'is-current' : undefined}
             >
-              <span className="kt-mode-dropdown-name">{MODE_LABELS[m]}</span>
-              <span className="kt-mode-dropdown-blurb">{MODE_BLURBS[m]}</span>
+              <span className="kt-mode-dropdown-name">{t("mode." + m)}</span>
+              <span className="kt-mode-dropdown-blurb">{t("mode." + m + "Blurb")}</span>
             </button>
           ))}
         </div>

@@ -14,7 +14,10 @@
     "consumer": "Valkāt",
     "investor": "Atbalstīt",
     "platform": "Būvēt",
-    "label": "Tu esi"
+    "label": "Tu esi",
+    "consumerBlurb": "Pircējiem — stāsts, ražotāji, veikali",
+    "investorBlurb": "Atbalstītājiem — tēze, temps, piesaiste",
+    "platformBlurb": "Veidotājiem — funkcijas, demo, GMV"
   },
   "footer": {
     "makers": "Raidītāji",

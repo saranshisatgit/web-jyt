@@ -4,33 +4,34 @@ import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import Link from 'next/link'
 import { useBrand } from '@/app/context/brand-context'
-import { useMode, MODE_LABELS, type Mode } from '@/app/context/mode-context'
+import { useMode, type Mode } from '@/app/context/mode-context'
+import { useT } from '@/lib/i18n/use-t'
 import { ModeToggle } from './mode-toggle'
 
-type NavLink = { href: string; text: string; children?: NavLink[] }
+type NavLink = { href: string; key: string; children?: NavLink[] }
 
 const NAV_LINKS: NavLink[] = [
   {
     href: '/solutions',
-    text: 'Solutions',
+    key: 'nav.solutions',
     children: [
-      { href: '/solutions', text: 'Overview' },
-      { href: '/solutions/wholesale', text: 'Wholesale' },
-      { href: '/solutions/ecommerce', text: 'Ecommerce' },
-      { href: '/solutions/sell-on-ai', text: 'Sell on AI' },
-      { href: '/solutions/integrations', text: 'Integrations' },
+      { href: '/solutions', key: 'nav.overview' },
+      { href: '/solutions/wholesale', key: 'nav.wholesale' },
+      { href: '/solutions/ecommerce', key: 'nav.ecommerce' },
+      { href: '/solutions/sell-on-ai', key: 'nav.sellOnAi' },
+      { href: '/solutions/integrations', key: 'nav.integrations' },
     ],
   },
-  { href: '/compare', text: 'Compare' },
-  { href: '/blog', text: 'Journal' },
-  { href: '/about', text: 'About' },
+  { href: '/compare', key: 'nav.compare' },
+  { href: '/blog', key: 'nav.journal' },
+  { href: '/about', key: 'nav.about' },
 ]
 
 /** Desktop nav item with an optional hover/focus dropdown of use-case sub-pages. */
-function NavItem({ item }: { item: NavLink }) {
+function NavItem({ item, t }: { item: NavLink; t: (key: string) => string }) {
   const [open, setOpen] = useState(false)
   if (!item.children) {
-    return <Link href={item.href}>{item.text}</Link>
+    return <Link href={item.href}>{t(item.key)}</Link>
   }
   return (
     <div
@@ -41,7 +42,7 @@ function NavItem({ item }: { item: NavLink }) {
       onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget as Node)) setOpen(false) }}
     >
       <Link href={item.href} aria-haspopup="true" aria-expanded={open} style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
-        {item.text}
+        {t(item.key)}
         <span aria-hidden style={{ fontSize: 8, opacity: 0.55, transform: open ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }}>▾</span>
       </Link>
       {open && (
@@ -62,7 +63,7 @@ function NavItem({ item }: { item: NavLink }) {
                 href={c.href}
                 style={{ display: 'block', padding: '9px 12px', borderRadius: 'var(--r-sm)', whiteSpace: 'nowrap', fontSize: 14, color: 'var(--ink)' }}
               >
-                {c.text}
+                {t(c.key)}
               </Link>
             ))}
           </div>
@@ -76,6 +77,7 @@ const MODES: Mode[] = ['consumer', 'investor', 'platform']
 
 export function Navbar() {
   const brand = useBrand()
+  const { t } = useT()
   const { mode, setMode } = useMode()
   const [menuOpen, setMenuOpen] = useState(false)
   const [mounted, setMounted] = useState(false)
@@ -117,10 +119,10 @@ export function Navbar() {
       aria-hidden={!menuOpen}
     >
       <nav className="kt-mobile-nav" aria-label="Mobile primary">
-        {NAV_LINKS.map(({ href, text, children }) => (
+        {NAV_LINKS.map(({ href, key, children }) => (
           <div key={href}>
             <Link href={href} onClick={() => setMenuOpen(false)}>
-              {text}
+              {t(key)}
             </Link>
             {children && (
               <div style={{ display: 'flex', flexDirection: 'column', paddingLeft: 18, marginTop: 4 }}>
@@ -131,7 +133,7 @@ export function Navbar() {
                     onClick={() => setMenuOpen(false)}
                     style={{ fontSize: 15, opacity: 0.7 }}
                   >
-                    {c.text}
+                    {t(c.key)}
                   </Link>
                 ))}
               </div>
@@ -140,7 +142,7 @@ export function Navbar() {
         ))}
       </nav>
       <div className="kt-mobile-modes" aria-label="Audience mode">
-        <span className="kt-eyebrow">You&apos;re</span>
+        <span className="kt-eyebrow">{t("mode.label")}</span>
         <div className="kt-mobile-modes-list">
           {MODES.map((m) => (
             <button
@@ -150,7 +152,7 @@ export function Navbar() {
               aria-pressed={mode === m}
               className={mode === m ? 'is-current' : undefined}
             >
-              {MODE_LABELS[m]}
+              {t("mode." + m)}
             </button>
           ))}
         </div>
@@ -170,7 +172,7 @@ export function Navbar() {
         </Link>
         <nav className="kt-nav" aria-label="Primary">
           {NAV_LINKS.map((item) => (
-            <NavItem key={item.href} item={item} />
+            <NavItem key={item.href} item={item} t={t} />
           ))}
         </nav>
         <div className="kt-topbar-actions">

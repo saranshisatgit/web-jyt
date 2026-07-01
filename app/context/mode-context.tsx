@@ -4,11 +4,6 @@ import React, { createContext, useContext, useEffect, useState, useCallback } fr
 
 export type Mode = "consumer" | "investor" | "platform"
 
-export const MODE_LABELS: Record<Mode, string> = {
-  consumer: "Wearing",
-  investor: "Backing",
-  platform: "Building",
-}
 
 const STORAGE_KEY = "kt.mode"
 const VISITED_KEY = "kt.visited"

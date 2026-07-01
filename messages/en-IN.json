@@ -14,7 +14,10 @@
     "consumer": "Wearing",
     "investor": "Backing",
     "platform": "Building",
-    "label": "You're"
+    "label": "You're",
+    "consumerBlurb": "For buyers — story, makers, storefronts",
+    "investorBlurb": "For backers — thesis, traction, raise",
+    "platformBlurb": "For builders — features, demo, GMV"
   },
   "footer": {
     "makers": "Makers",
