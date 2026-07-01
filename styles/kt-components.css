@@ -44,7 +44,7 @@
 .kt-display.l  { font-size: var(--t-display-l); }
 .kt-display.m  { font-size: var(--t-display-m); line-height: 1; }
 .kt-display.s  { font-size: var(--t-display-s); line-height: 1.05; }
-.kt-display em { font-style: italic; color: var(--accent-deep); font-weight: 400; }
+.kt-display em { font-style: italic; color: var(--accent-deep); font-weight: 400; mix-blend-mode: difference; }
 
 /* ---------------- BRAND MARK ---------------- */
 .kt-brand {
