@@ -1,6 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { headers } from 'next/headers'
 import { Navbar } from '@/components/navbar'
 import { getBlogsWithMeta } from '@/medu/queries'
 import { ChevronLeftIcon, ChevronRightIcon, RssIcon } from '@heroicons/react/16/solid'
@@ -10,12 +11,17 @@ import { notFound } from 'next/navigation'
 import { getAllCategories } from '../actions'
 import type { BlogPost } from '@/types/blog'
 import { getAuthors, getMainImageUrl } from '@/types/blog'
+import { brandFromKey } from '@/lib/brand'
 
 export const dynamic = 'force-dynamic'
 
-export const metadata: Metadata = {
-  title: 'Journal',
-  description: 'Field notes, product updates, and thinking out loud from the JaalYantra team.',
+export async function generateMetadata(): Promise<Metadata> {
+  const h = await headers()
+  const brand = brandFromKey(h.get('x-brand'))
+  return {
+    title: 'Journal',
+    description: `Field notes, product updates, and thinking out loud from the ${brand.seo.name} team.`,
+  }
 }
 
 const POSTS_PER_PAGE = 5
@@ -38,16 +44,19 @@ export default async function Blog({ searchParams }: { searchParams: SearchParam
   const category =
     typeof resolvedParams.category === 'string' ? resolvedParams.category : undefined
 
+  const h = await headers()
+  const brand = brandFromKey(h.get('x-brand'))
+
   return (
     <main>
       <Navbar />
       <Hero />
-      {page === 1 && !category && <FeaturedPosts />}
+      {page === 1 && !category && <FeaturedPosts domain={brand.seo.domain} />}
       <section className="kt-section" id="journal">
         <div className="container">
           <Categories selected={category} />
-          <Posts page={page} category={category} />
-          <Pagination page={page} category={category} />
+          <Posts domain={brand.seo.domain} page={page} category={category} />
+          <Pagination domain={brand.seo.domain} page={page} category={category} />
         </div>
       </section>
     </main>
@@ -87,9 +96,9 @@ function Hero() {
   )
 }
 
-async function FeaturedPosts() {
+async function FeaturedPosts({ domain }: { domain: string }) {
   try {
-    const response = await getBlogsWithMeta('jaalyantra.com', { is_featured: true, limit: 3 })
+    const response = await getBlogsWithMeta(domain, { is_featured: true, limit: 3 })
     const featuredPosts = response?.data || []
     if (featuredPosts.length === 0) return null
 
@@ -197,9 +206,9 @@ function CategoryChip({
   )
 }
 
-async function Posts({ page, category }: { page: number; category?: string }) {
+async function Posts({ domain, page, category }: { domain: string; page: number; category?: string }) {
   try {
-    const response = await getBlogsWithMeta('jaalyantra.com', {
+    const response = await getBlogsWithMeta(domain, {
       category,
       limit: POSTS_PER_PAGE,
       page,
@@ -282,7 +291,7 @@ async function Posts({ page, category }: { page: number; category?: string }) {
   }
 }
 
-async function Pagination({ page, category }: { page: number; category?: string }) {
+async function Pagination({ domain, page, category }: { domain: string; page: number; category?: string }) {
   function url(p: number) {
     const params = new URLSearchParams()
     if (category) params.set('category', category)
@@ -291,7 +300,7 @@ async function Pagination({ page, category }: { page: number; category?: string 
   }
 
   try {
-    const response = await getBlogsWithMeta('jaalyantra.com', {
+    const response = await getBlogsWithMeta(domain, {
       category,
       limit: POSTS_PER_PAGE,
       page,

@@ -8,9 +8,9 @@ import { getPageContent } from '@/lib/page-content'
 import { DEFAULT_LOCALE } from '@/lib/i18n/config'
 
 export const metadata: Metadata = {
-  title: 'Sell on AI — your store, addressable by agents | JYT',
+  title: 'Sell on AI — your store, addressable by agents',
   description:
-    'JYT ships a Model Context Protocol server for every storefront. An AI agent can discover your store, search the catalogue, build a cart, onboard the shopper, and take payment — PayU for INR, Stripe for the rest.',
+    'Ship a Model Context Protocol server that lets AI agents browse, inquire, and purchase from your store — no browser, no API key, just a tool call.',
 }
 
 export default async function SellOnAiPage() {

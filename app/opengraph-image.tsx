@@ -1,9 +1,14 @@
 import { ImageResponse } from 'next/og'
+import { headers } from 'next/headers'
+import { brandFromKey } from '@/lib/brand'
 
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
-export default function OGImage() {
+export default async function OGImage() {
+  const h = await headers()
+  const brand = brandFromKey(h.get('x-brand'))
+
   return new ImageResponse(
     (
       <div
@@ -29,7 +34,7 @@ export default function OGImage() {
             fontWeight: 400,
           }}
         >
-          Jaal Yantra Textiles
+          {brand.seo.name}
         </div>
         <div
           style={{
@@ -40,7 +45,7 @@ export default function OGImage() {
             opacity: 0.7,
           }}
         >
-          Close every gap
+          {brand.tagline}
         </div>
       </div>
     ),

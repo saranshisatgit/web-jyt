@@ -1,10 +1,12 @@
 import type { Metadata } from 'next'
 import { Suspense } from 'react'
+import { headers } from 'next/headers'
 import { Navbar } from '@/components/navbar'
 import { fetchPagefromAPI } from '../actions'
 import { type Block, getBlockByName } from '@/medu/queries'
 import { SectionLoading } from '@/components/section-loading'
 import ContactForm from '@/components/ContactForm'
+import { brandFromKey } from '@/lib/brand'
 
 interface LinkItem {
   text: string
@@ -25,10 +27,13 @@ interface ContactInfoContent {
 
 export const dynamic = 'force-dynamic'
 
-export const metadata: Metadata = {
-  title: 'Contact',
-  description:
-    'Get in touch with the sales team — bespoke textiles, production runs, and platform demos.',
+export async function generateMetadata(): Promise<Metadata> {
+  const h = await headers()
+  const brand = brandFromKey(h.get('x-brand'))
+  return {
+    title: 'Contact',
+    description: `Get in touch with the ${brand.seo.name} sales team — bespoke textiles, production runs, and platform demos.`,
+  }
 }
 
 const DEFAULT_INFO: ContactInfoContent = {
@@ -45,6 +50,8 @@ const DEFAULT_INFO: ContactInfoContent = {
 }
 
 export default async function ContactPage() {
+  const h = await headers()
+  const brand = brandFromKey(h.get('x-brand'))
   const pageData = await fetchPagefromAPI('contact')
   if (!pageData) {
     return (
@@ -64,7 +71,7 @@ export default async function ContactPage() {
   const cmsContent =
     (cmsContactInfo?.content as ContactInfoContent | undefined) || {}
 
-  const info: ContactInfoContent = { ...DEFAULT_INFO, ...cmsContent }
+  const info: ContactInfoContent = { ...DEFAULT_INFO, ...cmsContent, email: brand.emails.primary }
   const headerContent = cmsHeader?.content as
     | { title?: string; subtitle?: string }
     | undefined

@@ -9,7 +9,7 @@ import { DEFAULT_LOCALE } from '@/lib/i18n/config'
 import type { SolutionBlock as SolutionBlockData } from '@/data/solutions'
 
 export const metadata: Metadata = {
-  title: 'One OS for your atelier — design, produce, supply, sell | JYT',
+  title: 'One OS for your atelier — design, produce, supply, sell',
   description:
     'Design, produce, supply, and sell on a single rail — from the first sketch to a branded storefront, with every artisan, material lot, and SKU accounted for.',
 }

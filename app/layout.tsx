@@ -2,7 +2,8 @@ import '@/styles/globals.css'
 import type { Metadata } from 'next'
 import { Rethink_Sans, Instrument_Serif, JetBrains_Mono } from 'next/font/google'
 import { headers } from 'next/headers'
-import { brandFromKey } from '@/lib/brand'
+import { brandFromKey, type BrandConfig } from '@/lib/brand'
+import { brandMetadata } from '@/lib/brand-metadata'
 import { currencyFromCode } from '@/lib/currency'
 import { DEFAULT_LOCALE, LOCALES, COOKIE_NAME } from '@/lib/i18n/config'
 import { loadTranslations } from '@/lib/i18n/translations'
@@ -42,29 +43,10 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const dynamic = 'force-dynamic'
 
-export const metadata: Metadata = {
-  title: {
-    template: '%s - Jaal Yantra Textiles',
-    default: 'JYT - Close every gap',
-  },
-  description:
-    'A garment with provenance, made by hands you can name. JYT is the production OS for fashion — design, produce, and sell with verifiable traceability.',
-  openGraph: {
-    type: 'website',
-    locale: 'en_IN',
-    siteName: 'Jaal Yantra Textiles',
-    title: 'JYT - Close every gap',
-    description:
-      'A garment with provenance, made by hands you can name. JYT is the production OS for fashion — design, produce, and sell with verifiable traceability.',
-    images: [{ url: 'https://www.jaalyantra.com/opengraph-image', width: 1200, height: 630 }],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'JYT - Close every gap',
-    description:
-      'A garment with provenance, made by hands you can name. JYT is the production OS for fashion — design, produce, and sell with verifiable traceability.',
-    images: ['https://www.jaalyantra.com/opengraph-image'],
-  },
+export async function generateMetadata(): Promise<Metadata> {
+  const headersList = await headers()
+  const brand = brandFromKey(headersList.get('x-brand'))
+  return brandMetadata(brand)
 }
 
 export default async function RootLayout({
@@ -73,7 +55,8 @@ export default async function RootLayout({
   children: React.ReactNode
 }>) {
   const headersList = await headers()
-  const brand = brandFromKey(headersList.get('x-brand'))
+  const brandKey = headersList.get('x-brand')
+  const brand = brandFromKey(brandKey)
   const currency = currencyFromCode(headersList.get('x-currency'))
 
   const locale = (headersList.get('x-locale') as LocaleCode) || DEFAULT_LOCALE
@@ -89,7 +72,7 @@ export default async function RootLayout({
           <link
             rel="alternate"
             type="application/rss+xml"
-            title="The JYT Blog"
+            title={`The ${brand.shortName} Blog`}
             href="/blog/feed.xml"
           />
           <link rel="icon" href="/favicon.ico" sizes="any" />
@@ -105,11 +88,10 @@ export default async function RootLayout({
               __html: JSON.stringify({
                 '@context': 'https://schema.org',
                 '@type': 'Organization',
-                name: 'Jaal Yantra Textiles',
-                url: 'https://www.jaalyantra.com',
-                logo: 'https://www.jaalyantra.com/favicon.ico',
-                description:
-                  'A garment with provenance, made by hands you can name. Production OS for fashion — design, produce, and sell with verifiable traceability.',
+                name: brand.seo.name,
+                url: `https://www.${brand.seo.domain}`,
+                logo: `https://www.${brand.seo.domain}/favicon.ico`,
+                description: brand.seo.description,
                 foundingYear: '2025',
                 location: { '@type': 'Place', address: { '@type': 'PostalAddress', addressLocality: 'Dharamshala', addressRegion: 'HP', addressCountry: 'IN' } },
                 sameAs: [],

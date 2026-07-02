@@ -8,9 +8,9 @@ import { getPageContent } from '@/lib/page-content'
 import { DEFAULT_LOCALE } from '@/lib/i18n/config'
 
 export const metadata: Metadata = {
-  title: 'Wholesale — source verified inventory, sell sustainable | JYT',
+  title: 'Wholesale — source verified inventory, sell sustainable',
   description:
-    'Wholesalers enter sustainable markets with JYT: browse verified, traceable inventory, design your own pieces in the partner studio, and sell with a Digital Product Passport on every SKU.',
+    'Wholesalers enter sustainable markets — verify provenance, simplify compliance, and sell to conscious buyers at scale.',
 }
 
 export default async function WholesalePage() {

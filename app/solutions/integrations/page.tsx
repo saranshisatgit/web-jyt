@@ -2,10 +2,10 @@ import type { Metadata } from 'next'
 import { Navbar } from '@/components/navbar'
 import { HeroArt } from '@/components/hero-art'
 import { IntegrationsGrid } from '@/components/integrations-grid'
-
 export const metadata: Metadata = {
-  title: 'Integrations – JYT',
-  description: 'Browse and discover integrations and plugins for your Medusa storefront.',
+  title: 'Integrations',
+  description:
+    'Browse and discover integrations and plugins for your Medusa storefront.',
 }
 
 const CATEGORY_KEYWORDS: Record<string, string> = {

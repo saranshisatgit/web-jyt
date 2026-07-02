@@ -8,9 +8,9 @@ import { getPageContent } from '@/lib/page-content'
 import { DEFAULT_LOCALE } from '@/lib/i18n/config'
 
 export const metadata: Metadata = {
-  title: 'Compare — JYT vs wholesale, PLM & provenance tools',
+  title: 'Compare — vs wholesale, PLM & provenance tools',
   description:
-    'Wholesale platforms only sell, PLM tools only design, provenance apps only verify. JYT runs design → produce → supply → sell on one rail, built for independent ateliers.',
+    'Wholesale platforms only sell. PLMs only design. Provenance tools only track. Run design → produce → supply → sell on a single connected rail.',
 }
 
 type Mark = 'yes' | 'no' | 'partial'

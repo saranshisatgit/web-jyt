@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useBrand } from '@/app/context/brand-context'
 
 interface Field {
   key: string
@@ -95,6 +96,7 @@ function SectionCard({ section }: { section: SectionData }) {
 }
 
 export default function CompanyContent({ regions }: { regions?: Record<string, RegionData> }) {
+  const brand = useBrand()
   const [region, setRegion] = useState<string>('india')
   const regionData = regions?.[region]
 
@@ -153,8 +155,8 @@ export default function CompanyContent({ regions }: { regions?: Record<string, R
           >
             Information provided for compliance and verification purposes only.
             For official copies, please contact{' '}
-            <a href="mailto:legal@jaalyantra.com" style={{ color: 'var(--accent-deep)' }}>
-              legal@jaalyantra.com
+            <a href={`mailto:${brand.emails.primary}`} style={{ color: 'var(--accent-deep)' }}>
+              {brand.emails.primary}
             </a>
             .
           </p>

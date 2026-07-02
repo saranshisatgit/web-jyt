@@ -1,10 +1,12 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
+import { headers } from 'next/headers'
 import { Navbar } from '@/components/navbar'
 import { fetchPagefromAPI } from '../actions'
 import { getBlockByName, getBlockByType, Block } from '@/medu/queries'
 import partnerUiPreviewsData from '@/data/partner-ui-previews.json'
 import { LiveBrandsStrip } from '@/components/partner-page/live-brands-strip'
+import { brandFromKey } from '@/lib/brand'
 
 interface HeaderContent {
   title: string
@@ -49,10 +51,13 @@ const partnerUiPreviews = partnerUiPreviewsData as {
 
 export const dynamic = 'force-dynamic'
 
-export const metadata: Metadata = {
-  title: 'Partners',
-  description:
-    'Become a JaalYantra production partner — atelier, manufacturer, or solo artisan. Global orders, mobile-first.',
+export async function generateMetadata(): Promise<Metadata> {
+  const h = await headers()
+  const brand = brandFromKey(h.get('x-brand'))
+  return {
+    title: 'Partners',
+    description: `Become a ${brand.seo.name} production partner — atelier, manufacturer, or solo artisan. Global orders, mobile-first.`,
+  }
 }
 
 export default async function Partner() {

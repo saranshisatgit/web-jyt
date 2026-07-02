@@ -1,6 +1,11 @@
 import type { MetadataRoute } from 'next'
+import { headers } from 'next/headers'
+import { brandFromKey } from '@/lib/brand'
 
-export default function robots(): MetadataRoute.Robots {
+export default async function robots(): Promise<MetadataRoute.Robots> {
+  const h = await headers()
+  const brand = brandFromKey(h.get('x-brand'))
+
   return {
     rules: [
       {
@@ -9,6 +14,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ['/api/', '/login/', '/agreement/', '/guides/', '/tours/'],
       },
     ],
-    sitemap: 'https://jaalyantra.com/sitemap.xml',
+    sitemap: `https://www.${brand.seo.domain}/sitemap.xml`,
   }
 }

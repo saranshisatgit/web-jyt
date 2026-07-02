@@ -3,25 +3,28 @@ import { Feed } from 'feed'
 import assert from 'node:assert'
 import type { BlogPost } from '@/types/blog'
 import { getAuthors } from '@/types/blog'
+import type { NextRequest } from 'next/server'
+import { brandFromKey } from '@/lib/brand'
 
 export const dynamic = 'force-dynamic'
 
-export async function GET() {
-  const siteUrl = 'https://jaalyantra.com'
+export async function GET(request: NextRequest) {
+  const brand = brandFromKey(request.headers.get('x-brand'))
+  const siteUrl = `https://www.${brand.seo.domain}`
 
   const feed = new Feed({
-    title: 'Jaal Yantra Textiles Blog',
-    description: 'Latest articles from Jaal Yantra Textiles',
+    title: `${brand.seo.name} Blog`,
+    description: `Latest articles from ${brand.seo.name}`,
     author: {
       name: 'Saransh Sharma',
-      email: 'saransh@jaalyantra.com',
+      email: brand.emails.founder,
     },
     id: siteUrl,
     link: siteUrl,
     language: 'en',
     image: `${siteUrl}/images/logo.png`,
     favicon: `${siteUrl}/favicon.ico`,
-    copyright: `All rights reserved ${new Date().getFullYear()}, Jaal Yantra Textiles`,
+    copyright: `All rights reserved ${new Date().getFullYear()}, ${brand.seo.name}`,
     generator: 'Next.js',
     feedLinks: {
       json: `${siteUrl}/feed.json`,
@@ -30,9 +33,7 @@ export async function GET() {
     },
   })
   
-  const posts: BlogPost[] = await getAllBlogs('jaalyantra.com','')
-
- 
+  const posts: BlogPost[] = await getAllBlogs(brand.seo.domain,'')
 
   posts.forEach((post) => {
     try {
@@ -45,15 +46,12 @@ export async function GET() {
       return
     }
 
-    // Create a simple excerpt from the content if it doesn't exist
     const excerpt = post.content
 
-    // Get authors using helper function
     const authorNames = getAuthors(post);
     
-    // If no authors found, add a default author
     if (authorNames.length === 0) {
-      authorNames.push('Jaal Yantra Textiles');
+      authorNames.push(brand.seo.name);
     }
     
     feed.addItem({

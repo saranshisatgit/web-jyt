@@ -1,7 +1,7 @@
 import type { MetadataRoute } from 'next'
+import { headers } from 'next/headers'
+import { brandFromKey } from '@/lib/brand'
 import { getAllBlogs } from '@/medu/queries'
-
-const BASE_URL = 'https://jaalyantra.com'
 
 const staticPages: Array<{ path: string; priority: number; changeFrequency: 'monthly' | 'weekly' | 'yearly' }> = [
   { path: '', priority: 1.0, changeFrequency: 'monthly' },
@@ -18,19 +18,23 @@ const staticPages: Array<{ path: string; priority: number; changeFrequency: 'mon
 ]
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const h = await headers()
+  const brand = brandFromKey(h.get('x-brand'))
+  const baseUrl = `https://www.${brand.seo.domain}`
+
   const entries: MetadataRoute.Sitemap = staticPages.map((page) => ({
-    url: `${BASE_URL}${page.path}`,
+    url: `${baseUrl}${page.path}`,
     lastModified: new Date(),
     changeFrequency: page.changeFrequency,
     priority: page.priority,
   }))
 
   try {
-    const blogs = await getAllBlogs('jaalyantra.com', '')
+    const blogs = await getAllBlogs(brand.seo.domain, '')
     if (Array.isArray(blogs) && blogs.length > 0) {
       for (const blog of blogs) {
         entries.push({
-          url: `${BASE_URL}/blog/${blog.slug}`,
+          url: `${baseUrl}/blog/${blog.slug}`,
           lastModified: blog.published_at ? new Date(blog.published_at) : new Date(),
           changeFrequency: 'monthly',
           priority: 0.6,

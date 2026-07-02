@@ -8,9 +8,9 @@ import { getPageContent } from '@/lib/page-content'
 import { DEFAULT_LOCALE } from '@/lib/i18n/config'
 
 export const metadata: Metadata = {
-  title: 'Ecommerce — a storefront with the truth on every SKU | JYT',
+  title: 'Ecommerce — a storefront with the truth on every SKU',
   description:
-    'Every partner gets a headless storefront on a custom domain, pulled from the same rails as production. Each SKU carries a Digital Product Passport — artisan, village, material lot — so the product page sells the story and the receipts.',
+    'Every partner gets a headless storefront with a Digital Product Passport on every SKU — made for marketplaces, agents, and regulatory compliance.',
 }
 
 export default async function EcommercePage() {
