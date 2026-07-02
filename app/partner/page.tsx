@@ -7,6 +7,8 @@ import { getBlockByName, getBlockByType, Block } from '@/medu/queries'
 import partnerUiPreviewsData from '@/data/partner-ui-previews.json'
 import { LiveBrandsStrip } from '@/components/partner-page/live-brands-strip'
 import { brandFromKey } from '@/lib/brand'
+import { DEFAULT_LOCALE } from '@/lib/i18n/config'
+import { resolveBlock } from '@/lib/i18n/blocks'
 
 interface HeaderContent {
   title: string
@@ -61,6 +63,8 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function Partner() {
+  const h = await headers()
+  const locale = h.get('x-locale') || DEFAULT_LOCALE
   const partnerPage = await fetchPagefromAPI('partner')
   if (!partnerPage) {
     return (
@@ -75,9 +79,9 @@ export default async function Partner() {
     )
   }
 
-  const headerBlock = getBlockByType(partnerPage.blocks, 'Header') as Block | undefined
-  const featureBlock = getBlockByName(partnerPage.blocks, 'Partner Feature') as Block | undefined
-  const bentoBlock = getBlockByName(partnerPage.blocks, 'Bento Section') as Block | undefined
+  const headerBlock = resolveBlock(getBlockByType(partnerPage.blocks, 'Header') as Block | undefined, locale)
+  const featureBlock = resolveBlock(getBlockByName(partnerPage.blocks, 'Partner Feature') as Block | undefined, locale)
+  const bentoBlock = resolveBlock(getBlockByName(partnerPage.blocks, 'Bento Section') as Block | undefined, locale)
 
   const header = (headerBlock?.content ?? {}) as unknown as HeaderContent
   const feature = (featureBlock?.content ?? {}) as unknown as FeatureContent

@@ -7,6 +7,8 @@ import { type Block, getBlockByName } from '@/medu/queries'
 import { SectionLoading } from '@/components/section-loading'
 import ContactForm from '@/components/ContactForm'
 import { brandFromKey } from '@/lib/brand'
+import { DEFAULT_LOCALE } from '@/lib/i18n/config'
+import { resolveBlock } from '@/lib/i18n/blocks'
 
 interface LinkItem {
   text: string
@@ -52,6 +54,7 @@ const DEFAULT_INFO: ContactInfoContent = {
 export default async function ContactPage() {
   const h = await headers()
   const brand = brandFromKey(h.get('x-brand'))
+  const locale = h.get('x-locale') || DEFAULT_LOCALE
   const pageData = await fetchPagefromAPI('contact')
   if (!pageData) {
     return (
@@ -66,8 +69,8 @@ export default async function ContactPage() {
     )
   }
 
-  const cmsHeader = getBlockByName(pageData.blocks, 'Header') as Block | undefined
-  const cmsContactInfo = getBlockByName(pageData.blocks, 'ContactInfo') as Block | undefined
+  const cmsHeader = resolveBlock(getBlockByName(pageData.blocks, 'Header') as Block | undefined, locale)
+  const cmsContactInfo = resolveBlock(getBlockByName(pageData.blocks, 'ContactInfo') as Block | undefined, locale)
   const cmsContent =
     (cmsContactInfo?.content as ContactInfoContent | undefined) || {}
 

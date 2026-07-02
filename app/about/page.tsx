@@ -1,4 +1,5 @@
 import React, { Suspense } from 'react'
+import { headers } from 'next/headers'
 import { AnimatedNumber } from '@/components/animated-number'
 import { Navbar } from '@/components/navbar'
 import { HeroArt } from '@/components/hero-art'
@@ -7,6 +8,8 @@ import Image from 'next/image'
 import { fetchPagefromAPI } from '../actions'
 import { getBlockByName, Block } from '@/medu/queries'
 import { SectionLoading } from '@/components/section-loading'
+import { DEFAULT_LOCALE } from '@/lib/i18n/config'
+import { resolveBlock } from '@/lib/i18n/blocks'
 
 interface StatItem {
   label: string
@@ -434,6 +437,9 @@ function Careers({ data }: { data?: Block }) {
 }
 
 export default async function Company() {
+  const h = await headers()
+  const locale = h.get('x-locale') || DEFAULT_LOCALE
+
   const headerBlock = await fetchPagefromAPI('about-us')
   if (!headerBlock) {
     return (
@@ -448,10 +454,10 @@ export default async function Company() {
     )
   }
 
-  const headerData = getBlockByName(headerBlock.blocks, 'Header')
-  const teamData = getBlockByName(headerBlock.blocks, 'Team')
-  const investorsData = getBlockByName(headerBlock.blocks, 'Investors')
-  const careersData = getBlockByName(headerBlock.blocks, 'Careers')
+  const headerData = resolveBlock(getBlockByName(headerBlock.blocks, 'Header'), locale)
+  const teamData = resolveBlock(getBlockByName(headerBlock.blocks, 'Team'), locale)
+  const investorsData = resolveBlock(getBlockByName(headerBlock.blocks, 'Investors'), locale)
+  const careersData = resolveBlock(getBlockByName(headerBlock.blocks, 'Careers'), locale)
 
   return (
     <main>
