@@ -34,9 +34,9 @@
         },
         {
           "icon": "04",
-          "title": "Tikt atklātam un augt",
-          "body": "Pabeigtie pasūtījumi veido jūsu profilu tīklā. Zīmoli jūs atklāj pēc tehnikas, atrašanās vietas un vērtējuma — jo vairāk piegādājat, jo vairāk darba nāk.",
-          "mockup": { "webm": "/mockups/design-to-cart.webm", "gif": "/mockups/design-to-cart.gif", "alt": "Partnera profils ar pabeigtiem pasūtījumiem un vērtējumiem" }
+          "title": "Saņemiet maksājumus ar starptautisku un vietēju atbalstu",
+          "body": "Katrs pabeigtais pasūtījums tiek izsekots un saskaņots. Izņemiet ieņēmumus ar vietējo bankas pārskaitījumu vai starptautisko pārvedumu, ar īpašu partneru atbalstu WhatsApp un e-pastā.",
+          "mockup": { "webm": "/mockups/design-to-cart.webm", "gif": "/mockups/design-to-cart.gif", "alt": "Partneru maksājumu un izmaksas iespējas" }
         }
       ]
     },

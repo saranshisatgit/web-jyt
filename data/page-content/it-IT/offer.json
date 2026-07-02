@@ -34,9 +34,9 @@
         },
         {
           "icon": "04",
-          "title": "Fatti scoprire e cresci",
-          "body": "Gli ordini completati costruiscono il tuo profilo sulla rete. I brand ti scoprono per tecnica, posizione e valutazione — più consegni, più lavoro arriva.",
-          "mockup": { "webm": "/mockups/design-to-cart.webm", "gif": "/mockups/design-to-cart.gif", "alt": "Profilo partner con ordini completati e valutazioni" }
+          "title": "Ricevi pagamenti con supporto internazionale e locale",
+          "body": "Ogni ordine completato è tracciato e riconciliato. Preleva i guadagni tramite bonifico locale o internazionale, con supporto partner dedicato su WhatsApp ed email.",
+          "mockup": { "webm": "/mockups/design-to-cart.webm", "gif": "/mockups/design-to-cart.gif", "alt": "Opzioni di pagamento e prelievo partner" }
         }
       ]
     },

@@ -34,9 +34,9 @@
         },
         {
           "icon": "04",
-          "title": "Get discovered & grow",
-          "body": "Completed orders build your profile on the network. Brands discover you by technique, location, and rating — the more you deliver, the more work comes in.",
-          "mockup": { "webm": "/mockups/design-to-cart.webm", "gif": "/mockups/design-to-cart.gif", "alt": "Partner profile with completed orders and ratings" }
+          "title": "Get paid with international and local support",
+          "body": "Every completed order is tracked and reconciled. Withdraw earnings via local bank transfer or international wire, with dedicated partner support available on WhatsApp and email.",
+          "mockup": { "webm": "/mockups/design-to-cart.webm", "gif": "/mockups/design-to-cart.gif", "alt": "Partner payment and payout options" }
         }
       ]
     },

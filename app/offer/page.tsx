@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { headers } from 'next/headers'
 import { Navbar } from '@/components/navbar'
 import { HeroArt } from '@/components/hero-art'
+import { PartnerApply, PartnerTerms, PartnerDeliver, PartnerPayment } from '@/components/offer-mockups'
 import { getPageContent } from '@/lib/page-content'
 import { DEFAULT_LOCALE } from '@/lib/i18n/config'
 
@@ -14,21 +15,7 @@ type CTA = { title: string; body: string; primaryCta: { label: string; href: str
 type Hero = { eyebrow: string; title: string; subtitle: string; primaryCta: { label: string; href: string }; secondaryCta: { label: string; href: string } }
 type OfferContent = { hero: Hero; sections: Section[]; callout: CTA }
 
-function MockupVideo({ mockup }: { mockup: Mockup }) {
-  return (
-    <video
-      autoPlay
-      loop
-      muted
-      playsInline
-      poster={mockup.gif}
-      style={{ width: '100%', height: 'auto', display: 'block', borderRadius: 'var(--r-md)', border: '1px solid var(--rule)' }}
-    >
-      {mockup.webm && <source src={mockup.webm} type="video/webm" />}
-      <img src={mockup.gif} alt={mockup.alt} style={{ width: '100%', height: 'auto', display: 'block', borderRadius: 'var(--r-md)', border: '1px solid var(--rule)' }} />
-    </video>
-  )
-}
+const OFFER_MOCKUPS = [PartnerApply, PartnerTerms, PartnerDeliver, PartnerPayment]
 
 export async function generateMetadata(): Promise<Metadata> {
   const h = await headers()
@@ -93,9 +80,12 @@ export default async function OfferPage() {
                       {step.body}
                     </p>
                   </div>
-                  <div className="kt-feature-shot">
-                    <MockupVideo mockup={step.mockup} />
-                  </div>
+                   <div className="kt-feature-shot">
+                     {(() => {
+                       const C = OFFER_MOCKUPS[i]
+                       return C ? <C /> : null
+                     })()}
+                   </div>
                 </article>
               ))}
             </div>
