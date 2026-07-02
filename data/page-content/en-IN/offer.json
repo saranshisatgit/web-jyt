@@ -1,0 +1,62 @@
+{
+  "_note": "Offer / partnership landing page. CMS-liftable.",
+  "hero": {
+    "eyebrow": "Partner programme",
+    "title": "Grow with the maker network.",
+    "subtitle": "Join 150+ vetted artisans, ateliers, and manufacturers across EU, IN, and AU — and connect to brands that are ready to produce.",
+    "primaryCta": { "label": "Register as a partner", "href": "https://partner.jaalyantra.com" },
+    "secondaryCta": { "label": "See how it works", "href": "#how-it-works" }
+  },
+  "sections": [
+    {
+      "id": "how-it-works",
+      "eyebrow": "How it works",
+      "title": "From application to first order.",
+      "body": "We keep the process lean so you can focus on what you do best — making. Apply once, get vetted, and start receiving work from brands that match your capabilities.",
+      "steps": [
+        {
+          "icon": "01",
+          "title": "Apply & get vetted",
+          "body": "Tell us about your workshop — equipment, capacity, materials, lead times. Our team reviews and verifies each application within 5 business days.",
+          "mockup": { "webm": "/mockups/whatsapp.webm", "gif": "/mockups/whatsapp.gif", "alt": "Partner application form on mobile" }
+        },
+        {
+          "icon": "02",
+          "title": "Set your terms",
+          "body": "Define pricing per technique, minimum order quantities, lead times, and shipping regions. You stay in control of what you take on and at what price.",
+          "mockup": { "webm": "/mockups/product-create.webm", "gif": "/mockups/product-create.gif", "alt": "Partner pricing and capability settings dashboard" }
+        },
+        {
+          "icon": "03",
+          "title": "Receive work & deliver",
+          "body": "Brands route orders to your portal. You get task briefs, deadlines, and material specs — all on mobile via WhatsApp. Complete work, log output, and get paid.",
+          "mockup": { "webm": "/mockups/production-run.webm", "gif": "/mockups/production-run.gif", "alt": "Production run progress in partner portal" }
+        },
+        {
+          "icon": "04",
+          "title": "Get discovered & grow",
+          "body": "Completed orders build your profile on the network. Brands discover you by technique, location, and rating — the more you deliver, the more work comes in.",
+          "mockup": { "webm": "/mockups/design-to-cart.webm", "gif": "/mockups/design-to-cart.gif", "alt": "Partner profile with completed orders and ratings" }
+        }
+      ]
+    },
+    {
+      "id": "benefits",
+      "eyebrow": "Why join",
+      "title": "Built for the people who make.",
+      "body": "The textile industry runs on trust. We give you the tools to prove your craft, connect with the right brands, and grow on your own terms.",
+      "benefits": [
+        { "title": "Vetted brand network", "body": "Access brands actively looking for production partners — no cold outreach, no middlemen." },
+        { "title": "Mobile-first tools", "body": "Receive briefs, send updates, and manage orders from your phone. No desk required." },
+        { "title": "Transparent terms", "body": "Set your prices, lead times, and capacity. Brands come to you on your terms." },
+        { "title": "On-time payments", "body": "Every completed run is tracked and reconciled. Payments are processed on schedule, every time." }
+      ]
+    }
+  ],
+  "callout": {
+    "title": "Ready to join the network?",
+    "body": "Apply now and start receiving work from brands that value craft, provenance, and reliability.",
+    "primaryCta": { "label": "Register as a partner", "href": "https://partner.jaalyantra.com" },
+    "secondaryCta": { "label": "Talk to our team", "href": "/contact" }
+  }
+}

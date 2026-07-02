@@ -1,0 +1,62 @@
+{
+  "_note": "Pagina di offerta / partnership. CMS-liftable.",
+  "hero": {
+    "eyebrow": "Programma partner",
+    "title": "Cresci con la rete di artigiani.",
+    "subtitle": "Unisciti a oltre 150 artigiani, atelier e produttori verificati in UE, IN e AU — e connettiti con brand pronti a produrre.",
+    "primaryCta": { "label": "Registrati come partner", "href": "https://partner.jaalyantra.com" },
+    "secondaryCta": { "label": "Come funziona", "href": "#how-it-works" }
+  },
+  "sections": [
+    {
+      "id": "how-it-works",
+      "eyebrow": "Come funziona",
+      "title": "Dalla candidatura al primo ordine.",
+      "body": "Manteniamo il processo snello in modo che tu possa concentrarti su ciò che sai fare meglio — creare. Candidati una volta, supera la verifica e inizia a ricevere lavoro da brand in linea con le tue capacità.",
+      "steps": [
+        {
+          "icon": "01",
+          "title": "Candidati e verifica",
+          "body": "Raccontaci del tuo laboratorio — attrezzatura, capacità, materiali, tempi di consegna. Il nostro team esamina e verifica ogni candidatura entro 5 giorni lavorativi.",
+          "mockup": { "webm": "/mockups/whatsapp.webm", "gif": "/mockups/whatsapp.gif", "alt": "Modulo di candidatura partner su mobile" }
+        },
+        {
+          "icon": "02",
+          "title": "Imposta le tue condizioni",
+          "body": "Definisci prezzi per tecnica, quantità minime, tempi di consegna e regioni di spedizione. Mantieni il controllo su cosa accettare e a che prezzo.",
+          "mockup": { "webm": "/mockups/product-create.webm", "gif": "/mockups/product-create.gif", "alt": "Dashboard impostazioni prezzi e capacità partner" }
+        },
+        {
+          "icon": "03",
+          "title": "Ricevi lavoro e consegna",
+          "body": "I brand instradano gli ordini al tuo portale. Ricevi brief, scadenze e specifiche — tutto su mobile via WhatsApp. Completa il lavoro, registra la produzione e vieni pagato.",
+          "mockup": { "webm": "/mockups/production-run.webm", "gif": "/mockups/production-run.gif", "alt": "Avanzamento produzione nel portale partner" }
+        },
+        {
+          "icon": "04",
+          "title": "Fatti scoprire e cresci",
+          "body": "Gli ordini completati costruiscono il tuo profilo sulla rete. I brand ti scoprono per tecnica, posizione e valutazione — più consegni, più lavoro arriva.",
+          "mockup": { "webm": "/mockups/design-to-cart.webm", "gif": "/mockups/design-to-cart.gif", "alt": "Profilo partner con ordini completati e valutazioni" }
+        }
+      ]
+    },
+    {
+      "id": "benefits",
+      "eyebrow": "Perché aderire",
+      "title": "Pensato per chi crea.",
+      "body": "L'industria tessile si basa sulla fiducia. Ti diamo gli strumenti per dimostrare la tua maestria, connetterti con i brand giusti e crescere alle tue condizioni.",
+      "benefits": [
+        { "title": "Rete di brand verificati", "body": "Accedi a brand che cercano attivamente partner produttivi — niente contatti freddi, niente intermediari." },
+        { "title": "Strumenti mobile-first", "body": "Ricevi brief, invia aggiornamenti e gestisci ordini dal telefono. Nessuna scrivania necessaria." },
+        { "title": "Condizioni trasparenti", "body": "Imposta i tuoi prezzi, tempi e capacità. I brand vengono da te alle tue condizioni." },
+        { "title": "Pagamenti puntuali", "body": "Ogni produzione completata è tracciata e riconciliata. I pagamenti vengono elaborati puntualmente." }
+      ]
+    }
+  ],
+  "callout": {
+    "title": "Pronto a unirti alla rete?",
+    "body": "Candidati ora e inizia a ricevere lavoro da brand che apprezzano maestria, provenienza e affidabilità.",
+    "primaryCta": { "label": "Registrati come partner", "href": "https://partner.jaalyantra.com" },
+    "secondaryCta": { "label": "Parla con il team", "href": "/contact" }
+  }
+}

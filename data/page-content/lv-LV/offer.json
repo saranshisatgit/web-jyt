@@ -1,0 +1,62 @@
+{
+  "_note": "Piedāvājuma / partnerības lapa. CMS-liftable.",
+  "hero": {
+    "eyebrow": "Partneru programma",
+    "title": "Augiet kopā ar ražotāju tīklu.",
+    "subtitle": "Pievienojieties 150+ pārbaudītiem amatniekiem, ateljē un ražotājiem ES, IN un AU — un savienojieties ar zīmoliem, kuri ir gatavi ražot.",
+    "primaryCta": { "label": "Reģistrēties kā partnerim", "href": "https://partner.jaalyantra.com" },
+    "secondaryCta": { "label": "Kā tas darbojas", "href": "#how-it-works" }
+  },
+  "sections": [
+    {
+      "id": "how-it-works",
+      "eyebrow": "Kā tas darbojas",
+      "title": "No pieteikuma līdz pirmajam pasūtījumam.",
+      "body": "Mēs turam procesu tievu, lai jūs varētu koncentrēties uz to, ko darāt vislabāk — radīšanu. Pieteicieties vienreiz, iziet pārbaudi un sāciet saņemt darbu no zīmoliem, kas atbilst jūsu iespējām.",
+      "steps": [
+        {
+          "icon": "01",
+          "title": "Pieteikties un iziet pārbaudi",
+          "body": "Pastāstiet mums par savu darbnīcu — aprīkojumu, jaudu, materiāliem, izpildes laikiem. Mūsu komanda pārskata un pārbauda katru pieteikumu 5 darba dienu laikā.",
+          "mockup": { "webm": "/mockups/whatsapp.webm", "gif": "/mockups/whatsapp.gif", "alt": "Partnera pieteikuma forma mobilajā ierīcē" }
+        },
+        {
+          "icon": "02",
+          "title": "Iestatiet savus noteikumus",
+          "body": "Nosakiet cenas pa tehnikām, minimālos pasūtījuma apjomus, izpildes laikus un piegādes reģionus. Jūs kontrolējat, ko uzņematies un par kādu cenu.",
+          "mockup": { "webm": "/mockups/product-create.webm", "gif": "/mockups/product-create.gif", "alt": "Partnera cenu un iespēju iestatījumu panelis" }
+        },
+        {
+          "icon": "03",
+          "title": "Saņemiet darbu un piegādājiet",
+          "body": "Zīmoli novirza pasūtījumus uz jūsu portālu. Jūs saņemat uzdevumu aprakstus, termiņus un materiālu specifikācijas — visu mobilajā ierīcē caur WhatsApp. Pabeidziet darbu, reģistrējiet izlaidi un saņemiet samaksu.",
+          "mockup": { "webm": "/mockups/production-run.webm", "gif": "/mockups/production-run.gif", "alt": "Ražošanas gaita partnera portālā" }
+        },
+        {
+          "icon": "04",
+          "title": "Tikt atklātam un augt",
+          "body": "Pabeigtie pasūtījumi veido jūsu profilu tīklā. Zīmoli jūs atklāj pēc tehnikas, atrašanās vietas un vērtējuma — jo vairāk piegādājat, jo vairāk darba nāk.",
+          "mockup": { "webm": "/mockups/design-to-cart.webm", "gif": "/mockups/design-to-cart.gif", "alt": "Partnera profils ar pabeigtiem pasūtījumiem un vērtējumiem" }
+        }
+      ]
+    },
+    {
+      "id": "benefits",
+      "eyebrow": "Kāpēc pievienoties",
+      "title": "Radīts tiem, kas ražo.",
+      "body": "Tekstilrūpniecība balstās uz uzticību. Mēs dodam jums rīkus, lai pierādītu savu meistarību, savienotos ar īstajiem zīmoliem un augtu uz saviem noteikumiem.",
+      "benefits": [
+        { "title": "Pārbaudītu zīmolu tīkls", "body": "Piekļuve zīmoliem, kas aktīvi meklē ražošanas partnerus — bez aukstās uzrunāšanas, bez starpniekiem." },
+        { "title": "Mobile-first rīki", "body": "Saņemiet aprakstus, sūtiet atjauninājumus un pārvaldiet pasūtījumus no sava telefona. Nav nepieciešams galds." },
+        { "title": "Caurspīdīgi noteikumi", "body": "Nosakiet savas cenas, izpildes laikus un jaudu. Zīmoli nāk pie jums uz jūsu noteikumiem." },
+        { "title": "Savlaicīgi maksājumi", "body": "Katrs pabeigtais ražošanas cikls tiek izsekots un saskaņots. Maksājumi tiek apstrādāti laikā." }
+      ]
+    }
+  ],
+  "callout": {
+    "title": "Gatavs pievienoties tīklam?",
+    "body": "Piesakieties tagad un sāciet saņemt darbu no zīmoliem, kas novērtē meistarību, izcelsmi un uzticamību.",
+    "primaryCta": { "label": "Reģistrēties kā partnerim", "href": "https://partner.jaalyantra.com" },
+    "secondaryCta": { "label": "Runāt ar mūsu komandu", "href": "/contact" }
+  }
+}

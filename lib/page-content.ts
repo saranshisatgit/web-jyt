@@ -1,6 +1,6 @@
 import { DEFAULT_LOCALE, LOCALES } from "@/lib/i18n/config"
 
-export const CONTENT_SLUGS = ["solutions", "ecommerce", "wholesale", "sell-on-ai", "compare"] as const
+export const CONTENT_SLUGS = ["solutions", "ecommerce", "wholesale", "sell-on-ai", "compare", "offer"] as const
 export type ContentSlug = (typeof CONTENT_SLUGS)[number]
 
 async function loadContent(slug: ContentSlug, locale: string) {
