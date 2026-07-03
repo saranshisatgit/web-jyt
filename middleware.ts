@@ -19,8 +19,15 @@ export function middleware(request: NextRequest) {
     return NextResponse.next()
   }
 
-  // Resolve locale: cookie → Accept-Language → default
-  let locale = request.cookies.get(COOKIE_NAME)?.value
+  // Resolve locale: query param → cookie → Accept-Language → default
+  let locale = request.nextUrl.searchParams.get("locale")
+  if (locale && LOCALES.some((l) => l.code === locale)) {
+    const response = NextResponse.redirect(new URL(request.nextUrl.pathname, request.url))
+    response.cookies.set(COOKIE_NAME, locale, { path: "/", maxAge: 365 * 24 * 60 * 60, sameSite: "lax" })
+    return response
+  }
+
+  locale = request.cookies.get(COOKIE_NAME)?.value ?? null
   if (!locale || !LOCALES.some((l) => l.code === locale)) {
     const acceptLang = request.headers.get("Accept-Language") || ""
     const preferred = acceptLang

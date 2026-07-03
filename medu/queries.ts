@@ -360,3 +360,66 @@ export const subscribeToUpdates = async (
     return { error: errorMessage };
   }
 };
+
+export interface UnsubscribeResponse {
+  message?: string;
+  email?: string | null;
+  found?: boolean;
+  unsubscribed?: number;
+  already_off?: boolean;
+  error?: string;
+}
+
+export const checkUnsubscribeStatus = async (
+  domainName: string,
+  params: { id?: string; email?: string }
+): Promise<UnsubscribeResponse> => {
+  try {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL! || 'http://localhost:9000/web';
+    const query = new URLSearchParams();
+    if (params.id) query.set('id', params.id);
+    if (params.email) query.set('email', params.email);
+    const url = `${apiUrl}/website/${domainName}/unsubscribe?${query.toString()}`;
+
+    const response = await fetch(url);
+    const body = await response.json();
+
+    if (!response.ok) {
+      return { error: body.message || 'Failed to check subscription status.' };
+    }
+
+    return body as UnsubscribeResponse;
+  } catch (error) {
+    console.error('Error checking unsubscribe status:', error);
+    const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred.';
+    return { error: errorMessage };
+  }
+};
+
+export const unsubscribeByEmail = async (
+  domainName: string,
+  params: { id?: string; email?: string }
+): Promise<UnsubscribeResponse> => {
+  try {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL! || 'http://localhost:9000/web';
+    const url = `${apiUrl}/website/${domainName}/unsubscribe`;
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(params),
+    });
+
+    const body = await response.json();
+
+    if (!response.ok) {
+      return { error: body.message || 'Failed to unsubscribe.' };
+    }
+
+    return body as UnsubscribeResponse;
+  } catch (error) {
+    console.error('Error unsubscribing:', error);
+    const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred.';
+    return { error: errorMessage };
+  }
+};
