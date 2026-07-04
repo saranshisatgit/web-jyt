@@ -1,0 +1,46 @@
+{
+  "_note": "Create landing page — handloom creation journey. Inspired by Shopify aprire.",
+  "hero": {
+    "eyebrow": "Jaal Yantra · Start here",
+    "title": "Start and create anything.",
+    "subtitle": "From a thread of an idea to a living storefront. Design your fabric, make your products, and sell everywhere AI reaches.",
+    "primaryCta": { "label": "Start creating", "href": "/offer" },
+    "secondaryCta": { "label": "See how it works", "href": "#fabric" }
+  },
+  "sections": [
+    {
+      "id": "fabric",
+      "label": "Fabric",
+      "heading": "Choose your fabric.",
+      "body": "Browse swatches by region, weave, or material. Every colour tells a story \u2014 handloom cotton from Bengal, silks from Varanasi, khadi from Gujarat. Select, save, and build your palette.",
+      "tag": "01"
+    },
+    {
+      "id": "products",
+      "label": "Products",
+      "heading": "Make your products.",
+      "body": "Turn your fabric into products in minutes. Add pricing, variations, and your maker\u2019s story. AI drafts descriptions, SEO, and compliance docs as you go.",
+      "tag": "02"
+    },
+    {
+      "id": "sell",
+      "label": "Sell",
+      "heading": "Sell online, everywhere.",
+      "body": "Your storefront goes live on your domain, Instagram, WhatsApp, and AI agents simultaneously. One update reaches every channel. No re-keying, no copies.",
+      "tag": "03"
+    },
+    {
+      "id": "grow",
+      "label": "Grow",
+      "heading": "Grow with AI.",
+      "body": "Let AI agents optimise your listings, suggest new weaves, and re-engage buyers. Your brand, powered by intelligence that learns your craft.",
+      "tag": "04"
+    }
+  ],
+  "cta": {
+    "title": "Your first product is waiting.",
+    "body": "Join the weavers, dyers, and makers already bringing handcrafted commerce to every corner of the web.",
+    "primaryCta": { "label": "Start now", "href": "/offer" },
+    "secondaryCta": { "label": "Talk to us", "href": "/contact" }
+  }
+}
