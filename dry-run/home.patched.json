@@ -1,0 +1,327 @@
+{
+  "title": "Home",
+  "slug": "home",
+  "content": "About us page",
+  "status": "Published",
+  "page_type": "Home",
+  "published_at": "2025-04-14T18:13:52.089Z",
+  "blocks": [
+    {
+      "id": "01JRTRYJGPHKFD0DV49APMT5Z7",
+      "name": "Header Section",
+      "type": "Header",
+      "content": {
+        "cta": {
+          "link": "/signup",
+          "text": "Sign Up"
+        },
+        "logo": "/logo.png",
+        "navigation": [
+          {
+            "link": "/",
+            "text": "Home"
+          },
+          {
+            "link": "/about",
+            "text": "About"
+          },
+          {
+            "link": "/contact",
+            "text": "Contact"
+          },
+          {
+            "link": "/blog",
+            "text": "Blogs"
+          },
+          {
+            "link": "/partner",
+            "text": "Partner"
+          }
+        ],
+        "announcement": "We are in alpha stage",
+        "announcement_i18n": {
+          "it-IT": "Siamo in fase alpha",
+          "lv-LV": "Mēs esam alpha fāzē"
+        }
+      },
+      "order": 0
+    },
+    {
+      "id": "01JRTRXDNT3NY2NJHDGTHV6MTG",
+      "name": "Hero Section",
+      "type": "Hero",
+      "content": {
+        "stats": [
+          {
+            "label": "Happy Customers",
+            "value": "15+"
+          },
+          {
+            "label": "Brands",
+            "value": "3+"
+          }
+        ],
+        "title": "Design, Source, and Sell Your Collections Seamlessly.",
+        "layout": "full",
+        "buttons": [
+          {
+            "link": "/contact",
+            "text": "Get Started",
+            "variant": "primary"
+          }
+        ],
+        "subtitle": "JY empowers forward-thinking designers to create unique patterns, manage artisan partners, and sell directly to customers—without leaving the platform",
+        "trialoffer": {
+          "button": " Work for fashion brands",
+          "keyline": "Ready to start your own fashion line or work for one your terms",
+          "buttontwo": " Get started with a trial"
+        },
+        "title_i18n": {
+          "it-IT": "Progetta, Approvvigiona e Vendi le Tue Collezioni Facilmente.",
+          "lv-LV": "Veidojiet, iegādājieties un pārdodiet savas kolekcijas vienkārši."
+        },
+        "subtitle_i18n": {
+          "it-IT": "JYT potenzia i designer visionari per creare modelli unici, gestire partner artigiani e vendere direttamente ai clienti senza lasciare la piattaforma.",
+          "lv-LV": "JYT sniedz iespēju vīzijas pilniem dizaineriem radīt unikātus modeļus, pārvaldīt amatnieku partnerus un pārdot tieši klientiem, neatstājot platformu."
+        }
+      },
+      "order": 0
+    },
+    {
+      "id": "01JRTRZ17RBR34CDTTQRWXQE3B",
+      "name": "Footer Section",
+      "type": "Footer",
+      "content": {
+        "cta": {
+          "button": "Get started",
+          "content": "Ready to dive in?Start your free trial today.",
+          "actionline": " Get the cheat codes for selling and unlock your design potential.",
+          "subheading": "Get started"
+        },
+        "logo": "/logo.png",
+        "social": [
+          {
+            "link": "#",
+            "platform": "twitter"
+          },
+          {
+            "link": "#",
+            "platform": "linkedin"
+          },
+          {
+            "link": "#",
+            "platform": "github"
+          }
+        ],
+        "columns": [
+          {
+            "links": [
+              {
+                "link": "/about",
+                "text": "About"
+              },
+              {
+                "link": "/careers",
+                "text": "Careers"
+              },
+              {
+                "link": "/contact",
+                "text": "Contact"
+              }
+            ],
+            "title": "Company"
+          },
+          {
+            "links": [
+              {
+                "link": "/blog",
+                "text": "Blog"
+              },
+              {
+                "link": "/docs",
+                "text": "Documentation"
+              },
+              {
+                "link": "/support",
+                "text": "Support"
+              }
+            ],
+            "title": "Resources"
+          }
+        ]
+      },
+      "order": 0
+    },
+    {
+      "id": "01JY1180NAZ5WFE7PXXAEZNWR9",
+      "name": "Feature Section",
+      "type": "Feature",
+      "content": {
+        "title": "A Snapshot of Your Design Pipeline",
+        "screenshot": {
+          "url": "/screenshots/application.png"
+        },
+        "title_i18n": {
+          "it-IT": "Una Panoramica della Tua Pipeline di Design",
+          "lv-LV": "Pārskats par Jūsu Dizaina Cēlu"
+        }
+      },
+      "order": 0
+    },
+    {
+      "id": "01JY11JV11FRD9AEVBPHGSTP1S",
+      "name": "BentoSection",
+      "type": "Feature",
+      "content": {
+        "cards": [
+          {
+            "id": "db_card_001",
+            "fade": [
+              "bottom"
+            ],
+            "title": "Design anything to everything",
+            "eyebrow": "Smart Design",
+            "className": "max-lg:rounded-t-4xl lg:col-span-3 lg:rounded-tl-4xl",
+            "description": "Explore limitless design possibilities with medu that generates unique, market-ready textile patterns based on your custom parameters and trend analysis on a moodboard",
+            "graphic_url": "/screenshots/moodboard.jpg",
+            "graphic_type": "image"
+          },
+          {
+            "id": "db_card_002",
+            "fade": [
+              "bottom"
+            ],
+            "title": "Never stay out of inventory",
+            "eyebrow": "Sustainable Sourcing",
+            "className": "lg:col-span-3 lg:rounded-tr-4xl",
+            "description": "Ensure complete transparency and traceability for your raw materials orders or samples from our trusted partners at anytime and keep your production on time.",
+            "graphic_url": "/screenshots/inventory_orders.png",
+            "graphic_type": "image"
+          },
+          {
+            "id": "db_card_003",
+            "fade": [
+              "top"
+            ],
+            "title": "Your relationships in single place",
+            "eyebrow": "Your people",
+            "className": "lg:col-span-3 lg:rounded-bl-4xl",
+            "description": "Manage your personal relationships and assign them work effortlessly from your design section. After all, relationships are the key to achieving your next best design.",
+            "graphic_url": "/screenshots/people.png",
+            "graphic_type": "image"
+          },
+          {
+            "id": "db_card_004",
+            "fade": [
+              "top"
+            ],
+            "title": "Traceable Design",
+            "eyebrow": "Production Tracking",
+            "className": "max-lg:rounded-b-4xl lg:col-span-3 lg:rounded-br-4xl",
+            "description": "Never forget where you are and which part of the design you have completed, which is still pending, or which part your partners are working on. Keep a tab on everything.",
+            "graphic_url": "/screenshots/trace.png",
+            "graphic_type": "image"
+          }
+        ],
+        "title": "From design to commerce",
+        "subtitle": "Design, Produce and Celebrate  its that simple",
+        "title_i18n": {
+          "it-IT": "Dal design al commercio",
+          "lv-LV": "No dizaina līdz tirdzniecībai"
+        },
+        "subtitle_i18n": {
+          "it-IT": "Progetta, Produci e Celebra — è così semplice",
+          "lv-LV": "Veidojiet, Ražojiet un Sviniet — tik vienkārši"
+        }
+      },
+      "order": 0
+    },
+    {
+      "id": "01JY11ZB592BZDZ5K22C74EB4A",
+      "name": "DarkBentoSection",
+      "type": "Feature",
+      "content": {
+        "cards": [
+          {
+            "id": "db_card_001_half",
+            "title": "Your Store, Your Choice",
+            "eyebrow": "Fully Integrated E-Commerce Stack",
+            "description": "Customize every aspect of your store with our integrated platform - from locations and payment providers to product tags and selling rules. Sell exactly how you want with tools that adapt to your business.",
+            "graphic_url": "/screenshots/store.png",
+            "graphic_type": "image"
+          },
+          {
+            "id": "db_card_002_half",
+            "title": "Designs Into Products",
+            "eyebrow": "From Concept to Customer",
+            "description": "Transform your creative designs into sellable products seamlessly. Our integrated stack handles everything from pre-production to fulfillment, letting you focus on creating while we handle the commerce.",
+            "graphic_url": "/screenshots/products.png",
+            "graphic_type": "image"
+          },
+          {
+            "id": "db_card_003_full",
+            "title": "Your Social Media, Automated",
+            "eyebrow": "Unified Social Commerce Engine",
+            "description": "Sell naturally across all social platforms without changing your workflow. Our integrated system connects your social presence to inventory, fulfillment, and customer management - so you can sell as you already engage.",
+            "graphic_url": "/screenshots/websites.png",
+            "graphic_type": "image"
+          }
+        ],
+        "title": "Sell As You Already Are",
+        "subtitle": "The Integrated Commerce Stack That Works Your Way",
+        "title_i18n": {
+          "it-IT": "Vendi Come Fai Già",
+          "lv-LV": "Pārdodiet Tā, Kā Jau Dariet"
+        },
+        "subtitle_i18n": {
+          "it-IT": "Lo Stack di E-Commerce Integrato Che Funziona a Modo Tuo",
+          "lv-LV": "Integrētais E-Komercijas Staks, Kas Strādā Jūsu Veidā"
+        }
+      },
+      "order": 0
+    },
+    {
+      "id": "01JY126A7JXV6MDBMHMAFC1CK6",
+      "name": "TestimonialsSection",
+      "type": "Testimonial",
+      "content": {
+        "title": "Voices from the platform",
+        "callToAction": {
+          "text": "Real production teams running on the same rails. See how your atelier can plug in.",
+          "linkUrl": "/partner",
+          "linkText": "Become a partner"
+        },
+        "testimonials": [
+          {
+            "name": "Piyush Gupta",
+            "quote": "Made our entire workflow and workforce translatable into a process, thanks to the product.",
+            "subtitle": "Founder, LeAtelier",
+            "image_url": "https://automatic.jaalyantra.com/automatica/piyush.png"
+          },
+          {
+            "name": "Sahil Bhartuya",
+            "quote": "We can now understand the specifics of every job — start to finish.",
+            "subtitle": "Master Dyer, Independent Artisan",
+            "image_url": "https://automatic.jaalyantra.com/automatica/sahil.png"
+          },
+          {
+            "name": "Pinku Textiles",
+            "quote": "Our inventory orders are clearer than ever. We finally understand what our customers actually demand.",
+            "subtitle": "Weaving House, Varanasi",
+            "image_url": "https://automatic.jaalyantra.com/automatica/pinku.png"
+          },
+          {
+            "name": "Basak Handlooms",
+            "quote": "Keeping a digital track of yarn and fabric is a game-changer for us and our customers.",
+            "subtitle": "Handloom Cooperative, Phulia"
+          }
+        ],
+        "title_i18n": {
+          "it-IT": "Voci dalla piattaforma",
+          "lv-LV": "Balsi no platformas"
+        }
+      },
+      "order": 0
+    }
+  ]
+}

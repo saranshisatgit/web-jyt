@@ -1,0 +1,223 @@
+{
+  "title": "About",
+  "slug": "about-us",
+  "content": "About us page",
+  "status": "Published",
+  "page_type": "Home",
+  "published_at": "2025-04-14T18:13:52.254Z",
+  "blocks": [
+    {
+      "id": "01JY1QEZ8TXR0TX5WGJ086P5C5",
+      "name": "Header",
+      "type": "Header",
+      "content": {
+        "stats": [
+          {
+            "label": "Indian  Textile Heritage",
+            "value": "200+",
+            "animatedValue": {
+              "end": 200,
+              "start": 0
+            }
+          },
+          {
+            "label": "Global Markets Served",
+            "value": "4",
+            "animatedValue": {
+              "end": 42,
+              "start": 0
+            }
+          },
+          {
+            "label": "Artisans Empowered",
+            "value": "40+",
+            "animatedValue": {
+              "end": 40,
+              "start": 0
+            }
+          },
+          {
+            "label": "Sustainable Fabric Lines",
+            "value": "2",
+            "animatedValue": {
+              "end": 2,
+              "start": 0,
+              "decimals": 0
+            }
+          }
+        ],
+        "title": "Weaving the Future of Textiles, Together.",
+        "images": [
+          "/company/company1.jpg",
+          "/company/company2.jpeg",
+          "/company/company3.jpg",
+          "/company/company4.jpg"
+        ],
+        "mission": {
+          "title": "Our Vision",
+          "paragraphs": [
+            "At Jaal Yantra Textiles, our mission is to seamlessly blend time-honored craftsmanship with cutting-edge innovation to produce textiles of unparalleled quality and beauty. We are committed to sustainable practices, ethical sourcing, and fostering a deep connection with our artisans and clients worldwide.",
+            "We strive to be more than just a supplier; we aim to be a trusted partner, empowering designers and businesses with fabrics that inspire creativity and elevate their creations. Our dedication to excellence is woven into every thread, ensuring that each product reflects our passion for the art of textile making.",
+            "Our vision is to be a global leader in sustainable and innovative textiles, recognized for our commitment to quality, our people, and the planet. We envision a future where textiles enrich lives and contribute positively to the environment."
+          ]
+        },
+        "subtitle": "Discover the Heritage, Innovation, and Passion Behind Jaal Yantra Textiles..",
+        "title_i18n": {
+          "it-IT": "Tessere il Futuro dei Tessuti, Insieme.",
+          "lv-LV": "Audiot nākotnes tekstilmateriālus, kopā."
+        },
+        "subtitle_i18n": {
+          "it-IT": "Scopri l'Eredità, l'Innovazione e la Passione dietro Jaal Yantra Textiles.",
+          "lv-LV": "Atklājiet mantojumu, inovācijas un kaislību aiz Jaal Yantra Textiles."
+        },
+        "mission_i18n": {
+          "it-IT": {
+            "title": "La Nostra Visione",
+            "paragraphs": [
+              "In Jaal Yantra Textiles, la nostra missione è fondere armoniosamente l'artigianato tradizionale con l'innovazione all'avanguardia per produrre tessuti di qualità e bellezza senza pari. Ci impegniamo in pratiche sostenibili, approvvigionamento etico e nel promuovere un legame profondo con i nostri artigiani e clienti in tutto il mondo.",
+              "Cerchiamo di essere più di un semplice fornitore; miriamo a essere un partner fidato, che potenzia designer e aziende con tessuti che ispirano creatività ed elevano le loro creazioni. La nostra dedizione all'eccellenza è intessuta in ogni filo.",
+              "La nostra visione è essere leader globali nei tessuti sostenibili e innovativi, riconosciuti per il nostro impegno verso la qualità, le nostre persone e il pianeta. Immaginiamo un futuro in cui i tessuti arricchiscono le vite e contribuiscono positivamente all'ambiente."
+            ]
+          },
+          "lv-LV": {
+            "title": "Mūsu Vīzija",
+            "paragraphs": [
+              "Jaal Yantra Textiles mūsu misija ir harmoniski apvienot tradicionālo amatniecību ar jaunākajām inovācijām, lai radītu tekstilmateriālus bezprecedenta kvalitātes un skaistuma. Mēs esam apņēmušies izmantot ilgtspējīgas prakses, ētisku iepirkšanu un veicināt dzišu saikni ar mūsu amatniekiem un klientiem visā pasaulē.",
+              "Mēs tiecamies būt vairāk nekā vienkārši piegādātājs; mēs vēlamies būt uzticams partneris, kas sniedz dizaineriem un uzņēmumiem audumus, kas iedvesmo kreativitāti un pacel viņu radīto jaunu līmenī. Mūsu veltība ekselencei ir ieausta katrā diegā.",
+              "Mūsu vīzija ir būt globālam līderim ilgtspējīgos un inovatīvos tekstilmateriālos, atzītam par mūsu apņemību pret kvalitāti, mūsu cilvēkiem un planētu. Mēs redzam nākotni, kurā tekstilmateriāli bagātina dzīvi un pozitīvi ietekmē vidi."
+            ]
+          }
+        },
+        "stats_i18n": {
+          "it-IT": [
+            {
+              "label": "Eredità Tessile Indiana"
+            },
+            {
+              "label": "Mercati Globali Serviti"
+            },
+            {
+              "label": "Artigiani Potenziate"
+            },
+            {
+              "label": "Linee di Tessuti Sostenibili"
+            }
+          ],
+          "lv-LV": [
+            {
+              "label": "Indijas Tekstilmateriālu Mantojums"
+            },
+            {
+              "label": "Apkalpotie Globālie Tirgi"
+            },
+            {
+              "label": "Pilnvarotie Amatnieki"
+            },
+            {
+              "label": "Ilgtspējīgas Audumu Līnijas"
+            }
+          ]
+        }
+      },
+      "order": 0
+    },
+    {
+      "id": "01JY1QMZA9DKR8Y14Z1EHANAWX",
+      "name": "Investors",
+      "type": "Feature",
+      "content": {
+        "heading": "Our growth partners",
+        "subheading": "People who believe in us",
+        "description": "Jaal Yantra Textiles is proud to be supported by a distinguished group of investors who share our commitment to innovation, sustainability, and excellence in the textile industry. Their strategic guidance and financial backing are instrumental in our journey to redefine textile manufacturing and expand our global reach. We are grateful for their trust and collaboration.",
+        "testimonial": {
+          "role": "Private Investor",
+          "quote": "His current work at Jaal Yantra is a powerful blend of tradition and tech, using AI to reimagine textiles and design. He brings curiosity, authenticity, and a strong work ethic to everything he does. We also collaborated on initiatives around financial inclusion, where his drive to make meaningful impact was clear. This profile reflects not just what he’s building, but the kind of person he is—focused, thoughtful, and always pushing boundaries. He's the kind of founder who doesn't just chase trends—he lives his story, experiments fearlessly, and keeps growing along the way..",
+          "author": "Chirag Titiya"
+        },
+        "investorGroups": [
+          {
+            "name": "Chirag Titiya"
+          },
+          {
+            "name": "Cici"
+          }
+        ],
+        "heading_i18n": {
+          "it-IT": "I nostri partner di crescita",
+          "lv-LV": "Mūsu izaugsmes partneri"
+        },
+        "subheading_i18n": {
+          "it-IT": "Persone che credono in noi",
+          "lv-LV": "Cilvēki, kas tic mums"
+        },
+        "description_i18n": {
+          "it-IT": "Jaal Yantra Textiles è orgogliosa di essere supportata da un gruppo distinto di investitori che condividono il nostro impegno per l'innovazione, la sostenibilità e l'eccellenza nell'industria tessile.",
+          "lv-LV": "Jaal Yantra Textiles ir lepna saņemt atbalstu no izcilu investoru grupas, kuri dalās mūsu apņemībā pret inovācijām, ilgtspējību un ekselenci tekstilrūpniecībā."
+        }
+      },
+      "order": 0
+    },
+    {
+      "id": "01JY1QPYE7XBMB2KJAVVRAM6DJ",
+      "name": "Team",
+      "type": "Feature",
+      "content": {
+        "story": [
+          "It's this collective spirit that defines Jaal Yantra Textiles and drives our success. Each member brings a unique perspective and skill set, contributing to a vibrant tapestry of innovation and dedication.",
+          "We foster a culture of collaboration and continuous learning, ensuring that we remain at the cutting edge of the textile industry while honoring our rich heritage."
+        ],
+        "heading": "Meet Our People",
+        "members": [
+          {
+            "name": "Saransh Sharma",
+            "role": "Founder",
+            "image": "/team/saransh.png"
+          },
+          {
+            "name": "Alessandra Abaye",
+            "role": "Advisor",
+            "image": null
+          }
+        ],
+        "ctaButton": {
+          "link": "/culture-and-values",
+          "text": "Discover Our Company Culture"
+        },
+        "teamImage": "/company/main.jpeg",
+        "subheading": "We stand on experience of past",
+        "description": "Our true strength lies in our diverse and talented team. From master weavers who carry generations of knowledge to innovative designers pushing creative boundaries, and strategic thinkers guiding our growth – all united by a shared commitment to excellence.",
+        "heading_i18n": {
+          "it-IT": "Incontra la Nostra Gente",
+          "lv-LV": "Iepazīstieties ar Mūsu Cilvēkiem"
+        },
+        "subheading_i18n": {
+          "it-IT": "Ci appoggiamo sull'esperienza del passato",
+          "lv-LV": "Mēs balstāmies uz pagātnes pieredzi"
+        },
+        "description_i18n": {
+          "it-IT": "La nostra vera forza risiede nel nostro team diversificato e talentuoso. Dai maestri tessitori che portano generazioni di conoscenza ai designer innovativi che spingono i confini creativi.",
+          "lv-LV": "Mūsu patiesā stiprība slēpjas mūsu dažādajā un talantīgajā komandā. No meistaru audējiem, kuri nes paaudžu zināšanas, līdz inovatīviem dizaineriem, kas paplašina radošās robežas."
+        },
+        "story_i18n": {
+          "it-IT": [
+            "È questo spirito collettivo che definisce Jaal Yantra Textiles e guida il nostro successo. Ogni membro porta una prospettiva e un set di competenze unici.",
+            "Promuoviamo una cultura di collaborazione e apprendimento continuo, assicurandoci di rimanere all'avanguardia dell'industria tessile pur onorando la nostra ricca eredità."
+          ],
+          "lv-LV": [
+            "Tieši šis kolektīvais gars definē Jaal Yantra Textiles un virza mūsu panākumus. Katrs locekļis sniedz unikālu perspektīvu un prasmju kopumu.",
+            "Mēs veicinām sadarbības un nepārtrauktas mācīšanās kultūru, nodrošinot, ka paliksim tekstilrūpniecības avangardā, godājot mūsu bagātīgo mantojumu."
+          ]
+        },
+        "ctaButton_i18n": {
+          "it-IT": {
+            "text": "Scopri la Nostra Cultura Aziendale"
+          },
+          "lv-LV": {
+            "text": "Atklājiet Mūsu Uzņēmuma Kultūru"
+          }
+        }
+      },
+      "order": 0
+    }
+  ]
+}
