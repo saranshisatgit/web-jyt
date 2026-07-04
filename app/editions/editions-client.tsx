@@ -63,16 +63,24 @@ function SectionNav({ items, active }: { items: { id: string; label: string }[];
 
 /* ───── Card grid ───── */
 
-const ART_SEEDS = [
-  'abstract-weave', 'geometric-thread', 'textile-dye', 'woven-pattern',
-  'natural-fiber', 'stripe-composition', 'organic-form', 'color-field',
+const MET_PAINTINGS = [
+  'https://images.metmuseum.org/CRDImages/ep/original/DP-41223-001.jpg',     // Van Gogh – Sunflowers
+  'https://images.metmuseum.org/CRDImages/ep/original/DP-42549-001.jpg',     // Van Gogh – Wheat Field with Cypresses
+  'https://images.metmuseum.org/CRDImages/ep/original/DT7098.jpg',           // Van Gogh – Bouquet of Flowers
+  'https://images.metmuseum.org/CRDImages/ep/original/DT47.jpg',             // Cézanne – Still Life with Apples
+  'https://images.metmuseum.org/CRDImages/ep/original/DT1025.jpg',           // Gauguin – Ia Orana Maria
+  'https://images.metmuseum.org/CRDImages/ep/original/DP-20101-001.jpg',     // Degas – The Dance Class
+  'https://images.metmuseum.org/CRDImages/ep/original/DP-14347-001.jpg',     // Delacroix – Basket of Flowers
+  'https://images.metmuseum.org/CRDImages/ep/original/DP-31520-001.jpg',     // Rousseau – The Forest in Winter at Sunset
+  'https://images.metmuseum.org/CRDImages/ep/original/DP-16589-001.jpg',     // Corot – A Woman Reading
+  'https://images.metmuseum.org/CRDImages/ep/original/DT1396.jpg',           // Van Gogh – L'Arlésienne
 ]
 
-function CardGrid({ cards, sectionIndex }: { cards: { title: string; body: string; tag?: string; dark?: boolean }[]; sectionIndex: number }) {
+function CardGrid({ cards, sectionIndex }: { cards: { title: string; body: string; tag?: string }[]; sectionIndex: number }) {
   return (
     <div className="kt-editions-grid">
       {cards.map((card, i) => {
-        const seed = `${ART_SEEDS[(sectionIndex + i) % ART_SEEDS.length]}-${sectionIndex}-${i}`
+        const imgIdx = [...card.title].reduce((acc, c) => acc + c.charCodeAt(0), 0) % MET_PAINTINGS.length
         return (
           <article
             key={card.title}
@@ -80,13 +88,14 @@ function CardGrid({ cards, sectionIndex }: { cards: { title: string; body: strin
           >
             <div className="kt-editions-card-img-wrap">
               <img
-                src={`https://picsum.photos/seed/${seed}/600/400`}
+                src={MET_PAINTINGS[imgIdx]}
                 alt=""
                 loading="lazy"
                 className="kt-editions-card-img-src"
               />
             </div>
             <div className="kt-editions-card-body">
+              {card.tag && <span className="kt-editions-card-tag">{card.tag}</span>}
               <h3>{card.title}</h3>
             </div>
           </article>
