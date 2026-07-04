@@ -1,0 +1,245 @@
+{
+  "_note": "Editions landing page — handloom product launch. CMS-liftable.",
+  "hero": {
+    "eyebrow": "Jaal Yantra · Spring '26",
+    "title": "The loom that knows you.",
+    "subtitle": "Every thread, every pattern, every sale\u2009\u2014\u2009from one platform designed for the hands that make. 40+ updates to weave, sell, and grow.",
+    "primaryCta": { "label": "Start weaving", "href": "/offer" },
+    "secondaryCta": { "label": "Explore updates", "href": "#weave" }
+  },
+  "navItems": [
+    { "id": "weave", "label": "Weave" },
+    { "id": "studio", "label": "Studio" },
+    { "id": "storefront", "label": "Storefront" },
+    { "id": "workshop", "label": "Workshop" },
+    { "id": "stories", "label": "Stories" },
+    { "id": "supply", "label": "Supply" },
+    { "id": "finance", "label": "Finance" },
+    { "id": "build", "label": "Build" }
+  ],
+  "sections": [
+    {
+      "id": "weave",
+      "label": "Weave",
+      "heading": "The only platform you need across every AI channel",
+      "cards": [
+        {
+          "title": "Your products, woven for AI",
+          "body": "Jaal Yantra structures every thread \u2014 colours, material, weave, origin \u2014 so AI agents discover your work naturally. Syndicated data drives 2\u00d7 more discovery in AI chats.",
+          "tag": "Live"
+        },
+        {
+          "title": "Checkout from any conversation",
+          "body": "Customers buy directly in Copilot, WhatsApp, and Meta ads. Powered by the Universal Commerce Protocol with Shop Pay, right inside the conversation.",
+          "tag": "New"
+        },
+        {
+          "title": "Open protocol for craft commerce",
+          "body": "Build agentic shopping experiences from discovery to purchase with Catalog, Cart, and Checkout APIs. Open for every platform to build on.",
+          "tag": "Preview"
+        },
+        {
+          "title": "Sponsored listings in AI",
+          "body": "Earn revenue when your products are surfaced in agentic experiences. Developer preview coming soon.",
+          "tag": "Coming soon"
+        }
+      ]
+    },
+    {
+      "id": "studio",
+      "label": "Studio",
+      "heading": "Your AI-powered companion for the craft",
+      "cards": [
+        {
+          "title": "Design with intention",
+          "body": "Describe the weave you envision \u2014 our AI suggests patterns, colourways, and material blends that honour traditional techniques while exploring new possibilities.",
+          "tag": "New"
+        },
+        {
+          "title": "Pattern library, digital",
+          "body": "Preserve your family of patterns. Store, version, and share weaving blueprints across your studio. Never lose a generation of knowledge.",
+          "tag": "Beta"
+        },
+        {
+          "title": "Smart material planning",
+          "body": "Know exactly how much thread, dye, and raw material each order needs. No waste, no shortage \u2014 just the right amount, every time.",
+          "tag": "Live"
+        },
+        {
+          "title": "Voice notes to orders",
+          "body": "Dictate order notes, weave instructions, or quality observations in your language. The studio transcribes and structures it automatically.",
+          "tag": "Coming soon"
+        }
+      ]
+    },
+    {
+      "id": "storefront",
+      "label": "Storefront",
+      "heading": "A storefront that travels as far as your thread",
+      "cards": [
+        {
+          "title": "One store, every surface",
+          "body": "Your handloom catalogue \u2014 live on your own website, WhatsApp, Instagram, and AI channels simultaneously. Update once, sell everywhere.",
+          "tag": "Live"
+        },
+        {
+          "title": "Rich product storytelling",
+          "body": "Show the hands behind the weave. Photos of the loom, the dyer, the weaver. Buyers connect with the maker, not just the product.",
+          "tag": "New"
+        },
+        {
+          "title": "Wholesale, direct",
+          "body": "Let boutiques and interior designers order in bulk with trade pricing, minimums, and lead times \u2014 all managed from the same dashboard.",
+          "tag": "Beta"
+        },
+        {
+          "title": "Virtual try-on for fabric",
+          "body": "Buyers upload a photo of their space and see your fabric draped on furniture, walls, or garments \u2014 before they order.",
+          "tag": "Coming soon"
+        }
+      ]
+    },
+    {
+      "id": "workshop",
+      "label": "Workshop",
+      "heading": "The workshop experience, reimagined",
+      "cards": [
+        {
+          "title": "In-person, connected",
+          "body": "Your physical workshop becomes a showroom. QR codes on every swatch link to the full catalogue, reviews, and re-order. Walk-ins become repeat buyers.",
+          "tag": "Live"
+        },
+        {
+          "title": "Pop-up anywhere",
+          "body": "Take your store to exhibitions, melas, and trade shows with a mobile-optimised checkout that works offline. Accept payments on the spot.",
+          "tag": "New"
+        },
+        {
+          "title": "Workshop bookings",
+          "body": "Let visitors book loom demonstrations, dyeing workshops, or studio tours directly from your storefront. Build community around the craft.",
+          "tag": "Beta"
+        },
+        {
+          "title": "Local pickup & delivery",
+          "body": "Offer local pickup from your workshop or schedule delivery through our logistics partners. Real-time tracking for every order.",
+          "tag": "Live"
+        }
+      ]
+    },
+    {
+      "id": "stories",
+      "label": "Stories",
+      "heading": "Sell more by telling your story better",
+      "cards": [
+        {
+          "title": "Visual storytelling engine",
+          "body": "Create rich media galleries \u2014 photos, videos, loom sounds \u2014 that bring the making process to life. Every product becomes a story.",
+          "tag": "New"
+        },
+        {
+          "title": "AI-generated descriptions",
+          "body": "Describe your weave once in your own words. Our AI generates product descriptions for every channel, in every language, in your voice.",
+          "tag": "Live"
+        },
+        {
+          "title": "Origin tracing for buyers",
+          "body": "Every product carries a digital passport: who wove it, where the cotton was grown, which natural dye was used. Radical transparency builds trust.",
+          "tag": "Beta"
+        },
+        {
+          "title": "Reviews that build reputation",
+          "body": "Buyers leave reviews with photos of your fabric in their home. Each review becomes a portfolio piece that sells your next creation.",
+          "tag": "Live"
+        }
+      ]
+    },
+    {
+      "id": "supply",
+      "label": "Supply",
+      "heading": "From fibre to fabric, fully traceable",
+      "cards": [
+        {
+          "title": "Raw material marketplace",
+          "body": "Source certified organic cotton, natural dyes, and handspun yarn directly from producers. Each batch tracked from farm to loom.",
+          "tag": "Beta"
+        },
+        {
+          "title": "Inventory that thinks ahead",
+          "body": "Predictive stock management learns your weaving cycles. It suggests when to reorder thread, how much dye to prepare, and which weaves to schedule.",
+          "tag": "New"
+        },
+        {
+          "title": "Order tracking for artisans",
+          "body": "Every order \u2014 from raw material to finished fabric \u2014 has a timeline. Know exactly where each piece is in the weaving process.",
+          "tag": "Live"
+        },
+        {
+          "title": "Quality checklists, digital",
+          "body": "Define quality standards for each weave type. Inspectors check off criteria on their phone. Consistent quality, every batch.",
+          "tag": "Live"
+        }
+      ]
+    },
+    {
+      "id": "finance",
+      "label": "Finance",
+      "heading": "Fair pay, fair trade, faster",
+      "cards": [
+        {
+          "title": "Instant payouts for artisans",
+          "body": "Get paid as soon as an order ships. No waiting 30 days. No bank account needed \u2014 receive via UPI, mobile wallet, or cash pickup.",
+          "tag": "New"
+        },
+        {
+          "title": "Working capital for weavers",
+          "body": "Access micro-loans based on your order history and reputation. Fund raw material purchases, loom repairs, or studio expansion.",
+          "tag": "Beta"
+        },
+        {
+          "title": "Fair pricing calculator",
+          "body": "Our tool calculates the true cost of every weave \u2014 materials, labour hours, overhead, and a fair margin. Price with confidence.",
+          "tag": "Live"
+        },
+        {
+          "title": "Tax & compliance simplified",
+          "body": "GST filings, TDS, and export documentation generated automatically. Focus on weaving, not paperwork.",
+          "tag": "Live"
+        }
+      ]
+    },
+    {
+      "id": "build",
+      "label": "Build",
+      "heading": "Build for the weaver, on the weaver\u2019s platform",
+      "dark": true,
+      "cards": [
+        {
+          "title": "Open APIs for craft",
+          "body": "Every feature is available via API. Build custom storefronts, inventory tools, or marketplace integrations on top of Jaal Yantra.",
+          "tag": "Live"
+        },
+        {
+          "title": "Webhook events",
+          "body": "Listen to order events, inventory changes, and payout confirmations. Build reactive workflows that respond to your studio in real time.",
+          "tag": "Live"
+        },
+        {
+          "title": "Theme development kit",
+          "body": "Create custom storefront themes using our liquid-based template language. Full control over every pixel of the buying experience.",
+          "tag": "Beta"
+        },
+        {
+          "title": "Community plugins",
+          "body": "Publish and discover plugins built by the Jaal Yantra community. From custom shipping calculators to WhatsApp integrations.",
+          "tag": "Coming soon"
+        }
+      ]
+    }
+  ],
+  "cta": {
+    "title": "Ready to weave your future?",
+    "body": "Join thousands of artisans, studios, and brands already using Jaal Yantra to bring handcrafted commerce to every channel.",
+    "primaryCta": { "label": "Get started", "href": "/offer" },
+    "secondaryCta": { "label": "Talk to the team", "href": "/contact" }
+  }
+}
