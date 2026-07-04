@@ -12,7 +12,8 @@ export type NavItemData = { id: string; label: string }
 export type SectionData = { id: string; label: string; heading: string; cards: CardData[]; dark?: boolean }
 export type HeroData = { eyebrow: string; title: string; subtitle: string; primaryCta: { label: string; href: string }; secondaryCta: { label: string; href: string } }
 export type CTAData = { title: string; body: string; primaryCta: { label: string; href: string }; secondaryCta: { label: string; href: string } }
-export type EditionsContent = { hero: HeroData; navItems: NavItemData[]; sections: SectionData[]; cta: CTAData }
+export type StatData = { value: string; label: string }
+export type EditionsContent = { hero: HeroData; navItems: NavItemData[]; sections: SectionData[]; cta: CTAData; stats?: StatData[]; customers?: string[] }
 
 /* ───── Metadata ───── */
 

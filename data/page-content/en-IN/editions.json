@@ -236,6 +236,21 @@
       ]
     }
   ],
+  "stats": [
+    { "value": "8", "label": "artisan regions connected" },
+    { "value": "40+", "label": "updates this edition" },
+    { "value": "2\u00d7", "label": "AI discovery for products" }
+  ],
+  "customers": [
+    "Varanasi Handloom",
+    "Maheshwar Weaves",
+    "Bhuj Craft Co-op",
+    "Pochampally Guild",
+    "Kanchipuram Looms",
+    "Sambalpuri Bastralaya",
+    "Chanderi Collective",
+    "Tantuja Bengal"
+  ],
   "cta": {
     "title": "Ready to weave your future?",
     "body": "Join thousands of artisans, studios, and brands already using Jaal Yantra to bring handcrafted commerce to every channel.",

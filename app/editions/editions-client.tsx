@@ -61,22 +61,52 @@ function SectionNav({ items, active }: { items: { id: string; label: string }[];
   )
 }
 
+/* ───── Stats ───── */
+
+function StatsRow({ stats }: { stats: { value: string; label: string }[] }) {
+  return (
+    <div className="kt-editions-stats">
+      {stats.map((s) => (
+        <div key={s.label} className="kt-editions-stat kt-reveal">
+          <span className="kt-editions-stat-value">{s.value}</span>
+          <span className="kt-editions-stat-label">{s.label}</span>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+/* ───── Customer logos ───── */
+
+function CustomersStrip({ names }: { names: string[] }) {
+  return (
+    <div className="kt-editions-customers">
+      <span className="kt-editions-customers-label">Trusted by</span>
+      <div className="kt-editions-customers-track">
+        {names.map((name) => (
+          <span key={name} className="kt-editions-customers-logo">{name}</span>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 /* ───── Card grid ───── */
 
 const MET_PAINTINGS = [
-  'https://images.metmuseum.org/CRDImages/ep/original/DP-41223-001.jpg',     // Van Gogh – Sunflowers
-  'https://images.metmuseum.org/CRDImages/ep/original/DP-42549-001.jpg',     // Van Gogh – Wheat Field with Cypresses
-  'https://images.metmuseum.org/CRDImages/ep/original/DT7098.jpg',           // Van Gogh – Bouquet of Flowers
-  'https://images.metmuseum.org/CRDImages/ep/original/DT47.jpg',             // Cézanne – Still Life with Apples
-  'https://images.metmuseum.org/CRDImages/ep/original/DT1025.jpg',           // Gauguin – Ia Orana Maria
-  'https://images.metmuseum.org/CRDImages/ep/original/DP-20101-001.jpg',     // Degas – The Dance Class
-  'https://images.metmuseum.org/CRDImages/ep/original/DP-14347-001.jpg',     // Delacroix – Basket of Flowers
-  'https://images.metmuseum.org/CRDImages/ep/original/DP-31520-001.jpg',     // Rousseau – The Forest in Winter at Sunset
-  'https://images.metmuseum.org/CRDImages/ep/original/DP-16589-001.jpg',     // Corot – A Woman Reading
-  'https://images.metmuseum.org/CRDImages/ep/original/DT1396.jpg',           // Van Gogh – L'Arlésienne
+  'https://images.metmuseum.org/CRDImages/ep/original/DP-41223-001.jpg',
+  'https://images.metmuseum.org/CRDImages/ep/original/DP-42549-001.jpg',
+  'https://images.metmuseum.org/CRDImages/ep/original/DT7098.jpg',
+  'https://images.metmuseum.org/CRDImages/ep/original/DT47.jpg',
+  'https://images.metmuseum.org/CRDImages/ep/original/DT1025.jpg',
+  'https://images.metmuseum.org/CRDImages/ep/original/DP-20101-001.jpg',
+  'https://images.metmuseum.org/CRDImages/ep/original/DP-14347-001.jpg',
+  'https://images.metmuseum.org/CRDImages/ep/original/DP-31520-001.jpg',
+  'https://images.metmuseum.org/CRDImages/ep/original/DP-16589-001.jpg',
+  'https://images.metmuseum.org/CRDImages/ep/original/DT1396.jpg',
 ]
 
-function CardGrid({ cards, sectionIndex }: { cards: { title: string; body: string; tag?: string }[]; sectionIndex: number }) {
+function CardGrid({ cards }: { cards: { title: string; body: string; tag?: string }[] }) {
   return (
     <div className="kt-editions-grid">
       {cards.map((card, i) => {
@@ -97,6 +127,7 @@ function CardGrid({ cards, sectionIndex }: { cards: { title: string; body: strin
             <div className="kt-editions-card-body">
               {card.tag && <span className="kt-editions-card-tag">{card.tag}</span>}
               <h3>{card.title}</h3>
+              <p className="kt-editions-card-desc">{card.body}</p>
             </div>
           </article>
         )
@@ -110,7 +141,7 @@ function CardGrid({ cards, sectionIndex }: { cards: { title: string; body: strin
 export default function EditionsClient({ content }: Props) {
   useScrollReveal()
   const active = useActiveSection(content.navItems.map((n) => n.id))
-  const { hero, navItems, sections, cta } = content
+  const { hero, navItems, sections, cta, stats, customers } = content
 
   return (
     <>
@@ -140,6 +171,24 @@ export default function EditionsClient({ content }: Props) {
         </div>
       </section>
 
+      {/* ───── Stats ───── */}
+      {stats && stats.length > 0 && (
+        <section className="kt-editions-stats-section">
+          <div className="container">
+            <StatsRow stats={stats} />
+          </div>
+        </section>
+      )}
+
+      {/* ───── Customers ───── */}
+      {customers && customers.length > 0 && (
+        <section className="kt-editions-customers-section">
+          <div className="container">
+            <CustomersStrip names={customers} />
+          </div>
+        </section>
+      )}
+
       {/* ───── Sticky nav + sections ───── */}
       <div className="container kt-editions-layout">
         <SectionNav items={navItems} active={active} />
@@ -149,14 +198,14 @@ export default function EditionsClient({ content }: Props) {
             <section
               key={section.id}
               id={section.id}
-              className="kt-editions-section"
+              className={`kt-editions-section${section.dark ? ' dark' : ''}`}
             >
               <div className="kt-editions-header kt-reveal">
                 <div className="kt-editions-eyebrow">{section.label}</div>
                 <h2 className="kt-editions-section-heading">{section.heading}</h2>
               </div>
 
-              <CardGrid cards={section.cards} sectionIndex={si} />
+              <CardGrid cards={section.cards} />
             </section>
           ))}
         </div>
