@@ -15,6 +15,25 @@ export type CTAData = { title: string; body: string; primaryCta: { label: string
 export type StatData = { value: string; label: string }
 export type EditionsContent = { hero: HeroData; navItems: NavItemData[]; sections: SectionData[]; cta: CTAData; stats?: StatData[]; customers?: string[] }
 
+/* ───── Fetch live partner brand names ───── */
+
+async function fetchPartnerBrands(): Promise<string[]> {
+  const apiBase = process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, '')
+  if (!apiBase) return []
+  try {
+    const res = await fetch(
+      `${apiBase}/website/jaalyantra.com/marketing/partners`,
+      { next: { revalidate: 60 } },
+    )
+    if (!res.ok) return []
+    const data = await res.json()
+    const brands: { name: string; is_live: boolean }[] = data.brands ?? []
+    return brands.filter((b) => b.is_live).map((b) => b.name)
+  } catch {
+    return []
+  }
+}
+
 /* ───── Metadata ───── */
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -33,6 +52,11 @@ export default async function EditionsPage() {
   const h = await headers()
   const locale = h.get('x-locale') || DEFAULT_LOCALE
   const content = await getPageContent('editions', locale) as EditionsContent
+
+  const partnerBrands = await fetchPartnerBrands()
+  if (partnerBrands.length > 0) {
+    content.customers = partnerBrands.slice(0, 12)
+  }
 
   return (
     <main>
