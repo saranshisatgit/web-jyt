@@ -165,26 +165,28 @@ export default function EditionsClient({ content }: Props) {
               <CardGrid cards={section.cards} prefix={section.id} />
             </section>
           ))}
-
-          {/* ───── Final CTA ───── */}
-          <section className="kt-editions-cta" style={{ borderRadius: 'var(--r-lg)' }}>
-            <div className="kt-editions-cta-inner">
-              <div>
-                <h2 className="kt-reveal">{cta.title}</h2>
-                <p className="kt-reveal kt-reveal-d1">{cta.body}</p>
-              </div>
-              <div className="kt-editions-cta-actions kt-reveal kt-reveal-d2">
-                <Link className="kt-btn kt-btn-lg" href={cta.primaryCta.href}>
-                  {cta.primaryCta.label}
-                </Link>
-                <Link className="kt-link" href={cta.secondaryCta.href}>
-                  {cta.secondaryCta.label}
-                </Link>
-              </div>
-            </div>
-          </section>
         </div>
       </div>
+
+      {/* ───── Final CTA (full-width, outside nav grid) ───── */}
+      <section className="kt-editions-cta">
+        <div className="container">
+          <div className="kt-editions-cta-inner">
+            <div>
+              <h2 className="kt-reveal">{cta.title}</h2>
+              <p className="kt-reveal kt-reveal-d1">{cta.body}</p>
+            </div>
+            <div className="kt-editions-cta-actions kt-reveal kt-reveal-d2">
+              <Link className="kt-btn kt-btn-lg" href={cta.primaryCta.href}>
+                {cta.primaryCta.label}
+              </Link>
+              <Link className="kt-link" href={cta.secondaryCta.href}>
+                {cta.secondaryCta.label}
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
     </>
   )
 }
