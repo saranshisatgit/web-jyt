@@ -1661,11 +1661,11 @@ body[data-mode="platform"] [data-aud="investor"] { display: none; }
 }
 
 /* =====================================================================
-   EDITIONS — SHOPIFY-STYLE LAUNCH PAGE
-   Animations: scroll reveal, gradient text, sticky nav, card hover.
+   EDITIONS — LAUNCH PAGE (arcade.software-inspired)
+   Clean, minimal, product-focused. Color used sparingly as accent.
    ===================================================================== */
 
-/* ───── Scroll reveal (fade + slide up) ───── */
+/* ───── Scroll reveal ───── */
 .kt-reveal {
   opacity: 0;
   transform: translateY(36px);
@@ -1681,23 +1681,15 @@ body[data-mode="platform"] [data-aud="investor"] { display: none; }
 .kt-reveal-d3 { transition-delay: 0.3s; }
 .kt-reveal-d4 { transition-delay: 0.4s; }
 
-/* ───── Gradient text (hero heading) ───── */
-.kt-gradient-text {
-  background: linear-gradient(135deg,
-    oklch(0.25 0.025 210) 0%,
-    oklch(0.42 0.08 145) 40%,
-    oklch(0.65 0.165 60) 70%,
-    oklch(0.25 0.025 210) 100%
-  );
-  background-size: 200% 100%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: kt-gradient-shift 6s ease-in-out infinite;
+/* ───── Scale reveal ───── */
+.kt-reveal-scale {
+  opacity: 0;
+  transform: scale(0.92);
+  transition: opacity 0.6s ease, transform 0.6s cubic-bezier(.2, .8, .2, 1);
 }
-@keyframes kt-gradient-shift {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
+.kt-reveal-scale.visible {
+  opacity: 1;
+  transform: scale(1);
 }
 
 /* ───── Layout grid (nav + sections) ───── */
@@ -1707,7 +1699,7 @@ body[data-mode="platform"] [data-aud="investor"] { display: none; }
   gap: 0;
 }
 
-/* ───── Editions section nav (sticky left rail) ───── */
+/* ───── Nav (sticky left rail) ───── */
 .kt-editions-nav {
   position: sticky;
   top: 88px;
@@ -1734,7 +1726,7 @@ body[data-mode="platform"] [data-aud="investor"] { display: none; }
   border-left-color: var(--accent);
 }
 
-/* ───── Editions header (per section) ───── */
+/* ───── Section header ───── */
 .kt-editions-header {
   margin-bottom: 48px;
 }
@@ -1744,48 +1736,84 @@ body[data-mode="platform"] [data-aud="investor"] { display: none; }
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--accent-deep);
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
   margin-bottom: 16px;
 }
-.kt-editions-eyebrow .dot {
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  background: var(--accent);
+.kt-editions-section-heading {
+  font-family: var(--font-serif);
+  font-size: var(--t-display-m);
+  font-weight: 400;
+  line-height: 1;
+  margin: 0;
 }
 
-/* ───── Editions page grey base ───── */
-.kt-editions-page {
-  --editions-surface: oklch(0.965 0.004 230);
-  --editions-surface-warm: oklch(0.97 0.006 220);
+/* ───── Hero ───── */
+.kt-editions-hero {
+  padding: 80px 0;
   position: relative;
+  background: linear-gradient(180deg, oklch(0.97 0.005 230), var(--bg));
+}
+.kt-editions-hero-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+  margin-bottom: 48px;
+}
+.kt-editions-hero-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent-deep);
+  margin-bottom: 20px;
+}
+.kt-editions-hero-title {
+  font-family: var(--font-serif);
+  font-size: clamp(40px, 5vw, 72px);
+  font-weight: 400;
+  line-height: 0.95;
+  margin: 0 0 20px;
+  color: var(--ink-dark);
+}
+.kt-editions-hero-sub {
+  font-size: 19px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  max-width: 480px;
+}
+.kt-editions-hero-actions {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 32px;
+}
+.kt-editions-hero-visual {
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  background: var(--bg-deep);
+  border: 1px solid var(--rule);
+  box-shadow: 0 20px 60px -16px oklch(0 0 0 / 0.12);
+  min-height: 360px;
+}
+.kt-editions-hero-mockup {
+  width: 100%;
+  height: 100%;
+  min-height: 360px;
 }
 
-/* ───── Cursor color spotlight ───── */
-.kt-cursor-spotlight {
-  position: fixed;
-  inset: -200px;
-  pointer-events: none;
-  z-index: 9999;
-  background:
-    radial-gradient(800px circle at var(--spot-x, 50%) var(--spot-y, 50%),
-      oklch(0.78 0.18 calc(var(--spot-hue, 60)) / 0.08),
-      transparent 60%
-    ),
-    radial-gradient(500px circle at calc(100% - var(--spot-x, 50%)) calc(100% - var(--spot-y, 50%)),
-      oklch(0.70 0.16 calc(var(--spot-hue, 60) + 180) / 0.06),
-      transparent 50%
-    );
-  transition: background 0.1s ease;
+/* ───── Section ───── */
+.kt-editions-section {
+  padding: 80px 0;
+  scroll-margin-top: 72px;
 }
-@media (max-width: 760px) {
-  .kt-cursor-spotlight { display: none; }
+.kt-editions-section + .kt-editions-section {
+  border-top: 1px solid var(--rule-soft);
 }
 
-/* ───── Editions card ───── */
+/* ───── Card ───── */
 .kt-editions-card {
-  background: var(--editions-surface, var(--cream));
+  background: var(--bg);
   border: 1px solid var(--rule);
   border-radius: var(--r-lg);
   padding: 32px;
@@ -1828,9 +1856,6 @@ body[data-mode="platform"] [data-aud="investor"] { display: none; }
   margin: 0;
 }
 
-/* ███████████████████████████████████████████████████████████████████ */
-/* VARIANTS */
-
 .kt-editions-card.light-on-dark {
   background: var(--ink-dark-bg);
   border-color: var(--rule-dark);
@@ -1846,227 +1871,11 @@ body[data-mode="platform"] [data-aud="investor"] { display: none; }
   box-shadow: 0 16px 40px -12px oklch(0 0 0 / 0.35);
 }
 
-/* ───── Stagger grid ───── */
+/* ───── Grid ───── */
 .kt-editions-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 20px;
-}
-
-/* ───── Colorful woven grid pattern ───── */
-.kt-woven-pattern {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  overflow: hidden;
-}
-.kt-woven-pattern.kt-woven-section {
-  z-index: 0;
-  opacity: 0.35;
-  mix-blend-mode: overlay;
-}
-.kt-woven-pattern.kt-woven-dark {
-  z-index: 0;
-  opacity: 0.25;
-}
-.kt-woven-pattern.kt-woven-dark .kt-woven-pattern-grid {
-  filter: brightness(1.8) saturate(1.5);
-}
-.kt-woven-pattern-grid {
-  width: 100%;
-  height: 100%;
-  background-image:
-    /* Weft (horizontal) fine threads — gold */
-    repeating-linear-gradient(90deg,
-      transparent 0px, transparent 7px,
-      oklch(0.65 0.16 60 / 0.06) 7px, oklch(0.65 0.16 60 / 0.06) 8px
-    ),
-    /* Warp (vertical) fine threads — violet */
-    repeating-linear-gradient(0deg,
-      transparent 0px, transparent 7px,
-      oklch(0.55 0.14 280 / 0.05) 7px, oklch(0.55 0.14 280 / 0.05) 8px
-    ),
-    /* Weft accent stripe — coral */
-    repeating-linear-gradient(90deg,
-      transparent 0px, transparent 39px,
-      oklch(0.70 0.18 30 / 0.035) 39px, oklch(0.70 0.18 30 / 0.035) 42px,
-      transparent 42px, transparent 80px
-    ),
-    /* Warp accent stripe — teal */
-    repeating-linear-gradient(0deg,
-      transparent 0px, transparent 49px,
-      oklch(0.55 0.14 175 / 0.03) 49px, oklch(0.55 0.14 175 / 0.03) 52px,
-      transparent 52px, transparent 100px
-    );
-}
-
-/* Color variants for sections */
-.kt-woven-rose {
-  background-image:
-    repeating-linear-gradient(90deg,
-      transparent 0px, transparent 7px,
-      oklch(0.70 0.14 10 / 0.05) 7px, oklch(0.70 0.14 10 / 0.05) 8px
-    ),
-    repeating-linear-gradient(0deg,
-      transparent 0px, transparent 7px,
-      oklch(0.50 0.12 320 / 0.04) 7px, oklch(0.50 0.12 320 / 0.04) 8px
-    ),
-    repeating-linear-gradient(90deg,
-      transparent 0px, transparent 39px,
-      oklch(0.75 0.16 50 / 0.03) 39px, oklch(0.75 0.16 50 / 0.03) 42px,
-      transparent 42px, transparent 80px
-    ),
-    repeating-linear-gradient(0deg,
-      transparent 0px, transparent 49px,
-      oklch(0.60 0.12 290 / 0.025) 49px, oklch(0.60 0.12 290 / 0.025) 52px,
-      transparent 52px, transparent 100px
-    );
-}
-.kt-woven-mint {
-  background-image:
-    repeating-linear-gradient(90deg,
-      transparent 0px, transparent 7px,
-      oklch(0.60 0.12 160 / 0.05) 7px, oklch(0.60 0.12 160 / 0.05) 8px
-    ),
-    repeating-linear-gradient(0deg,
-      transparent 0px, transparent 7px,
-      oklch(0.50 0.10 220 / 0.04) 7px, oklch(0.50 0.10 220 / 0.04) 8px
-    ),
-    repeating-linear-gradient(90deg,
-      transparent 0px, transparent 39px,
-      oklch(0.65 0.14 130 / 0.03) 39px, oklch(0.65 0.14 130 / 0.03) 42px,
-      transparent 42px, transparent 80px
-    ),
-    repeating-linear-gradient(0deg,
-      transparent 0px, transparent 49px,
-      oklch(0.55 0.12 200 / 0.025) 49px, oklch(0.55 0.12 200 / 0.025) 52px,
-      transparent 52px, transparent 100px
-    );
-}
-.kt-woven-amber {
-  background-image:
-    repeating-linear-gradient(90deg,
-      transparent 0px, transparent 7px,
-      oklch(0.70 0.15 70 / 0.05) 7px, oklch(0.70 0.15 70 / 0.05) 8px
-    ),
-    repeating-linear-gradient(0deg,
-      transparent 0px, transparent 7px,
-      oklch(0.60 0.12 20 / 0.04) 7px, oklch(0.60 0.12 20 / 0.04) 8px
-    ),
-    repeating-linear-gradient(90deg,
-      transparent 0px, transparent 39px,
-      oklch(0.75 0.18 90 / 0.03) 39px, oklch(0.75 0.18 90 / 0.03) 42px,
-      transparent 42px, transparent 80px
-    ),
-    repeating-linear-gradient(0deg,
-      transparent 0px, transparent 49px,
-      oklch(0.65 0.14 40 / 0.025) 49px, oklch(0.65 0.14 40 / 0.025) 52px,
-      transparent 52px, transparent 100px
-    );
-}
-
-/* Hero section ───────────── */
-.kt-editions-hero {
-  min-height: calc(90vh - 72px);
-  display: flex;
-  align-items: center;
-  padding: 80px 0 60px;
-  position: relative;
-  overflow: hidden;
-}
-.kt-editions-hero-bg {
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(ellipse 80% 60% at 50% 100%, oklch(0.90 0.03 145 / 0.6), transparent),
-    radial-gradient(ellipse 60% 50% at 100% 20%, oklch(0.95 0.04 60 / 0.3), transparent),
-    radial-gradient(ellipse 50% 50% at 0% 50%, oklch(0.92 0.02 210 / 0.4), transparent);
-  z-index: -1;
-}
-.kt-editions-hero-sub {
-  font-size: 19px;
-  line-height: 1.55;
-  color: var(--ink-soft);
-  max-width: 640px;
-  margin-top: 20px;
-}
-
-/* ───── Section spacer ───── */
-.kt-editions-section {
-  padding: 80px 0;
-  position: relative;
-}
-.kt-editions-section + .kt-editions-section::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 50%;
-  transform: translateX(-50%);
-  width: 120px;
-  height: 1px;
-  background: repeating-linear-gradient(
-    90deg,
-    var(--accent-soft) 0px,
-    var(--accent-soft) 3px,
-    transparent 3px,
-    transparent 8px
-  );
-}
-.kt-editions-section + .kt-editions-section::after {
-  content: '';
-  position: absolute;
-  top: -4px; left: 50%;
-  width: 9px; height: 9px;
-  border-radius: 50%;
-  background: var(--accent);
-  opacity: 0.3;
-  transform: translateX(-50%);
-  animation: kt-float-y 3s ease-in-out infinite;
-}
-
-/* ───── Hero decorative glyph ───── */
-.kt-editions-glyph {
-  width: 64px;
-  height: 64px;
-  margin-bottom: 24px;
-  opacity: 0.7;
-}
-.kt-editions-glyph svg {
-  width: 100%;
-  height: 100%;
-}
-
-/* ───── Demo floating cards (like Shopify Agentic section) ───── */
-.kt-demo-strip {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin-top: 32px;
-  padding-top: 28px;
-  border-top: 1px solid var(--rule-soft);
-}
-.kt-demo-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 16px;
-  background: var(--bg);
-  border: 1px solid var(--rule);
-  border-radius: var(--r-pill);
-  text-decoration: none;
-  transition: border-color 0.2s ease, transform 0.2s ease;
-  font-size: 13px;
-  color: var(--ink);
-}
-.kt-demo-chip:hover {
-  border-color: var(--accent);
-  transform: translateY(-1px);
-}
-.kt-demo-chip-dot {
-  width: 20px;
-  height: 20px;
-  border-radius: 6px;
-  background: linear-gradient(135deg, var(--accent-pale), var(--accent-soft));
-  flex-shrink: 0;
 }
 
 /* ───── Full-width dark CTA ───── */
@@ -2121,48 +1930,7 @@ body[data-mode="platform"] [data-aud="investor"] { display: none; }
   border-bottom-color: var(--cream);
 }
 
-/* ───── Editions card with image ───── */
-.kt-editions-card.with-img { padding: 0; overflow: hidden; }
-.kt-editions-card-img {
-  height: 180px;
-  background: var(--bg-deep);
-  position: relative;
-  overflow: hidden;
-}
-.kt-editions-card-img .pattern {
-  width: 100%;
-  height: 100%;
-  background-image:
-    repeating-linear-gradient(90deg,
-      transparent 0px, transparent 5px,
-      oklch(0.70 0.14 60 / 0.08) 5px, oklch(0.70 0.14 60 / 0.08) 6px
-    ),
-    repeating-linear-gradient(0deg,
-      transparent 0px, transparent 5px,
-      oklch(0.55 0.12 260 / 0.06) 5px, oklch(0.55 0.12 260 / 0.06) 6px
-    ),
-    repeating-linear-gradient(45deg,
-      oklch(0 0 0 / 0.03) 0px, oklch(0 0 0 / 0.03) 2px, transparent 2px, transparent 6px
-    );
-}
-.kt-editions-card-img .label {
-  position: absolute;
-  bottom: 10px; left: 14px;
-  font-family: var(--font-mono);
-  font-size: 9px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: oklch(1 0 0 / 0.7);
-  text-shadow: 0 1px 3px oklch(0 0 0 / 0.3);
-}
-.kt-editions-card-body {
-  padding: 24px 28px 28px;
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-}
-
-/* ───── Demo floating cards ───── */
+/* ───── Demo strip ───── */
 .kt-editions-demo-strip {
   display: flex;
   gap: 14px;
@@ -2180,12 +1948,9 @@ body[data-mode="platform"] [data-aud="investor"] { display: none; }
   scroll-snap-align: start;
   border: 1px solid var(--rule);
   border-radius: var(--r-lg);
-  background: var(--editions-surface, var(--bg));
+  background: var(--bg);
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  cursor: pointer;
-  text-decoration: none;
-  color: inherit;
   display: flex;
   flex-direction: column;
 }
@@ -2198,7 +1963,6 @@ body[data-mode="platform"] [data-aud="investor"] { display: none; }
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 28px;
 }
 .kt-editions-demo-card h4 {
   font-family: var(--font-serif);
@@ -2214,42 +1978,6 @@ body[data-mode="platform"] [data-aud="investor"] { display: none; }
   line-height: 1.4;
 }
 
-/* ───── Float animation (decorative elements) ───── */
-.kt-float {
-  animation: kt-float-y 4s ease-in-out infinite;
-}
-.kt-float-d1 { animation-delay: -1s; }
-.kt-float-d2 { animation-delay: -2s; }
-.kt-float-d3 { animation-delay: -3s; }
-@keyframes kt-float-y {
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(-8px); }
-}
-
-/* ───── Scale reveal variant ───── */
-.kt-reveal-scale {
-  opacity: 0;
-  transform: scale(0.92);
-  transition: opacity 0.6s ease, transform 0.6s cubic-bezier(.2, .8, .2, 1);
-}
-.kt-reveal-scale.visible {
-  opacity: 1;
-  transform: scale(1);
-}
-
-/* ───── Section backdrop pattern ───── */
-.kt-editions-section-bg {
-  position: relative;
-}
-.kt-editions-section-bg::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: radial-gradient(oklch(0.92 0.02 210 / 0.4) 1px, transparent 1px);
-  background-size: 24px 24px;
-  pointer-events: none;
-}
-
 /* ───── Featured mockup card (double-width) ───── */
 .kt-editions-feature {
   display: grid;
@@ -2259,7 +1987,7 @@ body[data-mode="platform"] [data-aud="investor"] { display: none; }
 }
 .kt-editions-feature-card {
   grid-column: 1 / -1;
-  background: var(--editions-surface, var(--cream));
+  background: var(--bg);
   border: 1px solid var(--rule);
   border-radius: var(--r-lg);
   overflow: hidden;
@@ -2293,14 +2021,6 @@ body[data-mode="platform"] [data-aud="investor"] { display: none; }
   background: var(--bg-deep);
 }
 
-/* ───── Section bg variant (cream) ───── */
-.kt-editions-section.tinted {
-  background: var(--cream);
-  border-radius: var(--r-lg);
-  padding: 60px 48px;
-  margin-bottom: 24px;
-}
-
 /* ───── Stat row ───── */
 .kt-editions-stats {
   display: grid;
@@ -2311,7 +2031,7 @@ body[data-mode="platform"] [data-aud="investor"] { display: none; }
 .kt-editions-stat {
   text-align: center;
   padding: 24px 16px;
-  background: var(--editions-surface, var(--cream));
+  background: var(--bg);
   border: 1px solid var(--rule-soft);
   border-radius: var(--r-lg);
 }
@@ -2330,204 +2050,52 @@ body[data-mode="platform"] [data-aud="investor"] { display: none; }
   color: var(--ink-mute);
 }
 
-/* ───── Firework particles ───── */
-.kt-fireworks-field {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  pointer-events: none;
-  z-index: 0;
-}
-.kt-firework-particle {
-  position: absolute;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  will-change: transform, opacity;
-  animation: kt-particle-firework var(--particle-dur, 4s) ease-out infinite;
-  animation-delay: var(--particle-delay, 0s);
-}
-.kt-firework-particle.ember {
-  width: 3px;
-  height: 3px;
-  animation-name: kt-particle-ember;
-}
-@keyframes kt-particle-firework {
-  0%   { transform: translate(var(--x-start, 0px), var(--y-start, 0px)) scale(0); opacity: 0; }
-  10%  { opacity: 1; transform: translate(calc(var(--x-start, 0px) + var(--x-end, 20px)), calc(var(--y-start, 0px) + var(--y-end, -30px))) scale(1); }
-  60%  { opacity: 0.8; transform: translate(calc(var(--x-start, 0px) + var(--x-end, 40px)), calc(var(--y-start, 0px) + var(--y-end, -60px))) scale(0.6); }
-  100% { opacity: 0; transform: translate(calc(var(--x-start, 0px) + var(--x-end, 60px)), calc(var(--y-start, 0px) + var(--y-end, -80px))) scale(0); }
-}
-@keyframes kt-particle-ember {
-  0%   { transform: translateY(0) translateX(0) scale(1); opacity: 0; }
-  20%  { opacity: 0.9; }
-  60%  { opacity: 0.4; }
-  100% { transform: translateY(calc(var(--drift-y, -120px))) translateX(calc(var(--drift-x, 30px))) scale(0); opacity: 0; }
-}
 
-/* ───── Sparkle burst on scroll-reveal ───── */
-.kt-editions-card {
-  position: relative;
-  overflow: hidden;
-}
-.kt-editions-card::after {
-  content: '';
-  position: absolute;
-  inset: -2px;
-  border-radius: inherit;
-  opacity: 0;
-  background: radial-gradient(circle at var(--burst-x, 50%) var(--burst-y, 50%),
-    oklch(0.85 0.20 60 / 0.25) 0%,
-    oklch(0.75 0.18 145 / 0.10) 30%,
-    transparent 60%
-  );
-  pointer-events: none;
-  z-index: 1;
-  transition: opacity 0.8s ease;
-}
-.kt-editions-card.burst::after {
-  opacity: 1;
-  animation: kt-burst-fade 1.2s ease-out forwards;
-}
-@keyframes kt-burst-fade {
-  0%   { opacity: 1; transform: scale(0.95); }
-  30%  { opacity: 0.9; transform: scale(1.02); }
-  100% { opacity: 0; transform: scale(1.1); }
-}
-
-/* ───── Thread divider between sections ───── */
-.kt-thread-divider {
-  position: relative;
-  height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  pointer-events: none;
-}
-.kt-thread-divider svg {
-  width: 100%;
-  max-width: 200px;
-  height: 20px;
-}
-.kt-thread-divider .thread-line {
-  stroke: var(--rule);
-  stroke-width: 1;
-  stroke-dasharray: 4 6;
-  animation: kt-thread-scroll 20s linear infinite;
-}
-.kt-thread-divider .thread-float {
-  animation: kt-float-y 3s ease-in-out infinite;
-}
-.kt-thread-divider .thread-spark {
-  fill: var(--accent-soft);
-  opacity: 0.6;
-  animation: kt-spark-glow 2s ease-in-out infinite;
-}
-@keyframes kt-thread-scroll {
-  0%   { stroke-dashoffset: 0; }
-  100% { stroke-dashoffset: -200; }
-}
-@keyframes kt-spark-glow {
-  0%, 100% { opacity: 0.3; r: 1.5; }
-  50%      { opacity: 0.9; r: 3; }
-}
-
-/* ───── Hero particle field ───── */
-.kt-editions-hero { z-index: 0; }
-
-/* ───── Section color themes ───── */
-.kt-section-theme {
-  position: relative;
-  border-radius: 0;
-  transition: background 0.6s ease;
-  z-index: 0;
-}
-.kt-section-theme::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  transition: opacity 0.8s ease;
-  pointer-events: none;
-  z-index: -1;
-}
-.kt-section-theme.theme-visible::before {
-  opacity: 1;
-}
-/* Per-section theme colors — set via inline style for the gradient */
-.kt-section-theme .theme-bg {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  z-index: -1;
-  opacity: 0;
-  transition: opacity 0.8s ease;
-}
-.kt-section-theme.theme-visible .theme-bg {
-  opacity: 1;
-}
-
-/* ───── CTA firework particles (dark bg) ───── */
-.kt-editions-cta {
-  position: relative;
-  z-index: 0;
-}
 
 @media (max-width: 760px) {
-  /* Layout: collapse nav column, full-width content */
   .kt-editions-layout { grid-template-columns: 1fr; }
   .kt-editions-nav { display: none; }
 
-  /* Hero */
-  .kt-editions-hero { min-height: 0; }
+  .kt-editions-hero {
+    min-height: 0;
+    padding: 48px 0;
+  }
+  .kt-editions-hero-inner {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    margin-bottom: 0;
+  }
   .kt-editions-hero-sub { font-size: 16px; }
-  .kt-editions-hero .kt-display.xl { font-size: var(--t-display-l); }
+  .kt-editions-hero-title { font-size: clamp(32px, 8vw, 48px); }
+  .kt-editions-hero-visual { min-height: 240px; }
+
   .kt-editions-stats { grid-template-columns: repeat(2, 1fr); gap: 12px; }
   .kt-editions-stat { padding: 16px 12px; }
   .kt-editions-stat-num { font-size: 28px; }
   .kt-editions-stat-lbl { font-size: 9px; }
 
-  /* Sections */
   .kt-editions-section { padding: 40px 0; }
   .kt-editions-header { margin-bottom: 28px; }
   .kt-editions-section .kt-display.m { font-size: var(--t-display-s); }
 
-  /* Cards */
   .kt-editions-grid { grid-template-columns: 1fr; gap: 14px; }
   .kt-editions-card { padding: 20px; }
   .kt-editions-card h3 { font-size: 18px; }
   .kt-editions-card p { font-size: 14px; }
-  .kt-editions-card-img { height: 140px; }
-  .kt-editions-card-body { padding: 18px 20px 22px; }
 
-  /* Feature card */
   .kt-editions-feature { grid-template-columns: 1fr; margin-bottom: 28px; }
   .kt-editions-feature-card { grid-template-columns: 1fr; gap: 20px; padding: 20px; }
   .kt-editions-feature-card h3 { font-size: 21px; }
   .kt-editions-feature-mockup { min-height: 160px; }
 
-  /* Demo strip */
   .kt-editions-demo-card { flex: 0 0 200px; }
   .kt-editions-demo-card-img { height: 110px; }
 
-  /* CTA */
   .kt-editions-cta { padding: 48px 0; margin-top: 0; }
   .kt-editions-cta-inner { grid-template-columns: 1fr; gap: 28px; }
   .kt-editions-cta h2 { font-size: var(--t-display-s); }
   .kt-editions-cta p { font-size: 15px; }
 
-  /* Dividers */
-  .kt-thread-divider { height: 28px; }
-
-  /* Section dividers */
-  .kt-editions-section + .kt-editions-section::before { width: 80px; }
-  .kt-editions-section + .kt-editions-section::after { width: 7px; height: 7px; top: -3px; }
-
-  /* Section anchor offset for sticky header */
   .kt-editions-section { scroll-margin-top: 72px; }
-
-  /* Hide fireworks on mobile for perf */
-  .kt-fireworks-field { display: none; }
 }
 
