@@ -1847,6 +1847,33 @@ body[data-mode="platform"] [data-aud="investor"] { display: none; }
 /* ───── Section spacer ───── */
 .kt-editions-section {
   padding: 80px 0;
+  position: relative;
+}
+.kt-editions-section + .kt-editions-section::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 1px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--accent-soft) 0px,
+    var(--accent-soft) 3px,
+    transparent 3px,
+    transparent 8px
+  );
+}
+.kt-editions-section + .kt-editions-section::after {
+  content: '';
+  position: absolute;
+  top: -4px; left: 50%;
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0.3;
+  transform: translateX(-50%);
+  animation: kt-float-y 3s ease-in-out infinite;
 }
 
 /* ───── Hero decorative glyph ───── */
@@ -2146,6 +2173,150 @@ body[data-mode="platform"] [data-aud="investor"] { display: none; }
   color: var(--ink-mute);
 }
 
+/* ───── Firework particles ───── */
+.kt-fireworks-field {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+.kt-firework-particle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  will-change: transform, opacity;
+  animation: kt-particle-firework var(--particle-dur, 4s) ease-out infinite;
+  animation-delay: var(--particle-delay, 0s);
+}
+.kt-firework-particle.ember {
+  width: 3px;
+  height: 3px;
+  animation-name: kt-particle-ember;
+}
+@keyframes kt-particle-firework {
+  0%   { transform: translate(var(--x-start, 0px), var(--y-start, 0px)) scale(0); opacity: 0; }
+  10%  { opacity: 1; transform: translate(calc(var(--x-start, 0px) + var(--x-end, 20px)), calc(var(--y-start, 0px) + var(--y-end, -30px))) scale(1); }
+  60%  { opacity: 0.8; transform: translate(calc(var(--x-start, 0px) + var(--x-end, 40px)), calc(var(--y-start, 0px) + var(--y-end, -60px))) scale(0.6); }
+  100% { opacity: 0; transform: translate(calc(var(--x-start, 0px) + var(--x-end, 60px)), calc(var(--y-start, 0px) + var(--y-end, -80px))) scale(0); }
+}
+@keyframes kt-particle-ember {
+  0%   { transform: translateY(0) translateX(0) scale(1); opacity: 0; }
+  20%  { opacity: 0.9; }
+  60%  { opacity: 0.4; }
+  100% { transform: translateY(calc(var(--drift-y, -120px))) translateX(calc(var(--drift-x, 30px))) scale(0); opacity: 0; }
+}
+
+/* ───── Sparkle burst on scroll-reveal ───── */
+.kt-editions-card {
+  position: relative;
+  overflow: hidden;
+}
+.kt-editions-card::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  opacity: 0;
+  background: radial-gradient(circle at var(--burst-x, 50%) var(--burst-y, 50%),
+    oklch(0.85 0.20 60 / 0.25) 0%,
+    oklch(0.75 0.18 145 / 0.10) 30%,
+    transparent 60%
+  );
+  pointer-events: none;
+  z-index: 1;
+  transition: opacity 0.8s ease;
+}
+.kt-editions-card.burst::after {
+  opacity: 1;
+  animation: kt-burst-fade 1.2s ease-out forwards;
+}
+@keyframes kt-burst-fade {
+  0%   { opacity: 1; transform: scale(0.95); }
+  30%  { opacity: 0.9; transform: scale(1.02); }
+  100% { opacity: 0; transform: scale(1.1); }
+}
+
+/* ───── Thread divider between sections ───── */
+.kt-thread-divider {
+  position: relative;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  pointer-events: none;
+}
+.kt-thread-divider svg {
+  width: 100%;
+  max-width: 200px;
+  height: 20px;
+}
+.kt-thread-divider .thread-line {
+  stroke: var(--rule);
+  stroke-width: 1;
+  stroke-dasharray: 4 6;
+  animation: kt-thread-scroll 20s linear infinite;
+}
+.kt-thread-divider .thread-float {
+  animation: kt-float-y 3s ease-in-out infinite;
+}
+.kt-thread-divider .thread-spark {
+  fill: var(--accent-soft);
+  opacity: 0.6;
+  animation: kt-spark-glow 2s ease-in-out infinite;
+}
+@keyframes kt-thread-scroll {
+  0%   { stroke-dashoffset: 0; }
+  100% { stroke-dashoffset: -200; }
+}
+@keyframes kt-spark-glow {
+  0%, 100% { opacity: 0.3; r: 1.5; }
+  50%      { opacity: 0.9; r: 3; }
+}
+
+/* ───── Hero particle field ───── */
+.kt-editions-hero { z-index: 0; }
+
+/* ───── Section color themes ───── */
+.kt-section-theme {
+  position: relative;
+  border-radius: 0;
+  transition: background 0.6s ease;
+  z-index: 0;
+}
+.kt-section-theme::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+  pointer-events: none;
+  z-index: -1;
+}
+.kt-section-theme.theme-visible::before {
+  opacity: 1;
+}
+/* Per-section theme colors — set via inline style for the gradient */
+.kt-section-theme .theme-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+.kt-section-theme.theme-visible .theme-bg {
+  opacity: 1;
+}
+
+/* ───── CTA firework particles (dark bg) ───── */
+.kt-editions-cta {
+  position: relative;
+  z-index: 0;
+}
+
 @media (max-width: 760px) {
   .kt-editions-cta-inner { grid-template-columns: 1fr; gap: 32px; }
   .kt-editions-hero { min-height: 0; padding: 40px 0; }
@@ -2157,5 +2328,7 @@ body[data-mode="platform"] [data-aud="investor"] { display: none; }
   .kt-editions-stats { grid-template-columns: repeat(2, 1fr); }
   .kt-editions-demo-card { flex: 0 0 200px; }
   .kt-editions-feature { grid-template-columns: 1fr; }
+  .kt-thread-divider { height: 32px; }
+  .kt-fireworks-field { display: none; }
 }
 

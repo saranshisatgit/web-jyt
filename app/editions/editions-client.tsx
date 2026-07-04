@@ -14,7 +14,15 @@ function useScrollReveal() {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {
-          if (e.isIntersecting) e.target.classList.add('visible')
+          if (e.isIntersecting) {
+            e.target.classList.add('visible')
+            if (e.target.classList.contains('kt-editions-card')) {
+              e.target.classList.add('burst')
+            }
+            if (e.target.closest('.kt-section-theme')) {
+              e.target.closest('.kt-section-theme')!.classList.add('theme-visible')
+            }
+          }
         })
       },
       { threshold: 0.1, rootMargin: '0px 0px -40px 0px' },
@@ -50,6 +58,90 @@ function useActiveSection(ids: string[]) {
 }
 
 /* ───── Sub-components ───── */
+
+/* ───── Firework particles ───── */
+const PARTICLE_COLORS = [
+  'oklch(0.75 0.20 60 / 0.7)',
+  'oklch(0.70 0.18 30 / 0.6)',
+  'oklch(0.65 0.16 145 / 0.6)',
+  'oklch(0.55 0.14 250 / 0.5)',
+  'oklch(0.80 0.18 50 / 0.7)',
+  'oklch(0.90 0.12 80 / 0.5)',
+]
+
+function FireworksField({ count = 24, ember = false }: { count?: number; ember?: boolean }) {
+  const particles = Array.from({ length: count }, (_, i) => ({
+    id: i,
+    color: PARTICLE_COLORS[i % PARTICLE_COLORS.length],
+    size: ember ? 3 : 4 + (i % 3) * 2,
+    dur: 3 + (i % 5) * 0.8,
+    delay: (i % 8) * 0.5,
+    xStart: (i * 37) % 100,
+    yStart: 40 + (i * 23) % 50,
+    xEnd: (i * 53) % 80 - 40,
+    yEnd: -(30 + (i % 6) * 15),
+    driftX: (i * 29) % 60 - 30,
+    driftY: -(60 + (i % 7) * 20),
+  }))
+
+  return (
+    <div className="kt-fireworks-field" aria-hidden>
+      {particles.map((p) => (
+        <div
+          key={p.id}
+          className={`kt-firework-particle${ember ? ' ember' : ''}`}
+          style={{
+            left: `${p.xStart}%`,
+            top: `${p.yStart}%`,
+            width: p.size,
+            height: p.size,
+            background: p.color,
+            '--particle-dur': `${p.dur}s`,
+            '--particle-delay': `${p.delay}s`,
+            '--x-start': '0px',
+            '--y-start': '0px',
+            '--x-end': `${p.xEnd}px`,
+            '--y-end': `${p.yEnd}px`,
+            '--drift-x': `${p.driftX}px`,
+            '--drift-y': `${p.driftY}px`,
+          } as React.CSSProperties}
+        />
+      ))}
+    </div>
+  )
+}
+
+/* ───── Thread divider between sections ───── */
+function ThreadDivider() {
+  return (
+    <div className="kt-thread-divider" aria-hidden>
+      <svg viewBox="0 0 200 20" fill="none">
+        <line className="thread-line" x1="0" y1="10" x2="200" y2="10" />
+        <circle className="thread-float" cx="40" cy="5" r="2.5" fill="var(--accent-soft)" opacity="0.6" />
+        <circle className="thread-float" cx="100" cy="14" r="2" fill="var(--accent)" opacity="0.5" style={{ animationDelay: '-1.5s' }} />
+        <circle className="thread-float" cx="160" cy="7" r="1.5" fill="var(--accent-deep)" opacity="0.4" style={{ animationDelay: '-0.8s' }} />
+        <circle className="thread-spark" cx="70" cy="10" r="1.5" />
+        <circle className="thread-spark" cx="130" cy="10" r="1.5" style={{ animationDelay: '-1s' }} />
+      </svg>
+    </div>
+  )
+}
+
+/* ───── Section color themes ───── */
+const SECTION_THEMES: Record<string, { bg: string; dot: string }> = {
+  weave:      { bg: 'linear-gradient(180deg, oklch(0.96 0.04 145 / 0.4) 0%, transparent 100%)', dot: 'oklch(0.65 0.16 145)' },
+  studio:     { bg: 'linear-gradient(180deg, oklch(0.93 0.05 260 / 0.3) 0%, transparent 100%)', dot: 'oklch(0.50 0.12 250)' },
+  storefront: { bg: 'linear-gradient(180deg, oklch(0.97 0.04 50 / 0.4) 0%, transparent 100%)',  dot: 'oklch(0.70 0.14 45)' },
+  stories:    { bg: 'linear-gradient(180deg, oklch(0.94 0.04 30 / 0.3) 0%, transparent 100%)',  dot: 'oklch(0.60 0.15 30)' },
+  supply:     { bg: 'linear-gradient(180deg, oklch(0.95 0.03 145 / 0.35) 0%, transparent 100%)', dot: 'oklch(0.55 0.14 145)' },
+  channels:   { bg: 'linear-gradient(180deg, oklch(0.94 0.04 210 / 0.3) 0%, transparent 100%)', dot: 'oklch(0.50 0.12 210)' },
+  insights:   { bg: 'linear-gradient(180deg, oklch(0.95 0.03 60 / 0.3) 0%, transparent 100%)',  dot: 'oklch(0.65 0.14 60)' },
+  build:      { bg: 'linear-gradient(180deg, oklch(0.12 0.03 210 / 0.4) 0%, transparent 100%)', dot: 'oklch(0.80 0.10 145)' },
+}
+
+function getSectionTheme(id: string) {
+  return SECTION_THEMES[id]
+}
 
 function LoomGlyph() {
   return (
@@ -87,31 +179,31 @@ function SectionNav({ items, active }: { items: { id: string; label: string }[];
 
 const CARD_IMGS: Record<string, (string | undefined)[]> = {
   weave: [
-    'oklch(0.80 0.06 145 / 0.15)', /* AI catalog */
-    'oklch(0.85 0.08 60 / 0.12)',  /* checkout */
+    'linear-gradient(135deg, oklch(0.55 0.18 145 / 0.2), oklch(0.60 0.14 180 / 0.08))',
+    'linear-gradient(135deg, oklch(0.65 0.20 60 / 0.2), oklch(0.55 0.12 30 / 0.08))',
     undefined,
     undefined,
   ],
   studio: [
-    'oklch(0.78 0.05 250 / 0.12)', /* design */
+    'linear-gradient(135deg, oklch(0.50 0.16 250 / 0.2), oklch(0.55 0.10 280 / 0.08))',
     undefined,
     undefined,
     undefined,
   ],
   storefront: [
     undefined,
-    'oklch(0.82 0.04 60 / 0.10)',  /* storytelling */
+    'linear-gradient(135deg, oklch(0.60 0.16 45 / 0.18), oklch(0.55 0.10 20 / 0.06))',
     undefined,
     undefined,
   ],
   stories: [
     undefined,
     undefined,
-    'oklch(0.75 0.06 145 / 0.10)', /* origin */
+    'linear-gradient(135deg, oklch(0.55 0.18 145 / 0.18), oklch(0.50 0.12 120 / 0.06))',
     undefined,
   ],
   supply: [
-    'oklch(0.80 0.05 30 / 0.12)',  /* marketplace */
+    'linear-gradient(135deg, oklch(0.60 0.16 35 / 0.20), oklch(0.55 0.10 10 / 0.08))',
     undefined,
     undefined,
     undefined,
@@ -234,7 +326,8 @@ export default function EditionsClient({ content }: Props) {
       {/* ───── Hero ───── */}
       <section className="kt-editions-hero">
         <div className="kt-editions-hero-bg" />
-        <div className="container">
+        <FireworksField count={32} />
+        <div className="container" style={{ position: 'relative', zIndex: 1 }}>
           <LoomGlyph />
           <div className="kt-eyebrow">
             <span className="dot pulse" />
@@ -268,53 +361,63 @@ export default function EditionsClient({ content }: Props) {
         <SectionNav items={navItems} active={active} />
 
         <div>
-          {sections.map((section, si) => (
-            <section
-              key={section.id}
-              id={section.id}
-              className={`kt-editions-section${si % 2 === 0 ? ' kt-editions-section-bg' : ''}${section.dark ? '' : ''}`}
-            >
-              <div className="kt-editions-header kt-reveal">
-                <div className="kt-editions-eyebrow">
-                  <span className="dot" />
-                  {section.label}
-                </div>
-                <h2 className="kt-display m">{section.heading}</h2>
-              </div>
+          {sections.map((section, si) => {
+            const theme = getSectionTheme(section.id)
+            return (
+              <section
+                key={section.id}
+                id={section.id}
+                className={`kt-editions-section kt-section-theme${si % 2 === 0 ? ' kt-editions-section-bg' : ''}`}
+                style={theme ? { '--theme-dot': theme.dot } as React.CSSProperties : undefined}
+              >
+                {theme && <div className="theme-bg" style={{ background: theme.bg }} />}
 
-              {/* First section gets a featured mockup + demo strip */}
-              {si === 0 && (
-                <>
-                  <FeaturedMockup />
-                  <DemoStrip />
-                </>
-              )}
-
-              <CardGrid cards={section.cards} sectionId={section.id} />
-
-              {/* Last section (build) is dark with a special treatment */}
-              {si === sections.length - 1 && (
-                <div className="kt-editions-feature-card" style={{ marginTop: '32px' }}>
-                  <div>
-                    <h3 style={{ margin: 0 }}>Every feature is an API call away</h3>
-                    <p style={{ marginTop: '8px' }}>Build custom experiences on top of Jaal Yantra with our complete API surface. From catalog management to checkout, every capability is accessible programmatically.</p>
-                    <Link className="kt-link" href="/solutions/integrations" style={{ marginTop: '16px', display: 'inline-flex' }}>
-                      Explore API docs
-                    </Link>
+                <div className="kt-editions-header kt-reveal">
+                  <div className="kt-editions-eyebrow">
+                    <span className="dot" style={theme ? { background: theme.dot } : undefined} />
+                    {section.label}
                   </div>
-                  <div className="kt-editions-feature-mockup">
-                    <AdminPanel />
-                  </div>
+                  <h2 className="kt-display m">{section.heading}</h2>
                 </div>
-              )}
-            </section>
-          ))}
+
+                {/* First section gets a featured mockup + demo strip */}
+                {si === 0 && (
+                  <>
+                    <FeaturedMockup />
+                    <DemoStrip />
+                  </>
+                )}
+
+                <CardGrid cards={section.cards} sectionId={section.id} />
+
+                {/* Last section (build) is dark with a special treatment */}
+                {si === sections.length - 1 && (
+                  <div className="kt-editions-feature-card" style={{ marginTop: '32px' }}>
+                    <div>
+                      <h3 style={{ margin: 0 }}>Every feature is an API call away</h3>
+                      <p style={{ marginTop: '8px' }}>Build custom experiences on top of Jaal Yantra with our complete API surface. From catalog management to checkout, every capability is accessible programmatically.</p>
+                      <Link className="kt-link" href="/solutions/integrations" style={{ marginTop: '16px', display: 'inline-flex' }}>
+                        Explore API docs
+                      </Link>
+                    </div>
+                    <div className="kt-editions-feature-mockup">
+                      <AdminPanel />
+                    </div>
+                  </div>
+                )}
+              </section>
+            )
+          })}
         </div>
       </div>
 
+      {/* ───── Thread divider before CTA ───── */}
+      <ThreadDivider />
+
       {/* ───── Final CTA (full-width, outside nav grid) ───── */}
       <section className="kt-editions-cta">
-        <div className="container">
+        <FireworksField count={18} ember />
+        <div className="container" style={{ position: 'relative', zIndex: 1 }}>
           <div className="kt-editions-cta-inner">
             <div>
               <h2 className="kt-reveal">{cta.title}</h2>
