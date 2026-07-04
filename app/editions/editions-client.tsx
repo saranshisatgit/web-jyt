@@ -314,6 +314,36 @@ function FeaturedMockup() {
   )
 }
 
+/* ───── Cursor spotlight ───── */
+
+function CursorSpotlight() {
+  const [pos, setPos] = useState({ x: 50, y: 50 })
+  const [hue, setHue] = useState(60)
+
+  useEffect(() => {
+    const handleMouse = (e: MouseEvent) => {
+      const x = (e.clientX / window.innerWidth) * 100
+      const y = (e.clientY / window.innerHeight) * 100
+      setPos({ x, y })
+      setHue((x + y) * 1.8)
+    }
+    window.addEventListener('mousemove', handleMouse)
+    return () => window.removeEventListener('mousemove', handleMouse)
+  }, [])
+
+  return (
+    <div
+      className="kt-cursor-spotlight"
+      style={{
+        '--spot-x': `${pos.x}%`,
+        '--spot-y': `${pos.y}%`,
+        '--spot-hue': `${hue}`,
+      } as React.CSSProperties}
+      aria-hidden
+    />
+  )
+}
+
 /* ───── Page ───── */
 
 export default function EditionsClient({ content }: Props) {
@@ -322,7 +352,9 @@ export default function EditionsClient({ content }: Props) {
   const { hero, navItems, sections, cta } = content
 
   return (
-    <>
+    <div className="kt-editions-page">
+      <CursorSpotlight />
+
       {/* ───── Hero ───── */}
       <section className="kt-editions-hero">
         <div className="kt-editions-hero-bg" />
@@ -357,7 +389,7 @@ export default function EditionsClient({ content }: Props) {
       </section>
 
       {/* ───── Sticky nav + sections ───── */}
-      <div className="container" style={{ display: 'grid', gridTemplateColumns: '160px 1fr', gap: '0' }}>
+      <div className="container kt-editions-layout">
         <SectionNav items={navItems} active={active} />
 
         <div>
@@ -434,6 +466,6 @@ export default function EditionsClient({ content }: Props) {
           </div>
         </div>
       </section>
-    </>
+    </div>
   )
 }
