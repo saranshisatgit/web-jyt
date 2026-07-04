@@ -1853,7 +1853,119 @@ body[data-mode="platform"] [data-aud="investor"] { display: none; }
   gap: 20px;
 }
 
-/* ───── Hero section ───── */
+/* ───── Colorful woven grid pattern ───── */
+.kt-woven-pattern {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.kt-woven-pattern.kt-woven-section {
+  z-index: 0;
+  opacity: 0.35;
+  mix-blend-mode: overlay;
+}
+.kt-woven-pattern.kt-woven-dark {
+  z-index: 0;
+  opacity: 0.25;
+}
+.kt-woven-pattern.kt-woven-dark .kt-woven-pattern-grid {
+  filter: brightness(1.8) saturate(1.5);
+}
+.kt-woven-pattern-grid {
+  width: 100%;
+  height: 100%;
+  background-image:
+    /* Weft (horizontal) fine threads — gold */
+    repeating-linear-gradient(90deg,
+      transparent 0px, transparent 7px,
+      oklch(0.65 0.16 60 / 0.06) 7px, oklch(0.65 0.16 60 / 0.06) 8px
+    ),
+    /* Warp (vertical) fine threads — violet */
+    repeating-linear-gradient(0deg,
+      transparent 0px, transparent 7px,
+      oklch(0.55 0.14 280 / 0.05) 7px, oklch(0.55 0.14 280 / 0.05) 8px
+    ),
+    /* Weft accent stripe — coral */
+    repeating-linear-gradient(90deg,
+      transparent 0px, transparent 39px,
+      oklch(0.70 0.18 30 / 0.035) 39px, oklch(0.70 0.18 30 / 0.035) 42px,
+      transparent 42px, transparent 80px
+    ),
+    /* Warp accent stripe — teal */
+    repeating-linear-gradient(0deg,
+      transparent 0px, transparent 49px,
+      oklch(0.55 0.14 175 / 0.03) 49px, oklch(0.55 0.14 175 / 0.03) 52px,
+      transparent 52px, transparent 100px
+    );
+}
+
+/* Color variants for sections */
+.kt-woven-rose {
+  background-image:
+    repeating-linear-gradient(90deg,
+      transparent 0px, transparent 7px,
+      oklch(0.70 0.14 10 / 0.05) 7px, oklch(0.70 0.14 10 / 0.05) 8px
+    ),
+    repeating-linear-gradient(0deg,
+      transparent 0px, transparent 7px,
+      oklch(0.50 0.12 320 / 0.04) 7px, oklch(0.50 0.12 320 / 0.04) 8px
+    ),
+    repeating-linear-gradient(90deg,
+      transparent 0px, transparent 39px,
+      oklch(0.75 0.16 50 / 0.03) 39px, oklch(0.75 0.16 50 / 0.03) 42px,
+      transparent 42px, transparent 80px
+    ),
+    repeating-linear-gradient(0deg,
+      transparent 0px, transparent 49px,
+      oklch(0.60 0.12 290 / 0.025) 49px, oklch(0.60 0.12 290 / 0.025) 52px,
+      transparent 52px, transparent 100px
+    );
+}
+.kt-woven-mint {
+  background-image:
+    repeating-linear-gradient(90deg,
+      transparent 0px, transparent 7px,
+      oklch(0.60 0.12 160 / 0.05) 7px, oklch(0.60 0.12 160 / 0.05) 8px
+    ),
+    repeating-linear-gradient(0deg,
+      transparent 0px, transparent 7px,
+      oklch(0.50 0.10 220 / 0.04) 7px, oklch(0.50 0.10 220 / 0.04) 8px
+    ),
+    repeating-linear-gradient(90deg,
+      transparent 0px, transparent 39px,
+      oklch(0.65 0.14 130 / 0.03) 39px, oklch(0.65 0.14 130 / 0.03) 42px,
+      transparent 42px, transparent 80px
+    ),
+    repeating-linear-gradient(0deg,
+      transparent 0px, transparent 49px,
+      oklch(0.55 0.12 200 / 0.025) 49px, oklch(0.55 0.12 200 / 0.025) 52px,
+      transparent 52px, transparent 100px
+    );
+}
+.kt-woven-amber {
+  background-image:
+    repeating-linear-gradient(90deg,
+      transparent 0px, transparent 7px,
+      oklch(0.70 0.15 70 / 0.05) 7px, oklch(0.70 0.15 70 / 0.05) 8px
+    ),
+    repeating-linear-gradient(0deg,
+      transparent 0px, transparent 7px,
+      oklch(0.60 0.12 20 / 0.04) 7px, oklch(0.60 0.12 20 / 0.04) 8px
+    ),
+    repeating-linear-gradient(90deg,
+      transparent 0px, transparent 39px,
+      oklch(0.75 0.18 90 / 0.03) 39px, oklch(0.75 0.18 90 / 0.03) 42px,
+      transparent 42px, transparent 80px
+    ),
+    repeating-linear-gradient(0deg,
+      transparent 0px, transparent 49px,
+      oklch(0.65 0.14 40 / 0.025) 49px, oklch(0.65 0.14 40 / 0.025) 52px,
+      transparent 52px, transparent 100px
+    );
+}
+
+/* Hero section ───────────── */
 .kt-editions-hero {
   min-height: calc(90vh - 72px);
   display: flex;
@@ -2021,7 +2133,17 @@ body[data-mode="platform"] [data-aud="investor"] { display: none; }
   width: 100%;
   height: 100%;
   background-image:
-    repeating-linear-gradient(45deg, oklch(0 0 0 / 0.03) 0px, oklch(0 0 0 / 0.03) 2px, transparent 2px, transparent 6px);
+    repeating-linear-gradient(90deg,
+      transparent 0px, transparent 5px,
+      oklch(0.70 0.14 60 / 0.08) 5px, oklch(0.70 0.14 60 / 0.08) 6px
+    ),
+    repeating-linear-gradient(0deg,
+      transparent 0px, transparent 5px,
+      oklch(0.55 0.12 260 / 0.06) 5px, oklch(0.55 0.12 260 / 0.06) 6px
+    ),
+    repeating-linear-gradient(45deg,
+      oklch(0 0 0 / 0.03) 0px, oklch(0 0 0 / 0.03) 2px, transparent 2px, transparent 6px
+    );
 }
 .kt-editions-card-img .label {
   position: absolute;

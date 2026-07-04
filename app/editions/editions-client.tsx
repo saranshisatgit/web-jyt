@@ -59,6 +59,19 @@ function useActiveSection(ids: string[]) {
 
 /* ───── Sub-components ───── */
 
+/* ───── Woven grid pattern ───── */
+
+const WOVEN_VARIANTS = ['kt-woven-rose', 'kt-woven-mint', 'kt-woven-amber', '']
+function getWovenVariant(i: number) { return WOVEN_VARIANTS[i % WOVEN_VARIANTS.length] }
+
+function WovenGrid({ variant = '', className = '' }: { variant?: string; className?: string }) {
+  return (
+    <div className={`kt-woven-pattern ${className}`} aria-hidden>
+      <div className={`kt-woven-pattern-grid ${variant}`} />
+    </div>
+  )
+}
+
 /* ───── Firework particles ───── */
 const PARTICLE_COLORS = [
   'oklch(0.75 0.20 60 / 0.7)',
@@ -354,10 +367,15 @@ export default function EditionsClient({ content }: Props) {
   return (
     <div className="kt-editions-page">
       <CursorSpotlight />
+      {/* Page-wide woven backdrop */}
+      <div className="kt-woven-pattern" style={{ position: 'fixed', zIndex: -1, opacity: 0.18 }} aria-hidden>
+        <div className="kt-woven-pattern-grid" />
+      </div>
 
       {/* ───── Hero ───── */}
       <section className="kt-editions-hero">
         <div className="kt-editions-hero-bg" />
+        <WovenGrid />
         <FireworksField count={32} />
         <div className="container" style={{ position: 'relative', zIndex: 1 }}>
           <LoomGlyph />
@@ -403,6 +421,7 @@ export default function EditionsClient({ content }: Props) {
                 style={theme ? { '--theme-dot': theme.dot } as React.CSSProperties : undefined}
               >
                 {theme && <div className="theme-bg" style={{ background: theme.bg }} />}
+                <WovenGrid variant={getWovenVariant(si)} className="kt-woven-section" />
 
                 <div className="kt-editions-header kt-reveal">
                   <div className="kt-editions-eyebrow">
@@ -448,6 +467,7 @@ export default function EditionsClient({ content }: Props) {
 
       {/* ───── Final CTA (full-width, outside nav grid) ───── */}
       <section className="kt-editions-cta">
+        <WovenGrid variant="kt-woven-amber" className="kt-woven-dark" />
         <FireworksField count={18} ember />
         <div className="container" style={{ position: 'relative', zIndex: 1 }}>
           <div className="kt-editions-cta-inner">
