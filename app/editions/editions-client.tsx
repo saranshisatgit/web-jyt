@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { Storefront, AgentCheckout, BrandStarter, AdminPanel } from '@/components/mockup-animations'
 import type { EditionsContent } from './page'
 
 type Props = { content: EditionsContent }
@@ -10,7 +11,6 @@ type Props = { content: EditionsContent }
 
 function useScrollReveal() {
   useEffect(() => {
-    const els = document.querySelectorAll('.kt-reveal')
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((e) => {
@@ -19,6 +19,7 @@ function useScrollReveal() {
       },
       { threshold: 0.1, rootMargin: '0px 0px -40px 0px' },
     )
+    const els = document.querySelectorAll('.kt-reveal, .kt-reveal-scale')
     els.forEach((el) => observer.observe(el))
     return () => observer.disconnect()
   }, [])
@@ -52,7 +53,7 @@ function useActiveSection(ids: string[]) {
 
 function LoomGlyph() {
   return (
-    <div className="kt-editions-glyph" aria-hidden>
+    <div className="kt-editions-glyph kt-float" aria-hidden>
       <svg viewBox="0 0 64 64" fill="none">
         <rect x="10" y="8" width="44" height="48" rx="3" stroke="var(--accent)" strokeWidth="1.2" fill="none" />
         <line x1="18" y1="20" x2="46" y2="20" stroke="var(--accent-soft)" strokeWidth="1" />
@@ -82,19 +83,141 @@ function SectionNav({ items, active }: { items: { id: string; label: string }[];
   )
 }
 
-function CardGrid({ cards, prefix }: { cards: { title: string; body: string; tag?: string; dark?: boolean }[]; prefix: string }) {
+/* ───── Card mockup images (mapping section id → card index → mockup style) ───── */
+
+const CARD_IMGS: Record<string, (string | undefined)[]> = {
+  weave: [
+    'oklch(0.80 0.06 145 / 0.15)', /* AI catalog */
+    'oklch(0.85 0.08 60 / 0.12)',  /* checkout */
+    undefined,
+    undefined,
+  ],
+  studio: [
+    'oklch(0.78 0.05 250 / 0.12)', /* design */
+    undefined,
+    undefined,
+    undefined,
+  ],
+  storefront: [
+    undefined,
+    'oklch(0.82 0.04 60 / 0.10)',  /* storytelling */
+    undefined,
+    undefined,
+  ],
+  stories: [
+    undefined,
+    undefined,
+    'oklch(0.75 0.06 145 / 0.10)', /* origin */
+    undefined,
+  ],
+  supply: [
+    'oklch(0.80 0.05 30 / 0.12)',  /* marketplace */
+    undefined,
+    undefined,
+    undefined,
+  ],
+}
+
+function getCardImg(sectionId: string, cardIndex: number): string | undefined {
+  return CARD_IMGS[sectionId]?.[cardIndex]
+}
+
+function CardGrid({ cards, sectionId }: { cards: { title: string; body: string; tag?: string; dark?: boolean }[]; sectionId: string }) {
   return (
     <div className="kt-editions-grid">
-      {cards.map((card, i) => (
-        <article
-          key={card.title}
-          className={`kt-editions-card kt-reveal kt-reveal-d${(i % 4) + 1}${card.dark ? ' light-on-dark' : ''}`}
-        >
-          {card.tag && <span className="kt-editions-card-tag">{card.tag}</span>}
-          <h3>{card.title}</h3>
-          <p>{card.body}</p>
-        </article>
+      {cards.map((card, i) => {
+        const img = getCardImg(sectionId, i)
+        return (
+          <article
+            key={card.title}
+            className={`kt-editions-card kt-reveal kt-reveal-d${(i % 4) + 1}${card.dark ? ' light-on-dark' : ''}${img ? ' with-img' : ''}`}
+          >
+            {img && (
+              <div className="kt-editions-card-img" style={{ background: img }}>
+                <div className="pattern" />
+                <span className="label">{card.tag || 'Preview'}</span>
+              </div>
+            )}
+            <div className="kt-editions-card-body" style={img ? {} : { padding: 0 }}>
+              {card.tag && img ? null : card.tag && <span className="kt-editions-card-tag">{card.tag}</span>}
+              <h3>{card.title}</h3>
+              <p>{card.body}</p>
+            </div>
+          </article>
+        )
+      })}
+    </div>
+  )
+}
+
+/* ───── Demo floating cards strip ───── */
+
+const DEMOS = [
+  { name: 'Storefront', desc: 'Branded storefront with product passports', hue: 250, component: Storefront },
+  { name: 'AI Checkout', desc: 'Agent-driven conversational purchase', hue: 280, component: AgentCheckout },
+  { name: 'Brand Kit', desc: '1-click brand & domain setup', hue: 40, component: BrandStarter },
+  { name: 'Admin Panel', desc: 'Orders, products, analytics at a glance', hue: 210, component: AdminPanel },
+]
+
+function DemoStrip() {
+  return (
+    <div className="kt-editions-demo-strip kt-reveal kt-reveal-d3">
+      {DEMOS.map((demo) => (
+        <div key={demo.name} className="kt-editions-demo-card kt-float" style={{ animationDelay: `${DEMOS.indexOf(demo) * -0.8}s` }}>
+          <div
+            className="kt-editions-demo-card-img"
+            style={{ background: `linear-gradient(135deg, oklch(0.92 0.03 ${demo.hue}), oklch(0.85 0.05 ${demo.hue - 20}))` }}
+          >
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="oklch(0.4 0.08 145)" strokeWidth="1.5">
+              <rect x="3" y="3" width="18" height="18" rx="3" />
+              <line x1="3" y1="9" x2="21" y2="9" />
+              <line x1="9" y1="3" x2="9" y2="21" />
+            </svg>
+          </div>
+          <h4>{demo.name}</h4>
+          <p>{demo.desc}</p>
+        </div>
       ))}
+    </div>
+  )
+}
+
+/* ───── Stats ───── */
+
+const STATS = [
+  { num: '40+', lbl: 'Updates in this edition' },
+  { num: '8', lbl: 'Platform categories' },
+  { num: '5', lbl: 'New AI channels' },
+  { num: '∞', lbl: 'Threads to explore' },
+]
+
+function StatsRow() {
+  return (
+    <div className="kt-editions-stats kt-reveal">
+      {STATS.map((s) => (
+        <div key={s.lbl} className="kt-editions-stat kt-reveal-scale">
+          <div className="kt-editions-stat-num">{s.num}</div>
+          <div className="kt-editions-stat-lbl">{s.lbl}</div>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+/* ───── Featured mockup (first section) ───── */
+
+function FeaturedMockup() {
+  return (
+    <div className="kt-editions-feature kt-reveal kt-reveal-d2">
+      <div className="kt-editions-feature-card">
+        <div>
+          <h3>Your products, woven for AI</h3>
+          <p>Structured product data means every thread, colour, and weave is discoverable by AI agents. Syndicated data drives 2× more discovery in AI chats.</p>
+        </div>
+        <div className="kt-editions-feature-mockup">
+          <AgentCheckout />
+        </div>
+      </div>
     </div>
   )
 }
@@ -134,6 +257,9 @@ export default function EditionsClient({ content }: Props) {
               {hero.secondaryCta.label}
             </Link>
           </div>
+
+          {/* Stats row */}
+          <StatsRow />
         </div>
       </section>
 
@@ -142,27 +268,45 @@ export default function EditionsClient({ content }: Props) {
         <SectionNav items={navItems} active={active} />
 
         <div>
-          {sections.map((section) => (
+          {sections.map((section, si) => (
             <section
               key={section.id}
               id={section.id}
-              className="kt-editions-section"
-              style={section.dark ? { background: 'var(--ink-dark-bg)', borderRadius: 'var(--r-lg)', padding: '80px 48px', marginBottom: '40px', color: 'var(--cream)' } : {}}
+              className={`kt-editions-section${si % 2 === 0 ? ' kt-editions-section-bg' : ''}${section.dark ? '' : ''}`}
             >
               <div className="kt-editions-header kt-reveal">
-                <div className="kt-editions-eyebrow" style={section.dark ? { color: 'oklch(0.78 0.06 145)' } : {}}>
+                <div className="kt-editions-eyebrow">
                   <span className="dot" />
                   {section.label}
                 </div>
-                <h2
-                  className="kt-display m"
-                  style={section.dark ? { color: 'var(--cream)' } : {}}
-                >
-                  {section.heading}
-                </h2>
+                <h2 className="kt-display m">{section.heading}</h2>
               </div>
 
-              <CardGrid cards={section.cards} prefix={section.id} />
+              {/* First section gets a featured mockup + demo strip */}
+              {si === 0 && (
+                <>
+                  <FeaturedMockup />
+                  <DemoStrip />
+                </>
+              )}
+
+              <CardGrid cards={section.cards} sectionId={section.id} />
+
+              {/* Last section (build) is dark with a special treatment */}
+              {si === sections.length - 1 && (
+                <div className="kt-editions-feature-card" style={{ marginTop: '32px' }}>
+                  <div>
+                    <h3 style={{ margin: 0 }}>Every feature is an API call away</h3>
+                    <p style={{ marginTop: '8px' }}>Build custom experiences on top of Jaal Yantra with our complete API surface. From catalog management to checkout, every capability is accessible programmatically.</p>
+                    <Link className="kt-link" href="/solutions/integrations" style={{ marginTop: '16px', display: 'inline-flex' }}>
+                      Explore API docs
+                    </Link>
+                  </div>
+                  <div className="kt-editions-feature-mockup">
+                    <AdminPanel />
+                  </div>
+                </div>
+              )}
             </section>
           ))}
         </div>
