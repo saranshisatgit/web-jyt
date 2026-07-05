@@ -2675,15 +2675,19 @@ body[data-mode="platform"] [data-aud="investor"] { display: none; }
 }
 
 @media (max-width: 760px) {
-  .kt-create-hero { padding: 48px 0; }
-  .kt-create-hero-inner { grid-template-columns: 1fr; gap: 32px; }
-  .kt-create-hero-title { font-size: clamp(32px, 8vw, 48px); }
-  .kt-create-hero-sub { font-size: 16px; }
+  .kt-create-hero { padding: 36px 0; }
+  .kt-create-hero-inner { grid-template-columns: 1fr; gap: 28px; }
+  .kt-create-hero-title { font-size: clamp(28px, 8vw, 48px); }
+  .kt-create-hero-sub { font-size: 15px; max-width: 100%; }
+  .kt-create-hero-actions { flex-direction: column; align-items: flex-start; width: 100%; }
+  .kt-create-hero-actions .kt-btn { width: 100%; text-align: center; }
 
-  .kt-story-grid { max-width: 380px; }
-  .kt-story-player-wrap { width: 96%; }
-  .kt-stage-player { padding: 18px; }
-  .kt-stage-title { font-size: 16px; }
+  .kt-story-grid { max-width: 300px; gap: 5px; }
+  .kt-story-player-wrap { width: 98%; }
+  .kt-stage-player { padding: 14px; }
+  .kt-stage-counter { font-size: 26px; }
+  .kt-stage-title { font-size: 15px; }
+  .kt-stage-desc { font-size: 11px; }
 
   .kt-bento { padding: 48px 0; }
   .kt-bento-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
@@ -2702,7 +2706,9 @@ body[data-mode="platform"] [data-aud="investor"] { display: none; }
   .kt-create-cta { padding: 48px 0; }
   .kt-create-cta-inner { grid-template-columns: 1fr; gap: 28px; }
   .kt-create-cta h2 { font-size: var(--t-display-s); }
-  .kt-create-cta p { font-size: 15px; }
+  .kt-create-cta p { font-size: 15px; max-width: 100%; }
+  .kt-create-cta-actions { width: 100%; }
+  .kt-create-cta-actions .kt-btn { width: 100%; text-align: center; }
 }
 
 /* =====================================================================
@@ -3098,16 +3104,24 @@ body[data-mode="platform"] [data-aud="investor"] { display: none; }
 /* ─── Journey responsive ─── */
 @media (max-width: 760px) {
   .kt-journey { height: 360vh; }
-  .kt-journey-inner { grid-template-columns: 1fr; gap: 32px; }
-  .kt-journey-visual { height: 35vh; min-height: 260px; }
-  .kt-journey-title { font-size: clamp(24px, 6vw, 36px); }
-  .kt-journey-desc { font-size: 15px; }
-  .kt-journey-rail { flex-wrap: wrap; gap: 8px; }
-  .kt-journey-rail-item { flex: 1 1 30%; }
-  .kt-scene-svg { max-width: 320px; }
-  .kt-phone-frame { width: 170px; height: 340px; }
-  .kt-phone-product-title { font-size: 16px; }
-  .kt-phone-product-price { font-size: 15px; }
+  .kt-journey-sticky { align-items: flex-start; padding-top: 40px; }
+  .kt-journey-inner { grid-template-columns: 1fr; gap: 20px; }
+  .kt-journey-visual { height: 30vh; min-height: 220px; }
+  .kt-journey-text { gap: 16px; }
+  .kt-journey-title { font-size: clamp(22px, 6vw, 36px); }
+  .kt-journey-desc { font-size: 14px; max-width: 100%; }
+  .kt-journey-rail { flex-wrap: wrap; gap: 6px; margin-top: 16px; padding-top: 16px; }
+  .kt-journey-rail-item { flex: 1 1 30%; padding: 6px 0; }
+  .kt-journey-rail-label { font-size: 10px; }
+  .kt-journey-tag { font-size: 10px; }
+  .kt-scene-svg { max-width: 260px; }
+  .kt-phone-frame { width: 140px; height: 280px; border-radius: 24px; padding: 4px; }
+  .kt-phone-notch { width: 50px; height: 14px; }
+  .kt-phone-screen { border-radius: 20px; }
+  .kt-phone-status { padding: 20px 14px 4px; font-size: 8px; }
+  .kt-phone-status-icons { font-size: 7px; }
+  .kt-phone-product-title { font-size: 13px; }
+  .kt-phone-product-price { font-size: 13px; }
 }
 
 /* ─── Get Paid scroll section ─── */
@@ -3768,12 +3782,60 @@ body[data-mode="platform"] [data-aud="investor"] { display: none; }
 /* ─── Paid section responsive ─── */
 @media (max-width: 760px) {
   .kt-paid { height: 400vh; padding-top: 60px; padding-bottom: 40px; }
-  .kt-paid-inner { grid-template-columns: 1fr; gap: 32px; }
-  .kt-paid-visual { height: 35vh; min-height: 260px; order: 2; }
+  .kt-paid-sticky { align-items: flex-start; padding-top: 40px; }
+  .kt-paid-inner { grid-template-columns: 1fr; gap: 20px; }
+  .kt-paid-visual { height: 30vh; min-height: 220px; order: 2; }
   .kt-paid-text { order: 1; }
-  .kt-currency-card, .kt-commission-card, .kt-payout-card { padding: 18px; }
+  .kt-currency-card, .kt-commission-card, .kt-payout-card { padding: 14px; }
+  .kt-currency-card { max-width: 100%; }
+  .kt-commission-card { max-width: 100%; }
+  .kt-payout-card { max-width: 100%; }
   .kt-currency-row { flex-direction: column; gap: 6px; }
-  .kt-phones-grid { grid-template-columns: 1fr; gap: 40px; }
+  .kt-currency-item { padding: 10px 6px; }
+  .kt-currency-symbol { font-size: 22px; }
+  .kt-currency-amount { font-size: 17px; }
+  .kt-commission-pct { font-size: 26px; }
+  .kt-commission-split-amount { font-size: 16px; }
+  .kt-payout-balance-amount { font-size: 28px; }
+  .kt-payout-header { font-size: 13px; }
+  .kt-payout-coins { display: none; }
+}
+
+/* ─── Phones section responsive ─── */
+@media (max-width: 760px) {
+  .kt-phones { padding: 60px 0 80px; }
+  .kt-phones-head { margin-bottom: 40px; }
+  .kt-phones-grid { grid-template-columns: 1fr; gap: 48px; max-width: 100%; }
+  .kt-phones-desc { font-size: 13px; max-width: 240px; }
   .kt-phone-sm .kt-phone-frame { width: 200px; height: 420px; }
+  .kt-social-header { padding: 26px 12px 6px; gap: 8px; }
+  .kt-social-feed { height: 160px; }
+  .kt-social-tag { padding: 4px 8px; }
+  .kt-social-tag-label { font-size: 9px; }
+  .kt-loyalty-header { padding: 26px 12px 6px; }
+  .kt-loyalty-points svg { width: 80px; height: 80px; }
+  .kt-loyalty-points-num { font-size: 20px; }
+  .kt-loyalty-reward { gap: 8px; padding: 8px; }
+  .kt-loyalty-reward-name { font-size: 11px; }
+  .kt-loyalty-notif { margin: 4px 8px 8px; padding: 8px; }
+}
+
+/* ─── Extra small screens ─── */
+@media (max-width: 420px) {
+  .kt-story-grid { max-width: 240px; gap: 4px; }
+  .kt-stage-player { padding: 10px; border-radius: 14px; }
+  .kt-stage-counter { font-size: 22px; margin-bottom: 10px; }
+  .kt-stage-pips { margin-bottom: 14px; gap: 4px; }
+  .kt-stage-icon { font-size: 22px; }
+  .kt-stage-title { font-size: 13px; }
+  .kt-phone-frame { width: 120px; height: 240px; border-radius: 18px; padding: 3px; }
+  .kt-phone-notch { width: 40px; height: 10px; border-radius: 0 0 10px 10px; }
+  .kt-phone-screen { border-radius: 15px; }
+  .kt-journey-visual { min-height: 180px; }
+  .kt-paid-visual { min-height: 180px; }
+  .kt-currency-symbol { font-size: 18px; }
+  .kt-phone-sm .kt-phone-frame { width: 160px; height: 340px; }
+  .kt-phones-desc { font-size: 12px; max-width: 200px; }
+  .kt-stage-bar-track { font-size: 7px; }
 }
 
