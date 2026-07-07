@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { Button } from '@medusajs/ui'
 import { useBrand } from '@/app/context/brand-context'
 
 interface Field {
@@ -36,14 +37,15 @@ function CopyButton({ text }: { text: string }) {
   }
 
   return (
-    <button
+    <Button
       type="button"
+      variant="secondary"
+      size="small"
       onClick={copy}
-      className="kt-btn ghost"
-      style={{ padding: '4px 12px', fontSize: 12, minWidth: 64, justifyContent: 'center' }}
+      style={{ minWidth: 64 }}
     >
       {copied ? 'Copied' : 'Copy'}
-    </button>
+    </Button>
   )
 }
 

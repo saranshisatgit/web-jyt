@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { Button } from '@medusajs/ui'
 import { useSearchParams } from 'next/navigation'
 import { Navbar } from '@/components/navbar'
 import { useBrand } from '@/app/context/brand-context'
@@ -85,7 +86,7 @@ export default function UnsubscribePage() {
               {state.msg}
             </p>
             <div style={{ marginTop: '24px' }}>
-              <Link className="kt-btn ghost" href="/">Back to the loom</Link>
+              <Button asChild variant="secondary"><Link href="/">Back to the loom</Link></Button>
             </div>
           </div>
         </section>
@@ -114,7 +115,7 @@ export default function UnsubscribePage() {
                 : "We'll miss having you. If you ever change your mind, the door's always open."}
             </p>
             <div style={{ marginTop: '36px' }}>
-              <Link className="kt-btn ghost" href="/">Back to the loom</Link>
+              <Button asChild variant="secondary"><Link href="/">Back to the loom</Link></Button>
             </div>
           </div>
         </section>
@@ -134,8 +135,8 @@ export default function UnsubscribePage() {
               Your 50% discount code is waiting. Use <strong style={{ color: 'var(--ink)' }}>LOOM50</strong> at checkout on your next handloom piece.
             </p>
             <div style={{ marginTop: '36px', display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
-              <Link className="kt-btn" href="/">Start shopping</Link>
-              <Link className="kt-btn ghost" href="/blog">Read our journal</Link>
+              <Button asChild><Link href="/">Start shopping</Link></Button>
+              <Button asChild variant="secondary"><Link href="/blog">Read our journal</Link></Button>
             </div>
           </div>
         </section>
@@ -179,9 +180,9 @@ export default function UnsubscribePage() {
                 next handloom piece. Use code <strong style={{ fontFamily: 'var(--font-mono)', letterSpacing: '0.05em' }}>LOOM50</strong> — no
                 expiry, no strings.
               </p>
-              <button type="button" className="kt-btn" onClick={handleStay} style={{ background: 'var(--cream)', color: 'var(--ink-dark-bg)' }}>
+              <Button type="button" variant="secondary" onClick={handleStay}>
                 I&apos;ll stay — claim my discount
-              </button>
+              </Button>
             </div>
 
             <form onSubmit={handleUnsubscribe} style={{ marginTop: '40px' }}>
@@ -197,9 +198,9 @@ export default function UnsubscribePage() {
                     value={emailInput}
                     onChange={(e) => setEmailInput(e.target.value)}
                   />
-                  <button type="submit" className="kt-btn ghost" style={{ flexShrink: 0 }}>
+                  <Button type="submit" variant="secondary" style={{ flexShrink: 0 }}>
                     Unsubscribe
-                  </button>
+                  </Button>
                 </div>
               </div>
             </form>

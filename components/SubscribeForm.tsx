@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
+import { Button } from '@medusajs/ui'
 import { subscribeToUpdates, SubscriptionPayload } from '@/medu/queries'
 
 interface SubscribeFormProps {
@@ -110,14 +111,13 @@ const SubscribeForm: React.FC<SubscribeFormProps> = ({ domainName }) => {
             placeholder="you@somewhere.com"
           />
         </div>
-        <button
+        <Button
           type="submit"
-          disabled={isLoading}
-          className="kt-btn"
-          style={{ width: '100%', justifyContent: 'center' }}
+          isLoading={isLoading}
+          style={{ width: '100%' }}
         >
-          {isLoading ? 'Subscribing…' : 'Subscribe →'}
-        </button>
+          Subscribe →
+        </Button>
         {status.msg && (
           <p className="kt-meta" style={{ color: statusColor, margin: 0, minHeight: '18px' }}>
             {status.msg}

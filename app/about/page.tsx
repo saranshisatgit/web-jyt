@@ -1,4 +1,5 @@
 import React, { Suspense } from 'react'
+import { Button } from '@medusajs/ui'
 import { headers } from 'next/headers'
 import { AnimatedNumber } from '@/components/animated-number'
 import { Navbar } from '@/components/navbar'
@@ -221,9 +222,9 @@ function Team({ data }: { data?: Block }) {
         </div>
         {content.ctaButton && (
           <div style={{ marginTop: '48px' }}>
-            <a href={content.ctaButton.link} className="kt-btn ghost">
-              {content.ctaButton.text}
-            </a>
+            <Button asChild variant="secondary">
+              <a href={content.ctaButton.link}>{content.ctaButton.text}</a>
+            </Button>
           </div>
         )}
       </div>
@@ -425,9 +426,9 @@ function Careers({ data }: { data?: Block }) {
               </div>
             ))}
             <div style={{ marginTop: '32px' }}>
-              <a href={content.ctaButton.link} className="kt-btn">
-                {content.ctaButton.text}
-              </a>
+              <Button asChild>
+                <a href={content.ctaButton.link}>{content.ctaButton.text}</a>
+              </Button>
             </div>
           </div>
         )}

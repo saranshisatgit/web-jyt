@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useCallback } from 'react'
 import Link from 'next/link'
+import { Button } from '@medusajs/ui'
 import { Navbar } from '@/components/navbar'
 import { type HeadingItem } from '@/components/manual-table-of-contents'
 import { PostTableOfContents, type HeadingItem as TocHeadingItem } from '@/components/PostTableOfContents'
@@ -212,10 +213,12 @@ export function BlogPostContent({
           </div>
 
           <div style={{ paddingBottom: '64px' }}>
-            <Link href="/blog" className="kt-btn ghost sm">
-              <ChevronLeftIcon className="size-3" />
-              Back to journal
-            </Link>
+            <Button asChild variant="secondary" size="small">
+              <Link href="/blog">
+                <ChevronLeftIcon className="size-3" />
+                Back to journal
+              </Link>
+            </Button>
           </div>
         </div>
       </section>

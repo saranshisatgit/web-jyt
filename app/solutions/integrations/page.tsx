@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { Button } from '@medusajs/ui'
 import { Navbar } from '@/components/navbar'
 import { HeroArt } from '@/components/hero-art'
 import { IntegrationsGrid } from '@/components/integrations-grid'
@@ -142,14 +143,15 @@ export default async function IntegrationsPage() {
             npm to share with the community.
           </p>
           <div style={{ marginTop: '32px', display: 'flex', gap: '16px', alignItems: 'center' }}>
-            <a
-              className="kt-btn"
-              href="https://docs.medusajs.com/contributions/plugins"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Get started
-            </a>
+            <Button asChild>
+              <a
+                href="https://docs.medusajs.com/contributions/plugins"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Get started
+              </a>
+            </Button>
           </div>
         </div>
       </section>

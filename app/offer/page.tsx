@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { Button } from '@medusajs/ui'
 import { headers } from 'next/headers'
 import { Navbar } from '@/components/navbar'
 import { HeroArt } from '@/components/hero-art'
@@ -47,7 +48,7 @@ export default async function OfferPage() {
             {hero.subtitle}
           </p>
           <div style={{ marginTop: '36px', display: 'flex', gap: '16px', alignItems: 'center', flexWrap: 'wrap' }}>
-            <Link className="kt-btn" href={hero.primaryCta.href}>{hero.primaryCta.label}</Link>
+            <Button asChild><Link href={hero.primaryCta.href}>{hero.primaryCta.label}</Link></Button>
             <Link className="kt-link" href={hero.secondaryCta.href}>{hero.secondaryCta.label}</Link>
           </div>
         </div>
@@ -133,9 +134,9 @@ export default async function OfferPage() {
                 {callout.body}
               </p>
               <div style={{ marginTop: '32px', display: 'flex', gap: '16px', alignItems: 'center', flexWrap: 'wrap' }}>
-                <Link className="kt-btn" href={callout.primaryCta.href} style={{ background: 'var(--cream)', color: 'var(--ink-dark-bg)' }}>
-                  {callout.primaryCta.label}
-                </Link>
+                <Button asChild variant="secondary">
+                  <Link href={callout.primaryCta.href}>{callout.primaryCta.label}</Link>
+                </Button>
                 <Link className="kt-link" href={callout.secondaryCta.href} style={{ color: 'var(--cream)' }}>
                   {callout.secondaryCta.label}
                 </Link>

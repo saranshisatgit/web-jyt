@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
+import { Button } from '@medusajs/ui'
 import { useFormState, useFormStatus } from 'react-dom'
 import { useSearchParams } from 'next/navigation'
 import { handleContactFormSubmission, handleVerifyCode } from '@/app/actions'
@@ -20,30 +21,26 @@ const initialVerifyState = {
 function SubmitButton() {
   const { pending } = useFormStatus()
   return (
-    <button
+    <Button
       type="submit"
-      aria-disabled={pending}
-      disabled={pending}
-      className="kt-btn"
-      style={{ width: '100%', justifyContent: 'center' }}
+      isLoading={pending}
+      style={{ width: '100%' }}
     >
-      {pending ? 'Sending…' : 'Send message'}
-    </button>
+      Send message
+    </Button>
   )
 }
 
 function VerifyButton() {
   const { pending } = useFormStatus()
   return (
-    <button
+    <Button
       type="submit"
-      aria-disabled={pending}
-      disabled={pending}
-      className="kt-btn"
-      style={{ width: '100%', justifyContent: 'center' }}
+      isLoading={pending}
+      style={{ width: '100%' }}
     >
-      {pending ? 'Verifying…' : 'Verify code'}
-    </button>
+      Verify code
+    </Button>
   )
 }
 

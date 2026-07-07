@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, type FormEvent } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
+import { Button } from '@medusajs/ui'
 import { useQuery } from '@tanstack/react-query'
 import { Navbar } from '@/components/navbar'
 import { SolutionBlock, FeaturedMockup } from '@/components/solution-block'
@@ -323,9 +324,9 @@ function SolutionsShowcase() {
           ))}
         </div>
         <div style={{ marginTop: '48px' }}>
-          <Link className="kt-btn ghost" href="/solutions">
-            See the full atelier OS →
-          </Link>
+          <Button asChild variant="secondary">
+            <Link href="/solutions">See the full atelier OS →</Link>
+          </Button>
         </div>
       </div>
     </section>
@@ -411,16 +412,16 @@ function Hero() {
             </p>
             <div className="flex flex-wrap gap-4">
               <span data-aud="consumer" className="flex flex-wrap gap-4">
-                <Link href="#waitlist" className="kt-btn">Join the waitlist</Link>
-                <Link href="#makers" className="kt-btn ghost">Meet the makers</Link>
+                <Button asChild><Link href="#waitlist">Join the waitlist</Link></Button>
+                <Button asChild variant="secondary"><Link href="#makers">Meet the makers</Link></Button>
               </span>
               <span data-aud="investor" className="flex flex-wrap gap-4">
-                <Link href="#raise" className="kt-btn">View the raise →</Link>
-                <Link href="#thesis" className="kt-btn ghost">Read the thesis</Link>
+                <Button asChild><Link href="#raise">View the raise →</Link></Button>
+                <Button asChild variant="secondary"><Link href="#thesis">Read the thesis</Link></Button>
               </span>
               <span data-aud="platform" className="flex flex-wrap gap-4">
-                <Link href="#demo" className="kt-btn">Get a demo →</Link>
-                <Link href="#surfaces" className="kt-btn ghost">Tour the platform</Link>
+                <Button asChild><Link href="#demo">Get a demo →</Link></Button>
+                <Button asChild variant="secondary"><Link href="#surfaces">Tour the platform</Link></Button>
               </span>
             </div>
           </div>
@@ -1364,9 +1365,9 @@ function CaptureForm({
           disabled={status.kind === 'sending'}
           style={inputStyle}
         />
-        <button type="submit" className="kt-btn" disabled={status.kind === 'sending'}>
-          {status.kind === 'sending' ? 'Sending…' : submitLabel}
-        </button>
+        <Button type="submit" isLoading={status.kind === 'sending'}>
+          {submitLabel}
+        </Button>
       </form>
       <p className="kt-meta" style={{ marginTop: '14px', color: statusColor, minHeight: '18px' }}>
         {status.msg || idleHint || ' '}

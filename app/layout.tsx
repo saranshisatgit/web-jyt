@@ -1,6 +1,7 @@
 import '@/styles/globals.css'
 import type { Metadata } from 'next'
-import { Rethink_Sans, Instrument_Serif, JetBrains_Mono } from 'next/font/google'
+import { Rethink_Sans, JetBrains_Mono } from 'next/font/google'
+import localFont from 'next/font/local'
 import { headers } from 'next/headers'
 import { brandFromKey, type BrandConfig } from '@/lib/brand'
 import { brandMetadata } from '@/lib/brand-metadata'
@@ -26,10 +27,12 @@ const rethinkSans = Rethink_Sans({
   display: 'swap',
 })
 
-const instrumentSerif = Instrument_Serif({
-  subsets: ['latin'],
+// Display serif — "PS Times" (round.ai's face), self-hosted, Regular only.
+// No italic weight exists: the "accent word" is rendered by COLOR, not italic.
+const psTimes = localFont({
+  src: '../public/fonts/PSTimesTrial-Regular.otf',
   weight: '400',
-  style: ['normal', 'italic'],
+  style: 'normal',
   variable: '--font-serif',
   display: 'swap',
 })
@@ -66,7 +69,7 @@ export default async function RootLayout({
     <ApiQueryClientProvider>
       <html
         lang={locale}
-        className={`${rethinkSans.variable} ${instrumentSerif.variable} ${jetbrainsMono.variable}`}
+        className={`${rethinkSans.variable} ${psTimes.variable} ${jetbrainsMono.variable}`}
       >
         <head>
           <link

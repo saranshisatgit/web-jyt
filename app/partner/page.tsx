@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { Button } from '@medusajs/ui'
 import Image from 'next/image'
 import { headers } from 'next/headers'
 import { Navbar } from '@/components/navbar'
@@ -123,9 +124,9 @@ export default async function Partner() {
               {header.buttons && header.buttons.length > 0 && (
                 <div className="flex flex-wrap gap-4" style={{ marginTop: '40px' }}>
                   {header.buttons.map((btn, i) => (
-                    <a key={i} href={btn.link} className={`kt-btn${i > 0 ? ' ghost' : ''}`}>
-                      {btn.text}
-                    </a>
+                    <Button asChild key={i} variant={i > 0 ? 'secondary' : 'primary'}>
+                      <a href={btn.link}>{btn.text}</a>
+                    </Button>
                   ))}
                 </div>
               )}
@@ -296,7 +297,7 @@ export default async function Partner() {
               </p>
             </div>
             <div className="kt-apply-callout-cta">
-              <a href="/contact" className="kt-btn">Get in touch →</a>
+              <Button asChild><a href="/contact">Get in touch →</a></Button>
             </div>
           </div>
         </div>

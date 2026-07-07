@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { Button } from '@medusajs/ui'
 import { headers } from 'next/headers'
 import { Navbar } from '@/components/navbar'
 import { HeroArt } from '@/components/hero-art'
@@ -42,9 +43,9 @@ export default async function SolutionsPage() {
             {SOLUTIONS_HERO.subtitle}
           </p>
           <div style={{ marginTop: '40px', display: 'flex', gap: '16px', alignItems: 'center' }}>
-            <Link className="kt-btn" href={SOLUTIONS_HERO.primaryCta.href}>
-              {SOLUTIONS_HERO.primaryCta.label}
-            </Link>
+            <Button asChild>
+              <Link href={SOLUTIONS_HERO.primaryCta.href}>{SOLUTIONS_HERO.primaryCta.label}</Link>
+            </Button>
             <Link className="kt-link" href={SOLUTIONS_HERO.secondaryCta.href}>
               {SOLUTIONS_HERO.secondaryCta.label}
             </Link>
@@ -95,12 +96,12 @@ export default async function SolutionsPage() {
           <h2 className="kt-display m">{SOLUTIONS_CTA.title}</h2>
           <p className="muted">{SOLUTIONS_CTA.body}</p>
           <div style={{ marginTop: '32px', display: 'flex', gap: '16px', alignItems: 'center' }}>
-            <Link className="kt-btn" href={SOLUTIONS_CTA.primaryCta.href}>
-              {SOLUTIONS_CTA.primaryCta.label}
-            </Link>
-            <Link className="kt-btn ghost" href={SOLUTIONS_CTA.secondaryCta.href}>
-              {SOLUTIONS_CTA.secondaryCta.label}
-            </Link>
+            <Button asChild>
+              <Link href={SOLUTIONS_CTA.primaryCta.href}>{SOLUTIONS_CTA.primaryCta.label}</Link>
+            </Button>
+            <Button asChild variant="secondary">
+              <Link href={SOLUTIONS_CTA.secondaryCta.href}>{SOLUTIONS_CTA.secondaryCta.label}</Link>
+            </Button>
           </div>
         </div>
       </section>

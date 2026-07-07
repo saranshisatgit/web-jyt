@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react'
+import { Button } from '@medusajs/ui'
 import { Navbar } from '@/components/navbar'
 import { CheckIcon, MinusIcon } from '@heroicons/react/16/solid'
 import { useCurrency } from '@/app/context/currency-context'
@@ -221,13 +222,11 @@ function Tiers() {
                   <li key={h}>{h}</li>
                 ))}
               </ul>
-              <a
-                href="/contact"
-                className={`kt-btn${tier.featured ? '' : ' ghost'}`}
-                style={{ marginTop: 'auto', justifyContent: 'center' }}
-              >
-                {tier.featured ? 'Start free trial' : 'Talk to us'}
-              </a>
+              <Button asChild variant={tier.featured ? 'primary' : 'secondary'}>
+                <a href="/contact" style={{ marginTop: 'auto' }}>
+                  {tier.featured ? 'Start free trial' : 'Talk to us'}
+                </a>
+              </Button>
             </article>
           ))}
         </div>
