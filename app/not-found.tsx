@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { Button } from '@medusajs/ui'
 import { useBrand } from '@/app/context/brand-context'
 import { Navbar } from '@/components/navbar'
 
@@ -169,9 +170,9 @@ export default function NotFound() {
           </p>
 
           <div style={{ marginTop: '40px', display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <Link className="kt-btn" href="/">Back to the warp</Link>
-            <Link className="kt-btn ghost" href="/blog">Read the journal</Link>
-            <Link className="kt-btn ghost" href="/contact">Find a thread</Link>
+            <Button asChild><Link href="/">Back to the warp</Link></Button>
+            <Button asChild variant="secondary"><Link href="/blog">Read the journal</Link></Button>
+            <Button asChild variant="secondary"><Link href="/contact">Find a thread</Link></Button>
           </div>
 
           <style>{`

@@ -1,0 +1,46 @@
+/* =====================================================================
+   KIND THREAD — "SKY" MOTION
+   Four ambient, reusable pieces. All animate only transform/opacity
+   (GPU-cheap) and freeze under prefers-reduced-motion.
+   Source of truth: docs/sky-design-system.html
+   ===================================================================== */
+
+/* 1) Aurora — drifting periwinkle blobs (the living sky) */
+.aurora { position: absolute; inset: -25% -12% -5%; z-index: 0; pointer-events: none; overflow: hidden; }
+.aurora .blob { position: absolute; border-radius: 50%; filter: blur(46px); opacity: .6; mix-blend-mode: multiply; will-change: transform; }
+.aurora .b1 { width: 55%; height: 135%; left: -10%; top: -30%; background: radial-gradient(circle at 35% 35%, #9cbaea, transparent 66%); animation: drift1 24s ease-in-out infinite alternate; }
+.aurora .b2 { width: 50%; height: 120%; right: -12%; top: -18%; background: radial-gradient(circle at 60% 40%, #cdd8ee, transparent 64%); animation: drift2 29s ease-in-out infinite alternate; }
+.aurora .b3 { width: 46%; height: 110%; left: 34%; top: -8%; background: radial-gradient(circle at 50% 55%, #7ea6df, transparent 62%); animation: drift3 34s ease-in-out infinite alternate; }
+@keyframes drift1 { from { transform: translate(0,0) scale(1); } to { transform: translate(9%,6%) scale(1.16); } }
+@keyframes drift2 { from { transform: translate(0,0) scale(1); } to { transform: translate(-8%,9%) scale(1.1); } }
+@keyframes drift3 { from { transform: translate(0,0) scale(1.05); } to { transform: translate(6%,-7%) scale(.9); } }
+/* Dark "night sky" — screen blend. Explicit opt-in only (matches tokens:
+   no prefers-color-scheme auto-flip until the page sweep is complete). */
+:root[data-theme="dark"] .aurora .blob, .aurora .blob.dk { mix-blend-mode: screen; opacity: .42; }
+:root[data-theme="light"] .aurora .blob { mix-blend-mode: multiply; opacity: .6; }
+
+/* 2) Shimmer sweep — for buttons/cards/skeletons */
+.shimmer { position: relative; overflow: hidden; }
+.shimmer::after { content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(105deg, transparent 32%, rgba(255,255,255,.5) 50%, transparent 68%);
+  transform: translateX(-130%); animation: sheen 3.2s ease-in-out infinite; }
+
+/* 3) Gradient orb — spinner / ambient mark */
+.orb { position: relative; width: 84px; height: 84px; border-radius: 50%;
+  background: conic-gradient(from 0deg, #425594, #5475b4, #4670bc, #b5c0d7, #6e8fcb, #425594);
+  animation: spin 9s linear infinite; box-shadow: var(--shadow-card); }
+.orb::after { content: ""; position: absolute; inset: 14px; border-radius: 50%; background: var(--surface);
+  box-shadow: inset 0 1px 6px rgba(40,52,90,.18); }
+.orb.solid::after { background: radial-gradient(circle at 32% 28%, rgba(255,255,255,.65), transparent 45%); inset: 0; }
+
+/* 4) Loading beam — gradient progress rail */
+.beam { height: 6px; border-radius: 999px; overflow: hidden;
+  background: linear-gradient(90deg, var(--brand-deep), var(--brand), var(--brand-mid), var(--brand), var(--brand-deep));
+  background-size: 220% 100%; animation: beamshift 2.4s linear infinite; }
+
+@keyframes sheen { 0% { transform: translateX(-130%); } 60%, 100% { transform: translateX(230%); } }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes beamshift { to { background-position: 220% 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .aurora .blob, .shimmer::after, .orb, .beam { animation: none !important; }
+}

@@ -1,5 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
+import { Button } from '@medusajs/ui'
 import Image from 'next/image'
 import { headers } from 'next/headers'
 import { Navbar } from '@/components/navbar'
@@ -323,15 +324,17 @@ async function Pagination({ domain, page, category }: { domain: string; page: nu
         }}
       >
         {previousPageUrl ? (
-          <Link href={previousPageUrl} className="kt-btn ghost sm">
-            <ChevronLeftIcon className="size-3" />
-            Previous
-          </Link>
+          <Button asChild variant="secondary" size="small">
+            <Link href={previousPageUrl}>
+              <ChevronLeftIcon className="size-3" />
+              Previous
+            </Link>
+          </Button>
         ) : (
-          <span className="kt-btn ghost sm is-disabled">
+          <Button variant="secondary" size="small" disabled>
             <ChevronLeftIcon className="size-3" />
             Previous
-          </span>
+          </Button>
         )}
         <div style={{ display: 'flex', gap: '4px' }}>
           {Array.from({ length: pageCount }, (_, i) => {
@@ -362,15 +365,17 @@ async function Pagination({ domain, page, category }: { domain: string; page: nu
           })}
         </div>
         {nextPageUrl ? (
-          <Link href={nextPageUrl} className="kt-btn ghost sm">
-            Next
-            <ChevronRightIcon className="size-3" />
-          </Link>
+          <Button asChild variant="secondary" size="small">
+            <Link href={nextPageUrl}>
+              Next
+              <ChevronRightIcon className="size-3" />
+            </Link>
+          </Button>
         ) : (
-          <span className="kt-btn ghost sm is-disabled">
+          <Button variant="secondary" size="small" disabled>
             Next
             <ChevronRightIcon className="size-3" />
-          </span>
+          </Button>
         )}
       </div>
     )

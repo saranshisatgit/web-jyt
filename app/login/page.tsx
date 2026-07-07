@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { Button } from '@medusajs/ui'
 import { Navbar } from '@/components/navbar'
 import { Checkbox, Field, Input, Label } from '@headlessui/react'
 import { CheckIcon } from '@heroicons/react/16/solid'
@@ -96,13 +97,9 @@ export default function Login() {
                   Forgot password?
                 </Link>
               </div>
-              <button
-                type="submit"
-                className="kt-btn"
-                style={{ width: '100%', justifyContent: 'center' }}
-              >
+              <Button type="submit" style={{ width: '100%' }}>
                 Sign in
-              </button>
+              </Button>
             </form>
             <p
               className="kt-meta"

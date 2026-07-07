@@ -1,11 +1,18 @@
 @import 'tailwindcss';
 
+/* Bridge the Tailwind-v3 @medusajs/ui-preset into v4 so real Medusa
+   components (Button, Input, Badge, Table…) render. Sky palette is mapped
+   onto Medusa's CSS variables in ./medusa-ui-tokens.css (imported below). */
+@config '../tailwind.config.js';
+
 /* Kind Health / Jaal Yantra design system.
    Tokens (CSS custom properties) + kt-* component classes.
    Imported after Tailwind so kt-* rules override preflight defaults but stay
    below @theme + utility scales (navy-/orange-* remain available for blog prose). */
 @import './kt-tokens.css';
 @import './kt-components.css';
+@import './motion.css';
+@import './medusa-ui-tokens.css';
 
 @plugin "@tailwindcss/typography";
 
@@ -20,7 +27,7 @@
 @theme {
   --font-sans: 'Rethink Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-display: 'Rethink Sans', system-ui, sans-serif;
-  --font-serif: 'Instrument Serif', ui-serif, Georgia, serif;
+  --font-serif: 'PS Times', ui-serif, Georgia, 'Times New Roman', serif;
   --font-mono: ui-monospace, 'JetBrains Mono', SFMono-Regular, Menlo, monospace;
 
   /* Slate blue-grey — modern art gallery neutral. Hue ~210. */

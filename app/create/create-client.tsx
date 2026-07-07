@@ -3,6 +3,7 @@
 import { useRef, useState, useEffect, type ReactNode } from 'react'
 import Link from 'next/link'
 import { motion, useInView, useMotionValue, useSpring, useTransform, useScroll, useMotionValueEvent, AnimatePresence, animate } from 'framer-motion'
+import { Button } from '@medusajs/ui'
 import type { CreateContent } from './page'
 
 type Props = { content: CreateContent }
@@ -47,7 +48,8 @@ const INDIAN_ART = [
 ]
 
 const STAGE_IMG = [0, 2, 3, 6, 8]
-const STAGE_HUES = [40, 250, 145, 60, 290]
+// Sky-family hue spread — subtle periwinkle→slate variation per stage.
+const STAGE_HUES = [255, 248, 264, 258, 272]
 const CELL_MAP = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i']
 
 function WordReveal({ text }: { text: string }) {
@@ -69,7 +71,14 @@ function WordReveal({ text }: { text: string }) {
   )
 }
 
-function MagneticBtn({ children, href, className = 'kt-btn kt-btn-lg' }: { children: ReactNode; href: string; className?: string }) {
+// Magnetic wrapper around a real Medusa <Button>. asChild lets the Button
+// render as the Next <Link> (no nested anchor); Sky palette comes through the
+// medusa-ui-tokens map, the magnetic pull + press stays on the motion wrapper.
+function MagneticBtn({ children, href, variant = 'primary', size = 'xlarge' }: {
+  children: ReactNode; href: string
+  variant?: 'primary' | 'secondary' | 'transparent' | 'danger'
+  size?: 'small' | 'base' | 'large' | 'xlarge'
+}) {
   const ref = useRef<HTMLDivElement>(null)
   const x = useMotionValue(0)
   const y = useMotionValue(0)
@@ -90,7 +99,9 @@ function MagneticBtn({ children, href, className = 'kt-btn kt-btn-lg' }: { child
       whileHover={{ scale: 1.04 }}
       whileTap={{ scale: 0.96 }}
     >
-      <Link href={href} className={className}>{children}</Link>
+      <Button asChild variant={variant} size={size}>
+        <Link href={href}>{children}</Link>
+      </Button>
     </motion.div>
   )
 }
@@ -165,11 +176,130 @@ function StoryArena({ activeStage }: { activeStage: number }) {
 
 const STAGES = [
   { label: 'Inspire', icon: '✦', title: 'From the art that moves you', desc: 'AI reads palette, motif, and mood.', chips: ['Miniature', 'Textile', 'Mughal'] },
-  { label: 'Design', icon: '◎', title: 'Your product takes shape', desc: 'Palette, motif, dimensions assigned.', colors: ['oklch(65% 0.12 35)', 'oklch(55% 0.1 250)', 'oklch(70% 0.08 145)'] },
+  { label: 'Design', icon: '◎', title: 'Your product takes shape', desc: 'Palette, motif, dimensions assigned.', colors: ['oklch(0.55 0.13 264)', 'oklch(0.62 0.10 250)', 'oklch(0.74 0.07 272)'] },
   { label: 'Craft', icon: '◉', title: 'Handmade by master artisans', desc: 'Dye → Weave → Finish → QC.', dots: [true, true, true, false] },
   { label: 'Package', icon: '▣', title: 'Wrapped with care', desc: 'Digital Product Passport included.' },
   { label: 'Ship', icon: '▶', title: 'On its way to you', desc: 'Carbon-neutral shipping insured.', pct: 72 },
 ]
+
+/* ═══ STORY STAGE — full-bleed, scroll-pinned "Apple product page" scroll ═══
+   A tall wrapper pins a 100vh viewport while you scroll through all 5 stages.
+   Everything is SCRUBBED off scrollYProgress (overlapping cross-dissolves),
+   not hard-cut, so the motion tracks the scrollbar 1:1 and feels buttery.
+   Honours prefers-reduced-motion (falls back to a plain stacked read). */
+
+function usePrefersReducedMotion() {
+  const [reduced, setReduced] = useState(false)
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
+    setReduced(mq.matches)
+    const on = () => setReduced(mq.matches)
+    mq.addEventListener('change', on)
+    return () => mq.removeEventListener('change', on)
+  }, [])
+  return reduced
+}
+
+function StageBackdrop({ index, count, progress }: {
+  index: number; count: number; progress: any
+}) {
+  const src = INDIAN_ART[STAGE_IMG[index]]
+  // Each backdrop owns a scroll band and cross-dissolves ONLY with its
+  // neighbour — a short crossfade window around each boundary keeps just two
+  // images mixing at a time (no triple-exposure).
+  const band = 1 / count
+  const start = index * band
+  const end = start + band
+  const w = band * 0.24 // crossfade half-window
+  const ramp = index === 0
+    ? [start, start, end - w, end + w]           // first: already visible at top
+    : index === count - 1
+      ? [start - w, start + w, end, end]         // last: stays visible at bottom
+      : [start - w, start + w, end - w, end + w]
+  const opacity = useTransform(progress, ramp, [0, 1, 1, 0])
+  // gentle Ken-Burns across the band (scale down + drift).
+  const scale = useTransform(progress, [start - w, end + w], [1.14, 1.0])
+  const imgY = useTransform(progress, [start - w, end + w], ['-3%', '3%'])
+
+  return (
+    <motion.div className="kt-stage-layer" style={{ opacity }} aria-hidden>
+      <motion.div className="kt-stage-layer-bg" style={{ scale, y: imgY }}>
+        <img src={src} alt="" loading="lazy" onError={(e) => { (e.target as HTMLImageElement).style.opacity = '0' }} />
+        <div className="kt-stage-layer-veil" />
+      </motion.div>
+    </motion.div>
+  )
+}
+
+function StoryStage() {
+  const ref = useRef<HTMLDivElement>(null)
+  const reduced = usePrefersReducedMotion()
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end end'] })
+  const [active, setActive] = useState(0)
+  useMotionValueEvent(scrollYProgress, 'change', (v) => {
+    const i = Math.min(STAGES.length - 1, Math.max(0, Math.floor(v * STAGES.length + 0.0001)))
+    if (i !== active) setActive(i)
+  })
+  // continuous rail fill (0 → 1) scrubbed to the scrollbar.
+  const railScale = useTransform(scrollYProgress, [0, 1], [0, 1])
+
+  if (reduced) {
+    // reduced-motion: no pin, just a readable stacked list of the stages.
+    return (
+      <section className="kt-stage-scroll kt-stage-scroll--reduced" aria-label="How it works">
+        {STAGES.map((s, i) => (
+          <div className="kt-stage-static" key={s.label}>
+            <img src={INDIAN_ART[STAGE_IMG[i]]} alt="" loading="lazy" />
+            <HeroStagePlayer activeStage={i} />
+          </div>
+        ))}
+      </section>
+    )
+  }
+
+  return (
+    <section className="kt-stage-scroll" ref={ref} aria-label="How it works">
+      <div className="kt-stage-pin">
+        <div className="kt-stage-eyebrow">
+          <span className="kt-create-tag">From art to doorstep</span>
+        </div>
+        <div className="kt-stage-viewport">
+          {STAGES.map((s, i) => (
+            <StageBackdrop key={s.label} index={i} count={STAGES.length} progress={scrollYProgress} />
+          ))}
+        </div>
+        {/* single card, swapped on the active stage — no stacked text */}
+        <div className="kt-stage-layer-card">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={active}
+              initial={{ opacity: 0, y: 24, filter: 'blur(6px)' }}
+              animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+              exit={{ opacity: 0, y: -24, filter: 'blur(6px)' }}
+              transition={{ duration: 0.45, ease: [0.2, 0.8, 0.2, 1] }}
+            >
+              <HeroStagePlayer activeStage={active} />
+            </motion.div>
+          </AnimatePresence>
+        </div>
+        {/* progress rail — continuous scrub + discrete stage ticks */}
+        <div className="kt-stage-rail" aria-hidden>
+          <div className="kt-stage-rail-track">
+            <motion.div className="kt-stage-rail-fill" style={{ scaleY: railScale }} />
+          </div>
+          <div className="kt-stage-rail-ticks">
+            {STAGES.map((s, i) => (
+              <div key={s.label} className={`kt-stage-rail-tick${i === active ? ' active' : ''}${i < active ? ' done' : ''}`}>
+                <span className="kt-stage-rail-dot" />
+                <span className="kt-stage-rail-label">{s.label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
 
 function HeroStagePlayer({ activeStage }: { activeStage: number }) {
   const stage = STAGES[activeStage]
@@ -902,17 +1032,14 @@ function LoyaltyPhone() {
 
 export default function CreateClient({ content }: Props) {
   const { hero, cta } = content
-  const [activeStage, setActiveStage] = useState(0)
-  const holdMs = [4200, 4200, 4600, 4200, 4600]
-  useEffect(() => {
-    const t = setTimeout(() => setActiveStage(n => (n + 1) % STAGES.length), holdMs[activeStage])
-    return () => clearTimeout(t)
-  }, [activeStage])
+  // Hero widget is a calm static poster (stage 0). The animated 5-stage journey
+  // now lives in the full-bleed, scroll-pinned <StoryStage/> below the hero.
+  const posterStage = 0
 
   return (
     <>
       <section className="kt-create-hero">
-        <motion.div className="kt-create-hero-glow" animate={{ background: `radial-gradient(circle, oklch(0.78 0.06 ${STAGE_HUES[activeStage]} / 0.10), transparent 70%)` }} transition={{ duration: 1.2 }} />
+        <motion.div className="kt-create-hero-glow" animate={{ background: `radial-gradient(circle, oklch(0.74 0.09 ${STAGE_HUES[posterStage]} / 0.10), transparent 70%)` }} transition={{ duration: 1.2 }} />
         <div className="container">
           <div className="kt-create-hero-inner">
             <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
@@ -925,11 +1052,13 @@ export default function CreateClient({ content }: Props) {
               </motion.div>
             </motion.div>
             <motion.div className="kt-create-hero-visual" initial={{ opacity: 0, scale: 0.88 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1.2, delay: 0.3 }}>
-              <StoryArena activeStage={activeStage} />
+              <StoryArena activeStage={posterStage} />
             </motion.div>
           </div>
         </div>
       </section>
+
+      <StoryStage />
 
       <ScrollJourney />
 

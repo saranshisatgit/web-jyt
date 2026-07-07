@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react'
 import Link from 'next/link'
+import { Button } from '@medusajs/ui'
 import * as Sentry from '@sentry/nextjs'
 
 export default function Error({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
@@ -53,8 +54,8 @@ export default function Error({ error, reset }: { error: Error & { digest?: stri
           </div>
 
           <div style={{ marginTop: '36px', display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <button type="button" className="kt-btn" onClick={reset}>Weave again</button>
-            <Link className="kt-btn ghost" href="/">Back to the warp</Link>
+            <Button type="button" onClick={reset}>Weave again</Button>
+            <Button asChild variant="secondary"><Link href="/">Back to the warp</Link></Button>
           </div>
 
           <style>{`

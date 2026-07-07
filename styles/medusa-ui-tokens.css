@@ -1,0 +1,40 @@
+/* =====================================================================
+   SKY → MEDUSA UI token map
+   @medusajs/ui-preset injects its own :root CSS variables (default zinc).
+   We override the ones that carry brand identity so real Medusa components
+   (Button, Input, Badge, Table…) inherit the Sky palette. Loaded AFTER the
+   preset so these win. Only brand-bearing tokens are remapped; neutral
+   greys/fields are left as Medusa ships them for form legibility.
+   ===================================================================== */
+:root {
+  /* Primary button = Medusa `variant="primary"` uses --button-inverted.
+     Map to the Sky deep-blue pill fill. */
+  --button-inverted:          #425594;
+  --button-inverted-hover:    #3b4c86;
+  --button-inverted-pressed:  #354477;
+
+  /* Contrast foreground on the inverted (primary) button stays white. */
+  --contrast-fg-primary:      #ffffff;
+
+  /* Base foreground / interactive accents → Sky ink + brand. */
+  --fg-base:                  #425594;
+  --fg-interactive:           #4670bc;
+  --fg-interactive-hover:     #3b4c86;
+  --border-interactive:       #4670bc;
+  --bg-interactive:           #4670bc;
+
+  /* (see below for the asChild-anchor colour fix) */
+
+  /* Status tag hues — Sky spec keeps Medusa SEMANTIC colours. */
+  --tag-blue-bg:   #e5edfb; --tag-blue-text:   #2f5aa8; --tag-blue-border:   #cfe0f7;
+  --tag-green-bg:  #e3f5ea; --tag-green-text:  #0f7a52; --tag-green-border:  #cdead9;
+  --tag-orange-bg: #fbeed9; --tag-orange-text: #a55f13; --tag-orange-border: #f4dcb4;
+  --tag-red-bg:    #fbe6e6; --tag-red-text:    #9e2626; --tag-red-border:    #f4cccc;
+}
+
+/* When a Medusa <Button asChild> renders as an <a>, our global unlayered
+   `a { color: inherit }` beats Medusa's layered `text-ui-*` utility (unlayered
+   CSS always wins over @layer), so the label inherits page ink and can vanish
+   on same-hue fills. revert-layer hands colour control back to the Tailwind
+   utility for any Medusa-button anchor — variant-agnostic, no per-variant map. */
+a[class*="bg-ui-button"] { color: revert-layer; }

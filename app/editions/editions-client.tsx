@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { Button } from '@medusajs/ui'
 import { Storefront } from '@/components/mockup-animations'
 import type { EditionsContent } from './page'
 
@@ -154,9 +155,9 @@ export default function EditionsClient({ content }: Props) {
               <h1 className="kt-editions-hero-title">{hero.title}</h1>
               <p className="kt-editions-hero-sub">{hero.subtitle}</p>
               <div className="kt-editions-hero-actions">
-                <Link className="kt-btn kt-btn-lg" href={hero.primaryCta.href}>
-                  {hero.primaryCta.label}
-                </Link>
+                <Button asChild size="large">
+                  <Link href={hero.primaryCta.href}>{hero.primaryCta.label}</Link>
+                </Button>
                 <Link className="kt-link" href={hero.secondaryCta.href}>
                   {hero.secondaryCta.label}
                 </Link>
@@ -220,9 +221,9 @@ export default function EditionsClient({ content }: Props) {
               <p className="kt-reveal kt-reveal-d1">{cta.body}</p>
             </div>
             <div className="kt-editions-cta-actions kt-reveal kt-reveal-d2">
-              <Link className="kt-btn kt-btn-lg" href={cta.primaryCta.href}>
-                {cta.primaryCta.label}
-              </Link>
+              <Button asChild size="large">
+                <Link href={cta.primaryCta.href}>{cta.primaryCta.label}</Link>
+              </Button>
               <Link className="kt-link" href={cta.secondaryCta.href}>
                 {cta.secondaryCta.label}
               </Link>

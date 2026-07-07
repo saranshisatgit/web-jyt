@@ -1,44 +1,92 @@
 /* =====================================================================
-   KIND THREAD — DESIGN TOKENS
+   KIND THREAD — DESIGN TOKENS  ·  "SKY" RETONE
    The single source of truth for color, type, spacing, radii, motion.
-   Used by all example layouts (style guide, blog, about) and any new
-   pages that want to feel like Kind Thread.
+   Palette: user-approved "Sky" (deep slate-blue ink + periwinkle sky).
+   Display serif = PS Times (self-hosted). Components = Medusa forms.
+   Approved spec: docs/sky-design-system.html
    ===================================================================== */
 
-:root {
-  /* ---------------- COLOR ---------------- */
-  /* Surface — white / off-white */
-  --bg:           oklch(1 0 0);            /* page background — white */
-  --bg-deep:      oklch(0.96 0.008 210);  /* deeper surface */
-  --cream:        oklch(0.99 0.004 210);  /* card / panel surface */
-  --cream-warm:   oklch(0.97 0.010 210);  /* tinted block */
+/* PS Times — display serif (Regular only). Self-hosted from public/fonts. */
+@font-face {
+  font-family: "PS Times";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/PSTimesTrial-Regular.otf") format("opentype");
+}
 
-  /* Ink — muted slate blue-grey (modern art gallery) */
-  --ink:          oklch(0.25 0.025 210);   /* primary text */
-  --ink-soft:     oklch(0.45 0.030 210);   /* secondary text */
-  --ink-mute:     oklch(0.60 0.025 210);   /* tertiary / hint */
-  --ink-dark:     oklch(0.18 0.020 210);   /* heading on light */
-  --ink-dark-bg:  oklch(0.20 0.022 210);   /* dark panel surface */
+:root {
+  /* ---------------- COLOR · SKY ---------------- */
+  /* Sky gradient stops (periwinkle → cool haze → white) */
+  --sky-1:        #d9e1f5;   /* pale periwinkle — sky top */
+  --sky-2:        #e7ebf4;   /* blend */
+  --sky-3:        #eeeef0;   /* cool haze */
+  --sky-glow:     #ffffff;
+
+  /* Surface — white / cool-grey haze */
+  --bg:           #ffffff;   /* page background */
+  --surface:      #ffffff;   /* card / panel surface */
+  --surface-tint: #eeeef0;   /* cool-grey panel */
+  --bg-deep:      var(--surface-tint);   /* legacy alias */
+  --cream:        var(--surface);        /* legacy alias */
+  --cream-warm:   var(--surface-tint);   /* legacy alias */
+
+  /* Ink — deep slate-blue (no near-black) */
+  --ink:          #425594;   /* primary text / headings */
+  --ink-soft:     #4e5d80;   /* secondary */
+  --ink-mute:     #596ca6;   /* tertiary blue */
+  --ink-grey:     #a5a5a6;   /* neutral labels */
+  --ink-dark:     #425594;   /* heading on light (legacy alias) */
+  --ink-dark-bg:  #1e2540;   /* deep slate panel surface */
 
   /* Rules / borders */
-  --rule:         oklch(0.82 0.018 210);
-  --rule-soft:    oklch(0.88 0.014 210);
-  --rule-dark:    oklch(0.28 0.020 210);
+  --border:       #c2c2c3;
+  --border-soft:  #dcdce0;
+  --rule:         var(--border);        /* legacy alias */
+  --rule-soft:    var(--border-soft);   /* legacy alias */
+  --rule-dark:    #34405f;
 
-  /* Accent (soft sage green — modern, organic) */
-  --accent:       oklch(0.54 0.06 145);    /* mid-sage */
-  --accent-deep:  oklch(0.42 0.08 145);    /* dark sage */
-  --accent-soft:  oklch(0.80 0.035 145);   /* light sage */
-  --accent-pale:  oklch(0.95 0.015 145);   /* pale sage */
+  /* Brand + accent (periwinkle / slate-blue) */
+  --brand:        #4670bc;
+  --brand-deep:   #425594;
+  --brand-mid:    #5475b4;
+  --brand-soft:   #b5c0d7;
+  --brand-pale:   #d9e1f5;
+  --accent:       var(--brand);         /* legacy alias — animated accent */
+  --accent-deep:  var(--brand-deep);
+  --accent-soft:  var(--brand-soft);
+  --accent-pale:  #d9e1f5;
+
+  /* Primary button (deep-blue pill — NOT black) */
+  --btn-fill:     #425594;
+  --btn-ink:      #ffffff;
 
   /* Signal */
-  --ok:           oklch(0.55 0.15 145);
-  --warn:         oklch(0.75 0.16 70);
-  --err:          var(--accent-deep);
+  --ok:           #4670bc;
+  --ok-pale:      #d9e1f5;
+  --warn:         #4e5d80;
+  --warn-pale:    #eeeef0;
+  --err:          var(--brand-deep);
+
+  /* Status badge tokens — Medusa SEMANTIC hues (outside the sky brand) */
+  --tag-green-bg: #e3f5ea; --tag-green-fg: #0f7a52;
+  --tag-blue-bg:  #e5edfb; --tag-blue-fg:  #2f5aa8;
+  --tag-orange-bg:#fbeed9; --tag-orange-fg:#a55f13;
+  --tag-red-bg:   #fbe6e6; --tag-red-fg:   #9e2626;
+
+  /* Ground gradients (page + hero) */
+  --ground: radial-gradient(120% 70% at 50% -8%, var(--sky-glow) 0%, transparent 55%),
+            linear-gradient(180deg, var(--sky-1) 0%, var(--sky-2) 20%, var(--sky-3) 44%, var(--bg) 78%);
+  --hero-ground: radial-gradient(90% 60% at 70% 0%, #e4e9f6 0%, transparent 60%),
+                 linear-gradient(180deg, var(--sky-1) 0%, var(--sky-2) 34%, #fff 100%);
+
+  /* ---------------- SHADOWS (Medusa layered) ---------------- */
+  --shadow-card: 0 0 0 1px rgba(40,52,90,.07), 0 1px 2px -1px rgba(40,52,90,.10), 0 2px 4px rgba(40,52,90,.05);
+  --shadow-soft: 0 1px 2px rgba(40,52,90,.10), 0 0 0 1px rgba(40,52,90,.06);
 
   /* ---------------- TYPE ---------------- */
-  --font-sans:    "Rethink Sans", system-ui, -apple-system, sans-serif;
-  --font-serif:   "Instrument Serif", Georgia, "Times New Roman", serif;
+  --font-sans:    "Rethink Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-serif:   "PS Times", "Times New Roman", Georgia, serif;
   --font-mono:    "JetBrains Mono", ui-monospace, "SF Mono", monospace;
 
   /* Type scale (display + body) */
@@ -83,10 +131,14 @@
   --s-10: 100px;
   --s-11: 120px;
 
-  /* ---------------- RADII ---------------- */
+  /* ---------------- RADII (Medusa forms) ---------------- */
   --r-0:    0px;
   --r-sm:   4px;
+  --r-tag:  6px;
   --r-md:   8px;
+  --r-btn:  8px;
+  --r-input: 8px;
+  --r-card: 12px;
   --r-lg:   16px;
   --r-pill: 999px;
 
@@ -100,6 +152,61 @@
   --dur-fast:   160ms;
   --dur-base:   240ms;
   --dur-slow:   320ms;
+}
+
+/* =====================================================================
+   DARK "NIGHT SKY" VARIANT — approved, derived (indigo).
+   Explicit opt-in only (data-theme="dark"). We intentionally do NOT wire
+   `@media (prefers-color-scheme: dark)` yet: pages aren't dark-swept, so
+   an OS auto-flip would look broken. Enable auto-flip after the sweep.
+   ===================================================================== */
+:root[data-theme="dark"] {
+  --sky-1:        #2a3556;
+  --sky-2:        #1e2540;
+  --sky-3:        #171c30;
+  --sky-glow:     #46557f;
+  --bg:           #0f1424;
+  --surface:      #1a2038;
+  --surface-tint: #161c30;
+  --bg-deep:      var(--surface-tint);
+  --cream:        var(--surface);
+  --cream-warm:   var(--surface-tint);
+  --ink:          #eeeef0;
+  --ink-soft:     #b5c0d7;
+  --ink-mute:     #a5a5a6;
+  --ink-grey:     #a5a5a6;
+  --ink-dark:     #eeeef0;
+  --ink-dark-bg:  #0b0f1c;
+  --border:       #34405f;
+  --border-soft:  #232c48;
+  --rule:         var(--border);
+  --rule-soft:    var(--border-soft);
+  --rule-dark:    #46557f;
+  --brand:        #7e9bd6;
+  --brand-deep:   #b5c0d7;
+  --brand-mid:    #6e8fcb;
+  --brand-soft:   #6e8fcb;
+  --brand-pale:   #223056;
+  --accent:       var(--brand);
+  --accent-deep:  var(--brand-deep);
+  --accent-soft:  var(--brand-soft);
+  --accent-pale:  #223056;
+  --btn-fill:     #eeeef0;
+  --btn-ink:      #0f1424;
+  --ok:           #7e9bd6;
+  --ok-pale:      #1b2440;
+  --warn:         #b5c0d7;
+  --warn-pale:    #20283f;
+  --shadow-card:  0 0 0 1px rgba(255,255,255,.06), 0 0 0 1px rgba(20,25,45,1), 0 1px 2px rgba(0,0,0,.4), 0 2px 4px rgba(0,0,0,.32);
+  --shadow-soft:  0 1px 2px rgba(0,0,0,.4), 0 0 0 1px rgba(255,255,255,.06);
+  --tag-green-bg: #12301f; --tag-green-fg: #59c78f;
+  --tag-blue-bg:  #182a4a; --tag-blue-fg:  #8fb4f2;
+  --tag-orange-bg:#33260f; --tag-orange-fg:#dba75a;
+  --tag-red-bg:   #331717; --tag-red-fg:   #e88b8b;
+  --ground: radial-gradient(120% 70% at 50% -8%, var(--sky-glow) 0%, transparent 55%),
+            linear-gradient(180deg, var(--sky-1) 0%, var(--sky-2) 24%, var(--sky-3) 50%, var(--bg) 82%);
+  --hero-ground: radial-gradient(90% 60% at 70% 0%, #2a3556 0%, transparent 60%),
+                 linear-gradient(180deg, var(--sky-1) 0%, var(--sky-2) 40%, var(--bg) 100%);
 }
 
 /* ---------------- BASE ---------------- */
