@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { Button } from '@medusajs/ui'
-import { Storefront } from '@/components/mockup-animations'
+import { EditionsGlyph } from '@/components/editions-glyph'
 import type { EditionsContent } from './page'
 
 type Props = { content: EditionsContent }
@@ -148,6 +148,11 @@ export default function EditionsClient({ content }: Props) {
     <>
       {/* ───── Hero ───── */}
       <section className="kt-editions-hero">
+        <div className="aurora" aria-hidden>
+          <span className="blob b1" />
+          <span className="blob b2" />
+          <span className="blob b3" />
+        </div>
         <div className="container">
           <div className="kt-editions-hero-inner">
             <div>
@@ -155,18 +160,16 @@ export default function EditionsClient({ content }: Props) {
               <h1 className="kt-editions-hero-title">{hero.title}</h1>
               <p className="kt-editions-hero-sub">{hero.subtitle}</p>
               <div className="kt-editions-hero-actions">
-                <Button asChild size="large">
+                <Button asChild>
                   <Link href={hero.primaryCta.href}>{hero.primaryCta.label}</Link>
                 </Button>
-                <Link className="kt-link" href={hero.secondaryCta.href}>
-                  {hero.secondaryCta.label}
-                </Link>
+                <Button asChild variant="secondary">
+                  <Link href={hero.secondaryCta.href}>{hero.secondaryCta.label}</Link>
+                </Button>
               </div>
             </div>
             <div className="kt-editions-hero-visual">
-              <div className="kt-editions-hero-mockup">
-                <Storefront />
-              </div>
+              <EditionsGlyph variant={0} size={360} />
             </div>
           </div>
         </div>
@@ -202,8 +205,11 @@ export default function EditionsClient({ content }: Props) {
               className={`kt-editions-section${section.dark ? ' dark' : ''}`}
             >
               <div className="kt-editions-header kt-reveal">
-                <div className="kt-editions-eyebrow">{section.label}</div>
-                <h2 className="kt-editions-section-heading">{section.heading}</h2>
+                <div className="kt-editions-header-text">
+                  <div className="kt-editions-eyebrow">{section.label}</div>
+                  <h2 className="kt-editions-section-heading">{section.heading}</h2>
+                </div>
+                <EditionsGlyph variant={si + 1} size={96} />
               </div>
 
               <CardGrid cards={section.cards} />
@@ -212,8 +218,15 @@ export default function EditionsClient({ content }: Props) {
         </div>
       </div>
 
-      {/* ───── Final CTA ───── */}
+      {/* ───── Final CTA — sky rises behind it ───── */}
       <section className="kt-editions-cta">
+        <div className="kt-editions-cta-sky" aria-hidden>
+          <div className="aurora">
+            <span className="blob b1" />
+            <span className="blob b2" />
+            <span className="blob b3" />
+          </div>
+        </div>
         <div className="container">
           <div className="kt-editions-cta-inner">
             <div>
@@ -221,12 +234,12 @@ export default function EditionsClient({ content }: Props) {
               <p className="kt-reveal kt-reveal-d1">{cta.body}</p>
             </div>
             <div className="kt-editions-cta-actions kt-reveal kt-reveal-d2">
-              <Button asChild size="large">
+              <Button asChild>
                 <Link href={cta.primaryCta.href}>{cta.primaryCta.label}</Link>
               </Button>
-              <Link className="kt-link" href={cta.secondaryCta.href}>
-                {cta.secondaryCta.label}
-              </Link>
+              <Button asChild variant="secondary">
+                <Link href={cta.secondaryCta.href}>{cta.secondaryCta.label}</Link>
+              </Button>
             </div>
           </div>
         </div>

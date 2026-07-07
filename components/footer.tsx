@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion'
 import Link from 'next/link'
 import { useBrand } from '@/app/context/brand-context'
 import { useWebsites } from '@/lib/marketing-data'
@@ -18,6 +19,13 @@ export function Footer() {
   const currentLocation = LOCALES.find((l) => l.code === locale) ?? LOCALES[0]
   const [open, setOpen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
+
+  // Sky rises up behind the footer as it scrolls into view.
+  const footerRef = useRef<HTMLElement>(null)
+  const reduce = useReducedMotion()
+  const { scrollYProgress } = useScroll({ target: footerRef, offset: ['start end', 'end end'] })
+  const skyY = useTransform(scrollYProgress, [0, 1], ['42%', '0%'])
+  const skyOpacity = useTransform(scrollYProgress, [0, 0.6, 1], [0, 0.85, 1])
 
   useEffect(() => {
     if (!open) return
@@ -48,7 +56,21 @@ export function Footer() {
   ]
 
   return (
-    <footer className="kt-footer">
+    <footer className="kt-footer" ref={footerRef}>
+      {/* Rising sky — a periwinkle dawn that lifts up behind the footer as you
+          reach the bottom. Aurora blobs drift within it. Reduced-motion: static. */}
+      <div className="kt-footer-sky-wrap" aria-hidden>
+        <motion.div
+          className="kt-footer-sky"
+          style={reduce ? { y: '0%', opacity: 1 } : { y: skyY, opacity: skyOpacity }}
+        >
+          <div className="aurora">
+            <span className="blob b1" />
+            <span className="blob b2" />
+            <span className="blob b3" />
+          </div>
+        </motion.div>
+      </div>
       <div className="container">
         {websites.length > 0 && (
           <div className="kt-foot-ateliers">

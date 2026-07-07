@@ -2,6 +2,7 @@
 
 import { useEffect, useState, type CSSProperties, type ReactNode } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
+import { SkyIcon, type DomainIconName } from './icons/domain'
 
 /**
  * Shared kit for the live-React product mockups on the home + /solutions pages.
@@ -82,7 +83,49 @@ export function Card({ children }: { children: ReactNode }) {
   )
 }
 
-export function CardHead({ eyebrow, title, right }: { eyebrow: string; title: ReactNode; right?: ReactNode }) {
+/**
+ * Resolve a Sky domain icon from a CardHead's eyebrow/title text. Ordered by
+ * specificity — first keyword hit wins — so a card auto-earns a domain icon
+ * without a per-usage prop. Pass an explicit `icon` to override.
+ */
+function resolveDomainIcon(text: string): DomainIconName {
+  const t = text.toLowerCase()
+  // Ordered by specificity — the first keyword hit wins.
+  const table: Array<[RegExp, DomainIconName]> = [
+    [/passport|dpp|espr|traceab/, 'tag'],
+    [/reconcil|audit|report/, 'table'],
+    [/whatsapp|online|channel/, 'mobile'],
+    [/\.com|storefront|\bstore\b|branded|deploy|starter|\bmcp\b|agent/, 'mobile'],
+    [/theme|palette|mood|reference|board|design|create|new piece/, 'swatches'],
+    [/pricing|price|technique|earnings|finance|withdraw|payout|payment|paid|\bcost\b|economics/, 'tag'],
+    [/measure|parameter|setting|\bruler\b|\bsize\b|\bspec\b/, 'ruler'],
+    [/inventory|raw material|source|restock|inbound|\bdye\b|\bstock\b/, 'stack'],
+    [/deliver|complete|\bpackage\b|\bship\b|dispatch/, 'package'],
+    [/\brun\b|progress|production|accept|finish/, 'scissors'],
+    [/application|apply|partner|workshop|\border\b|quick add|draft|customer|shopper|onboard/, 'needle'],
+    [/capability|publish|\blive\b/, 'mobile'],
+    [/catalog|search|\bsync\b|excel/, 'table'],
+    [/atelier|bagru|location|\bpin\b|\bmap\b/, 'pin'],
+    [/\bcart\b|\bshop\b|\bbuy\b|checkout/, 'cart'],
+  ]
+  for (const [re, name] of table) if (re.test(t)) return name
+  return 'stack'
+}
+
+export function CardHead({
+  eyebrow,
+  title,
+  right,
+  icon,
+}: {
+  eyebrow: string
+  title: ReactNode
+  right?: ReactNode
+  /** Override the auto-resolved domain icon, or pass `null` to omit it. */
+  icon?: DomainIconName | null
+}) {
+  const iconName =
+    icon === null ? null : icon ?? resolveDomainIcon(`${eyebrow} ${typeof title === 'string' ? title : ''}`)
   return (
     <div
       style={{
@@ -94,11 +137,31 @@ export function CardHead({ eyebrow, title, right }: { eyebrow: string; title: Re
         gap: 12,
       }}
     >
-      <div>
-        <div style={{ fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--ink-mute)' }}>
-          {eyebrow}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, minWidth: 0 }}>
+        {iconName && (
+          <span
+            aria-hidden
+            style={{
+              flexShrink: 0,
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: 30,
+              height: 30,
+              borderRadius: 8,
+              background: 'var(--accent-pale)',
+              color: 'var(--accent-deep)',
+            }}
+          >
+            <SkyIcon name={iconName} size={18} />
+          </span>
+        )}
+        <div style={{ minWidth: 0 }}>
+          <div style={{ fontFamily: 'var(--font-mono)', fontSize: 10, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--ink-mute)' }}>
+            {eyebrow}
+          </div>
+          <div style={{ ...serif, fontSize: 18, marginTop: 2 }}>{title}</div>
         </div>
-        <div style={{ ...serif, fontSize: 18, marginTop: 2 }}>{title}</div>
       </div>
       {right}
     </div>
@@ -225,7 +288,15 @@ export function ScenePlayer({ scenes, holdMs = 3600 }: { scenes: Scene[]; holdMs
           boxShadow: '0 24px 60px -40px oklch(0 0 0 / 0.30)',
         }}
       >
-        <div style={{ width: '100%', maxWidth: 560, margin: '0 auto' }}>
+        {/* Soft periwinkle depth — drifting Sky aurora behind the cards. */}
+        {!reduce && (
+          <div className="aurora" aria-hidden style={{ opacity: 0.4 }}>
+            <span className="blob b1" />
+            <span className="blob b2" />
+            <span className="blob b3" />
+          </div>
+        )}
+        <div style={{ position: 'relative', zIndex: 1, width: '100%', maxWidth: 560, margin: '0 auto' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
             <span style={{ fontFamily: 'var(--font-mono)', fontSize: 11, fontWeight: 500, letterSpacing: '0.1em', color: 'var(--accent-deep)' }}>
               {String(i + 1).padStart(2, '0')} · {scenes[i].label.toUpperCase()}
@@ -235,15 +306,35 @@ export function ScenePlayer({ scenes, holdMs = 3600 }: { scenes: Scene[]; holdMs
           <AnimatePresence mode="wait">
             <motion.div
               key={i}
-              initial={reduce ? { opacity: 0 } : { opacity: 0, y: 12 }}
-              animate={reduce ? { opacity: 1 } : { opacity: 1, y: 0 }}
-              exit={reduce ? { opacity: 0 } : { opacity: 0, y: -12 }}
-              transition={{ duration: 0.45, ease: 'easeInOut' }}
+              initial={reduce ? { opacity: 0 } : { opacity: 0, y: 12, scale: 0.985 }}
+              animate={reduce ? { opacity: 1 } : { opacity: 1, y: 0, scale: 1 }}
+              exit={reduce ? { opacity: 0 } : { opacity: 0, y: -12, scale: 0.985 }}
+              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
             >
               {scenes[i].render()}
             </motion.div>
           </AnimatePresence>
         </div>
+        {/* Live dwell beam — fills over each scene's hold, resets on advance. */}
+        {!reduce && (
+          <motion.span
+            key={i}
+            aria-hidden
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: 1 }}
+            transition={{ duration: dwell(i) / 1000, ease: 'linear' }}
+            style={{
+              position: 'absolute',
+              left: 0,
+              bottom: 0,
+              height: 3,
+              width: '100%',
+              transformOrigin: 'left',
+              background: 'linear-gradient(90deg, var(--accent) 0%, var(--accent-mid, var(--accent)) 100%)',
+              zIndex: 2,
+            }}
+          />
+        )}
       </div>
       <div style={{ display: 'flex', gap: 8, marginTop: 12, alignItems: 'center', flexWrap: 'wrap' }}>
         {scenes.map((s, n) => (

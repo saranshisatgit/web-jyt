@@ -9,6 +9,7 @@ import { useQuery } from '@tanstack/react-query'
 import { Navbar } from '@/components/navbar'
 import { SolutionBlock, FeaturedMockup } from '@/components/solution-block'
 import { StackScroll } from '@/components/stack-scroll'
+import { SketchToShipment } from '@/components/sketch-to-shipment'
 import { useBrand } from '@/app/context/brand-context'
 import storefrontPreviews from '@/data/storefront-previews.json'
 import { AUDIENCE_CALLOUT, SOLUTION_BLOCKS } from '@/data/solutions'
@@ -247,7 +248,7 @@ function formatGmv(amount: number, currency: string): string {
 
 export default function Home() {
   return (
-    <>
+    <div className="kt-home">
       <div>
         <div
           aria-hidden="true"
@@ -262,25 +263,10 @@ export default function Home() {
         <Navbar />
         <Hero />
       </div>
-      <SolutionsShowcase />
-      <Problem />
-      <Thesis />
-      <Surfaces />
-      <Makers />
-      <Brands />
-      <BrandSites />
-      <StackScroll />
-      <Hypothesis />
-      <Benefits />
-      <UsingThePlatform />
-      <Compare />
-      <Stats />
-      <GmvHeadline />
-      <Testimonials />
+      <FeatureMockups />
+      <SketchToShipment />
       <Waitlist />
-      <Raise />
-      <Demo />
-    </>
+    </div>
   )
 }
 
@@ -289,34 +275,19 @@ export default function Home() {
 // the /solutions page stay in lockstep. Surfaced high on the page so the
 // animated product mockups are among the first things a visitor sees.
 
-function SolutionsShowcase() {
+function FeatureMockups() {
   return (
-    <section className="kt-section" id="solutions">
+    <section className="kt-section" id="features">
       <div className="container">
         <div className="kt-section-head">
-          <div className="kt-eyebrow">{AUDIENCE_CALLOUT.eyebrow}</div>
-          <h2 className="kt-display m">{AUDIENCE_CALLOUT.title}</h2>
+          <div className="kt-eyebrow">The product, live</div>
+          <h2 className="kt-display m">One system. <em className="serif italic">Every surface.</em></h2>
         </div>
         <p className="muted" style={{ fontSize: '19px', lineHeight: 1.55, maxWidth: '720px' }}>
-          {AUDIENCE_CALLOUT.body}
+          Design, production, inventory and storefront — the real screens, running.
         </p>
         <div style={{ margin: '40px 0 72px' }}>
           <FeaturedMockup />
-        </div>
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-            gap: '24px',
-            marginBottom: '72px',
-          }}
-        >
-          {AUDIENCE_CALLOUT.audiences.map((a) => (
-            <div className="kt-card" key={a.tag}>
-              <div className="kt-meta" style={{ color: 'var(--accent-deep)' }}>{a.tag}</div>
-              <p className="muted" style={{ marginTop: '10px' }}>{a.line}</p>
-            </div>
-          ))}
         </div>
         <div className="kt-feature-tour">
           {SOLUTION_BLOCKS.map((b, i) => (
@@ -325,7 +296,7 @@ function SolutionsShowcase() {
         </div>
         <div style={{ marginTop: '48px' }}>
           <Button asChild variant="secondary">
-            <Link href="/solutions">See the full atelier OS →</Link>
+            <Link href="/solutions">See the full atelier OS</Link>
           </Button>
         </div>
       </div>
@@ -390,61 +361,31 @@ function Hero() {
           <div>
             <span className="kt-eyebrow">
               <span className="dot pulse" aria-hidden />
-              <span data-aud="consumer">{brand.geographies.join(' · ')} · live now</span>
-              <span data-aud="investor">{brand.raise.round} · {brand.raise.year} · open round</span>
-              <span data-aud="platform">{brand.platformBrandName} · Medo · v3 live</span>
+              <span>{brand.geographies.join(' · ')} · live now</span>
             </span>
             <h1 className="kt-display l" style={{ marginTop: '20px', marginBottom: '16px' }}>
-              <span data-aud="consumer">A garment with <em className="serif italic">provenance</em>, made by hands you can name.</span>
-              <span data-aud="investor">A confidence engine for <em className="serif italic">custom clothing</em>.</span>
-              <span data-aud="platform">Three surfaces. <em className="serif italic">One source of truth.</em></span>
+              From sketch to shipment, <em className="serif italic">one system</em>.
             </h1>
             <p className="muted" style={{ fontSize: '18px', maxWidth: '620px', lineHeight: 1.4, margin: '0 0 28px' }}>
-              <span data-aud="consumer">
-                Design with vetted artisans. Track every stitch. Wear something that comes with its own story — and the receipts to prove it.
-              </span>
-              <span data-aud="investor">
-                Marketplace + production OS that gives every garment verifiable provenance and gives every artisan a global storefront — same rails, both sides.
-              </span>
-              <span data-aud="platform">
-                Design, source and sell your collections on the same rails fashion brands like LeAtelier and Cici Label already trust.
-              </span>
+              Design with vetted artisans, track every stitch, and sell on your own storefront —
+              custom clothing with verifiable provenance, made on the same rails brands like
+              LeAtelier and Cici Label already trust.
             </p>
             <div className="flex flex-wrap gap-4">
-              <span data-aud="consumer" className="flex flex-wrap gap-4">
-                <Button asChild><Link href="#waitlist">Join the waitlist</Link></Button>
-                <Button asChild variant="secondary"><Link href="#makers">Meet the makers</Link></Button>
-              </span>
-              <span data-aud="investor" className="flex flex-wrap gap-4">
-                <Button asChild><Link href="#raise">View the raise →</Link></Button>
-                <Button asChild variant="secondary"><Link href="#thesis">Read the thesis</Link></Button>
-              </span>
-              <span data-aud="platform" className="flex flex-wrap gap-4">
-                <Button asChild><Link href="#demo">Get a demo →</Link></Button>
-                <Button asChild variant="secondary"><Link href="#surfaces">Tour the platform</Link></Button>
-              </span>
+              <Button asChild><Link href="#waitlist">Join the waitlist</Link></Button>
+              <Button asChild variant="secondary"><Link href="#system">See how it works</Link></Button>
             </div>
           </div>
           <aside className="kt-hero-side">
-            <div data-aud="consumer">
+            <div>
               <div className="row"><span className="k">Atelier</span><span className="v">{artisanCount}</span></div>
               <div className="row"><span className="k">Hubs</span><span className="v">{hubCount}</span></div>
-              {leadDays !== null && (
-                <div className="row"><span className="k">Avg lead time</span><span className="v">{leadDays} days</span></div>
-              )}
-              <div className="row"><span className="k">Made-to-measure</span><span className="v">Always</span></div>
-            </div>
-            <div data-aud="investor">
-              <div className="row"><span className="k">Round</span><span className="v">{brand.raise.amount} {brand.raise.round}</span></div>
-              <div className="row"><span className="k">Stage</span><span className="v">Live revenue</span></div>
-              <div className="row"><span className="k">Geographies</span><span className="v">EU · IN · AU</span></div>
-              <div className="row"><span className="k">Stack</span><span className="v">Medo · open source</span></div>
-            </div>
-            <div data-aud="platform">
-              <div className="row"><span className="k">Surfaces</span><span className="v">Admin · Partners · Storefront</span></div>
               <div className="row"><span className="k">Brands shipping</span><span className="v">{brandsCount}</span></div>
-              {gmvCount && <div className="row"><span className="k">GMV powered</span><span className="v">{gmvCount}</span></div>}
-              <div className="row"><span className="k">Stack</span><span className="v">MedusaJS · OSS</span></div>
+              {gmvCount
+                ? <div className="row"><span className="k">GMV powered</span><span className="v">{gmvCount}</span></div>
+                : leadDays !== null
+                  ? <div className="row"><span className="k">Avg lead time</span><span className="v">{leadDays} days</span></div>
+                  : <div className="row"><span className="k">Made-to-measure</span><span className="v">Always</span></div>}
             </div>
           </aside>
         </div>
@@ -590,7 +531,7 @@ function BrandSites() {
 
 function Waitlist() {
   return (
-    <section className="kt-section flush" data-aud="consumer" id="waitlist">
+    <section className="kt-section flush" id="waitlist">
       <div className="container" style={{ paddingTop: '40px', paddingBottom: '80px' }}>
         <div
           className="kt-callout dark"
@@ -609,7 +550,7 @@ function Waitlist() {
               First 100{' '}
               <em className="serif italic">get a fitting</em>.
             </h3>
-            <p style={{ color: 'oklch(0.78 0.04 145)', marginTop: '20px', maxWidth: '420px', lineHeight: 1.5 }}>
+            <p style={{ color: 'oklch(0.78 0.04 264)', marginTop: '20px', maxWidth: '420px', lineHeight: 1.5 }}>
               Join the waitlist and we&apos;ll pair you with an atelier and a piece — yours, made by name, made by hand.
             </p>
           </div>
@@ -702,21 +643,21 @@ function HypoPaneDark() {
       <div className="serif" style={{ fontSize: '56px', lineHeight: 1, margin: '12px 0 4px', letterSpacing: '-0.02em', color: 'var(--cream)' }}>
         {p.name}
       </div>
-      <div style={{ color: 'oklch(0.8 0.04 145)', marginBottom: '24px', fontSize: '16px' }}>{p.sub}</div>
+      <div style={{ color: 'oklch(0.8 0.04 264)', marginBottom: '24px', fontSize: '16px' }}>{p.sub}</div>
       <ul className="kt-list">
         {p.items.map((it) => (
-          <li key={it.n} style={{ borderBottomColor: 'oklch(0.28 0.03 145)' }}>
-            <span className="n" style={{ color: 'oklch(0.78 0.06 145)' }}>{it.n}</span>
+          <li key={it.n} style={{ borderBottomColor: 'oklch(0.28 0.03 264)' }}>
+            <span className="n" style={{ color: 'oklch(0.78 0.06 264)' }}>{it.n}</span>
             <div>
               <b style={{ color: 'var(--cream)' }}>{it.bold}</b>
-              <span style={{ color: 'oklch(0.72 0.04 145)' }}>{it.body}</span>
+              <span style={{ color: 'oklch(0.72 0.04 264)' }}>{it.body}</span>
             </div>
           </li>
         ))}
       </ul>
       <div style={{ marginTop: 'auto', paddingTop: '24px', borderTop: '2px solid var(--cream)', display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: '20px' }}>
         <div className="serif" style={{ fontSize: '48px', lineHeight: 0.95, color: 'var(--cream)' }}>{p.metric}</div>
-          <div className="kt-meta" style={{ textAlign: 'right', maxWidth: '220px', lineHeight: 1.4, color: 'oklch(0.72 0.04 145)' }}>{p.caption}</div>
+          <div className="kt-meta" style={{ textAlign: 'right', maxWidth: '220px', lineHeight: 1.4, color: 'oklch(0.72 0.04 264)' }}>{p.caption}</div>
       </div>
     </div>
   )
@@ -746,16 +687,16 @@ function Raise() {
             >
               {brand.raise.amount}
             </div>
-            <div className="kt-meta" style={{ color: 'oklch(0.78 0.06 145)', marginTop: '24px' }}>
+            <div className="kt-meta" style={{ color: 'oklch(0.78 0.06 264)', marginTop: '24px' }}>
               {brand.raise.round} · {brand.raise.year} · open round
             </div>
-            <p style={{ color: 'oklch(0.78 0.04 145)', marginTop: '24px', maxWidth: '420px', lineHeight: 1.5 }}>
+            <p style={{ color: 'oklch(0.78 0.04 264)', marginTop: '24px', maxWidth: '420px', lineHeight: 1.5 }}>
               Use of funds: dedicated sales team · artisan onboarding in EU/IN/AU · paid acquisition &amp; brand · connecting production hubs.
             </p>
           </div>
           <div>
             <h3 className="kt-display s" style={{ color: 'var(--cream)', marginBottom: '16px' }}>Want to talk?</h3>
-            <p style={{ color: 'oklch(0.78 0.04 145)', marginBottom: '28px' }}>
+            <p style={{ color: 'oklch(0.78 0.04 264)', marginBottom: '28px' }}>
               Drop your email and we&apos;ll send the data room and a calendar link.
             </p>
             <CaptureForm
@@ -911,16 +852,16 @@ function Demo() {
             >
               Run<br />your<br />atelier.
             </div>
-            <div className="kt-meta" style={{ color: 'oklch(0.78 0.06 145)', marginTop: '24px' }}>
+            <div className="kt-meta" style={{ color: 'oklch(0.78 0.06 264)', marginTop: '24px' }}>
               JaalYantra · since 2025
             </div>
-            <p style={{ color: 'oklch(0.78 0.04 145)', marginTop: '24px', maxWidth: '420px', lineHeight: 1.5 }}>
+            <p style={{ color: 'oklch(0.78 0.04 264)', marginTop: '24px', maxWidth: '420px', lineHeight: 1.5 }}>
               15+ happy customers · 3+ brands shipping. Tell us what you&apos;re making and we&apos;ll show you the platform live.
             </p>
           </div>
           <div>
             <h3 className="kt-display s" style={{ color: 'var(--cream)', marginBottom: '16px' }}>See it on your collection.</h3>
-            <p style={{ color: 'oklch(0.78 0.04 145)', marginBottom: '28px' }}>
+            <p style={{ color: 'oklch(0.78 0.04 264)', marginBottom: '28px' }}>
               30-minute call. We&apos;ll spin up a sandbox with your products in it.
             </p>
             <CaptureForm
@@ -1343,12 +1284,12 @@ function CaptureForm({
       : status.kind === 'err'
         ? 'oklch(0.60 0.14 25)'
         : theme === 'dark'
-          ? 'oklch(0.72 0.04 145)'
+          ? 'oklch(0.72 0.04 264)'
           : 'var(--ink-soft)'
 
   const inputStyle =
     theme === 'dark'
-      ? { background: 'transparent', borderColor: 'oklch(0.38 0.03 145)', color: 'var(--cream)' }
+      ? { background: 'transparent', borderColor: 'oklch(0.38 0.03 264)', color: 'var(--cream)' }
       : undefined
 
   return (

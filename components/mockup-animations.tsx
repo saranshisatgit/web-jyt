@@ -337,7 +337,7 @@ function Bubble({ side, children, time }: { side: 'in' | 'out'; children: ReactN
           borderRadius: 14,
           borderBottomRightRadius: out ? 4 : 14,
           borderBottomLeftRadius: out ? 14 : 4,
-          background: out ? 'oklch(90% 0.06 145)' : 'var(--bg)',
+          background: out ? 'oklch(90% 0.06 264)' : 'var(--bg)',
           border: out ? 'none' : '1px solid var(--rule-soft)',
           fontSize: 13,
         }}

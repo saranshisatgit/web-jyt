@@ -41,6 +41,28 @@
 @keyframes sheen { 0% { transform: translateX(-130%); } 60%, 100% { transform: translateX(230%); } }
 @keyframes spin { to { transform: rotate(360deg); } }
 @keyframes beamshift { to { background-position: 220% 0; } }
+
+/* 5) Scroll-driven reveal — section heads & feature cards ease up into place as
+   they scroll into view. Progress is tied to scroll position via a view()
+   timeline, so it reads as one continuous motion with the page. Scoped to the
+   home (.kt-home) and guarded by @supports so unsupported engines (e.g. current
+   Firefox) simply render the content static & visible — no stuck-invisible FOUC. */
+@keyframes kt-reveal-up {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .kt-home .kt-section-head,
+    .kt-home .kt-fork-card,
+    .kt-home .kt-stat {
+      animation: kt-reveal-up linear both;
+      animation-timeline: view();
+      animation-range: entry 10% entry 65%;
+    }
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .aurora .blob, .shimmer::after, .orb, .beam { animation: none !important; }
 }

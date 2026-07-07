@@ -213,7 +213,7 @@ export function BlogPostContent({
           </div>
 
           <div style={{ paddingBottom: '64px' }}>
-            <Button asChild variant="secondary" size="small">
+            <Button asChild variant="secondary">
               <Link href="/blog">
                 <ChevronLeftIcon className="size-3" />
                 Back to journal

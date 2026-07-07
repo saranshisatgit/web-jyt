@@ -40,7 +40,6 @@ function CopyButton({ text }: { text: string }) {
     <Button
       type="button"
       variant="secondary"
-      size="small"
       onClick={copy}
       style={{ minWidth: 64 }}
     >

@@ -4,7 +4,14 @@ import { useRef, useState, useEffect, type ReactNode } from 'react'
 import Link from 'next/link'
 import { motion, useInView, useMotionValue, useSpring, useTransform, useScroll, useMotionValueEvent, AnimatePresence, animate } from 'framer-motion'
 import { Button } from '@medusajs/ui'
+import dynamic from 'next/dynamic'
 import type { CreateContent } from './page'
+
+// WebGL cinematic is client-only (three/R3F) — never SSR it.
+const CreateCinematic = dynamic(
+  () => import('@/components/create-cinematic').then((m) => m.CreateCinematic),
+  { ssr: false, loading: () => <div style={{ height: '100vh', background: '#0b0f1c' }} /> },
+)
 
 type Props = { content: CreateContent }
 
@@ -394,7 +401,7 @@ function FabricScene() {
           style={{ transformOrigin: '200px 200px' }}
         >
           <rect x="140" y="140" width="120" height="120" rx="8" fill="oklch(0.55 0.08 40)" />
-          <rect x="140" y="140" width="120" height="120" rx="8" fill="none" stroke="oklch(0.78 0.06 145)" strokeWidth="1" />
+          <rect x="140" y="140" width="120" height="120" rx="8" fill="none" stroke="oklch(0.78 0.06 264)" strokeWidth="1" />
           {Array.from({ length: 8 }).map((_, i) => (
             <line key={`h${i}`} x1="145" y1={150 + i * 14} x2="255" y2={150 + i * 14} stroke="oklch(0.7 0.04 40 / 0.3)" strokeWidth="0.5" />
           ))}
@@ -402,7 +409,7 @@ function FabricScene() {
             <line key={`v${i}`} x1={150 + i * 14} y1="145" x2={150 + i * 14} y2="255" stroke="oklch(0.7 0.04 40 / 0.3)" strokeWidth="0.5" />
           ))}
           <motion.rect x="134" y="134" width="132" height="132" rx="10" fill="none"
-            stroke="oklch(0.78 0.06 145)" strokeWidth="2" strokeDasharray="6 4"
+            stroke="oklch(0.78 0.06 264)" strokeWidth="2" strokeDasharray="6 4"
             initial={{ pathLength: 0 }} animate={{ pathLength: 1 }}
             transition={{ duration: 0.6, delay: 0.9, ease: EASE }}
           />
@@ -453,7 +460,7 @@ function LoomScene() {
           initial={{ x: 120 }} animate={{ x: 280 }}
           transition={{ duration: 1.5, delay: 0.5, ease: EASE, repeat: Infinity, repeatType: 'reverse' }}
         >
-          <rect x="-12" y="162" width="24" height="10" rx="5" fill="oklch(0.85 0.04 40)" stroke="oklch(0.78 0.06 145)" strokeWidth="1" />
+          <rect x="-12" y="162" width="24" height="10" rx="5" fill="oklch(0.85 0.04 40)" stroke="oklch(0.78 0.06 264)" strokeWidth="1" />
           <line x1="-8" y1="167" x2="8" y2="167" stroke="oklch(0.78 0.06 145 / 0.4)" strokeWidth="0.5" />
         </motion.g>
       </svg>
@@ -969,7 +976,7 @@ function LoyaltyPhone() {
           <motion.div className="kt-loyalty-points" initial={{ scale: 0.8, opacity: 0 }} animate={inView ? { scale: 1, opacity: 1 } : {}} transition={{ duration: 0.6, delay: 0.2 }}>
             <svg viewBox="0 0 120 120" width="100" height="100">
               <circle cx="60" cy="60" r="52" fill="none" stroke="oklch(0.9 0.005 40)" strokeWidth="8" />
-              <motion.circle cx="60" cy="60" r="52" fill="none" stroke="oklch(0.78 0.06 145)" strokeWidth="8" strokeLinecap="round"
+              <motion.circle cx="60" cy="60" r="52" fill="none" stroke="oklch(0.78 0.06 264)" strokeWidth="8" strokeLinecap="round"
                 strokeDasharray={2 * Math.PI * 52}
                 initial={{ strokeDashoffset: 2 * Math.PI * 52 }}
                 animate={inView ? { strokeDashoffset: 2 * Math.PI * 52 * 0.3 } : {}}
@@ -1038,33 +1045,25 @@ export default function CreateClient({ content }: Props) {
 
   return (
     <>
-      <section className="kt-create-hero">
-        <motion.div className="kt-create-hero-glow" animate={{ background: `radial-gradient(circle, oklch(0.74 0.09 ${STAGE_HUES[posterStage]} / 0.10), transparent 70%)` }} transition={{ duration: 1.2 }} />
+      {/* Centered hero — no gallery grid; the story lives entirely in the one
+          cinematic scene below. */}
+      <section className="kt-create-hero kt-create-hero--centered">
+        <motion.div className="kt-create-hero-glow" animate={{ background: `radial-gradient(circle, oklch(0.74 0.09 ${STAGE_HUES[posterStage]} / 0.12), transparent 70%)` }} transition={{ duration: 1.2 }} />
         <div className="container">
-          <div className="kt-create-hero-inner">
-            <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
-              <motion.div className="kt-create-hero-eyebrow" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }}>{hero.eyebrow}</motion.div>
-              <h1 className="kt-create-hero-title"><WordReveal text={hero.title} /></h1>
-              <motion.p className="kt-create-hero-sub" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6, delay: 0.6 }}>{hero.subtitle}</motion.p>
-              <motion.div className="kt-create-hero-actions" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.75 }}>
-                <MagneticBtn href={hero.primaryCta.href}>{hero.primaryCta.label}</MagneticBtn>
-                <Link className="kt-link" href={hero.secondaryCta.href}>{hero.secondaryCta.label}</Link>
-              </motion.div>
+          <motion.div className="kt-create-hero-centered-inner" initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
+            <motion.div className="kt-create-hero-eyebrow" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }}>{hero.eyebrow}</motion.div>
+            <h1 className="kt-create-hero-title"><WordReveal text={hero.title} /></h1>
+            <motion.p className="kt-create-hero-sub" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6, delay: 0.6 }}>{hero.subtitle}</motion.p>
+            <motion.div className="kt-create-hero-actions" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.75 }}>
+              <Button asChild><Link href={hero.primaryCta.href}>{hero.primaryCta.label}</Link></Button>
+              <Button asChild variant="secondary"><Link href={hero.secondaryCta.href}>{hero.secondaryCta.label}</Link></Button>
             </motion.div>
-            <motion.div className="kt-create-hero-visual" initial={{ opacity: 0, scale: 0.88 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1.2, delay: 0.3 }}>
-              <StoryArena activeStage={posterStage} />
-            </motion.div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
-      <StoryStage />
-
-      <ScrollJourney />
-
-      <GetPaid />
-
-      <PhoneTwin />
+      {/* One continuous, scroll-scrubbed scene: inspire → design → fabric. */}
+      <CreateCinematic />
 
       <section className="kt-create-cta">
         <div className="kt-create-cta-glow" />
@@ -1072,8 +1071,8 @@ export default function CreateClient({ content }: Props) {
           <motion.div className="kt-create-cta-inner" initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-80px 0px' }} transition={{ duration: 0.7 }}>
             <div><h2>{cta.title}</h2><p>{cta.body}</p></div>
             <div className="kt-create-cta-actions">
-              <MagneticBtn href={cta.primaryCta.href}>{cta.primaryCta.label}</MagneticBtn>
-              <Link className="kt-link" href={cta.secondaryCta.href}>{cta.secondaryCta.label}</Link>
+              <Button asChild><Link href={cta.primaryCta.href}>{cta.primaryCta.label}</Link></Button>
+              <Button asChild variant="secondary"><Link href={cta.secondaryCta.href}>{cta.secondaryCta.label}</Link></Button>
             </div>
           </motion.div>
         </div>

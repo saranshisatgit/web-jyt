@@ -324,14 +324,14 @@ async function Pagination({ domain, page, category }: { domain: string; page: nu
         }}
       >
         {previousPageUrl ? (
-          <Button asChild variant="secondary" size="small">
+          <Button asChild variant="secondary">
             <Link href={previousPageUrl}>
               <ChevronLeftIcon className="size-3" />
               Previous
             </Link>
           </Button>
         ) : (
-          <Button variant="secondary" size="small" disabled>
+          <Button variant="secondary" disabled>
             <ChevronLeftIcon className="size-3" />
             Previous
           </Button>
@@ -365,14 +365,14 @@ async function Pagination({ domain, page, category }: { domain: string; page: nu
           })}
         </div>
         {nextPageUrl ? (
-          <Button asChild variant="secondary" size="small">
+          <Button asChild variant="secondary">
             <Link href={nextPageUrl}>
               Next
               <ChevronRightIcon className="size-3" />
             </Link>
           </Button>
         ) : (
-          <Button variant="secondary" size="small" disabled>
+          <Button variant="secondary" disabled>
             Next
             <ChevronRightIcon className="size-3" />
           </Button>

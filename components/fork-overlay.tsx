@@ -1,6 +1,7 @@
 'use client'
 
 import type { ReactNode } from 'react'
+import { usePathname } from 'next/navigation'
 import { useMode, type Mode } from '@/app/context/mode-context'
 import { useBrand } from '@/app/context/brand-context'
 
@@ -52,6 +53,10 @@ function Arrow() {
 export function ForkOverlay() {
   const { showFork, closeFork, setMode } = useMode()
   const brand = useBrand()
+  const pathname = usePathname()
+
+  // The home page is a single unified story — no audience gate there.
+  if (pathname === '/') return null
 
   const pick = (m: Mode) => {
     setMode(m)
