@@ -24,6 +24,11 @@
 .DS_Store
 *.pem
 
+# global gitignore has `Icon?` (macOS Icon\r files) which matches components/icons/
+# case-insensitively on macOS — negate so our icon modules stay tracked.
+!components/icons/
+!components/icons/**
+
 # debug
 npm-debug.log*
 yarn-debug.log*

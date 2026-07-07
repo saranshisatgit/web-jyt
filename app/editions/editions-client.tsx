@@ -1,10 +1,12 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { Button } from '@medusajs/ui'
+import { motion, useScroll, useTransform } from 'framer-motion'
 import { EditionsGlyph } from '@/components/editions-glyph'
-import type { EditionsContent } from './page'
+import { EditionsMockup } from '@/components/editions-mockup'
+import type { EditionsContent, SectionData } from './page'
 
 type Props = { content: EditionsContent }
 
@@ -92,48 +94,58 @@ function CustomersStrip({ names }: { names: string[] }) {
   )
 }
 
-/* ───── Card grid ───── */
+/* ───── Feature list (text cards beside the live mockup) ───── */
 
-const MET_PAINTINGS = [
-  'https://images.metmuseum.org/CRDImages/ep/original/DP-41223-001.jpg',
-  'https://images.metmuseum.org/CRDImages/ep/original/DP-42549-001.jpg',
-  'https://images.metmuseum.org/CRDImages/ep/original/DT7098.jpg',
-  'https://images.metmuseum.org/CRDImages/ep/original/DT47.jpg',
-  'https://images.metmuseum.org/CRDImages/ep/original/DT1025.jpg',
-  'https://images.metmuseum.org/CRDImages/ep/original/DP-20101-001.jpg',
-  'https://images.metmuseum.org/CRDImages/ep/original/DP-14347-001.jpg',
-  'https://images.metmuseum.org/CRDImages/ep/original/DP-31520-001.jpg',
-  'https://images.metmuseum.org/CRDImages/ep/original/DP-16589-001.jpg',
-  'https://images.metmuseum.org/CRDImages/ep/original/DT1396.jpg',
-]
-
-function CardGrid({ cards }: { cards: { title: string; body: string; tag?: string }[] }) {
+function FeatureList({ cards }: { cards: { title: string; body: string; tag?: string }[] }) {
   return (
-    <div className="kt-editions-grid">
-      {cards.map((card, i) => {
-        const imgIdx = [...card.title].reduce((acc, c) => acc + c.charCodeAt(0), 0) % MET_PAINTINGS.length
-        return (
-          <article
-            key={card.title}
-            className={`kt-editions-card kt-reveal kt-reveal-d${(i % 4) + 1}`}
-          >
-            <div className="kt-editions-card-img-wrap">
-              <img
-                src={MET_PAINTINGS[imgIdx]}
-                alt=""
-                loading="lazy"
-                className="kt-editions-card-img-src"
-              />
-            </div>
-            <div className="kt-editions-card-body">
-              {card.tag && <span className="kt-editions-card-tag">{card.tag}</span>}
-              <h3>{card.title}</h3>
-              <p className="kt-editions-card-desc">{card.body}</p>
-            </div>
-          </article>
-        )
-      })}
+    <div className="kt-ed-features">
+      {cards.map((card, i) => (
+        <article key={card.title} className={`kt-ed-feature kt-reveal kt-reveal-d${(i % 4) + 1}`}>
+          <div className="kt-ed-feature-head">
+            <h3>{card.title}</h3>
+            {card.tag && <span className="kt-ed-feature-tag">{card.tag}</span>}
+          </div>
+          <p>{card.body}</p>
+        </article>
+      ))}
     </div>
+  )
+}
+
+/* ───── Section — the mockup drifts up through the screen as you scroll ───── */
+
+function EditionsSection({ section, index }: { section: SectionData; index: number }) {
+  const ref = useRef<HTMLElement>(null)
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
+  // the mockup travels through the viewport while its section is in view
+  const mockY = useTransform(scrollYProgress, [0, 1], [90, -90])
+  const mockOpacity = useTransform(scrollYProgress, [0, 0.16, 0.82, 1], [0, 1, 1, 0.65])
+  const mockRotate = useTransform(scrollYProgress, [0, 1], [2.5, -2.5])
+  // the glyph reforms/scales with scroll — deeper morph than a static spin
+  const glyphScale = useTransform(scrollYProgress, [0, 0.5, 1], [0.8, 1.08, 0.92])
+  const glyphRotate = useTransform(scrollYProgress, [0, 1], [-24, 30])
+
+  return (
+    <section ref={ref} id={section.id} className={`kt-ed-sec${section.dark ? ' dark' : ''}`}>
+      <div className="kt-ed-head kt-reveal">
+        <div>
+          <div className="kt-editions-eyebrow">{section.label}</div>
+          <h2 className="kt-editions-section-heading">{section.heading}</h2>
+        </div>
+        <motion.div className="kt-ed-glyph" style={{ scale: glyphScale, rotate: glyphRotate }}>
+          <EditionsGlyph variant={index + 1} size={116} />
+        </motion.div>
+      </div>
+
+      <div className="kt-ed-grid">
+        <FeatureList cards={section.cards} />
+        <div className="kt-ed-mockcol">
+          <motion.div className="kt-ed-mock" style={{ y: mockY, opacity: mockOpacity, rotate: mockRotate }}>
+            <EditionsMockup id={section.id} />
+          </motion.div>
+        </div>
+      </div>
+    </section>
   )
 }
 
@@ -199,21 +211,7 @@ export default function EditionsClient({ content }: Props) {
 
         <div>
           {sections.map((section, si) => (
-            <section
-              key={section.id}
-              id={section.id}
-              className={`kt-editions-section${section.dark ? ' dark' : ''}`}
-            >
-              <div className="kt-editions-header kt-reveal">
-                <div className="kt-editions-header-text">
-                  <div className="kt-editions-eyebrow">{section.label}</div>
-                  <h2 className="kt-editions-section-heading">{section.heading}</h2>
-                </div>
-                <EditionsGlyph variant={si + 1} size={96} />
-              </div>
-
-              <CardGrid cards={section.cards} />
-            </section>
+            <EditionsSection key={section.id} section={section} index={si} />
           ))}
         </div>
       </div>

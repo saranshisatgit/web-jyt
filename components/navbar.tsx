@@ -166,8 +166,7 @@ export function Navbar() {
         <Link href="/" className="kt-brand" aria-label={`${brand.wordmark} home`}>
           <span className="dot" aria-hidden />
           <span>
-            <strong>{brand.wordmark}</strong>
-            <em>est. 2025</em>
+            <strong>{brand.shortName}</strong>
           </span>
         </Link>
         <nav className="kt-nav" aria-label="Primary">
