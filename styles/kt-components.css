@@ -3053,6 +3053,21 @@ body[data-mode="platform"] [data-aud="investor"] { display: none; }
     linear-gradient(to top, rgba(4,7,16,0.58) 0%, transparent 38%),
     linear-gradient(to right, rgba(4,7,16,0.42) 0%, transparent 42%);
 }
+/* morphing story symbol — big, soft, floating behind the copy */
+.cin-symbol {
+  position: absolute; z-index: 1; inset: 0; margin: auto;
+  width: min(56vmin, 620px); height: min(56vmin, 620px);
+  display: grid; place-items: center; pointer-events: none;
+  filter: drop-shadow(0 20px 60px rgba(60,90,170,0.25));
+  animation: cin-symbol-float 14s ease-in-out infinite;
+}
+.cin-symbol svg { width: 100%; height: 100%; overflow: visible; }
+@keyframes cin-symbol-float {
+  0%, 100% { transform: translateY(-1.5%) rotate(-2deg) scale(1); }
+  50% { transform: translateY(1.5%) rotate(2deg) scale(1.03); }
+}
+@media (prefers-reduced-motion: reduce) { .cin-symbol { animation: none; } }
+
 .cin-hero-title, .cin-card-title { text-shadow: 0 2px 22px rgba(4,7,16,0.55); }
 .cin-hero-sub, .cin-card-blurb { text-shadow: 0 1px 14px rgba(4,7,16,0.5); }
 .cin-hero-eyebrow, .cin-card-eyebrow { text-shadow: 0 1px 10px rgba(4,7,16,0.5); }

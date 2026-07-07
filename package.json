@@ -54,6 +54,7 @@
     "clsx": "^2.1.1",
     "dayjs": "^1.11.13",
     "feed": "^4.2.2",
+    "flubber": "^0.4.2",
     "framer-motion": "^12.6.3",
     "import-in-the-middle": "^3.0.0",
     "mapbox-gl": "^3.13.0",

@@ -23,6 +23,7 @@ import Link from "next/link"
 import { Button } from "@medusajs/ui"
 import { motion, useScroll, useMotionValueEvent, useTransform, AnimatePresence } from "framer-motion"
 import type { HeroData } from "@/app/create/page"
+import { CreateSymbols } from "./create-symbols"
 
 const CreateCanvas = dynamic(() => import("./create-canvas").then((m) => m.CreateCanvas), {
   ssr: false,
@@ -166,6 +167,7 @@ export function CreateCinematic({ hero }: { hero: HeroData }) {
           <CreateCanvas progressRef={progressRef} pointerRef={pointerRef} />
         </div>
         <div className="cin-scrim" aria-hidden />
+        <CreateSymbols progress={scrollYProgress} />
 
         <div className="cin-eyebrow">
           <span className="kt-create-tag">Create · one continuous scene</span>
