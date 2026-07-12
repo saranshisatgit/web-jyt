@@ -50,37 +50,23 @@ function CopyButton({ text }: { text: string }) {
 
 function FieldRow({ field }: { field: Field }) {
   return (
-    <div
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: 12,
-        padding: '10px 0',
-        borderBottom: '1px solid var(--rule-soft)',
-      }}
-    >
-      <span style={{ flex: '0 0 240px', fontSize: 14, color: 'var(--ink-mute)' }}>
+    <div className="flex flex-col md:flex-row md:items-center gap-1 md:gap-3 py-2.5 border-b border-[var(--rule-soft)]">
+      <span className="md:flex-[0_0_240px] text-sm text-[var(--ink-mute)]">
         {field.label}
       </span>
-      <code
-        style={{
-          flex: 1,
-          fontFamily: 'var(--font-mono)',
-          fontSize: 13,
-          color: 'var(--ink)',
-          wordBreak: 'break-all',
-        }}
-      >
-        {field.value}
-      </code>
-      <CopyButton text={field.value} />
+      <div className="flex items-center gap-3 flex-1 min-w-0">
+        <code className="flex-1 font-mono text-xs md:text-[13px] text-[var(--ink)] break-all">
+          {field.value}
+        </code>
+        <CopyButton text={field.value} />
+      </div>
     </div>
   )
 }
 
 function SectionCard({ section }: { section: SectionData }) {
   return (
-    <div className="kt-card" style={{ padding: '24px 28px', marginTop: 20 }}>
+    <div className="kt-card p-4 sm:p-6 md:p-7 mt-5">
       <h3
         className="kt-display s"
         style={{ fontSize: 16, marginBottom: 4, color: 'var(--accent-deep)' }}
@@ -104,31 +90,19 @@ export default function CompanyContent({ regions }: { regions?: Record<string, R
   return (
     <section className="kt-section">
       <div className="container">
-        <div
-          style={{
-            display: 'inline-flex',
-            gap: 4,
-            padding: 4,
-            borderRadius: 'var(--r-md)',
-            background: 'var(--bg-soft)',
-            border: '1px solid var(--rule-soft)',
-          }}
-        >
+        <div className="inline-flex flex-wrap gap-1 p-1 rounded-[var(--r-md)] bg-[var(--bg-soft)] border border-[var(--rule-soft)]">
           {REGIONS.map((r) => (
             <button
               key={r.id}
               type="button"
               onClick={() => setRegion(r.id)}
+              className="px-4 sm:px-5 py-2 text-sm cursor-pointer transition-all duration-150"
               style={{
-                padding: '8px 20px',
                 borderRadius: 'calc(var(--r-md) - 3px)',
                 border: 'none',
                 background: region === r.id ? 'var(--bg)' : 'transparent',
                 color: region === r.id ? 'var(--ink)' : 'var(--ink-mute)',
                 fontWeight: region === r.id ? 600 : 400,
-                fontSize: 14,
-                cursor: 'pointer',
-                transition: 'all 0.15s',
                 boxShadow: region === r.id ? '0 1px 3px oklch(0 0 0 / 0.08)' : 'none',
               }}
             >
@@ -138,7 +112,7 @@ export default function CompanyContent({ regions }: { regions?: Record<string, R
         </div>
 
         {regionData ? (
-          <div style={{ marginTop: 24 }}>
+          <div className="mt-6">
             {Object.values(regionData.sections).map((section) => (
               <SectionCard key={section.heading} section={section} />
             ))}
@@ -149,10 +123,9 @@ export default function CompanyContent({ regions }: { regions?: Record<string, R
           </p>
         )}
 
-        <div style={{ textAlign: 'center', marginTop: 48 }}>
+        <div className="text-center mt-10 md:mt-12">
           <p
-            className="muted"
-            style={{ fontSize: 13, maxWidth: 520, margin: '0 auto', lineHeight: 1.6 }}
+            className="muted text-xs md:text-[13px] max-w-[520px] mx-auto leading-relaxed"
           >
             Information provided for compliance and verification purposes only.
             For official copies, please contact{' '}
