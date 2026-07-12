@@ -7,87 +7,6 @@
   "published_at": "2025-04-14T18:13:52.089Z",
   "blocks": [
     {
-      "id": "01JRTRYJGPHKFD0DV49APMT5Z7",
-      "name": "Header Section",
-      "type": "Header",
-      "content": {
-        "cta": {
-          "link": "/signup",
-          "text": "Sign Up"
-        },
-        "logo": "/logo.png",
-        "navigation": [
-          {
-            "link": "/",
-            "text": "Home"
-          },
-          {
-            "link": "/about",
-            "text": "About"
-          },
-          {
-            "link": "/contact",
-            "text": "Contact"
-          },
-          {
-            "link": "/blog",
-            "text": "Blogs"
-          },
-          {
-            "link": "/partner",
-            "text": "Partner"
-          }
-        ],
-        "announcement": "We are in alpha stage",
-        "announcement_i18n": {
-          "it-IT": "Siamo in fase alpha",
-          "lv-LV": "Mēs esam alpha fāzē"
-        }
-      },
-      "order": 0
-    },
-    {
-      "id": "01JRTRXDNT3NY2NJHDGTHV6MTG",
-      "name": "Hero Section",
-      "type": "Hero",
-      "content": {
-        "stats": [
-          {
-            "label": "Happy Customers",
-            "value": "15+"
-          },
-          {
-            "label": "Brands",
-            "value": "3+"
-          }
-        ],
-        "title": "Design, Source, and Sell Your Collections Seamlessly.",
-        "layout": "full",
-        "buttons": [
-          {
-            "link": "/contact",
-            "text": "Get Started",
-            "variant": "primary"
-          }
-        ],
-        "subtitle": "JY empowers forward-thinking designers to create unique patterns, manage artisan partners, and sell directly to customers—without leaving the platform",
-        "trialoffer": {
-          "button": " Work for fashion brands",
-          "keyline": "Ready to start your own fashion line or work for one your terms",
-          "buttontwo": " Get started with a trial"
-        },
-        "title_i18n": {
-          "it-IT": "Progetta, Approvvigiona e Vendi le Tue Collezioni Facilmente.",
-          "lv-LV": "Veidojiet, iegādājieties un pārdodiet savas kolekcijas vienkārši."
-        },
-        "subtitle_i18n": {
-          "it-IT": "JYT potenzia i designer visionari per creare modelli unici, gestire partner artigiani e vendere direttamente ai clienti senza lasciare la piattaforma.",
-          "lv-LV": "JYT sniedz iespēju vīzijas pilniem dizaineriem radīt unikātus modeļus, pārvaldīt amatnieku partnerus un pārdot tieši klientiem, neatstājot platformu."
-        }
-      },
-      "order": 0
-    },
-    {
       "id": "01JRTRZ17RBR34CDTTQRWXQE3B",
       "name": "Footer Section",
       "type": "Footer",
@@ -237,6 +156,87 @@
       "order": 0
     },
     {
+      "id": "01JRTRYJGPHKFD0DV49APMT5Z7",
+      "name": "Header Section",
+      "type": "Header",
+      "content": {
+        "cta": {
+          "link": "/signup",
+          "text": "Sign Up"
+        },
+        "logo": "/logo.png",
+        "navigation": [
+          {
+            "link": "/",
+            "text": "Home"
+          },
+          {
+            "link": "/about",
+            "text": "About"
+          },
+          {
+            "link": "/contact",
+            "text": "Contact"
+          },
+          {
+            "link": "/blog",
+            "text": "Blogs"
+          },
+          {
+            "link": "/partner",
+            "text": "Partner"
+          }
+        ],
+        "announcement": "We are in alpha stage",
+        "announcement_i18n": {
+          "it-IT": "Siamo in fase alpha",
+          "lv-LV": "Mēs esam alpha fāzē"
+        }
+      },
+      "order": 0
+    },
+    {
+      "id": "01JRTRXDNT3NY2NJHDGTHV6MTG",
+      "name": "Hero Section",
+      "type": "Hero",
+      "content": {
+        "stats": [
+          {
+            "label": "Happy Customers",
+            "value": "15+"
+          },
+          {
+            "label": "Brands",
+            "value": "3+"
+          }
+        ],
+        "title": "Design, Source, and Sell Your Collections Seamlessly.",
+        "layout": "full",
+        "buttons": [
+          {
+            "link": "/contact",
+            "text": "Get Started",
+            "variant": "primary"
+          }
+        ],
+        "subtitle": "JY empowers forward-thinking designers to create unique patterns, manage artisan partners, and sell directly to customers—without leaving the platform",
+        "title_i18n": {
+          "it-IT": "Progetta, Approvvigiona e Vendi le Tue Collezioni Facilmente.",
+          "lv-LV": "Veidojiet, iegādājieties un pārdodiet savas kolekcijas vienkārši."
+        },
+        "trialoffer": {
+          "button": " Work for fashion brands",
+          "keyline": "Ready to start your own fashion line or work for one your terms",
+          "buttontwo": " Get started with a trial"
+        },
+        "subtitle_i18n": {
+          "it-IT": "JYT potenzia i designer visionari per creare modelli unici, gestire partner artigiani e vendere direttamente ai clienti senza lasciare la piattaforma.",
+          "lv-LV": "JYT sniedz iespēju vīzijas pilniem dizaineriem radīt unikātus modeļus, pārvaldīt amatnieku partnerus un pārdot tieši klientiem, neatstājot platformu."
+        }
+      },
+      "order": 0
+    },
+    {
       "id": "01JY11ZB592BZDZ5K22C74EB4A",
       "name": "DarkBentoSection",
       "type": "Feature",
@@ -286,6 +286,10 @@
       "type": "Testimonial",
       "content": {
         "title": "Voices from the platform",
+        "title_i18n": {
+          "it-IT": "Voci dalla piattaforma",
+          "lv-LV": "Balsi no platformas"
+        },
         "callToAction": {
           "text": "Real production teams running on the same rails. See how your atelier can plug in.",
           "linkUrl": "/partner",
@@ -315,11 +319,7 @@
             "quote": "Keeping a digital track of yarn and fabric is a game-changer for us and our customers.",
             "subtitle": "Handloom Cooperative, Phulia"
           }
-        ],
-        "title_i18n": {
-          "it-IT": "Voci dalla piattaforma",
-          "lv-LV": "Balsi no platformas"
-        }
+        ]
       },
       "order": 0
     }

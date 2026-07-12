@@ -15,7 +15,7 @@ import { writeFileSync, mkdirSync } from 'fs'
 
 const API_BASE = 'https://v3.jaalyantra.com/web'
 const DOMAIN = 'jaalyantra.com'
-const PAGES = ['company', 'about-us', 'home']
+const PAGES = ['company', 'about-us', 'home', 'contact', 'partner']
 const LOCALES = ['it-IT', 'lv-LV']
 
 // ─── Translation data ────────────────────────────────────────────────
@@ -186,6 +186,28 @@ const TRANSLATIONS = {
         'lv-LV':
           'Jaal Yantra Textiles ir lepna saņemt atbalstu no izcilu investoru grupas, kuri dalās mūsu apņemībā pret inovācijām, ilgtspējību un ekselenci tekstilrūpniecībā.',
       },
+      testimonials_i18n: {
+        'it-IT': [
+          {
+            role: 'Investitore Privato',
+            quote: "Il suo attuale lavoro presso Jaal Yantra è una potente fusione di tradizione e tecnologia, utilizzando l'AI per reimmaginare i tessuti e il design. Porta curiosità, autenticità e una forte etica del lavoro in tutto ciò che fa.",
+          },
+          {
+            role: 'Investitrice & Collaboratrice',
+            quote: 'Saransh ha focalizzato le sue considerevoli competenze tecniche sullo sviluppo di sistemi unici progettati per promuovere la cooperazione tra diversi utenti finali. Come tecnologo e artista, Saransh è programmato creativamente per pensare fuori dagli schemi.',
+          },
+        ],
+        'lv-LV': [
+          {
+            role: 'Privātais Investors',
+            quote: 'Viņa pašreizējais darbs Jaal Yantra ir spēcīgs tradīciju un tehnoloģiju sajaukums, izmantojot AI, lai no jauna iztēlotos tekstilmateriālus un dizainu. Viņš ienes zinātkāri, autentiskumu un spēcīgu darba ētiku it visā, ko dara.',
+          },
+          {
+            role: 'Investore & Sadarbības Partnere',
+            quote: 'Saransh ir koncentrējis savas ievērojamās tehniskās prasmes uz unikālu sistēmu izstrādi, kas paredzētas sadarbības veicināšanai starp dažādiem gala lietotājiem. Kā tehnologs un mākslinieks, Saransh ir radoši ieprogrammēts domāt ārpus rāmjiem.',
+          },
+        ],
+      },
     },
     '01JY1QPYE7XBMB2KJAVVRAM6DJ': {
       // Team block
@@ -216,6 +238,143 @@ const TRANSLATIONS = {
       ctaButton_i18n: {
         'it-IT': { text: 'Scopri la Nostra Cultura Aziendale' },
         'lv-LV': { text: 'Atklājiet Mūsu Uzņēmuma Kultūru' },
+      },
+    },
+  },
+
+  contact: {
+    '01JY12BTT4Y9Q5TP8SW6PFSJ6B': {
+      // Header block
+      title_i18n: {
+        'it-IT': 'Contatta il Nostro Team',
+        'lv-LV': 'Sazinieties ar Mūsu Komandu',
+      },
+      subtitle_i18n: {
+        'it-IT':
+          'Siamo qui per aiutarti con le tue esigenze di produzione tessile e tutto il resto, parlaci',
+        'lv-LV':
+          'Mēs esam šeit, lai palīdzētu jums ar jūsu tekstilizstrādājumu ražošanas vajadzībām un visu citu, vienkārši runājiet ar mums',
+      },
+    },
+    '01JY12B44PT01ETQWQ7GKWDBGW': {
+      // ContactInfo block
+      title_i18n: {
+        'it-IT': 'Contatta il Nostro Team Vendite Esperto',
+        'lv-LV': 'Sazinieties ar Mūsu Speciālistu Pārdošanas Komandu',
+      },
+      introParagraph_i18n: {
+        'it-IT':
+          "Siamo dedicati ad aiutarti a scoprire le soluzioni tessili ideali per la tua azienda. Che tu abbia domande sulla nostra vasta gamma di prodotti, soluzioni tecnologiche per gestire la tua azienda di design, o desideri una quotazione personalizzata, o voglia esplorare una potenziale collaborazione, i nostri esperti venditori sono pronti a fornirti assistenza.",
+        'lv-LV':
+          'Mēs esam veltīti, lai palīdzētu jums atrast ideālus dizaina tekstila risinājumus jūsu biznesam. Neatkarīgi no tā, vai jums ir jautājumi par mūsu daudzveidīgo produktu klāstu, tehnoloģiju risinājumiem jūsu dizaina uzņēmuma vadīšanai, vai nepieciešams pielāgots piedāvājums, vai vēlaties izpētīt iespējamo sadarbību, mūsu profesionāļi ir gatavi sniegt palīdzību.',
+      },
+      mainContentParagraph_i18n: {
+        'it-IT':
+          "Il nostro team possiede una vasta esperienza nel settore tessile, permettendoci di offrire preziose informazioni sulle ultime tendenze del mercato, materiali avanzati e metodologie di produzione innovative. Siamo profondamente impegnati a comprendere a fondo le tue esigenze e a fornire costantemente un servizio e una qualità eccezionali.",
+        'lv-LV':
+          'Mūsu komandai ir plašas zināšanas tekstilrūpniecībā, kas ļauj mums sniegt vērtīgas atziņas par jaunākajām tirgus tendencēm, moderniem materiāliem un inovatīvām ražošanas metodēm. Mēs esam dziļi apņēmušies rūpīgi izprast jūsu unikālās vajadzības un konsekventi nodrošināt izcilu servisu un kvalitāti.',
+      },
+      wholesaleInquiryText_i18n: {
+        'it-IT': 'Per richieste, utilizza il modulo di contatto qui sotto.',
+        'lv-LV': 'Visiem jautājumiem, lūdzu, izmantojiet zemāk esošo kontaktu formu.',
+      },
+      address_i18n: {
+        'it-IT': 'Dharamshala, India e Riga, Europa e USA',
+        'lv-LV': 'Dharamšala, Indija un Rīga, Eiropa un ASV',
+      },
+    },
+  },
+
+  partner: {
+    '01JRTRGCRKRVNREEQ8H68J3MGT': {
+      // Header Section
+      title_i18n: {
+        'it-IT': 'Trasforma le Tue Competenze in un Reddito Extra',
+        'lv-LV': 'Pārvērtiet Savas Prasmes Papildu Ienākumos',
+      },
+      announcement_i18n: {
+        'it-IT': 'Stiamo inserendo nuovi partner, unisciti a noi ora',
+        'lv-LV': 'Mēs uzņemam jaunus partnerus, pievienojieties mums tagad',
+      },
+    },
+    '01JRTRH4THQZ1DFZXNN1SVTKMJ': {
+      // Feature Section
+      title_i18n: {
+        'it-IT': 'Siamo qui, insieme in questo',
+        'lv-LV': 'Mēs esam šeit, kopā šajā',
+      },
+    },
+    '01JRTRMFPZR8CJP59AQSAVN8RA': {
+      // Partner Feature
+      title_i18n: {
+        'it-IT': 'Siamo qui, insieme in questo',
+        'lv-LV': 'Mēs esam šeit, kopā šajā',
+      },
+      slideblocks_i18n: {
+        'it-IT': [
+          {
+            content: {
+              title: 'Programmazione',
+              description: [
+                'Crea il tuo profilo partner certificato in pochi minuti',
+                'Definisci la tua capacità produttiva e le tempistiche di consegna',
+                'Ricevi incarichi su misura — senza interazione diretta con il cliente',
+              ],
+            },
+          },
+          {
+            content: {
+              title: 'Produzione',
+              description: [
+                'Visualizza tutti gli ordini di capi personalizzati in arrivo',
+                'Monitora ogni fase produttiva degli ordini in tempo reale',
+                'Aggiorna gli stati per attivare automaticamente la fase successiva',
+              ],
+            },
+          },
+          {
+            content: {
+              title: 'Pagamenti Trasparenti',
+              description: [
+                'Fatturazione automatica non appena gli ordini sono evasi',
+                'Pagamenti sicuri inviati direttamente al tuo conto bancario',
+                'Revisiona il dettaglio dei guadagni e delle commissioni di piattaforma',
+              ],
+            },
+          },
+        ],
+        'lv-LV': [
+          {
+            content: {
+              title: 'Plānošana',
+              description: [
+                'Izveidojiet savu sertificēto partnera profilu dažu minūšu laikā',
+                'Nosakiet savu ražošanas jaudu un piegādes termiņus',
+                'Saņemiet pielāgotus apģērbu uzdevumus — bez tiešas mijiedarbības ar klientu',
+              ],
+            },
+          },
+          {
+            content: {
+              title: 'Ražošana',
+              description: [
+                'Skatiet visus ienākošos pasūtījumu apģērbu pasūtījumus',
+                'Uzraugiet katra pasūtījuma ražošanas posmus reāllaikā',
+                'Atjauniniet statusus, lai automātiski aktivizētu nākamo fāzi',
+              ],
+            },
+          },
+          {
+            content: {
+              title: 'Caurskatāmi Maksājumi',
+              description: [
+                'Automātisks rēķinu izrakstīšana, tiklīdz pasūtījumi ir izpildīti',
+                'Droši maksājumi, kas nosūtīti tieši uz jūsu bankas kontu',
+                'Pārskatiet detalizētu ienākumu un platformas maksu sadalījumu',
+              ],
+            },
+          },
+        ],
       },
     },
   },

@@ -1,0 +1,70 @@
+{
+  "title": "Contact",
+  "slug": "contact",
+  "content": "Contact page ",
+  "status": "Published",
+  "page_type": "Contact",
+  "published_at": "2025-06-18T08:25:53.013Z",
+  "blocks": [
+    {
+      "id": "01JY12BTT4Y9Q5TP8SW6PFSJ6B",
+      "name": "Header",
+      "type": "Header",
+      "content": {
+        "title": "Contact Our Team",
+        "subtitle": "We are here to help you with your textile production needs and everything else just talk to us",
+        "title_i18n": {
+          "it-IT": "Contatta il Nostro Team",
+          "lv-LV": "Sazinieties ar Mūsu Komandu"
+        },
+        "subtitle_i18n": {
+          "it-IT": "Siamo qui per aiutarti con le tue esigenze di produzione tessile e tutto il resto, parlaci",
+          "lv-LV": "Mēs esam šeit, lai palīdzētu jums ar jūsu tekstilizstrādājumu ražošanas vajadzībām un visu citu, vienkārši runājiet ar mums"
+        }
+      },
+      "order": 0
+    },
+    {
+      "id": "01JY12B44PT01ETQWQ7GKWDBGW",
+      "name": "ContactInfo",
+      "type": "MainContent",
+      "content": {
+        "email": "sales@jaalyantra.com",
+        "links": [
+          {
+            "url": "https://cicilabel.com",
+            "text": "Explore Cici Label - Our Bespoke Collection",
+            "target": "_blank"
+          }
+        ],
+        "phone": "+91 9767901992",
+        "title": "Contact Our Expert Sales Team",
+        "address": "Dharamshala, India and Riga, Europe and USA",
+        "title_i18n": {
+          "it-IT": "Contatta il Nostro Team Vendite Esperto",
+          "lv-LV": "Sazinieties ar Mūsu Speciālistu Pārdošanas Komandu"
+        },
+        "address_i18n": {
+          "it-IT": "Dharamshala, India e Riga, Europa e USA",
+          "lv-LV": "Dharamšala, Indija un Rīga, Eiropa un ASV"
+        },
+        "introParagraph": "We're dedicated to helping you discover the ideal design textile solutions for your business. Whether you have inquiries about our diverse product range, tech solutions to run your design company or  require a customized quotation, or wish to explore a potential collaboration, our seasoned sales professionals are eager to provide their assistance.",
+        "introParagraph_i18n": {
+          "it-IT": "Siamo dedicati ad aiutarti a scoprire le soluzioni tessili ideali per la tua azienda. Che tu abbia domande sulla nostra vasta gamma di prodotti, soluzioni tecnologiche per gestire la tua azienda di design, o desideri una quotazione personalizzata, o voglia esplorare una potenziale collaborazione, i nostri esperti venditori sono pronti a fornirti assistenza.",
+          "lv-LV": "Mēs esam veltīti, lai palīdzētu jums atrast ideālus dizaina tekstila risinājumus jūsu biznesam. Neatkarīgi no tā, vai jums ir jautājumi par mūsu daudzveidīgo produktu klāstu, tehnoloģiju risinājumiem jūsu dizaina uzņēmuma vadīšanai, vai nepieciešams pielāgots piedāvājums, vai vēlaties izpētīt iespējamo sadarbību, mūsu profesionāļi ir gatavi sniegt palīdzību."
+        },
+        "mainContentParagraph": "Our team possesses extensive expertise within the textile industry, enabling us to offer valuable insights into the latest market trends, advanced materials, and innovative production methodologies. We are deeply committed to thoroughly understanding your unique requirements and consistently delivering exceptional service and quality through our product, you can check our product demo here at ",
+        "wholesaleInquiryText": "For anng inquiries, kindly utilize the contact form provided below.",
+        "mainContentParagraph_i18n": {
+          "it-IT": "Il nostro team possiede una vasta esperienza nel settore tessile, permettendoci di offrire preziose informazioni sulle ultime tendenze del mercato, materiali avanzati e metodologie di produzione innovative. Siamo profondamente impegnati a comprendere a fondo le tue esigenze e a fornire costantemente un servizio e una qualità eccezionali.",
+          "lv-LV": "Mūsu komandai ir plašas zināšanas tekstilrūpniecībā, kas ļauj mums sniegt vērtīgas atziņas par jaunākajām tirgus tendencēm, moderniem materiāliem un inovatīvām ražošanas metodēm. Mēs esam dziļi apņēmušies rūpīgi izprast jūsu unikālās vajadzības un konsekventi nodrošināt izcilu servisu un kvalitāti."
+        },
+        "wholesaleInquiryText_i18n": {
+          "it-IT": "Per richieste, utilizza il modulo di contatto qui sotto.",
+          "lv-LV": "Visiem jautājumiem, lūdzu, izmantojiet zemāk esošo kontaktu formu."
+        }
+      },
+      "order": 0
+    }
+  ]
+}

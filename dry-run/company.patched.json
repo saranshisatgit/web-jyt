@@ -201,48 +201,6 @@
             }
           }
         },
-        "regions_i18n": {
-          "it-IT": {
-            "india": {
-              "label": "India"
-            },
-            "eu": {
-              "label": "Unione Europea (Lettonia)"
-            }
-          },
-          "lv-LV": {
-            "india": {
-              "label": "Indija"
-            },
-            "eu": {
-              "label": "Eiropas Savienība (Latvija)"
-            }
-          }
-        },
-        "sections_i18n": {
-          "it-IT": {
-            "tax": {
-              "heading": "Informazioni Fiscali"
-            },
-            "filing": {
-              "heading": "Dichiarazioni e Conformità"
-            },
-            "registration": {
-              "heading": "Dettagli di Registrazione"
-            }
-          },
-          "lv-LV": {
-            "tax": {
-              "heading": "Nodokļu Informācija"
-            },
-            "filing": {
-              "heading": "Iesniegumi un Atbilstība"
-            },
-            "registration": {
-              "heading": "Reģistrācijas Detaļas"
-            }
-          }
-        },
         "fields_i18n": {
           "it-IT": {
             "gst": {
@@ -360,6 +318,48 @@
             },
             "legalForm": {
               "label": "Juridiskā Forma"
+            }
+          }
+        },
+        "regions_i18n": {
+          "it-IT": {
+            "india": {
+              "label": "India"
+            },
+            "eu": {
+              "label": "Unione Europea (Lettonia)"
+            }
+          },
+          "lv-LV": {
+            "india": {
+              "label": "Indija"
+            },
+            "eu": {
+              "label": "Eiropas Savienība (Latvija)"
+            }
+          }
+        },
+        "sections_i18n": {
+          "it-IT": {
+            "tax": {
+              "heading": "Informazioni Fiscali"
+            },
+            "filing": {
+              "heading": "Dichiarazioni e Conformità"
+            },
+            "registration": {
+              "heading": "Dettagli di Registrazione"
+            }
+          },
+          "lv-LV": {
+            "tax": {
+              "heading": "Nodokļu Informācija"
+            },
+            "filing": {
+              "heading": "Iesniegumi un Atbilstība"
+            },
+            "registration": {
+              "heading": "Reģistrācijas Detaļas"
             }
           }
         }

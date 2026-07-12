@@ -1,0 +1,188 @@
+{
+  "title": "Partner",
+  "slug": "partner",
+  "content": "Partner",
+  "status": "Published",
+  "page_type": "Custom",
+  "published_at": "2025-04-14T18:15:55.176Z",
+  "blocks": [
+    {
+      "id": "01JRTRGCRKRVNREEQ8H68J3MGT",
+      "name": "Header Section",
+      "type": "Header",
+      "content": {
+        "title": "Turn Your Skills Into Extra Income",
+        "subtitle": "Anytime, Anywhere",
+        "title_i18n": {
+          "it-IT": "Trasforma le Tue Competenze in un Reddito Extra",
+          "lv-LV": "Pārvērtiet Savas Prasmes Papildu Ienākumos"
+        },
+        "announcement": "We are onboarding new partners, join us now",
+        "announcement_i18n": {
+          "it-IT": "Stiamo inserendo nuovi partner, unisciti a noi ora",
+          "lv-LV": "Mēs uzņemam jaunus partnerus, pievienojieties mums tagad"
+        }
+      },
+      "order": 0
+    },
+    {
+      "id": "01JRTRMFPZR8CJP59AQSAVN8RA",
+      "name": "Partner Feature",
+      "type": "Feature",
+      "content": {
+        "title": "we are here in this together",
+        "screenshot": {
+          "url": "/screenshots/app.png"
+        },
+        "title_i18n": {
+          "it-IT": "Siamo qui, insieme in questo",
+          "lv-LV": "Mēs esam šeit, kopā šajā"
+        },
+        "slideblocks": [
+          {
+            "id": "onboard-schedule",
+            "name": "SignUpAvailabilitySlide",
+            "type": "feature-block",
+            "order": 1,
+            "content": {
+              "title": "Schedule",
+              "description": [
+                "Create your certified partner profile in minutes",
+                "Define your production capacity and delivery timelines",
+                "Receive tailored garment assignments—no direct client interaction"
+              ]
+            }
+          },
+          {
+            "id": "dashboard-tracking",
+            "name": "TasksListSlide",
+            "type": "feature-block",
+            "order": 2,
+            "content": {
+              "title": "Manufacture",
+              "description": [
+                "View all incoming custom garment orders",
+                "Monitor each order’s production stages in real time",
+                "Update statuses to trigger the next phase automatically"
+              ]
+            }
+          },
+          {
+            "id": "secure-payouts",
+            "name": "PaymentProcessSlide",
+            "type": "feature-block",
+            "order": 3,
+            "content": {
+              "title": "Transparent Payments",
+              "description": [
+                "Automated invoicing as soon as orders are fulfilled",
+                "Secure payouts sent directly to your bank account",
+                "Review detailed breakdown of earnings and platform fees"
+              ]
+            }
+          }
+        ],
+        "slideblocks_i18n": {
+          "it-IT": [
+            {
+              "content": {
+                "title": "Programmazione",
+                "description": [
+                  "Crea il tuo profilo partner certificato in pochi minuti",
+                  "Definisci la tua capacità produttiva e le tempistiche di consegna",
+                  "Ricevi incarichi su misura — senza interazione diretta con il cliente"
+                ]
+              }
+            },
+            {
+              "content": {
+                "title": "Produzione",
+                "description": [
+                  "Visualizza tutti gli ordini di capi personalizzati in arrivo",
+                  "Monitora ogni fase produttiva degli ordini in tempo reale",
+                  "Aggiorna gli stati per attivare automaticamente la fase successiva"
+                ]
+              }
+            },
+            {
+              "content": {
+                "title": "Pagamenti Trasparenti",
+                "description": [
+                  "Fatturazione automatica non appena gli ordini sono evasi",
+                  "Pagamenti sicuri inviati direttamente al tuo conto bancario",
+                  "Revisiona il dettaglio dei guadagni e delle commissioni di piattaforma"
+                ]
+              }
+            }
+          ],
+          "lv-LV": [
+            {
+              "content": {
+                "title": "Plānošana",
+                "description": [
+                  "Izveidojiet savu sertificēto partnera profilu dažu minūšu laikā",
+                  "Nosakiet savu ražošanas jaudu un piegādes termiņus",
+                  "Saņemiet pielāgotus apģērbu uzdevumus — bez tiešas mijiedarbības ar klientu"
+                ]
+              }
+            },
+            {
+              "content": {
+                "title": "Ražošana",
+                "description": [
+                  "Skatiet visus ienākošos pasūtījumu apģērbu pasūtījumus",
+                  "Uzraugiet katra pasūtījuma ražošanas posmus reāllaikā",
+                  "Atjauniniet statusus, lai automātiski aktivizētu nākamo fāzi"
+                ]
+              }
+            },
+            {
+              "content": {
+                "title": "Caurskatāmi Maksājumi",
+                "description": [
+                  "Automātisks rēķinu izrakstīšana, tiklīdz pasūtījumi ir izpildīti",
+                  "Droši maksājumi, kas nosūtīti tieši uz jūsu bankas kontu",
+                  "Pārskatiet detalizētu ienākumu un platformas maksu sadalījumu"
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "order": 0
+    },
+    {
+      "id": "01JRTRH4THQZ1DFZXNN1SVTKMJ",
+      "name": "Feature Section",
+      "type": "Feature",
+      "content": {
+        "logos": [
+          {
+            "id": "1",
+            "alt": "Intuitive interface for seamless experience",
+            "src": "/logo-cloud/savvycal.svg"
+          },
+          {
+            "id": "2",
+            "alt": "SavvyCal",
+            "src": "/logo-cloud/laravel.svg"
+          },
+          {
+            "id": "3",
+            "alt": "Tuple",
+            "src": "/logo-cloud/tuple.svg"
+          }
+        ],
+        "title": "we are here in this together",
+        "screenshot": {
+          "url": "/screenshots/app.png"
+        },
+        "title_i18n": {
+          "it-IT": "Siamo qui, insieme in questo",
+          "lv-LV": "Mēs esam šeit, kopā šajā"
+        }
+      },
+      "order": 0
+    }
+  ]
+}

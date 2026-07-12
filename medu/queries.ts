@@ -94,6 +94,23 @@ export interface Block {
     slug: string
   ): Promise<Page> => {
     try {
+      // In development, try dry-run patched JSON first
+      if (process.env.NODE_ENV === 'development') {
+        try {
+          const fs = await import('fs')
+          const path = await import('path')
+          const dryRunPath = path.join(process.cwd(), 'dry-run', `${slug}.patched.json`)
+          if (fs.existsSync(dryRunPath)) {
+            const raw = fs.readFileSync(dryRunPath, 'utf-8')
+            const data = JSON.parse(raw)
+            console.log('Using dry-run data from:', dryRunPath)
+            return data
+          }
+        } catch {
+          // dry-run file doesn't exist or can't be read — fall through to API
+        }
+      }
+
       // Fallback to a default API URL if env variable is not available
       const apiUrl = process.env.NEXT_PUBLIC_API_URL! || 'http://localhost:9000/web';
       const url = `${apiUrl}/website/${domainName}/${slug}`;
