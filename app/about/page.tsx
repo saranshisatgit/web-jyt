@@ -47,12 +47,20 @@ interface InvestorGroup {
   logo: string
 }
 
+interface TestimonialItem {
+  quote: string
+  author: string
+  role: string
+  image?: string
+}
+
 interface InvestorsBlockContent {
   heading: string
   subheading: string
   description: string
   investorGroups: InvestorGroup[]
-  testimonial: { quote: string; author: string; role: string; image: string }
+  testimonials?: TestimonialItem[]
+  testimonial?: TestimonialItem
 }
 
 interface JobPosition {
@@ -279,49 +287,53 @@ function Investors({ data }: { data?: Block }) {
             ))}
           </div>
         )}
-        {content.testimonial?.quote && (
-          <div
-            className="kt-callout dark"
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'auto 1fr',
-              gap: '32px',
-              alignItems: 'center',
-              padding: '40px 48px',
-            }}
-          >
-            {content.testimonial.image && (
+        {(content.testimonials ?? (content.testimonial ? [content.testimonial] : [])).length > 0 && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {(content.testimonials ?? (content.testimonial ? [content.testimonial] : [])).map((t, i) => (
               <div
-                aria-hidden
+                key={i}
+                className="kt-callout dark"
                 style={{
-                  width: '72px',
-                  height: '72px',
-                  borderRadius: '50%',
-                  backgroundImage: `url('${content.testimonial.image}')`,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
-                  flexShrink: 0,
-                }}
-              />
-            )}
-            <div>
-              <p
-                className="serif italic"
-                style={{ fontSize: '24px', lineHeight: 1.4, color: 'var(--cream)', margin: 0 }}
-              >
-                &ldquo;{content.testimonial.quote}&rdquo;
-              </p>
-              <div
-                className="kt-meta"
-                style={{
-                  marginTop: '16px',
-                  color: 'oklch(0.8 0.04 145)',
-                  letterSpacing: '0.1em',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '16px',
+                  padding: '32px',
                 }}
               >
-                {content.testimonial.author} · {content.testimonial.role}
+                {t.image && (
+                  <div
+                    aria-hidden
+                    style={{
+                      width: '56px',
+                      height: '56px',
+                      borderRadius: '50%',
+                      backgroundImage: `url('${t.image}')`,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                      flexShrink: 0,
+                    }}
+                  />
+                )}
+                <div>
+                  <p
+                    className="serif italic"
+                    style={{ fontSize: '18px', lineHeight: 1.5, color: 'var(--cream)', margin: 0 }}
+                  >
+                    &ldquo;{t.quote}&rdquo;
+                  </p>
+                  <div
+                    className="kt-meta"
+                    style={{
+                      marginTop: '12px',
+                      color: 'oklch(0.8 0.04 145)',
+                      letterSpacing: '0.1em',
+                    }}
+                  >
+                    {t.author} · {t.role}
+                  </div>
+                </div>
               </div>
-            </div>
+            ))}
           </div>
         )}
       </div>

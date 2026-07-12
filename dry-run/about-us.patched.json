@@ -129,11 +129,18 @@
         "heading": "Our growth partners",
         "subheading": "People who believe in us",
         "description": "Jaal Yantra Textiles is proud to be supported by a distinguished group of investors who share our commitment to innovation, sustainability, and excellence in the textile industry. Their strategic guidance and financial backing are instrumental in our journey to redefine textile manufacturing and expand our global reach. We are grateful for their trust and collaboration.",
-        "testimonial": {
-          "role": "Private Investor",
-          "quote": "His current work at Jaal Yantra is a powerful blend of tradition and tech, using AI to reimagine textiles and design. He brings curiosity, authenticity, and a strong work ethic to everything he does. We also collaborated on initiatives around financial inclusion, where his drive to make meaningful impact was clear. This profile reflects not just what he’s building, but the kind of person he is—focused, thoughtful, and always pushing boundaries. He's the kind of founder who doesn't just chase trends—he lives his story, experiments fearlessly, and keeps growing along the way..",
-          "author": "Chirag Titiya"
-        },
+        "testimonials": [
+          {
+            "role": "Private Investor",
+            "quote": "His current work at Jaal Yantra is a powerful blend of tradition and tech, using AI to reimagine textiles and design. He brings curiosity, authenticity, and a strong work ethic to everything he does. We also collaborated on initiatives around financial inclusion, where his drive to make meaningful impact was clear. This profile reflects not just what he's building, but the kind of person he is—focused, thoughtful, and always pushing boundaries. He's the kind of founder who doesn't just chase trends—he lives his story, experiments fearlessly, and keeps growing along the way.",
+            "author": "Chirag Titiya"
+          },
+          {
+            "role": "Investor & Collaborator",
+            "quote": "Saransh has focused his considerable technical skills on developing unique systems designed to foster cooperation amongst diverse end users. From his efforts to create technology that provides a platform connecting fashion industry textile makers, tailors and weavers to mentoring students in coding, he seeks to engage with others for positive outcomes. As a technologist and artist, Saransh is hard wired creatively to think outside the box. He has devised novel solutions implementing his ideas through trial and error and continuous refinement. His interests in sharing, teaching and collaborating are key to his process of inventing. By experimenting in different ways of living, creating and collaborating, Saransh seeks to provide growth experiences for himself and others. We need more entrepreneurs like Saransh",
+            "author": "Cici"
+          }
+        ],
         "investorGroups": [
           {
             "name": "Chirag Titiya"
