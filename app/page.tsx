@@ -10,6 +10,7 @@ import { Navbar } from '@/components/navbar'
 import { SolutionBlock, FeaturedMockup } from '@/components/solution-block'
 import { StackScroll } from '@/components/stack-scroll'
 import { SketchToShipment } from '@/components/sketch-to-shipment'
+import { ArtisanCensusLine } from '@/components/artisan-count'
 import { useBrand } from '@/app/context/brand-context'
 import storefrontPreviews from '@/data/storefront-previews.json'
 import { AUDIENCE_CALLOUT, SOLUTION_BLOCKS } from '@/data/solutions'
@@ -375,6 +376,7 @@ function Hero() {
               <Button asChild><Link href="#waitlist">Join the waitlist</Link></Button>
               <Button asChild variant="secondary"><Link href="#system">See how it works</Link></Button>
             </div>
+            <ArtisanCensusLine />
           </div>
           <aside className="kt-hero-side">
             <div>

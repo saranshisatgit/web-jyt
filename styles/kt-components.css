@@ -4363,3 +4363,20 @@ body[data-mode="platform"] [data-aud="investor"] { display: none; }
 @media (max-width: 640px) {
   .kt-artisan-count { padding: 64px 0; }
 }
+
+/* Inline hero census line — "Producing with N handloom artisans mapped …". */
+.kt-artisan-line {
+  margin: 20px 0 0;
+  font-size: 15px;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+  color: oklch(0.74 0.03 264);
+}
+.kt-artisan-line strong {
+  font-weight: 600;
+  color: var(--cream, oklch(0.96 0.02 90));
+  font-variant-numeric: tabular-nums;
+}
+.kt-artisan-line-live {
+  color: oklch(0.66 0.05 264);
+}
