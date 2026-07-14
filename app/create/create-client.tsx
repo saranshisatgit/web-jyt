@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { Button } from '@medusajs/ui'
 import { motion } from 'framer-motion'
 import { CreateCinematic } from '@/components/create-cinematic'
+import { ArtisanCount } from '@/components/artisan-count'
 import type { CreateContent } from './page'
 
 type Props = { content: CreateContent }
@@ -17,6 +18,8 @@ export default function CreateClient({ content }: Props) {
           beat and dissolves into the WebGL scene — inspire → design → fabric →
           sell → get paid. */}
       <CreateCinematic hero={hero} />
+
+      <ArtisanCount />
 
       <section className="kt-create-cta">
         <div className="kt-create-cta-glow" />
