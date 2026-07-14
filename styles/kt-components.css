@@ -4303,3 +4303,63 @@ body[data-mode="platform"] [data-aud="investor"] { display: none; }
   .kt-stage-bar-track { font-size: 7px; }
 }
 
+
+/* ── The living census: animated artisan count (CREATE page) ──────────────── */
+.kt-artisan-count {
+  position: relative;
+  overflow: hidden;
+  padding: 112px 0;
+  background: var(--ink-dark-bg);
+  text-align: center;
+}
+.kt-artisan-count-glow {
+  position: absolute;
+  inset: auto 0 -40% 0;
+  height: 80%;
+  background: radial-gradient(60% 60% at 50% 100%, var(--accent-soft, oklch(0.82 0.11 82)) 0%, transparent 70%);
+  opacity: 0.14;
+  pointer-events: none;
+}
+.kt-artisan-count-inner {
+  position: relative;
+  max-width: 720px;
+  margin: 0 auto;
+}
+.kt-artisan-count-eyebrow {
+  margin: 0 0 20px;
+  font-size: 13px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent-soft, oklch(0.82 0.11 82));
+}
+.kt-artisan-count-number {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: clamp(76px, 15vw, 200px);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  color: var(--cream);
+  font-variant-numeric: tabular-nums; /* no width jitter while counting */
+}
+.kt-artisan-count-number--soft {
+  font-style: italic;
+  font-size: clamp(56px, 11vw, 132px);
+}
+.kt-artisan-count-label {
+  margin: 20px 0 0;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: var(--t-display-m, 28px);
+  line-height: var(--lh-display, 1.2);
+  color: var(--cream);
+}
+.kt-artisan-count-sub {
+  max-width: 480px;
+  margin: 16px auto 0;
+  font-size: 16px;
+  line-height: 1.6;
+  color: oklch(0.78 0.04 264);
+}
+@media (max-width: 640px) {
+  .kt-artisan-count { padding: 64px 0; }
+}
