@@ -5,7 +5,7 @@ import { motion, useInView, animate } from 'framer-motion'
 
 // Public census edge reader (CORS-open, PII-free aggregates). Overridable via env.
 const READER_URL =
-  process.env.NEXT_PUBLIC_CENSUS_READER_URL || 'https://handloom-census-reader.onrender.com'
+  process.env.NEXT_PUBLIC_CENSUS_READER_URL || 'https://v3.jaalyantra.com/web'
 
 /**
  * Fetch the live count of handloom artisans recorded in the open P2P census.
