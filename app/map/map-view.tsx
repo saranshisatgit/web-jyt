@@ -17,18 +17,21 @@ import {
   getPersons,
   submitPersonContact,
   type MapPerson,
+  type MapWeaver,
 } from './actions'
 
 const MAPBOX_TOKEN =
   process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN || 'YOUR_MAPBOX_ACCESS_TOKEN'
 
-type Bucket = 'all' | 'partner' | 'tailor' | 'designer' | 'other'
+type Bucket = 'all' | 'partner' | 'tailor' | 'designer' | 'weaver' | 'other'
+type ItemBucket = Exclude<Bucket, 'all'>
 
 const BUCKET_LABELS: Record<Bucket, string> = {
   all: 'All',
   partner: 'Partners',
   tailor: 'Tailors',
   designer: 'Designers',
+  weaver: 'Weavers',
   other: 'Other',
 }
 
@@ -37,15 +40,35 @@ const BUCKET_COLORS: Record<Bucket, string> = {
   partner: 'var(--accent-deep)',
   tailor: 'oklch(0.55 0.10 35)',
   designer: 'oklch(0.50 0.10 280)',
+  weaver: 'oklch(0.55 0.13 150)',
   other: 'oklch(0.50 0.02 210)',
 }
 
-// Classify a person into one of the four UI buckets. Reads from
+/**
+ * Unified display record for the map. Persons (from the Medusa persons
+ * API) and weavers (from the masked census P2P core) are normalized into
+ * this shape so the list, markers, and side panel can treat them
+ * uniformly. `kind` drives the few behavioural differences (contact form
+ * only for persons; meta keys differ).
+ */
+interface MapItem {
+  id: string
+  kind: 'person' | 'weaver'
+  personId?: string
+  name: string
+  latitude: number | null
+  longitude: number | null
+  city: string | null
+  bucket: ItemBucket
+  meta: Array<[string, string | number | boolean]>
+}
+
+// Classify a person into one of the four person buckets. Reads from
 // person_type.name first (the typed field) and falls back to
 // public_metadata.tags / public_metadata.person_types — the data is
 // inconsistent because rows were created over a long time across
 // multiple flows.
-const bucketFor = (person: MapPerson): Bucket => {
+const bucketForPerson = (person: MapPerson): ItemBucket => {
   const tokens: string[] = []
   if (person.person_type?.name) tokens.push(person.person_type.name)
   const meta = person.public_metadata
@@ -66,7 +89,79 @@ const bucketFor = (person: MapPerson): Bucket => {
 const fullName = (p: MapPerson) =>
   `${p.first_name} ${p.last_name && p.last_name !== 'null' ? p.last_name : ''}`.trim()
 
-const firstAddress = (p: MapPerson) => p.addresses?.[0]
+// Fields surfaced in the side panel for a census weaver. Pulled from the
+// masked record bag; absent/blank values are skipped at render time.
+const WEAVER_META_KEYS = [
+  'census_id', 'village', 'block', 'district', 'state', 'gender', 'age',
+  'religion', 'social_group', 'education', 'rural_urban', 'household_type',
+  'dwelling_type', 'ownership_type', 'electricity', 'own_looms',
+  'total_looms_owned', 'pit_loom_count', 'frame_loom_count', 'natural_dye_used',
+  'monthly_income', 'handloom_income', 'avg_production_meters',
+  'intricacy_level',
+] as const
+
+const personToItem = (p: MapPerson): MapItem => {
+  const a = p.addresses?.[0]
+  const hasCoords =
+    !!a && Number.isFinite(a.latitude) && Number.isFinite(a.longitude)
+  const meta: Array<[string, string | number | boolean]> = []
+  if (p.public_metadata) {
+    for (const [k, v] of Object.entries(p.public_metadata)) {
+      if (
+        v != null &&
+        String(v).trim() !== '' &&
+        !['first_name', 'last_name'].includes(k)
+      ) {
+        meta.push([k, v])
+      }
+    }
+  }
+  return {
+    id: `person:${p.id}`,
+    kind: 'person',
+    personId: p.id,
+    name: fullName(p) || 'Untitled',
+    latitude: hasCoords ? (a!.latitude as number) : null,
+    longitude: hasCoords ? (a!.longitude as number) : null,
+    city: a?.city ?? null,
+    bucket: bucketForPerson(p),
+    meta,
+  }
+}
+
+const weaverToItem = (w: MapWeaver): MapItem | null => {
+  const lat = Number(w.latitude)
+  const lng = Number(w.longitude)
+  if (!Number.isFinite(lat) || !Number.isFinite(lng)) return null
+  const meta: Array<[string, string | number | boolean]> = []
+  for (const k of WEAVER_META_KEYS) {
+    const v = w[k]
+    if (v != null && String(v).trim() !== '') meta.push([k, v as string | number | boolean])
+  }
+  const city = w.village || w.block || w.district || w.state || null
+  return {
+    id: `weaver:${w.census_id}`,
+    kind: 'weaver',
+    name: (w.name && String(w.name).trim()) || 'Unknown weaver',
+    latitude: lat,
+    longitude: lng,
+    city,
+    bucket: 'weaver',
+    meta,
+  }
+}
+
+// Census weavers have no backend text search, so the loaded set is
+// filtered client-side across the human-readable location/name fields.
+const weaverMatchesSearch = (w: MapWeaver, q: string): boolean => {
+  if (!q.trim()) return true
+  const hay =
+    [w.name, w.village, w.block, w.district, w.state, String(w.census_id ?? '')]
+      .filter((x) => x != null && String(x).trim() !== '')
+      .join(' ')
+      .toLowerCase()
+  return hay.includes(q.trim().toLowerCase())
+}
 
 type ContactState =
   | { phase: 'idle' }
@@ -79,14 +174,16 @@ type ContactState =
 
 interface MapViewProps {
   initialPersons: MapPerson[]
+  initialWeavers: MapWeaver[]
 }
 
-const MapView = ({ initialPersons }: MapViewProps) => {
+const MapView = ({ initialPersons, initialWeavers }: MapViewProps) => {
   const [persons, setPersons] = useState<MapPerson[]>(initialPersons)
+  const [weavers] = useState<MapWeaver[]>(initialWeavers)
   const [searchInput, setSearchInput] = useState('')
   const [activeBucket, setActiveBucket] = useState<Bucket>('all')
   const [isLoading, setIsLoading] = useState(false)
-  const [selected, setSelected] = useState<MapPerson | null>(null)
+  const [selected, setSelected] = useState<MapItem | null>(null)
   const [hoveredId, setHoveredId] = useState<string | null>(null)
   const [contactOpen, setContactOpen] = useState(false)
   const [contact, setContact] = useState<ContactState>({ phase: 'idle' })
@@ -95,9 +192,11 @@ const MapView = ({ initialPersons }: MapViewProps) => {
   const mapRef = useRef<MapRef | null>(null)
   const searchTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  // Debounced refetch. Hits the backend `q` param so the search runs
-  // server-side across all 600+ persons, not just the slice we've
-  // already loaded into memory.
+  // Debounced refetch for persons. Hits the backend `q` param so the
+  // search runs server-side across all 600+ persons, not just the slice
+  // we've already loaded into memory. Weavers have no server-side text
+  // search, so they are filtered client-side from the loaded set (see
+  // visibleItems).
   useEffect(() => {
     if (searchTimerRef.current) clearTimeout(searchTimerRef.current)
     searchTimerRef.current = setTimeout(async () => {
@@ -111,15 +210,26 @@ const MapView = ({ initialPersons }: MapViewProps) => {
     }
   }, [searchInput])
 
-  // Local bucket filter — cheap, runs after search has narrowed the set.
-  const visiblePersons = useMemo(() => {
-    if (activeBucket === 'all') return persons
-    return persons.filter((p) => bucketFor(p) === activeBucket)
-  }, [persons, activeBucket])
+  // Union of persons + weavers, narrowed by the active bucket and (for
+  // weavers only) the search text. Persons are already narrowed by the
+  // debounced server-side refetch above.
+  const visibleItems = useMemo(() => {
+    const personItems = persons.map(personToItem)
+    const weaverItems = weavers
+      .filter((w) => weaverMatchesSearch(w, searchInput))
+      .map(weaverToItem)
+      .filter((x): x is MapItem => x !== null)
+    let items = [...personItems, ...weaverItems]
+    if (activeBucket !== 'all') items = items.filter((i) => i.bucket === activeBucket)
+    return items
+  }, [persons, weavers, searchInput, activeBucket])
 
   const positioned = useMemo(
-    () => visiblePersons.filter((p) => firstAddress(p)),
-    [visiblePersons]
+    () =>
+      visibleItems.filter(
+        (i) => i.latitude != null && i.longitude != null
+      ) as MapItem[],
+    [visibleItems]
   )
 
   // Fit-to-bounds whenever the visible set changes meaningfully. Skip
@@ -131,18 +241,22 @@ const MapView = ({ initialPersons }: MapViewProps) => {
     if (!map || positioned.length === 0) return
 
     if (positioned.length === 1) {
-      const a = firstAddress(positioned[0])!
-      map.easeTo({ center: [a.longitude, a.latitude], zoom: 6, duration: 600 })
+      map.easeTo({
+        center: [positioned[0].longitude as number, positioned[0].latitude as number],
+        zoom: 6,
+        duration: 600,
+      })
       return
     }
 
     let minLng = Infinity, maxLng = -Infinity, minLat = Infinity, maxLat = -Infinity
-    for (const p of positioned) {
-      const a = firstAddress(p)!
-      if (a.longitude < minLng) minLng = a.longitude
-      if (a.longitude > maxLng) maxLng = a.longitude
-      if (a.latitude < minLat) minLat = a.latitude
-      if (a.latitude > maxLat) maxLat = a.latitude
+    for (const i of positioned) {
+      const lng = i.longitude as number
+      const lat = i.latitude as number
+      if (lng < minLng) minLng = lng
+      if (lng > maxLng) maxLng = lng
+      if (lat < minLat) minLat = lat
+      if (lat > maxLat) maxLat = lat
     }
     map.fitBounds(
       [
@@ -154,14 +268,13 @@ const MapView = ({ initialPersons }: MapViewProps) => {
   }, [positioned, selected])
 
   // Fly-to on selection.
-  const onSelect = useCallback((p: MapPerson) => {
-    setSelected(p)
+  const onSelect = useCallback((item: MapItem) => {
+    setSelected(item)
     setContactOpen(false)
     setContact({ phase: 'idle' })
-    const a = firstAddress(p)
     const map = mapRef.current?.getMap()
-    if (map && a) {
-      map.flyTo({ center: [a.longitude, a.latitude], zoom: 8, duration: 700 })
+    if (map && item.latitude != null && item.longitude != null) {
+      map.flyTo({ center: [item.longitude, item.latitude], zoom: 8, duration: 700 })
     }
   }, [])
 
@@ -174,10 +287,10 @@ const MapView = ({ initialPersons }: MapViewProps) => {
 
   const onSubmitContact = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!selected) return
+    if (!selected || !selected.personId) return
     setContact({ phase: 'submitting' })
     const result = await submitPersonContact({
-      personId: selected.id,
+      personId: selected.personId,
       name: form.name,
       email: form.email,
       phone: form.phone,
@@ -190,17 +303,19 @@ const MapView = ({ initialPersons }: MapViewProps) => {
     }
   }
 
+  const resultWord = (n: number) => (n === 1 ? 'result' : 'results')
+
   return (
     <div style={{ position: 'relative', width: '100%', height: '100%' }}>
-      {/* Left rail: search, filter chips, person list */}
+      {/* Left rail: search, filter chips, item list */}
       <div style={leftRailStyle}>
         <div style={{ padding: '12px 14px', borderBottom: '1px solid var(--rule)' }}>
           <input
             type="search"
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
-            placeholder="Search by name, city, craft…"
-            aria-label="Search makers"
+            placeholder="Search makers & weavers…"
+            aria-label="Search makers and weavers"
             style={searchInputStyle}
           />
           <div style={{ display: 'flex', gap: 6, marginTop: 10, flexWrap: 'wrap' }}>
@@ -221,7 +336,9 @@ const MapView = ({ initialPersons }: MapViewProps) => {
             fontSize: 12, color: 'var(--ink-mute)', marginTop: 10,
           }}>
             <span>
-              {isLoading ? 'Searching…' : `${visiblePersons.length} maker${visiblePersons.length === 1 ? '' : 's'}`}
+              {isLoading
+                ? 'Searching…'
+                : `${visibleItems.length} ${resultWord(visibleItems.length)}`}
             </span>
             {(searchInput || activeBucket !== 'all') && (
               <button
@@ -236,33 +353,31 @@ const MapView = ({ initialPersons }: MapViewProps) => {
         </div>
 
         <ul style={listStyle}>
-          {visiblePersons.length === 0 && !isLoading && (
+          {visibleItems.length === 0 && !isLoading && (
             <li style={{ padding: 16, color: 'var(--ink-mute)', fontSize: 13 }}>
               No matches. Try a different search.
             </li>
           )}
-          {visiblePersons.map((p) => {
-            const a = firstAddress(p)
-            const isSelected = selected?.id === p.id
-            const bucket = bucketFor(p)
+          {visibleItems.map((item) => {
+            const isSelected = selected?.id === item.id
             return (
-              <li key={p.id}>
+              <li key={item.id}>
                 <button
                   type="button"
-                  onClick={() => onSelect(p)}
-                  onMouseEnter={() => setHoveredId(p.id)}
+                  onClick={() => onSelect(item)}
+                  onMouseEnter={() => setHoveredId(item.id)}
                   onMouseLeave={() => setHoveredId(null)}
                   style={listItemStyle(isSelected)}
                 >
-                  <span style={{ ...dotStyle, background: BUCKET_COLORS[bucket], marginTop: 6 }} />
+                  <span style={{ ...dotStyle, background: BUCKET_COLORS[item.bucket], marginTop: 6 }} />
                   <span style={{ flex: 1, minWidth: 0 }}>
                     <span style={{
                       display: 'block', fontWeight: 500,
                       color: 'var(--ink)', fontSize: 14,
                       overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
-                    }}>{fullName(p) || 'Untitled'}</span>
+                    }}>{item.name}</span>
                     <span style={{ display: 'block', fontSize: 12, color: 'var(--ink-soft)' }}>
-                      {a?.city || 'Unknown location'}
+                      {item.city || 'Unknown location'}
                     </span>
                   </span>
                 </button>
@@ -272,7 +387,7 @@ const MapView = ({ initialPersons }: MapViewProps) => {
         </ul>
       </div>
 
-      {/* Right side panel for selected person */}
+      {/* Right side panel for selected item */}
       {selected && (
         <div style={rightPanelStyle}>
           <button
@@ -289,142 +404,148 @@ const MapView = ({ initialPersons }: MapViewProps) => {
               fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.08em',
               color: 'var(--ink-soft)',
             }}>
-              <span style={{ ...dotStyle, background: BUCKET_COLORS[bucketFor(selected)] }} />
-              {BUCKET_LABELS[bucketFor(selected)]}
+              <span style={{ ...dotStyle, background: BUCKET_COLORS[selected.bucket] }} />
+              {BUCKET_LABELS[selected.bucket]}
             </span>
             <h3 style={{
               fontSize: 22, fontWeight: 500,
               color: 'var(--ink-dark)', margin: '8px 0 4px',
             }}>
-              {fullName(selected) || 'Untitled'}
+              {selected.name}
             </h3>
-            {firstAddress(selected)?.city && (
+            {selected.city && (
               <p style={{ margin: 0, color: 'var(--ink-soft)', fontSize: 14 }}>
-                {firstAddress(selected)!.city}
+                {selected.city}
               </p>
             )}
           </div>
 
           <div style={{ padding: 20, overflowY: 'auto', flex: 1 }}>
-            {selected.public_metadata &&
-              Object.entries(selected.public_metadata)
-                .filter(([k, v]) =>
-                  v != null &&
-                  String(v).trim() !== '' &&
-                  !['first_name', 'last_name'].includes(k)
-                )
-                .map(([k, v]) => (
-                  <div key={k} style={metaRowStyle}>
-                    <span style={metaKeyStyle}>{k.replace(/_/g, ' ')}</span>
-                    <span style={metaValStyle}>{String(v)}</span>
-                  </div>
-                ))}
+            {selected.meta.map(([k, v]) => (
+              <div key={k} style={metaRowStyle}>
+                <span style={metaKeyStyle}>{k.replace(/_/g, ' ')}</span>
+                <span style={metaValStyle}>{String(v)}</span>
+              </div>
+            ))}
 
-            {!contactOpen && contact.phase !== 'done' && (
-              <button
-                type="button"
-                onClick={() => setContactOpen(true)}
-                style={primaryBtnStyle}
-              >
-                Contact them
-              </button>
-            )}
-
-            {contactOpen && contact.phase !== 'done' && (
-              <form onSubmit={onSubmitContact} style={{ marginTop: 18 }}>
-                <p style={{
-                  fontSize: 13, color: 'var(--ink-soft)',
-                  margin: '0 0 12px', lineHeight: 1.5,
-                }}>
-                  Share your details. We&apos;ll let {fullName(selected).split(' ')[0] || 'them'} know
-                  you reached out — their direct line will show after you submit.
-                </p>
-                <input
-                  required type="text" placeholder="Your name"
-                  value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })}
-                  style={fieldStyle}
-                />
-                <input
-                  required type="email" placeholder="Your email"
-                  value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })}
-                  style={fieldStyle}
-                />
-                <input
-                  type="tel" placeholder="Phone (optional)"
-                  value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                  style={fieldStyle}
-                />
-                <textarea
-                  placeholder="Message (optional)"
-                  value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })}
-                  rows={3}
-                  style={{ ...fieldStyle, resize: 'vertical', minHeight: 70 }}
-                />
-                {contact.phase === 'error' && (
-                  <div style={{ color: 'var(--accent-deep)', fontSize: 13, marginBottom: 10 }}>
-                    {contact.message}
-                  </div>
-                )}
-                <div style={{ display: 'flex', gap: 8 }}>
-                  <button
-                    type="submit"
-                    disabled={contact.phase === 'submitting'}
-                    style={{ ...primaryBtnStyle, marginTop: 0, flex: 1 }}
-                  >
-                    {contact.phase === 'submitting' ? 'Sending…' : 'Send'}
-                  </button>
+            {selected.kind === 'person' && (
+              <>
+                {!contactOpen && contact.phase !== 'done' && (
                   <button
                     type="button"
-                    onClick={() => { setContactOpen(false); setContact({ phase: 'idle' }) }}
-                    style={ghostBtnStyle}
+                    onClick={() => setContactOpen(true)}
+                    style={primaryBtnStyle}
                   >
-                    Cancel
+                    Contact them
                   </button>
-                </div>
-              </form>
+                )}
+
+                {contactOpen && contact.phase !== 'done' && (
+                  <form onSubmit={onSubmitContact} style={{ marginTop: 18 }}>
+                    <p style={{
+                      fontSize: 13, color: 'var(--ink-soft)',
+                      margin: '0 0 12px', lineHeight: 1.5,
+                    }}>
+                      Share your details. We&apos;ll let {selected.name.split(' ')[0] || 'them'} know
+                      you reached out — their direct line will show after you submit.
+                    </p>
+                    <input
+                      required type="text" placeholder="Your name"
+                      value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })}
+                      style={fieldStyle}
+                    />
+                    <input
+                      required type="email" placeholder="Your email"
+                      value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })}
+                      style={fieldStyle}
+                    />
+                    <input
+                      type="tel" placeholder="Phone (optional)"
+                      value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                      style={fieldStyle}
+                    />
+                    <textarea
+                      placeholder="Message (optional)"
+                      value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })}
+                      rows={3}
+                      style={{ ...fieldStyle, resize: 'vertical', minHeight: 70 }}
+                    />
+                    {contact.phase === 'error' && (
+                      <div style={{ color: 'var(--accent-deep)', fontSize: 13, marginBottom: 10 }}>
+                        {contact.message}
+                      </div>
+                    )}
+                    <div style={{ display: 'flex', gap: 8 }}>
+                      <button
+                        type="submit"
+                        disabled={contact.phase === 'submitting'}
+                        style={{ ...primaryBtnStyle, marginTop: 0, flex: 1 }}
+                      >
+                        {contact.phase === 'submitting' ? 'Sending…' : 'Send'}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => { setContactOpen(false); setContact({ phase: 'idle' }) }}
+                        style={ghostBtnStyle}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </form>
+                )}
+
+                {contact.phase === 'done' && (
+                  <div style={{
+                    marginTop: 18, padding: 16,
+                    background: 'var(--accent-pale)',
+                    border: '1px solid var(--accent-soft)',
+                    borderRadius: 'var(--r-md)',
+                  }}>
+                    <h4 style={{
+                      margin: '0 0 8px', fontSize: 14, fontWeight: 600,
+                      color: 'var(--ink-dark)',
+                    }}>
+                      Thanks — your note is on its way.
+                    </h4>
+                    {contact.contact.email || contact.contact.phone ? (
+                      <>
+                        <p style={{ fontSize: 13, color: 'var(--ink-soft)', margin: '0 0 10px' }}>
+                          You can also reach {contact.contact.name.split(' ')[0]} directly:
+                        </p>
+                        {contact.contact.email && (
+                          <div style={{ fontSize: 13, marginBottom: 4 }}>
+                            <span style={{ color: 'var(--ink-mute)' }}>Email · </span>
+                            <a href={`mailto:${contact.contact.email}`} style={linkStyle}>
+                              {contact.contact.email}
+                            </a>
+                          </div>
+                        )}
+                        {contact.contact.phone && (
+                          <div style={{ fontSize: 13 }}>
+                            <span style={{ color: 'var(--ink-mute)' }}>Phone · </span>
+                            <a href={`tel:${contact.contact.phone.replace(/\s/g, '')}`} style={linkStyle}>
+                              {contact.contact.phone}
+                            </a>
+                          </div>
+                        )}
+                      </>
+                    ) : (
+                      <p style={{ fontSize: 13, color: 'var(--ink-soft)', margin: 0 }}>
+                        We&apos;ll forward your message and circle back via email.
+                      </p>
+                    )}
+                  </div>
+                )}
+              </>
             )}
 
-            {contact.phase === 'done' && (
-              <div style={{
-                marginTop: 18, padding: 16,
-                background: 'var(--accent-pale)',
-                border: '1px solid var(--accent-soft)',
-                borderRadius: 'var(--r-md)',
+            {selected.kind === 'weaver' && (
+              <p style={{
+                marginTop: 18, fontSize: 12, color: 'var(--ink-mute)',
+                lineHeight: 1.5, margin: '18px 0 0',
               }}>
-                <h4 style={{
-                  margin: '0 0 8px', fontSize: 14, fontWeight: 600,
-                  color: 'var(--ink-dark)',
-                }}>
-                  Thanks — your note is on its way.
-                </h4>
-                {contact.contact.email || contact.contact.phone ? (
-                  <>
-                    <p style={{ fontSize: 13, color: 'var(--ink-soft)', margin: '0 0 10px' }}>
-                      You can also reach {contact.contact.name.split(' ')[0]} directly:
-                    </p>
-                    {contact.contact.email && (
-                      <div style={{ fontSize: 13, marginBottom: 4 }}>
-                        <span style={{ color: 'var(--ink-mute)' }}>Email · </span>
-                        <a href={`mailto:${contact.contact.email}`} style={linkStyle}>
-                          {contact.contact.email}
-                        </a>
-                      </div>
-                    )}
-                    {contact.contact.phone && (
-                      <div style={{ fontSize: 13 }}>
-                        <span style={{ color: 'var(--ink-mute)' }}>Phone · </span>
-                        <a href={`tel:${contact.contact.phone.replace(/\s/g, '')}`} style={linkStyle}>
-                          {contact.contact.phone}
-                        </a>
-                      </div>
-                    )}
-                  </>
-                ) : (
-                  <p style={{ fontSize: 13, color: 'var(--ink-soft)', margin: 0 }}>
-                    We&apos;ll forward your message and circle back via email.
-                  </p>
-                )}
-              </div>
+                Census record. Contact routing isn&apos;t available for weavers.
+              </p>
             )}
           </div>
         </div>
@@ -438,28 +559,26 @@ const MapView = ({ initialPersons }: MapViewProps) => {
         mapboxAccessToken={MAPBOX_TOKEN}
       >
         <NavigationControl style={navControlStyle} />
-        {positioned.map((p) => {
-          const a = firstAddress(p)!
-          const bucket = bucketFor(p)
-          const isHovered = hoveredId === p.id
-          const isSelected = selected?.id === p.id
+        {positioned.map((item) => {
+          const isHovered = hoveredId === item.id
+          const isSelected = selected?.id === item.id
           const size = isSelected ? 18 : isHovered ? 16 : 12
           return (
             <Marker
-              key={p.id}
-              latitude={a.latitude}
-              longitude={a.longitude}
+              key={item.id}
+              latitude={item.latitude as number}
+              longitude={item.longitude as number}
               anchor="center"
             >
               <button
                 type="button"
-                onClick={(e) => { e.stopPropagation(); onSelect(p) }}
-                onMouseEnter={() => setHoveredId(p.id)}
+                onClick={(e) => { e.stopPropagation(); onSelect(item) }}
+                onMouseEnter={() => setHoveredId(item.id)}
                 onMouseLeave={() => setHoveredId(null)}
-                aria-label={fullName(p)}
+                aria-label={item.name}
                 style={{
                   width: size, height: size, borderRadius: '50%',
-                  background: BUCKET_COLORS[bucket],
+                  background: BUCKET_COLORS[item.bucket],
                   border: '2px solid white',
                   boxShadow: isSelected || isHovered
                     ? '0 0 0 4px rgba(0,0,0,0.08), 0 2px 6px rgba(0,0,0,0.15)'

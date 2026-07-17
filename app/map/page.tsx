@@ -2,7 +2,7 @@ import React from 'react'
 import { type Metadata } from 'next'
 import { Navbar } from '@/components/navbar'
 import MapView from './map-view'
-import { getPersons } from './actions'
+import { getPersons, getWeavers } from './actions'
 
 export const metadata: Metadata = {
   title: 'Artisan map',
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 }
 
 const MapPage = async () => {
-  const persons = await getPersons()
+  const [persons, weavers] = await Promise.all([getPersons(), getWeavers()])
 
   return (
     <main>
@@ -45,7 +45,7 @@ const MapPage = async () => {
               border: '1px solid var(--rule)',
             }}
           >
-            <MapView initialPersons={persons} />
+            <MapView initialPersons={persons} initialWeavers={weavers} />
           </div>
         </div>
       </section>

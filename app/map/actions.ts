@@ -29,6 +29,27 @@ export interface MapPerson {
   public_metadata?: Record<string, MapMetadataValue> | null
 }
 
+/**
+ * A masked (PII-free) census weaver record, returned as-is by
+ * GET /web/census/weavers. Only a subset of weavers carry latitude/
+ * longitude; the rest are dropped before plotting. The shape is loose
+ * because the census module treats records as opaque bags.
+ */
+export interface MapWeaver {
+  census_id: number | string
+  name?: string | null
+  latitude?: number | string | null
+  longitude?: number | string | null
+  village?: string | null
+  block?: string | null
+  district?: string | null
+  state?: string | null
+  gender?: string | null
+  age?: number | string | null
+  education?: string | null
+  [key: string]: unknown
+}
+
 // NEXT_PUBLIC_API_URL on this app already includes the `/web` segment
 // (set as `http://localhost:9000/web` in dev, same shape in prod), so
 // route paths here are appended directly without re-prefixing /web.
@@ -69,6 +90,49 @@ export const getPersons = async (
     console.error('[map] getPersons failed', err)
     return []
   }
+}
+
+/**
+ * Fetch masked census weaver records from GET /web/census/weavers.
+ *
+ * The endpoint caps `limit` at 100 per request and exposes no text-search
+ * param (its FILTERABLE whitelist only covers categorical fields), so we
+ * page through records up to `max` and return the raw batch — the view
+ * filters to coord-bearing weavers and applies client-side text search.
+ * A non-connected reader returns 503; we treat that as an empty set so
+ * the map still renders persons.
+ */
+export const getWeavers = async (max = 500): Promise<MapWeaver[]> => {
+  const base = apiBase()
+  const out: MapWeaver[] = []
+  let offset = 0
+  let fetched = 0
+
+  while (fetched < max) {
+    const url = new URL(`${base}/census/weavers`)
+    url.searchParams.set('limit', '100')
+    url.searchParams.set('offset', String(offset))
+
+    let res: Response
+    try {
+      res = await fetch(url.toString(), { next: { revalidate: 60 } })
+    } catch (err) {
+      console.error('[map] getWeavers fetch failed', err)
+      break
+    }
+    if (!res.ok) break
+
+    const data = await res.json().catch(() => ({}))
+    const weavers: MapWeaver[] = Array.isArray(data.weavers) ? data.weavers : []
+    if (weavers.length === 0) break
+
+    for (const w of weavers) out.push(w)
+    fetched += weavers.length
+    offset += weavers.length
+    if (weavers.length < 100) break // last page
+  }
+
+  return out
 }
 
 export interface ContactPersonInput {
