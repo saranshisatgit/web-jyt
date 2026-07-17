@@ -2,7 +2,7 @@ import React from 'react'
 import { type Metadata } from 'next'
 import { Navbar } from '@/components/navbar'
 import MapView from './map-view'
-import { getPersons, getWeavers } from './actions'
+import { getPersons } from './actions'
 
 export const metadata: Metadata = {
   title: 'Artisan map',
@@ -11,7 +11,11 @@ export const metadata: Metadata = {
 }
 
 const MapPage = async () => {
-  const [persons, weavers] = await Promise.all([getPersons(), getWeavers()])
+  // Only persons are fetched during SSR so the map paints fast. Census
+  // weavers are loaded client-side on mount (see MapView) — the census
+  // reader does a full keyspace scan per request and can be slow, so it
+  // must never block the page render.
+  const persons = await getPersons()
 
   return (
     <main>
@@ -45,7 +49,7 @@ const MapPage = async () => {
               border: '1px solid var(--rule)',
             }}
           >
-            <MapView initialPersons={persons} initialWeavers={weavers} />
+            <MapView initialPersons={persons} />
           </div>
         </div>
       </section>

@@ -93,46 +93,38 @@ export const getPersons = async (
 }
 
 /**
- * Fetch masked census weaver records from GET /web/census/weavers.
+ * Fetch a single page of masked census weaver records from
+ * GET /web/census/weavers.
  *
- * The endpoint caps `limit` at 100 per request and exposes no text-search
- * param (its FILTERABLE whitelist only covers categorical fields), so we
- * page through records up to `max` and return the raw batch — the view
- * filters to coord-bearing weavers and applies client-side text search.
- * A non-connected reader returns 503; we treat that as an empty set so
- * the map still renders persons.
+ * The census reader recomputes a full keyspace scan (brotli-decompressing
+ * every record) on EVERY request, regardless of the page window — so each
+ * call is expensive no matter how small `limit` is. We therefore issue a
+ * single request (one scan) rather than paging, which previously fired up
+ * to five sequential full scans and could blow past the serverless
+ * function timeout. The endpoint caps `limit` at 100 and exposes no
+ * text-search param (its FILTERABLE whitelist only covers categorical
+ * fields), so the view filters to coord-bearing weavers and applies
+ * client-side text search over this batch.
+ *
+ * This runs client-side on mount (not during SSR) so a slow or timed-out
+ * census scan never blocks the map — persons render immediately and
+ * weavers layer in when ready. A non-connected reader returns 503; we
+ * treat that (and any error) as an empty set.
  */
-export const getWeavers = async (max = 500): Promise<MapWeaver[]> => {
-  const base = apiBase()
-  const out: MapWeaver[] = []
-  let offset = 0
-  let fetched = 0
+export const getWeavers = async (limit = 100): Promise<MapWeaver[]> => {
+  const url = new URL(`${apiBase()}/census/weavers`)
+  url.searchParams.set('limit', String(Math.min(limit, 100)))
+  url.searchParams.set('offset', '0')
 
-  while (fetched < max) {
-    const url = new URL(`${base}/census/weavers`)
-    url.searchParams.set('limit', '100')
-    url.searchParams.set('offset', String(offset))
-
-    let res: Response
-    try {
-      res = await fetch(url.toString(), { next: { revalidate: 60 } })
-    } catch (err) {
-      console.error('[map] getWeavers fetch failed', err)
-      break
-    }
-    if (!res.ok) break
-
+  try {
+    const res = await fetch(url.toString(), { next: { revalidate: 60 } })
+    if (!res.ok) return []
     const data = await res.json().catch(() => ({}))
-    const weavers: MapWeaver[] = Array.isArray(data.weavers) ? data.weavers : []
-    if (weavers.length === 0) break
-
-    for (const w of weavers) out.push(w)
-    fetched += weavers.length
-    offset += weavers.length
-    if (weavers.length < 100) break // last page
+    return Array.isArray(data.weavers) ? (data.weavers as MapWeaver[]) : []
+  } catch (err) {
+    console.error('[map] getWeavers fetch failed', err)
+    return []
   }
-
-  return out
 }
 
 export interface ContactPersonInput {

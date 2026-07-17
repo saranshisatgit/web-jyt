@@ -15,6 +15,7 @@ import Map, {
 import 'mapbox-gl/dist/mapbox-gl.css'
 import {
   getPersons,
+  getWeavers,
   submitPersonContact,
   type MapPerson,
   type MapWeaver,
@@ -174,12 +175,12 @@ type ContactState =
 
 interface MapViewProps {
   initialPersons: MapPerson[]
-  initialWeavers: MapWeaver[]
+  initialWeavers?: MapWeaver[]
 }
 
-const MapView = ({ initialPersons, initialWeavers }: MapViewProps) => {
+const MapView = ({ initialPersons, initialWeavers = [] }: MapViewProps) => {
   const [persons, setPersons] = useState<MapPerson[]>(initialPersons)
-  const [weavers] = useState<MapWeaver[]>(initialWeavers)
+  const [weavers, setWeavers] = useState<MapWeaver[]>(initialWeavers)
   const [searchInput, setSearchInput] = useState('')
   const [activeBucket, setActiveBucket] = useState<Bucket>('all')
   const [isLoading, setIsLoading] = useState(false)
@@ -209,6 +210,22 @@ const MapView = ({ initialPersons, initialWeavers }: MapViewProps) => {
       if (searchTimerRef.current) clearTimeout(searchTimerRef.current)
     }
   }, [searchInput])
+
+  // Load census weavers once on mount, in the background. The census
+  // reader does a full keyspace scan per request and can be slow (or time
+  // out / return 503), so it's kept off the SSR path — persons render
+  // immediately and weavers layer in when this resolves. On failure
+  // getWeavers returns [], leaving the persons-only map intact.
+  useEffect(() => {
+    if (initialWeavers.length > 0) return
+    let cancelled = false
+    getWeavers().then((data) => {
+      if (!cancelled && data.length > 0) setWeavers(data)
+    })
+    return () => {
+      cancelled = true
+    }
+  }, [initialWeavers])
 
   // Union of persons + weavers, narrowed by the active bucket and (for
   // weavers only) the search text. Persons are already narrowed by the
