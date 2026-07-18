@@ -18,11 +18,13 @@ import {
   getWeavers,
   getCensusStats,
   submitPersonContact,
-  type MapPerson,
-  type MapWeaver,
-  type WeaverFacetFilters,
-  type CensusStats,
 } from './actions'
+import type {
+  MapPerson,
+  MapWeaver,
+  WeaverFacetFilters,
+  CensusStats,
+} from './types'
 
 const MAPBOX_TOKEN =
   process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN || 'YOUR_MAPBOX_ACCESS_TOKEN'
