@@ -1,5 +1,13 @@
 'use server'
 
+// The census reader on prod can take >10s to return an unfiltered page (a
+// bounded keyspace scan), which exceeds Vercel's default Server Action
+// duration. Bump the action's max duration for headroom and cap every
+// outbound fetch with an AbortController so a slow reader returns an empty
+// page cleanly instead of letting the platform kill the action.
+export const maxDuration = 60
+const FETCH_TIMEOUT_MS = 8_000
+
 type FilterValue = string | number | boolean | Record<string, string | number | boolean>
 
 export interface GetPersonsParams {
@@ -82,7 +90,13 @@ export const getPersons = async (
   }
 
   try {
-    const res = await fetch(url.toString(), { next: { revalidate: 10 } })
+    const controller = new AbortController()
+    const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS)
+    const res = await fetch(url.toString(), {
+      next: { revalidate: 10 },
+      signal: controller.signal,
+    })
+    clearTimeout(timer)
     if (!res.ok) return []
     const data = await res.json()
     return (data.persons || []) as MapPerson[]
@@ -152,7 +166,13 @@ export const getWeavers = async (
   if (filters.gender) url.searchParams.set('gender', filters.gender)
 
   try {
-    const res = await fetch(url.toString(), { next: { revalidate: 60 } })
+    const controller = new AbortController()
+    const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS)
+    const res = await fetch(url.toString(), {
+      next: { revalidate: 60 },
+      signal: controller.signal,
+    })
+    clearTimeout(timer)
     if (!res.ok) return emptyPage
     const data = await res.json().catch(() => ({}))
     return {
@@ -177,7 +197,13 @@ export type CensusStats = Record<string, Record<string, number | null>>
 
 export const getCensusStats = async (): Promise<CensusStats> => {
   try {
-    const res = await fetch(`${apiBase()}/census/stats`, { next: { revalidate: 3600 } })
+    const controller = new AbortController()
+    const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS)
+    const res = await fetch(`${apiBase()}/census/stats`, {
+      next: { revalidate: 3600 },
+      signal: controller.signal,
+    })
+    clearTimeout(timer)
     if (!res.ok) return {}
     const data = await res.json().catch(() => ({}))
     return (data.stats || {}) as CensusStats
@@ -214,6 +240,8 @@ export const submitPersonContact = async (
   }
 
   try {
+    const controller = new AbortController()
+    const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS)
     const res = await fetch(
       `${apiBase()}/persons/${encodeURIComponent(input.personId)}/contact`,
       {
@@ -227,8 +255,10 @@ export const submitPersonContact = async (
           source: 'atlas-map',
         }),
         cache: 'no-store',
+        signal: controller.signal,
       }
     )
+    clearTimeout(timer)
     if (!res.ok) {
       const body = await res.json().catch(() => ({}))
       return { ok: false, error: body?.message || `HTTP ${res.status}` }

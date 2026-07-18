@@ -249,7 +249,7 @@ const MapView = ({ initialPersons, initialWeavers = [] }: MapViewProps) => {
     if (initialWeavers.length > 0) return
     let cancelled = false
     setWeaverLoading(true)
-    getWeavers({ filters: facets, limit: 100 }).then((page) => {
+    getWeavers({ filters: facets, limit: 50 }).then((page) => {
       if (cancelled) return
       setWeavers(page.weavers)
       setWeaverCursor(page.next)
@@ -270,7 +270,7 @@ const MapView = ({ initialPersons, initialWeavers = [] }: MapViewProps) => {
     if (!weaverCursor || weaverLoading) return
     setWeaverLoading(true)
     fitLockRef.current = true
-    getWeavers({ filters: facets, after: weaverCursor, limit: 100 }).then((page) => {
+    getWeavers({ filters: facets, after: weaverCursor, limit: 50 }).then((page) => {
       setWeavers((prev) => [...prev, ...page.weavers])
       setWeaverCursor(page.next)
       if (page.count) setWeaverCount(page.count)
