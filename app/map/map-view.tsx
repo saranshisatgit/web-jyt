@@ -16,9 +16,12 @@ import 'mapbox-gl/dist/mapbox-gl.css'
 import {
   getPersons,
   getWeavers,
+  getCensusStats,
   submitPersonContact,
   type MapPerson,
   type MapWeaver,
+  type WeaverFacetFilters,
+  type CensusStats,
 } from './actions'
 
 const MAPBOX_TOKEN =
@@ -190,8 +193,20 @@ const MapView = ({ initialPersons, initialWeavers = [] }: MapViewProps) => {
   const [contact, setContact] = useState<ContactState>({ phase: 'idle' })
   const [form, setForm] = useState({ name: '', email: '', phone: '', message: '' })
 
+  // Census weaver browse state. Facets drive the indexed (scale-safe) query;
+  // the cursor powers "Load more" and count is the exact total for the facet.
+  const [facets, setFacets] = useState<WeaverFacetFilters>({})
+  const [stats, setStats] = useState<CensusStats>({})
+  const [weaverCursor, setWeaverCursor] = useState<string | null>(null)
+  const [weaverCount, setWeaverCount] = useState(0)
+  const [weaverEstimated, setWeaverEstimated] = useState(false)
+  const [weaverLoading, setWeaverLoading] = useState(false)
+
   const mapRef = useRef<MapRef | null>(null)
   const searchTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  // Skips the fit-to-bounds refit for the one positioned-set change caused by a
+  // "Load more" append, so appending pins doesn't yank the viewport.
+  const fitLockRef = useRef(false)
 
   // Debounced refetch for persons. Hits the backend `q` param so the
   // search runs server-side across all 600+ persons, not just the slice
@@ -211,21 +226,96 @@ const MapView = ({ initialPersons, initialWeavers = [] }: MapViewProps) => {
     }
   }, [searchInput])
 
-  // Load census weavers once on mount, in the background. The census
-  // reader does a full keyspace scan per request and can be slow (or time
-  // out / return 503), so it's kept off the SSR path — persons render
-  // immediately and weavers layer in when this resolves. On failure
-  // getWeavers returns [], leaving the persons-only map intact.
+  // Load the pre-computed census aggregates once (O(1) on the reader) to
+  // populate the facet selectors with real, counted values. Never blocks the
+  // map; on failure the selectors simply stay empty and the teaser load stands.
   useEffect(() => {
-    if (initialWeavers.length > 0) return
     let cancelled = false
-    getWeavers().then((data) => {
-      if (!cancelled && data.length > 0) setWeavers(data)
+    getCensusStats().then((s) => {
+      if (!cancelled) setStats(s)
     })
     return () => {
       cancelled = true
     }
-  }, [initialWeavers])
+  }, [])
+
+  // Load the first page of weavers whenever the facets change (and once on
+  // mount with no facet = a cheap "teaser" page). Kept off the SSR path — the
+  // census reader can be slow / 503 while replicating, so persons render
+  // immediately and weavers layer in when this resolves. Resets the cursor and
+  // count for the new facet set. On failure getWeavers returns an empty page,
+  // leaving the persons-only map intact.
+  useEffect(() => {
+    if (initialWeavers.length > 0) return
+    let cancelled = false
+    setWeaverLoading(true)
+    getWeavers({ filters: facets, limit: 100 }).then((page) => {
+      if (cancelled) return
+      setWeavers(page.weavers)
+      setWeaverCursor(page.next)
+      setWeaverCount(page.count)
+      setWeaverEstimated(page.estimated)
+      setWeaverLoading(false)
+    })
+    return () => {
+      cancelled = true
+    }
+  }, [facets, initialWeavers])
+
+  // Append the next page using the opaque cursor. Only reachable when a facet
+  // filter is active (the unfiltered fallback returns no cursor), so pagination
+  // stays O(page) and never degrades with depth. The viewport is held steady
+  // (fitLockRef) so appended pins don't tug the map.
+  const loadMore = useCallback(() => {
+    if (!weaverCursor || weaverLoading) return
+    setWeaverLoading(true)
+    fitLockRef.current = true
+    getWeavers({ filters: facets, after: weaverCursor, limit: 100 }).then((page) => {
+      setWeavers((prev) => [...prev, ...page.weavers])
+      setWeaverCursor(page.next)
+      if (page.count) setWeaverCount(page.count)
+      setWeaverLoading(false)
+    })
+  }, [weaverCursor, weaverLoading, facets])
+
+  // Facet setters. Changing state clears any district (districts are
+  // state-scoped); empty string means "clear this facet".
+  const setStateFacet = useCallback((state: string) => {
+    setFacets((prev) => ({ ...prev, state: state || undefined, district: undefined }))
+  }, [])
+  const setDistrictFacet = useCallback((district: string) => {
+    setFacets((prev) => ({ ...prev, district: district || undefined }))
+  }, [])
+  const setGenderFacet = useCallback((gender: string) => {
+    setFacets((prev) => ({ ...prev, gender: gender || undefined }))
+  }, [])
+
+  // Facet selector options, derived from the census aggregates. State/gender
+  // are top-level dims; districts are keyed `state|district`, so scope them to
+  // the chosen state. Labels carry the head-count (suppressed cells are null).
+  const stateOptions = useMemo(
+    () =>
+      Object.entries(stats.state || {})
+        .filter(([, n]) => n != null)
+        .sort((a, b) => a[0].localeCompare(b[0])),
+    [stats]
+  )
+  const districtOptions = useMemo(() => {
+    if (!facets.state) return []
+    const prefix = `${facets.state}|`
+    return Object.entries(stats.district || {})
+      .filter(([k, n]) => n != null && k.startsWith(prefix))
+      .map(([k, n]) => [k.slice(prefix.length), n] as [string, number | null])
+      .sort((a, b) => a[0].localeCompare(b[0]))
+  }, [stats, facets.state])
+  const genderOptions = useMemo(
+    () =>
+      Object.entries(stats.gender || {})
+        .filter(([, n]) => n != null)
+        .sort((a, b) => a[0].localeCompare(b[0])),
+    [stats]
+  )
+  const hasFacets = !!(facets.state || facets.district || facets.gender)
 
   // Union of persons + weavers, narrowed by the active bucket and (for
   // weavers only) the search text. Persons are already narrowed by the
@@ -254,6 +344,12 @@ const MapView = ({ initialPersons, initialWeavers = [] }: MapViewProps) => {
   // the user's focus.
   useEffect(() => {
     if (selected) return
+    // A "Load more" append changed the positioned set — hold the viewport
+    // steady rather than refitting to the newly added pins.
+    if (fitLockRef.current) {
+      fitLockRef.current = false
+      return
+    }
     const map = mapRef.current?.getMap()
     if (!map || positioned.length === 0) return
 
@@ -321,6 +417,7 @@ const MapView = ({ initialPersons, initialWeavers = [] }: MapViewProps) => {
   }
 
   const resultWord = (n: number) => (n === 1 ? 'result' : 'results')
+  const fmtCount = (n: number | null) => (n == null ? '—' : n.toLocaleString())
 
   return (
     <div style={{ position: 'relative', width: '100%', height: '100%' }}>
@@ -348,6 +445,66 @@ const MapView = ({ initialPersons, initialWeavers = [] }: MapViewProps) => {
               </button>
             ))}
           </div>
+          {(activeBucket === 'all' || activeBucket === 'weaver') && (
+            <div style={facetWrapStyle}>
+              <div style={facetLabelStyle}>Census weavers</div>
+              <select
+                aria-label="Filter weavers by state"
+                value={facets.state || ''}
+                onChange={(e) => setStateFacet(e.target.value)}
+                style={selectStyle}
+              >
+                <option value="">All states</option>
+                {stateOptions.map(([name, n]) => (
+                  <option key={name} value={name}>
+                    {name} ({fmtCount(n)})
+                  </option>
+                ))}
+              </select>
+              {facets.state && districtOptions.length > 0 && (
+                <select
+                  aria-label="Filter weavers by district"
+                  value={facets.district || ''}
+                  onChange={(e) => setDistrictFacet(e.target.value)}
+                  style={{ ...selectStyle, marginTop: 6 }}
+                >
+                  <option value="">All districts</option>
+                  {districtOptions.map(([name, n]) => (
+                    <option key={name} value={name}>
+                      {name} ({fmtCount(n)})
+                    </option>
+                  ))}
+                </select>
+              )}
+              {genderOptions.length > 0 && (
+                <select
+                  aria-label="Filter weavers by gender"
+                  value={facets.gender || ''}
+                  onChange={(e) => setGenderFacet(e.target.value)}
+                  style={{ ...selectStyle, marginTop: 6 }}
+                >
+                  <option value="">Any gender</option>
+                  {genderOptions.map(([name, n]) => (
+                    <option key={name} value={name}>
+                      {name} ({fmtCount(n)})
+                    </option>
+                  ))}
+                </select>
+              )}
+              {(hasFacets || weaverCount > 0) && (
+                <div style={facetMetaStyle}>
+                  {weaverLoading
+                    ? 'Loading census…'
+                    : `${weavers.length.toLocaleString()} loaded${
+                        weaverCount
+                          ? ` of ${weaverEstimated ? '≈' : ''}${weaverCount.toLocaleString()}`
+                          : ''
+                      }${hasFacets ? '' : ' — pick a state to page through more'}`}
+                </div>
+              )}
+            </div>
+          )}
+
           <div style={{
             display: 'flex', justifyContent: 'space-between',
             fontSize: 12, color: 'var(--ink-mute)', marginTop: 10,
@@ -357,10 +514,10 @@ const MapView = ({ initialPersons, initialWeavers = [] }: MapViewProps) => {
                 ? 'Searching…'
                 : `${visibleItems.length} ${resultWord(visibleItems.length)}`}
             </span>
-            {(searchInput || activeBucket !== 'all') && (
+            {(searchInput || activeBucket !== 'all' || hasFacets) && (
               <button
                 type="button"
-                onClick={() => { setSearchInput(''); setActiveBucket('all') }}
+                onClick={() => { setSearchInput(''); setActiveBucket('all'); setFacets({}) }}
                 style={resetLinkStyle}
               >
                 Reset
@@ -401,6 +558,24 @@ const MapView = ({ initialPersons, initialWeavers = [] }: MapViewProps) => {
               </li>
             )
           })}
+          {weaverCursor && (
+            <li style={{ padding: '10px 14px' }}>
+              <button
+                type="button"
+                onClick={loadMore}
+                disabled={weaverLoading}
+                style={loadMoreBtnStyle}
+              >
+                {weaverLoading ? 'Loading…' : 'Load more weavers'}
+              </button>
+              {searchInput.trim() && (
+                <p style={{ margin: '8px 2px 0', fontSize: 11, color: 'var(--ink-mute)', lineHeight: 1.4 }}>
+                  Weaver text search filters the loaded set only — load more or
+                  narrow by state to widen it.
+                </p>
+              )}
+            </li>
+          )}
         </ul>
       </div>
 
@@ -707,6 +882,52 @@ const listItemStyle = (selected: boolean): React.CSSProperties => ({
   textAlign: 'left',
   transition: 'background 120ms ease',
 })
+
+const facetWrapStyle: React.CSSProperties = {
+  marginTop: 10,
+  paddingTop: 10,
+  borderTop: '1px solid var(--rule-soft)',
+}
+
+const facetLabelStyle: React.CSSProperties = {
+  fontSize: 11,
+  textTransform: 'uppercase',
+  letterSpacing: '0.08em',
+  color: 'var(--ink-mute)',
+  marginBottom: 6,
+}
+
+const selectStyle: React.CSSProperties = {
+  width: '100%',
+  padding: '7px 9px',
+  fontSize: 13,
+  border: '1px solid var(--rule)',
+  borderRadius: 6,
+  background: 'white',
+  color: 'var(--ink)',
+  outline: 'none',
+  boxSizing: 'border-box',
+  cursor: 'pointer',
+}
+
+const facetMetaStyle: React.CSSProperties = {
+  marginTop: 8,
+  fontSize: 12,
+  color: 'var(--ink-soft)',
+  lineHeight: 1.4,
+}
+
+const loadMoreBtnStyle: React.CSSProperties = {
+  width: '100%',
+  padding: '8px 12px',
+  fontSize: 13,
+  fontWeight: 500,
+  color: 'var(--accent-deep)',
+  background: 'transparent',
+  border: '1px solid var(--rule)',
+  borderRadius: 6,
+  cursor: 'pointer',
+}
 
 const resetLinkStyle: React.CSSProperties = {
   background: 'none',

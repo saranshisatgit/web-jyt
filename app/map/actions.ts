@@ -93,37 +93,97 @@ export const getPersons = async (
 }
 
 /**
- * Fetch a single page of masked census weaver records from
+ * Indexed facet filters for the weaver browse. These three (and their
+ * state+district pairing) are the ONLY fields the census reader can query
+ * at scale — they hit its secondary index (`idx/state|gender|sd/*`), giving
+ * an O(page) range-scan, an exact `count` from the pre-computed `agg` cell,
+ * and a re-consumable `next` cursor. Any other field would fall back to a
+ * bounded full-record scan with no working cursor, so we don't expose them.
+ */
+export interface WeaverFacetFilters {
+  state?: string
+  district?: string
+  gender?: string
+}
+
+export interface WeaverPage {
+  weavers: MapWeaver[]
+  /** Opaque forward cursor (last census_id of this page); pass as `after` to
+   *  fetch the next page. Only present on the indexed facet path — null when
+   *  the query fell back to the bounded unfiltered scan (no cursor support). */
+  next: string | null
+  /** Exact total for the filter (from the agg cell) unless `estimated`. */
+  count: number
+  /** True when count is a lower bound (unfiltered scan early-exited at the
+   *  page window rather than draining the corpus). */
+  estimated: boolean
+}
+
+const emptyPage: WeaverPage = { weavers: [], next: null, count: 0, estimated: false }
+
+/**
+ * Fetch a page of masked (PII-free) census weaver records from
  * GET /web/census/weavers.
  *
- * The census reader recomputes a full keyspace scan (brotli-decompressing
- * every record) on EVERY request, regardless of the page window — so each
- * call is expensive no matter how small `limit` is. We therefore issue a
- * single request (one scan) rather than paging, which previously fired up
- * to five sequential full scans and could blow past the serverless
- * function timeout. The endpoint caps `limit` at 100 and exposes no
- * text-search param (its FILTERABLE whitelist only covers categorical
- * fields), so the view filters to coord-bearing weavers and applies
- * client-side text search over this batch.
+ * Two regimes, dictated by the reader:
+ *   • With a facet filter (state / state+district / gender) → indexed range
+ *     scan: fast, exact `count`, and a `next` cursor for O(page) "load more"
+ *     that never degrades with depth.
+ *   • Without a filter → bounded scan that returns the first page cheaply
+ *     (early-exit) but yields no cursor and only a lower-bound count. Used
+ *     for the initial "teaser" load; deep paging requires picking a facet.
  *
- * This runs client-side on mount (not during SSR) so a slow or timed-out
- * census scan never blocks the map — persons render immediately and
- * weavers layer in when ready. A non-connected reader returns 503; we
- * treat that (and any error) as an empty set.
+ * The endpoint caps `limit` at 100 and has no weaver text-search param (its
+ * FILTERABLE whitelist is categorical), so free-text is filtered client-side
+ * over the loaded set. Runs client-side (not during SSR) so a slow or
+ * timed-out census scan never blocks the map — a non-connected reader
+ * returns 503, which (like any error) we treat as an empty page.
  */
-export const getWeavers = async (limit = 100): Promise<MapWeaver[]> => {
+export const getWeavers = async (
+  params: { limit?: number; after?: string | null; filters?: WeaverFacetFilters } = {}
+): Promise<WeaverPage> => {
+  const { limit = 100, after, filters = {} } = params
   const url = new URL(`${apiBase()}/census/weavers`)
-  url.searchParams.set('limit', String(Math.min(limit, 100)))
-  url.searchParams.set('offset', '0')
+  url.searchParams.set('limit', String(Math.min(Math.max(limit, 1), 100)))
+  if (after) url.searchParams.set('after', after)
+  else url.searchParams.set('offset', '0')
+  if (filters.state) url.searchParams.set('state', filters.state)
+  if (filters.district) url.searchParams.set('district', filters.district)
+  if (filters.gender) url.searchParams.set('gender', filters.gender)
 
   try {
     const res = await fetch(url.toString(), { next: { revalidate: 60 } })
-    if (!res.ok) return []
+    if (!res.ok) return emptyPage
     const data = await res.json().catch(() => ({}))
-    return Array.isArray(data.weavers) ? (data.weavers as MapWeaver[]) : []
+    return {
+      weavers: Array.isArray(data.weavers) ? (data.weavers as MapWeaver[]) : [],
+      next: typeof data.next === 'string' && data.next ? data.next : null,
+      count: typeof data.count === 'number' ? data.count : 0,
+      estimated: data.estimated === true,
+    }
   } catch (err) {
     console.error('[map] getWeavers fetch failed', err)
-    return []
+    return emptyPage
+  }
+}
+
+/**
+ * Pre-computed census aggregates from GET /web/census/stats — O(1) on the
+ * reader (no per-record scan), k-anonymity suppressed. Used to populate the
+ * weaver facet selectors with real, counted values (e.g. "HARYANA (12,340)")
+ * that line up 1:1 with the indexed browse. Shape: { dim: { label: count } }.
+ */
+export type CensusStats = Record<string, Record<string, number | null>>
+
+export const getCensusStats = async (): Promise<CensusStats> => {
+  try {
+    const res = await fetch(`${apiBase()}/census/stats`, { next: { revalidate: 3600 } })
+    if (!res.ok) return {}
+    const data = await res.json().catch(() => ({}))
+    return (data.stats || {}) as CensusStats
+  } catch (err) {
+    console.error('[map] getCensusStats failed', err)
+    return {}
   }
 }
 
