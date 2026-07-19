@@ -10,6 +10,12 @@ export const metadata: Metadata = {
     'Explore our network of artisans and technicians across the world.',
 }
 
+// The census reader (free-tier node) can take 10-30s to hydrate a filtered
+// page, and the map's getWeavers/getCensusStats server actions run under this
+// route's function budget. Give them headroom so a slow census page finishes
+// instead of the platform killing the action mid-flight.
+export const maxDuration = 30
+
 const MapPage = async () => {
   // Only persons are fetched during SSR so the map paints fast. Census
   // weavers are loaded client-side on mount (see MapView) — the census

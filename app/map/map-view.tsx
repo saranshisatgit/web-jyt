@@ -136,9 +136,17 @@ const personToItem = (p: MapPerson): MapItem => {
 }
 
 const weaverToItem = (w: MapWeaver): MapItem | null => {
-  const lat = Number(w.latitude)
-  const lng = Number(w.longitude)
+  // The scraper captures Latitude/Longitude from the source portal but the fast
+  // parser leaves them in the raw `survey` bag rather than promoting them to the
+  // typed top-level fields — so fall back to survey.{Latitude,Longitude}. Bound
+  // to India's envelope so a 0/0 or malformed value is dropped rather than
+  // plotted in the ocean.
+  const survey =
+    w.survey && typeof w.survey === 'object' ? (w.survey as Record<string, unknown>) : null
+  const lat = Number(w.latitude ?? survey?.Latitude ?? survey?.latitude)
+  const lng = Number(w.longitude ?? survey?.Longitude ?? survey?.longitude)
   if (!Number.isFinite(lat) || !Number.isFinite(lng)) return null
+  if (lat < 6 || lat > 38 || lng < 68 || lng > 98) return null
   const meta: Array<[string, string | number | boolean]> = []
   for (const k of WEAVER_META_KEYS) {
     const v = w[k]

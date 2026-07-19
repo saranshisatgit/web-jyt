@@ -21,6 +21,12 @@ import type {
 } from './types'
 
 const FETCH_TIMEOUT_MS = 8_000
+// The census reader hydrates + brotli-decodes fat records (~125 survey fields
+// each) on a CPU-throttled free-tier node, so a filtered page of 50 can take
+// 10-30s. Vercel Server Actions now allow up to 300s (see `maxDuration` on the
+// route), so give census fetches a generous budget instead of aborting at 8s
+// and showing an empty/failed page. Persons/contact stay on the fast 8s cap.
+const CENSUS_FETCH_TIMEOUT_MS = 25_000
 
 // NEXT_PUBLIC_API_URL on this app already includes the `/web` segment
 // (set as `http://localhost:9000/web` in dev, same shape in prod), so
@@ -121,7 +127,7 @@ export const getWeavers = async (
 
   try {
     const controller = new AbortController()
-    const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS)
+    const timer = setTimeout(() => controller.abort(), CENSUS_FETCH_TIMEOUT_MS)
     const res = await fetch(url.toString(), {
       next: { revalidate: 60 },
       signal: controller.signal,
@@ -150,7 +156,7 @@ export const getWeavers = async (
 export const getCensusStats = async (): Promise<CensusStats> => {
   try {
     const controller = new AbortController()
-    const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS)
+    const timer = setTimeout(() => controller.abort(), CENSUS_FETCH_TIMEOUT_MS)
     const res = await fetch(`${censusBase()}/census/stats`, {
       next: { revalidate: 3600 },
       signal: controller.signal,
