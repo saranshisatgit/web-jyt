@@ -301,7 +301,11 @@ const MapView = ({ initialPersons, initialWeavers = [] }: MapViewProps) => {
     return () => {
       cancelled = true
     }
-  }, [serverFacets, initialWeavers])
+    // Depend on serverFacets ONLY. `initialWeavers` defaults to a fresh [] each
+    // render, so including it re-fired this effect every render → an endless
+    // reload loop (the spinner never stopped). It's read once for the guard.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [serverFacets])
 
   // Append the next page using the opaque cursor. Only reachable when a facet
   // filter is active (the unfiltered fallback returns no cursor), so pagination
