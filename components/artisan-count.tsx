@@ -2,25 +2,27 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { motion, useInView, animate } from 'framer-motion'
-
-// Public census edge reader (CORS-open, PII-free aggregates). Overridable via env.
-const READER_URL =
-  process.env.NEXT_PUBLIC_CENSUS_READER_URL || 'https://v3.jaalyantra.com/web'
+import { getCensusStats } from '@/app/map/actions'
 
 /**
  * Fetch the live count of handloom artisans recorded in the open P2P census.
  * Returns { count, failed } — count is null until it resolves, failed flips true
  * if the feed is unreachable. Shared by the full section and the inline hero line.
+ *
+ * Reads through the `getCensusStats` server action rather than fetching the
+ * reader from the browser: the durable reader node (census-node.jaalyantra.com)
+ * serves the aggregates but emits no Access-Control-Allow-Origin header, so a
+ * direct client fetch is blocked by CORS. Going through the server action makes
+ * the request same-origin and reuses the exact node the map already reads.
  */
 export function useCensusCount() {
   const [count, setCount] = useState<number | null>(null)
   const [failed, setFailed] = useState(false)
   useEffect(() => {
     let alive = true
-    fetch(`${READER_URL}/census/stats`, { cache: 'no-store' })
-      .then((r) => r.json())
-      .then((d) => {
-        const n = d?.stats?.total?.weavers
+    getCensusStats()
+      .then((stats) => {
+        const n = stats?.total?.weavers
         if (!alive) return
         if (typeof n === 'number' && n > 0) setCount(n)
         else setFailed(true)
