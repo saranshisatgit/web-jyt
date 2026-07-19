@@ -204,6 +204,23 @@ const MapView = ({ initialPersons, initialWeavers = [] }: MapViewProps) => {
   const [weaverEstimated, setWeaverEstimated] = useState(false)
   const [weaverLoading, setWeaverLoading] = useState(false)
 
+  // Only the INDEXED facets go to the server. The reader indexes state,
+  // state|district, and gender each on their own — but has NO state×gender
+  // composite index, so pairing gender with a state falls to an in-memory
+  // residual scan that times out at million-scale. So gender is sent to the
+  // server only when it is the SOLE facet (gender-alone is indexed + fast);
+  // once a state/district is chosen the browse stays hierarchical (state →
+  // district, both indexed) and gender is applied client-side over the loaded
+  // page instead — same as text search. `after` cursors are only used while
+  // the server facet set is unchanged, so mixing in a client gender filter is safe.
+  const serverFacets = useMemo<WeaverFacetFilters>(
+    () =>
+      facets.state || facets.district
+        ? { state: facets.state, district: facets.district }
+        : { gender: facets.gender },
+    [facets]
+  )
+
   const mapRef = useRef<MapRef | null>(null)
   const searchTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   // Skips the fit-to-bounds refit for the one positioned-set change caused by a
@@ -251,7 +268,7 @@ const MapView = ({ initialPersons, initialWeavers = [] }: MapViewProps) => {
     if (initialWeavers.length > 0) return
     let cancelled = false
     setWeaverLoading(true)
-    getWeavers({ filters: facets, limit: 50 }).then((page) => {
+    getWeavers({ filters: serverFacets, limit: 50 }).then((page) => {
       if (cancelled) return
       setWeavers(page.weavers)
       setWeaverCursor(page.next)
@@ -262,7 +279,7 @@ const MapView = ({ initialPersons, initialWeavers = [] }: MapViewProps) => {
     return () => {
       cancelled = true
     }
-  }, [facets, initialWeavers])
+  }, [serverFacets, initialWeavers])
 
   // Append the next page using the opaque cursor. Only reachable when a facet
   // filter is active (the unfiltered fallback returns no cursor), so pagination
@@ -272,13 +289,13 @@ const MapView = ({ initialPersons, initialWeavers = [] }: MapViewProps) => {
     if (!weaverCursor || weaverLoading) return
     setWeaverLoading(true)
     fitLockRef.current = true
-    getWeavers({ filters: facets, after: weaverCursor, limit: 50 }).then((page) => {
+    getWeavers({ filters: serverFacets, after: weaverCursor, limit: 50 }).then((page) => {
       setWeavers((prev) => [...prev, ...page.weavers])
       setWeaverCursor(page.next)
       if (page.count) setWeaverCount(page.count)
       setWeaverLoading(false)
     })
-  }, [weaverCursor, weaverLoading, facets])
+  }, [weaverCursor, weaverLoading, serverFacets])
 
   // Facet setters. Changing state clears any district (districts are
   // state-scoped); empty string means "clear this facet".
@@ -326,12 +343,16 @@ const MapView = ({ initialPersons, initialWeavers = [] }: MapViewProps) => {
     const personItems = persons.map(personToItem)
     const weaverItems = weavers
       .filter((w) => weaverMatchesSearch(w, searchInput))
+      // Gender is filtered client-side whenever a state/district is also chosen
+      // (the server query drops it — no composite index; see serverFacets). A
+      // no-op for the gender-alone case, which the server already filtered.
+      .filter((w) => !facets.gender || w.gender === facets.gender)
       .map(weaverToItem)
       .filter((x): x is MapItem => x !== null)
     let items = [...personItems, ...weaverItems]
     if (activeBucket !== 'all') items = items.filter((i) => i.bucket === activeBucket)
     return items
-  }, [persons, weavers, searchInput, activeBucket])
+  }, [persons, weavers, searchInput, activeBucket, facets.gender])
 
   const positioned = useMemo(
     () =>
