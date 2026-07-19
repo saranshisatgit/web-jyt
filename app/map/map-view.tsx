@@ -399,15 +399,29 @@ const MapView = ({ initialPersons, initialWeavers = [] }: MapViewProps) => {
     if (!map || positioned.length === 0) return
     fitKeyRef.current = fitKey
 
-    if (positioned.length === 1) {
-      map.easeTo({
-        center: [positioned[0].longitude as number, positioned[0].latitude as number],
-        zoom: 6,
-        duration: 600,
-      })
+    // Centroid of the loaded pins.
+    let sumLng = 0, sumLat = 0
+    for (const i of positioned) {
+      sumLng += i.longitude as number
+      sumLat += i.latitude as number
+    }
+    const center: [number, number] = [sumLng / positioned.length, sumLat / positioned.length]
+
+    // When a state/district is picked, DON'T fitBounds the sample: census ids are
+    // contiguous by survey location, so a state's first page all sits in one
+    // village (~1 km) and fitBounds would zoom to street level. Instead center on
+    // the loaded pins at a zoom that frames the selected geography.
+    if (facets.state) {
+      map.easeTo({ center, zoom: facets.district ? 8.5 : 6, duration: 700 })
       return
     }
 
+    if (positioned.length === 1) {
+      map.easeTo({ center, zoom: 6, duration: 600 })
+      return
+    }
+
+    // No state facet (all / gender) → frame the whole spread.
     let minLng = Infinity, maxLng = -Infinity, minLat = Infinity, maxLat = -Infinity
     for (const i of positioned) {
       const lng = i.longitude as number
@@ -424,6 +438,9 @@ const MapView = ({ initialPersons, initialWeavers = [] }: MapViewProps) => {
       ],
       { padding: { top: 60, bottom: 60, left: 360, right: 60 }, duration: 600, maxZoom: 7 }
     )
+    // `facets` is read via closure, NOT a dep: this must fire when the new pins
+    // LAND (positioned change), not the instant a facet flips (pins still stale).
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [positioned, selected])
 
   // Fly-to on selection.
