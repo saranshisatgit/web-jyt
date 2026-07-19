@@ -153,10 +153,17 @@ const weaverToItem = (w: MapWeaver): MapItem | null => {
     if (v != null && String(v).trim() !== '') meta.push([k, v as string | number | boolean])
   }
   const city = w.village || w.block || w.district || w.state || null
+  // Census weaver names are PII — they live only in the encrypted sensitive core,
+  // never in the public masked feed the map reads. So there is no name to show;
+  // label the pin by place (PII-free) instead of a bare "Unknown weaver", falling
+  // back to the census id when even the location is blank.
+  const label =
+    (w.name && String(w.name).trim()) ||
+    (city ? `Weaver · ${city}` : `Weaver #${w.census_id}`)
   return {
     id: `weaver:${w.census_id}`,
     kind: 'weaver',
-    name: (w.name && String(w.name).trim()) || 'Unknown weaver',
+    name: label,
     latitude: lat,
     longitude: lng,
     city,
@@ -190,6 +197,11 @@ interface MapViewProps {
   initialPersons: MapPerson[]
   initialWeavers?: MapWeaver[]
 }
+
+// Small page so the first pins paint fast (each census row is a slow hydrate on
+// the free reader node) and "Load more" surfaces early — the user pulls more on
+// demand instead of waiting on a big blocking page.
+const WEAVER_PAGE = 10
 
 const MapView = ({ initialPersons, initialWeavers = [] }: MapViewProps) => {
   const [persons, setPersons] = useState<MapPerson[]>(initialPersons)
@@ -231,9 +243,11 @@ const MapView = ({ initialPersons, initialWeavers = [] }: MapViewProps) => {
 
   const mapRef = useRef<MapRef | null>(null)
   const searchTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-  // Skips the fit-to-bounds refit for the one positioned-set change caused by a
-  // "Load more" append, so appending pins doesn't yank the viewport.
-  const fitLockRef = useRef(false)
+  // Auto-fit runs once per deliberate browse (facet/filter change), keyed here.
+  // Any later positioned change with the SAME key (a slow weaver load resolving,
+  // a "Load more" append, a hover re-render) is left alone so it never fights the
+  // user's manual pan/zoom.
+  const fitKeyRef = useRef<string>('')
 
   // Debounced refetch for persons. Hits the backend `q` param so the
   // search runs server-side across all 600+ persons, not just the slice
@@ -276,7 +290,7 @@ const MapView = ({ initialPersons, initialWeavers = [] }: MapViewProps) => {
     if (initialWeavers.length > 0) return
     let cancelled = false
     setWeaverLoading(true)
-    getWeavers({ filters: serverFacets, limit: 50 }).then((page) => {
+    getWeavers({ filters: serverFacets, limit: WEAVER_PAGE }).then((page) => {
       if (cancelled) return
       setWeavers(page.weavers)
       setWeaverCursor(page.next)
@@ -291,13 +305,13 @@ const MapView = ({ initialPersons, initialWeavers = [] }: MapViewProps) => {
 
   // Append the next page using the opaque cursor. Only reachable when a facet
   // filter is active (the unfiltered fallback returns no cursor), so pagination
-  // stays O(page) and never degrades with depth. The viewport is held steady
-  // (fitLockRef) so appended pins don't tug the map.
+  // stays O(page) and never degrades with depth. The viewport is held steady by
+  // the facet-keyed auto-fit (same facets → no refit) so appended pins don't tug
+  // the map.
   const loadMore = useCallback(() => {
     if (!weaverCursor || weaverLoading) return
     setWeaverLoading(true)
-    fitLockRef.current = true
-    getWeavers({ filters: serverFacets, after: weaverCursor, limit: 50 }).then((page) => {
+    getWeavers({ filters: serverFacets, after: weaverCursor, limit: WEAVER_PAGE }).then((page) => {
       setWeavers((prev) => [...prev, ...page.weavers])
       setWeaverCursor(page.next)
       if (page.count) setWeaverCount(page.count)
@@ -375,14 +389,15 @@ const MapView = ({ initialPersons, initialWeavers = [] }: MapViewProps) => {
   // the user's focus.
   useEffect(() => {
     if (selected) return
-    // A "Load more" append changed the positioned set — hold the viewport
-    // steady rather than refitting to the newly added pins.
-    if (fitLockRef.current) {
-      fitLockRef.current = false
-      return
-    }
+    // Fit only on a deliberate new browse (facet/filter change). A positioned
+    // change with the same facet key — a slow census page resolving, a "Load
+    // more" append, a hover re-render — must NOT refit, or it yanks the viewport
+    // back after the user has panned ("the map won't stay put").
+    const fitKey = JSON.stringify(facets)
+    if (fitKey === fitKeyRef.current) return
     const map = mapRef.current?.getMap()
     if (!map || positioned.length === 0) return
+    fitKeyRef.current = fitKey
 
     if (positioned.length === 1) {
       map.easeTo({
@@ -524,13 +539,11 @@ const MapView = ({ initialPersons, initialWeavers = [] }: MapViewProps) => {
               )}
               {(hasFacets || weaverCount > 0) && (
                 <div style={facetMetaStyle}>
-                  {weaverLoading
-                    ? 'Loading census…'
-                    : `${weavers.length.toLocaleString()} loaded${
-                        weaverCount
-                          ? ` of ${weaverEstimated ? '≈' : ''}${weaverCount.toLocaleString()}`
-                          : ''
-                      }${hasFacets ? '' : ' — pick a state to page through more'}`}
+                  {`${weavers.length.toLocaleString()} loaded${
+                    weaverCount
+                      ? ` of ${weaverEstimated ? '≈' : ''}${weaverCount.toLocaleString()}`
+                      : ''
+                  }${hasFacets ? '' : ' — pick a state to page through more'}`}
                 </div>
               )}
             </div>
@@ -774,6 +787,24 @@ const MapView = ({ initialPersons, initialWeavers = [] }: MapViewProps) => {
         </div>
       )}
 
+      {weaverLoading && (
+        <div style={mapSpinnerStyle} aria-live="polite" aria-busy="true">
+          <svg width="20" height="20" viewBox="0 0 50 50" role="img" aria-label="Loading census">
+            <circle cx="25" cy="25" r="20" fill="none" stroke="rgba(0,0,0,0.12)" strokeWidth="6" />
+            <circle
+              cx="25" cy="25" r="20" fill="none" stroke="var(--accent-deep)"
+              strokeWidth="6" strokeLinecap="round" strokeDasharray="80 130"
+            >
+              <animateTransform
+                attributeName="transform" type="rotate"
+                from="0 25 25" to="360 25 25" dur="0.85s" repeatCount="indefinite"
+              />
+            </circle>
+          </svg>
+          <span>Loading census…</span>
+        </div>
+      )}
+
       <Map
         ref={mapRef}
         initialViewState={{ latitude: 22, longitude: 78, zoom: 3 }}
@@ -946,6 +977,27 @@ const facetMetaStyle: React.CSSProperties = {
   fontSize: 12,
   color: 'var(--ink-soft)',
   lineHeight: 1.4,
+}
+
+const mapSpinnerStyle: React.CSSProperties = {
+  position: 'absolute',
+  top: 14,
+  left: '50%',
+  transform: 'translateX(-50%)',
+  zIndex: 5,
+  display: 'flex',
+  alignItems: 'center',
+  gap: 8,
+  padding: '7px 14px 7px 11px',
+  borderRadius: 999,
+  background: 'rgba(255,255,255,0.94)',
+  border: '1px solid var(--rule)',
+  boxShadow: '0 2px 10px rgba(0,0,0,0.10)',
+  fontSize: 12,
+  fontWeight: 500,
+  color: 'var(--ink-soft)',
+  pointerEvents: 'none', // never intercept map drag/zoom
+  backdropFilter: 'blur(4px)',
 }
 
 const loadMoreBtnStyle: React.CSSProperties = {
