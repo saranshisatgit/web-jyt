@@ -25,8 +25,24 @@ const FETCH_TIMEOUT_MS = 8_000
 // NEXT_PUBLIC_API_URL on this app already includes the `/web` segment
 // (set as `http://localhost:9000/web` in dev, same shape in prod), so
 // route paths here are appended directly without re-prefixing /web.
+// Used for the Medusa-native routes (`/persons`, contact).
 const apiBase = () =>
   (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:9000/web').replace(/\/$/, '')
+
+// Census weaver/stats data has its own base so the map can read from the
+// dedicated durable reader node (census-node.jaalyantra.com — an always-on
+// replica that keeps a fully-converged store, so unfiltered pages return in
+// ~0.2s instead of the multi-second cold scan the in-Fargate embedded peer did
+// after every deploy). Same `${base}/census/*` shape whether it points at the
+// node directly or at the Medusa proxy (v3.jaalyantra.com/web). Mirrors the
+// NEXT_PUBLIC_CENSUS_READER_URL knob used by <ArtisanCount>. Falls back to the
+// general API base, then localhost.
+const censusBase = () =>
+  (
+    process.env.NEXT_PUBLIC_CENSUS_READER_URL ||
+    process.env.NEXT_PUBLIC_API_URL ||
+    'http://localhost:9000/web'
+  ).replace(/\/$/, '')
 
 export const getPersons = async (
   params: GetPersonsParams = {}
@@ -95,7 +111,7 @@ export const getWeavers = async (
   params: { limit?: number; after?: string | null; filters?: WeaverFacetFilters } = {}
 ): Promise<WeaverPage> => {
   const { limit = 100, after, filters = {} } = params
-  const url = new URL(`${apiBase()}/census/weavers`)
+  const url = new URL(`${censusBase()}/census/weavers`)
   url.searchParams.set('limit', String(Math.min(Math.max(limit, 1), 100)))
   if (after) url.searchParams.set('after', after)
   else url.searchParams.set('offset', '0')
@@ -135,7 +151,7 @@ export const getCensusStats = async (): Promise<CensusStats> => {
   try {
     const controller = new AbortController()
     const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS)
-    const res = await fetch(`${apiBase()}/census/stats`, {
+    const res = await fetch(`${censusBase()}/census/stats`, {
       next: { revalidate: 3600 },
       signal: controller.signal,
     })
