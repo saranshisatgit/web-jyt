@@ -400,16 +400,25 @@ const MapView = ({ initialPersons, initialWeavers = [] }: MapViewProps) => {
     const fitKey = JSON.stringify(facets)
     if (fitKey === fitKeyRef.current) return
     const map = mapRef.current?.getMap()
-    if (!map || positioned.length === 0) return
+
+    // A census facet filters WEAVERS only — persons (the artisan network, spread
+    // across continents) stay on the map. So fit to the weaver pins alone when a
+    // facet is active, or the centroid drifts to an off-location (mid-ocean)
+    // between the global persons and the state's weavers.
+    const facetActive = !!(facets.state || facets.district || facets.gender)
+    const pins = facetActive
+      ? positioned.filter((p) => p.kind === 'weaver')
+      : positioned
+    if (!map || pins.length === 0) return
     fitKeyRef.current = fitKey
 
-    // Centroid of the loaded pins.
+    // Centroid of the relevant pins.
     let sumLng = 0, sumLat = 0
-    for (const i of positioned) {
+    for (const i of pins) {
       sumLng += i.longitude as number
       sumLat += i.latitude as number
     }
-    const center: [number, number] = [sumLng / positioned.length, sumLat / positioned.length]
+    const center: [number, number] = [sumLng / pins.length, sumLat / pins.length]
 
     // When a state/district is picked, DON'T fitBounds the sample: census ids are
     // contiguous by survey location, so a state's first page all sits in one
@@ -420,14 +429,14 @@ const MapView = ({ initialPersons, initialWeavers = [] }: MapViewProps) => {
       return
     }
 
-    if (positioned.length === 1) {
+    if (pins.length === 1) {
       map.easeTo({ center, zoom: 6, duration: 600 })
       return
     }
 
-    // No state facet (all / gender) → frame the whole spread.
+    // No state facet (all view) → frame the whole spread of pins.
     let minLng = Infinity, maxLng = -Infinity, minLat = Infinity, maxLat = -Infinity
-    for (const i of positioned) {
+    for (const i of pins) {
       const lng = i.longitude as number
       const lat = i.latitude as number
       if (lng < minLng) minLng = lng
