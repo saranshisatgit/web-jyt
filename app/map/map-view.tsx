@@ -153,10 +153,10 @@ const weaverToItem = (w: MapWeaver): MapItem | null => {
     if (v != null && String(v).trim() !== '') meta.push([k, v as string | number | boolean])
   }
   const city = w.village || w.block || w.district || w.state || null
-  // Census weaver names are PII — they live only in the encrypted sensitive core,
-  // never in the public masked feed the map reads. So there is no name to show;
-  // label the pin by place (PII-free) instead of a bare "Unknown weaver", falling
-  // back to the census id when even the location is blank.
+  // Weaver names are public (the reader promotes survey.Name → the typed `name`
+  // field; contact/identity values like phone + Aadhaar/PAN stay masked or show
+  // only as verified flags). Label the pin by name when present, falling back to
+  // place (then census id) for the older records that carry no promoted name yet.
   const label =
     (w.name && String(w.name).trim()) ||
     (city ? `Weaver · ${city}` : `Weaver #${w.census_id}`)
