@@ -18,6 +18,7 @@ import {
   getWeavers,
   getCensusStats,
   submitPersonContact,
+  submitWeaverContact,
 } from './actions'
 import type {
   MapPerson,
@@ -193,6 +194,12 @@ type ContactState =
       contact: { name: string; email: string | null; phone: string | null }
     }
 
+type WeaverContactState =
+  | { phase: 'idle' }
+  | { phase: 'submitting' }
+  | { phase: 'error'; message: string }
+  | { phase: 'done' }
+
 interface MapViewProps {
   initialPersons: MapPerson[]
   initialWeavers?: MapWeaver[]
@@ -215,14 +222,27 @@ const MapView = ({ initialPersons, initialWeavers = [] }: MapViewProps) => {
   const [contact, setContact] = useState<ContactState>({ phase: 'idle' })
   const [form, setForm] = useState({ name: '', email: '', phone: '', message: '' })
 
+  // Weaver contact state (separate from person contact so the two flows
+  // don't interfere when the user flips between a person and a weaver).
+  const [weaverContactOpen, setWeaverContactOpen] = useState(false)
+  const [weaverContact, setWeaverContact] = useState<WeaverContactState>({ phase: 'idle' })
+  const [weaverForm, setWeaverForm] = useState({ name: '', email: '', phone: '', message: '' })
+
   // Census weaver browse state. Facets drive the indexed (scale-safe) query;
-  // the cursor powers "Load more" and count is the exact total for the facet.
+  // the cursor powers page navigation and count is the exact total for the facet.
   const [facets, setFacets] = useState<WeaverFacetFilters>({})
   const [stats, setStats] = useState<CensusStats>({})
   const [weaverCursor, setWeaverCursor] = useState<string | null>(null)
   const [weaverCount, setWeaverCount] = useState(0)
   const [weaverEstimated, setWeaverEstimated] = useState(false)
   const [weaverLoading, setWeaverLoading] = useState(false)
+
+  // Page-by-page pagination. Instead of "Load more" (append), we page
+  // through the corpus: currentPage tracks the page number, cursorHistory
+  // stores the opaque cursors so we can go back to a previous page.
+  const [currentPage, setCurrentPage] = useState(1)
+  const [cursorHistory, setCursorHistory] = useState<(string | null)[]>([null])
+  const totalPages = weaverCount > 0 ? Math.ceil(weaverCount / WEAVER_PAGE) : 0
 
   // Only the INDEXED facets go to the server. The reader indexes state,
   // state|district, and gender each on their own — but has NO state×gender
@@ -290,6 +310,8 @@ const MapView = ({ initialPersons, initialWeavers = [] }: MapViewProps) => {
     if (initialWeavers.length > 0) return
     let cancelled = false
     setWeaverLoading(true)
+    setCurrentPage(1)
+    setCursorHistory([null])
     getWeavers({ filters: serverFacets, limit: WEAVER_PAGE }).then((page) => {
       if (cancelled) return
       setWeavers(page.weavers)
@@ -307,21 +329,41 @@ const MapView = ({ initialPersons, initialWeavers = [] }: MapViewProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [serverFacets])
 
-  // Append the next page using the opaque cursor. Only reachable when a facet
-  // filter is active (the unfiltered fallback returns no cursor), so pagination
-  // stays O(page) and never degrades with depth. The viewport is held steady by
-  // the facet-keyed auto-fit (same facets → no refit) so appended pins don't tug
-  // the map.
-  const loadMore = useCallback(() => {
+  // Navigate to the next page. Saves the current cursor so we can go back,
+  // then fetches the next page and REPLACES (not appends) the weavers list.
+  const goToNextPage = useCallback(() => {
     if (!weaverCursor || weaverLoading) return
     setWeaverLoading(true)
     getWeavers({ filters: serverFacets, after: weaverCursor, limit: WEAVER_PAGE }).then((page) => {
-      setWeavers((prev) => [...prev, ...page.weavers])
+      setWeavers(page.weavers)
       setWeaverCursor(page.next)
+      setCursorHistory((prev) => [...prev, weaverCursor])
+      setCurrentPage((p) => p + 1)
       if (page.count) setWeaverCount(page.count)
       setWeaverLoading(false)
     })
   }, [weaverCursor, weaverLoading, serverFacets])
+
+  // Navigate to the previous page. Pops the cursor history to find the
+  // cursor that was used to load the current page's predecessor, then
+  // re-fetches that page.
+  const goToPrevPage = useCallback(() => {
+    if (currentPage <= 1 || weaverLoading) return
+    const prevCursor = cursorHistory.length >= 2 ? cursorHistory[cursorHistory.length - 2] : null
+    setWeaverLoading(true)
+    getWeavers({
+      filters: serverFacets,
+      after: prevCursor || undefined,
+      limit: WEAVER_PAGE,
+    }).then((page) => {
+      setWeavers(page.weavers)
+      setWeaverCursor(page.next)
+      setCursorHistory((prev) => prev.slice(0, -1))
+      setCurrentPage((p) => p - 1)
+      if (page.count) setWeaverCount(page.count)
+      setWeaverLoading(false)
+    })
+  }, [currentPage, weaverLoading, cursorHistory, serverFacets])
 
   // Facet setters. Changing state clears any district (districts are
   // state-scoped); empty string means "clear this facet".
@@ -472,6 +514,9 @@ const MapView = ({ initialPersons, initialWeavers = [] }: MapViewProps) => {
     setContactOpen(false)
     setContact({ phase: 'idle' })
     setForm({ name: '', email: '', phone: '', message: '' })
+    setWeaverContactOpen(false)
+    setWeaverContact({ phase: 'idle' })
+    setWeaverForm({ name: '', email: '', phone: '', message: '' })
   }, [])
 
   const onSubmitContact = async (e: React.FormEvent) => {
@@ -489,6 +534,32 @@ const MapView = ({ initialPersons, initialWeavers = [] }: MapViewProps) => {
       setContact({ phase: 'done', contact: result.contact })
     } else {
       setContact({ phase: 'error', message: result.error || 'Something went wrong' })
+    }
+  }
+
+  const onSubmitWeaverContact = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!selected || selected.kind !== 'weaver') return
+    setWeaverContact({ phase: 'submitting' })
+    // Extract census_id from the item id ("weaver:624940" → "624940")
+    const censusId = selected.id.replace('weaver:', '')
+    // Find the original weaver record for location fields
+    const weaver = weavers.find((w) => String(w.census_id) === censusId)
+    const result = await submitWeaverContact({
+      censusId,
+      weaverName: selected.name,
+      village: weaver?.village ?? null,
+      district: weaver?.district ?? null,
+      state: weaver?.state ?? null,
+      name: weaverForm.name,
+      email: weaverForm.email,
+      phone: weaverForm.phone,
+      message: weaverForm.message,
+    })
+    if (result.ok) {
+      setWeaverContact({ phase: 'done' })
+    } else {
+      setWeaverContact({ phase: 'error', message: result.error || 'Something went wrong' })
     }
   }
 
@@ -569,9 +640,9 @@ const MapView = ({ initialPersons, initialWeavers = [] }: MapViewProps) => {
               )}
               {(hasFacets || weaverCount > 0) && (
                 <div style={facetMetaStyle}>
-                  {`${weavers.length.toLocaleString()} loaded${
+                  {`${weavers.length.toLocaleString()} on this page${
                     weaverCount
-                      ? ` of ${weaverEstimated ? '≈' : ''}${weaverCount.toLocaleString()}`
+                      ? ` of ${weaverEstimated ? '≈' : ''}${weaverCount.toLocaleString()} total`
                       : ''
                   }${hasFacets ? '' : ' — pick a state to page through more'}`}
                 </div>
@@ -634,18 +705,37 @@ const MapView = ({ initialPersons, initialWeavers = [] }: MapViewProps) => {
           })}
           {weaverCursor && (
             <li style={{ padding: '10px 14px' }}>
-              <button
-                type="button"
-                onClick={loadMore}
-                disabled={weaverLoading}
-                style={loadMoreBtnStyle}
-              >
-                {weaverLoading ? 'Loading…' : 'Load more weavers'}
-              </button>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
+                <button
+                  type="button"
+                  onClick={goToPrevPage}
+                  disabled={currentPage <= 1 || weaverLoading}
+                  style={{
+                    ...pageNavBtnStyle,
+                    ...(currentPage <= 1 || weaverLoading ? disabledBtnStyle : {}),
+                  }}
+                >
+                  ← Prev
+                </button>
+                <span style={{ fontSize: 12, color: 'var(--ink-soft)', whiteSpace: 'nowrap' }}>
+                  {weaverLoading ? 'Loading…' : `Page ${currentPage}${totalPages ? ` of ${totalPages}` : ''}`}
+                </span>
+                <button
+                  type="button"
+                  onClick={goToNextPage}
+                  disabled={!weaverCursor || weaverLoading}
+                  style={{
+                    ...pageNavBtnStyle,
+                    ...(!weaverCursor || weaverLoading ? disabledBtnStyle : {}),
+                  }}
+                >
+                  Next →
+                </button>
+              </div>
               {searchInput.trim() && (
                 <p style={{ margin: '8px 2px 0', fontSize: 11, color: 'var(--ink-mute)', lineHeight: 1.4 }}>
-                  Weaver text search filters the loaded set only — load more or
-                  narrow by state to widen it.
+                  Weaver text search filters the loaded page only — use
+                  pagination or narrow by state to see more.
                 </p>
               )}
             </li>
@@ -806,12 +896,91 @@ const MapView = ({ initialPersons, initialWeavers = [] }: MapViewProps) => {
             )}
 
             {selected.kind === 'weaver' && (
-              <p style={{
-                marginTop: 18, fontSize: 12, color: 'var(--ink-mute)',
-                lineHeight: 1.5, margin: '18px 0 0',
-              }}>
-                Census record. Contact routing isn&apos;t available for weavers.
-              </p>
+              <>
+                {!weaverContactOpen && weaverContact.phase !== 'done' && (
+                  <button
+                    type="button"
+                    onClick={() => setWeaverContactOpen(true)}
+                    style={primaryBtnStyle}
+                  >
+                    Contact them
+                  </button>
+                )}
+
+                {weaverContactOpen && weaverContact.phase !== 'done' && (
+                  <form onSubmit={onSubmitWeaverContact} style={{ marginTop: 18 }}>
+                    <p style={{
+                      fontSize: 13, color: 'var(--ink-soft)',
+                      margin: '0 0 12px', lineHeight: 1.5,
+                    }}>
+                      Share your details. We&apos;ll connect you with {selected.name.split(' ')[0] || 'this weaver'} —
+                      a team member will reach out to them on your behalf.
+                    </p>
+                    <input
+                      required type="text" placeholder="Your name"
+                      value={weaverForm.name} onChange={(e) => setWeaverForm({ ...weaverForm, name: e.target.value })}
+                      style={fieldStyle}
+                    />
+                    <input
+                      required type="email" placeholder="Your email"
+                      value={weaverForm.email} onChange={(e) => setWeaverForm({ ...weaverForm, email: e.target.value })}
+                      style={fieldStyle}
+                    />
+                    <input
+                      type="tel" placeholder="Phone (optional)"
+                      value={weaverForm.phone} onChange={(e) => setWeaverForm({ ...weaverForm, phone: e.target.value })}
+                      style={fieldStyle}
+                    />
+                    <textarea
+                      placeholder="Message (optional)"
+                      value={weaverForm.message} onChange={(e) => setWeaverForm({ ...weaverForm, message: e.target.value })}
+                      rows={3}
+                      style={{ ...fieldStyle, resize: 'vertical', minHeight: 70 }}
+                    />
+                    {weaverContact.phase === 'error' && (
+                      <div style={{ color: 'var(--accent-deep)', fontSize: 13, marginBottom: 10 }}>
+                        {weaverContact.message}
+                      </div>
+                    )}
+                    <div style={{ display: 'flex', gap: 8 }}>
+                      <button
+                        type="submit"
+                        disabled={weaverContact.phase === 'submitting'}
+                        style={{ ...primaryBtnStyle, marginTop: 0, flex: 1 }}
+                      >
+                        {weaverContact.phase === 'submitting' ? 'Sending…' : 'Send'}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => { setWeaverContactOpen(false); setWeaverContact({ phase: 'idle' }) }}
+                        style={ghostBtnStyle}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </form>
+                )}
+
+                {weaverContact.phase === 'done' && (
+                  <div style={{
+                    marginTop: 18, padding: 16,
+                    background: 'var(--accent-pale)',
+                    border: '1px solid var(--accent-soft)',
+                    borderRadius: 'var(--r-md)',
+                  }}>
+                    <h4 style={{
+                      margin: '0 0 8px', fontSize: 14, fontWeight: 600,
+                      color: 'var(--ink-dark)',
+                    }}>
+                      Thanks — your request is in.
+                    </h4>
+                    <p style={{ fontSize: 13, color: 'var(--ink-soft)', margin: 0 }}>
+                      Our team will reach out to {selected.name.split(' ')[0]} and connect
+                      you both. We&apos;ll follow up via email with an update.
+                    </p>
+                  </div>
+                )}
+              </>
             )}
           </div>
         </div>
@@ -1030,9 +1199,8 @@ const mapSpinnerStyle: React.CSSProperties = {
   backdropFilter: 'blur(4px)',
 }
 
-const loadMoreBtnStyle: React.CSSProperties = {
-  width: '100%',
-  padding: '8px 12px',
+const pageNavBtnStyle: React.CSSProperties = {
+  padding: '6px 12px',
   fontSize: 13,
   fontWeight: 500,
   color: 'var(--accent-deep)',
@@ -1040,6 +1208,11 @@ const loadMoreBtnStyle: React.CSSProperties = {
   border: '1px solid var(--rule)',
   borderRadius: 6,
   cursor: 'pointer',
+}
+
+const disabledBtnStyle: React.CSSProperties = {
+  opacity: 0.4,
+  cursor: 'not-allowed',
 }
 
 const resetLinkStyle: React.CSSProperties = {

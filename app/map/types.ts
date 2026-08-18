@@ -98,3 +98,20 @@ export interface ContactPersonResult {
     phone: string | null
   }
 }
+
+export interface WeaverContactInput {
+  censusId: string | number
+  weaverName: string
+  village?: string | null
+  district?: string | null
+  state?: string | null
+  name: string
+  email: string
+  phone?: string
+  message?: string
+}
+
+export interface WeaverContactResult {
+  ok: boolean
+  error?: string
+}

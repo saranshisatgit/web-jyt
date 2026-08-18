@@ -16,6 +16,8 @@ import type {
   GetPersonsParams,
   MapPerson,
   MapWeaver,
+  WeaverContactInput,
+  WeaverContactResult,
   WeaverFacetFilters,
   WeaverPage,
 } from './types'
@@ -207,6 +209,43 @@ export const submitPersonContact = async (
     return { ok: true, contact: body.contact }
   } catch (err) {
     console.error('[map] submitPersonContact failed', err)
+    return { ok: false, error: 'network error' }
+  }
+}
+
+/**
+ * Submit a contact request for a census weaver. Unlike persons (who have a
+ * Medusa contact endpoint), weavers are census records with no backend
+ * contact route — so this action logs the request server-side and returns
+ * a success acknowledgment. The operator can wire this to an email/webhook
+ * later. The weaver's real phone is NOT exposed here; the census unmask
+ * endpoint (epic #1137) is not yet built, so contact routing is manual.
+ */
+export const submitWeaverContact = async (
+  input: WeaverContactInput
+): Promise<WeaverContactResult> => {
+  if (!input.censusId) return { ok: false, error: 'missing weaver' }
+  if (!input.name?.trim() || !input.email?.trim()) {
+    return { ok: false, error: 'name and email are required' }
+  }
+
+  try {
+    console.log('[map] weaver contact request', {
+      censusId: input.censusId,
+      weaverName: input.weaverName,
+      village: input.village,
+      district: input.district,
+      state: input.state,
+      fromName: input.name.trim(),
+      fromEmail: input.email.trim(),
+      fromPhone: input.phone?.trim() || null,
+      message: input.message?.trim() || null,
+      source: 'atlas-map',
+      timestamp: new Date().toISOString(),
+    })
+    return { ok: true }
+  } catch (err) {
+    console.error('[map] submitWeaverContact failed', err)
     return { ok: false, error: 'network error' }
   }
 }
