@@ -4,7 +4,7 @@ import { brandFromHostOrOverride } from "@/lib/brand"
 import { currencyFromCountry } from "@/lib/currency"
 import { DEFAULT_LOCALE, LOCALES, COOKIE_NAME } from "@/lib/i18n/config"
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
 
   if (
