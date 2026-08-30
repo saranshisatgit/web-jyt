@@ -44,7 +44,7 @@
 .kt-display.l  { font-size: var(--t-display-l); }
 .kt-display.m  { font-size: var(--t-display-m); line-height: 1; }
 .kt-display.s  { font-size: var(--t-display-s); line-height: 1.05; }
-.kt-display em { font-style: normal; color: var(--accent-deep); font-weight: 400; mix-blend-mode: difference; }
+.kt-display em { font-style: normal; color: var(--brand); font-weight: 400; }
 
 /* PS Times ships Regular only — no true italic exists, so `serif italic`
    accent words would render as a synthesized oblique. Per the Sky spec the
@@ -309,7 +309,7 @@
   font-weight: 400;
 }
 .kt-card-title.l { font-size: 32px; }
-.kt-card-title em { font-style: normal; color: var(--accent-deep); }
+.kt-card-title em { font-style: normal; color: var(--brand); }
 .kt-card-body {
   font-size: var(--t-body-s);
   color: var(--ink-soft);
@@ -430,7 +430,7 @@
   max-width: 1000px;
   font-weight: 400;
 }
-.kt-quote em { font-style: normal; color: var(--accent-deep); }
+.kt-quote em { font-style: normal; color: var(--brand); }
 .kt-quote s {
   text-decoration: line-through;
   text-decoration-color: var(--accent-deep);
@@ -921,7 +921,7 @@
   margin: 24px 0 16px;
   font-weight: 400;
 }
-.kt-fork-card h2 em { font-style: normal; color: var(--accent-deep); }
+.kt-fork-card h2 em { font-style: normal; color: var(--brand); }
 .kt-fork-card.investor h2 em { color: oklch(0.78 0.08 264); }
 .kt-fork-card.platform h2 em { color: oklch(0.88 0.03 264); }
 .kt-fork-card p {
