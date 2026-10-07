@@ -1,0 +1,324 @@
+{
+  "pixelation": {
+    "durationMs": 1150,
+    "megaMenu": { "cols": 34, "durationMs": 950 },
+    "journey": {
+      "pool": [
+        "/screenshots/moodboard.jpg",
+        "/storefront-previews/gof-asia.png",
+        "/storefront-previews/jayruparam-and-sons.png",
+        "/storefront-previews/perennial.png",
+        "/storefront-previews/raja-shawls.png",
+        "/storefront-previews/sharlho.png",
+        "/storefront-previews/uniquepashmina.png",
+        "/company/1.jpg",
+        "/company/2.jpg",
+        "/company/3.jpg",
+        "/company/4.jpg",
+        "/company/5.jpg"
+      ],
+      "colsPerStep": [14, 26, 40, 60],
+      "grayPerStep": [0.92, 0.45, 0.08, 0]
+    }
+  },
+  "megaMenu": [
+    {
+      "href": "/solutions",
+      "title": "Overview",
+      "description": "One OS for your atelier — design, produce, supply, sell.",
+      "image": "/screenshots/moodboard.jpg"
+    },
+    {
+      "href": "/solutions/wholesale",
+      "title": "Wholesale",
+      "description": "Source verified inventory, sell sustainable.",
+      "image": "/storefront-previews/gof-asia.png"
+    },
+    {
+      "href": "/solutions/ecommerce",
+      "title": "E-commerce",
+      "description": "A storefront with the truth on every SKU.",
+      "image": "/storefront-previews/raja-shawls.png"
+    },
+    {
+      "href": "/solutions/sell-on-ai",
+      "title": "Sell on AI",
+      "description": "Your store, addressable by agents.",
+      "image": "/storefront-previews/sharlho.png"
+    },
+    {
+      "href": "/solutions/integrations",
+      "title": "Integrations",
+      "description": "WhatsApp, Instagram, and the rails between.",
+      "image": "/storefront-previews/uniquepashmina.png"
+    }
+  ],
+  "aboutMenu": [
+    {
+      "href": "/company",
+      "title": "Company",
+      "description": "The company behind the label — team, story, numbers.",
+      "image": "/company/1.jpg"
+    },
+    {
+      "href": "/contact",
+      "title": "Offices",
+      "description": "Florence · Bagru · Sydney — where to find us.",
+      "image": "/company/2.jpg"
+    },
+    {
+      "href": "/map",
+      "title": "Maps",
+      "description": "The artisan map — hubs, ateliers, live pins.",
+      "image": "/map.png"
+    }
+  ],
+  "journey": [
+    {
+      "n": "01 · Sketch",
+      "t": "It starts with a sketch.",
+      "b": "A drawing, a photo, or a one-line brief — the system spins up a design with a draft techpack."
+    },
+    {
+      "n": "02 · Design",
+      "t": "Locked into a spec.",
+      "b": "Bill of materials, size sets, construction and pricing — resolved and versioned."
+    },
+    {
+      "n": "03 · Production",
+      "t": "Routed to vetted hands.",
+      "b": "The run is dispatched and tracked stitch by stitch, cost rolled up per piece."
+    },
+    {
+      "n": "04 · Shipment",
+      "t": "Made, passported, shipped.",
+      "b": "Every piece leaves with a Digital Product Passport and lands at the door."
+    }
+  ],
+  "hero": {
+    "pill": "Florence · Bagru · Sydney — live now",
+    "title": "From sketch to shipment, one system.",
+    "subtitleHtml": "Design with vetted artisans, track every stitch, and sell on your own storefront — custom clothing with <strong>verifiable provenance on the same rails</strong> brands like LeAtelier and Cici Label already trust.",
+    "ctaPrimary": { "label": "Join the waitlist", "href": "#waitlist" },
+    "ctaSecondary": { "label": "See how it works", "href": "#how" },
+    "note": "First 100 get a fitting — your email is never shared.",
+    "proof": [
+      { "value": "150+", "label": "artisans onboarded" },
+      { "value": "3+", "label": "brands shipping" },
+      { "value": "EU · IN · AU", "label": "live now" }
+    ]
+  },
+  "trace": {
+    "eyebrow": "End-to-end tracing",
+    "title": "Producing artisanal clothing, traced end to end.",
+    "lead": "Made simple — follow who made it, where it came from, and how it was produced.",
+    "items": [
+      {
+        "term": "Who made it",
+        "line": "The artisan behind every piece — by name.",
+        "badge": "Named maker",
+        "detail": "Every garment is linked to the individual who made it, not a factory. Their name, role and years on the loom travel with the piece.",
+        "rows": [
+          ["Maker", "Rukmini · Bagru, IN"],
+          ["Role", "Handweaver"],
+          ["On the loom", "22 years"],
+          ["Maker ID", "AR-0031"]
+        ]
+      },
+      {
+        "term": "Where it came from",
+        "line": "Traced to the village and the loom.",
+        "badge": "Geo-verified",
+        "detail": "Origin is pinned to the village, the loom and the exact material lot — provenance becomes a fact, not a story.",
+        "rows": [
+          ["Origin", "Bagru, Rajasthan"],
+          ["Loom", "Handloom · pit loom"],
+          ["Material lot", "LOT-CSH-0098"],
+          ["Certification", "GOTS verified"]
+        ]
+      },
+      {
+        "term": "How it was produced",
+        "line": "Every step, logged and verifiable.",
+        "badge": "Step-logged",
+        "detail": "Dye, weave and finish are recorded step by step, with timestamps and a quality check at every stage of the run.",
+        "rows": [
+          ["Dye", "Natural indigo"],
+          ["Weave", "Handweave · 3 days"],
+          ["Finish & QC", "Passed"],
+          ["Steps logged", "14"]
+        ]
+      }
+    ]
+  },
+  "how": {
+    "eyebrow": "The product, live",
+    "title": "One system. Every surface.",
+    "lead": "Design, production, inventory and storefront — the real screens, running.",
+    "surfaces": [
+      {
+        "stage": "Admin",
+        "title": "For the brand.",
+        "blurb": "Run the whole operation from one place — design through fulfilment, without a spreadsheet in sight.",
+        "items": ["Design boards & collections", "Production tasks & routing", "Inventory by location", "Orders, payments, fulfilment"],
+        "windows": [
+          { "title": "Production queue", "rows": [["Pashmina Shawl — AW26", "Design ready"], ["RUN-0442 · ×12", "Rukmini · Bagru"], ["RUN-0443 · ×8", "Kiyo · Srinagar"]] },
+          { "title": "Orders", "rows": [["ORD-1042", "Paid"], ["ORD-1041", "Awaiting label"], ["ORD-1040", "Shipped"]] },
+          { "title": "Inventory", "rows": [["Cashmere yarn", "84 kg"], ["Mulberry silk", "40 m"], ["Indigo dye", "Low · 6 kg"]] }
+        ]
+      },
+      {
+        "stage": "Partners",
+        "title": "For the makers.",
+        "blurb": "Work lands on their phone — accept, update, get paid. No portals to learn, no middlemen.",
+        "items": ["Mobile-first portal", "Task accept / decline", "Live progress & chat", "Payouts in their currency"],
+        "windows": [
+          { "title": "Inbox", "rows": [["New run RUN-0442", "Accept?"], ["New run RUN-0443", "Accept?"]] },
+          { "title": "Live tasks", "rows": [["Handweave", "In progress"], ["Dye — indigo", "Done"], ["Finish & QC", "—"]] },
+          { "title": "Payouts", "rows": [["Payout", "₹24,800"], ["Commission", "5%"], ["Next payout", "Fri"]] }
+        ]
+      },
+      {
+        "stage": "Storefront",
+        "title": "For the wearer.",
+        "blurb": "A storefront on their own domain — with the maker's name on every product page.",
+        "items": ["Headless e-commerce", "Product passport per SKU", "Instagram & FB sync", "Custom domains"],
+        "windows": [
+          { "title": "Storefront", "rows": [["cicilabel.com", "Live"], ["Indigo Pashmina", "€420"], ["Kani stole", "€610"]] },
+          { "title": "Provenance", "rows": [["Maker", "Rukmini · Bagru"], ["Material lot", "LOT-CSH-0098"], ["Certification", "GOTS verified"]] },
+          { "title": "Channels", "rows": [["Instagram", "Catalog synced"], ["Facebook", "Catalog synced"], ["Custom domain", "Connected"]] }
+        ]
+      }
+    ]
+  },
+  "bento": {
+    "eyebrow": "What's inside",
+    "title": "Everything lives on one rail.",
+    "lead": "Design, production, provenance and storefront — one source of truth, both ends of the trade.",
+    "cells": [
+      {
+        "demo": "journey",
+        "title": "Sketch → shipment",
+        "desc": "One garment through the whole system, from first idea to last mile."
+      },
+      {
+        "demo": "passport",
+        "title": "Digital Product Passport",
+        "desc": "Artisan, village, material lot — auditable on every product page.",
+        "passport": {
+          "id": "DPP-2261",
+          "badge": "EU ESPR",
+          "rows": [
+            ["Material", "Cashmere 80 / Silk 20"],
+            ["Maker", "Rukmini · Bagru, IN"],
+            ["Lot", "LOT-CSH-0098"],
+            ["Certification", "GOTS verified"]
+          ]
+        }
+      },
+      {
+        "demo": "runs",
+        "title": "Production runs",
+        "desc": "Accept → start → finish, tracked stitch by stitch, cost rolled up per piece.",
+        "rows": [
+          ["Cut & prep", "ok", "Done"],
+          ["Dye — indigo", "ok", "Done"],
+          ["Handweave", "warn", "In progress"],
+          ["Finish & QC", "", "—"]
+        ]
+      },
+      {
+        "demo": "inventory",
+        "title": "Inventory by location",
+        "desc": "Raw materials tracked across hubs, with reorder alerts that fire themselves.",
+        "rows": [
+          ["Cashmere yarn · Bagru", "", "84 kg"],
+          ["Mulberry silk · Florence", "", "40 m"],
+          ["Indigo dye · Bagru", "warn", "Low · 6 kg"]
+        ]
+      },
+      {
+        "demo": "storefront",
+        "title": "Storefront on your domain",
+        "desc": "Headless commerce, custom domains, channels synced — publish without rebuilding.",
+        "rows": [
+          ["cicilabel.com", "ok", "Live"],
+          ["Instagram", "", "Catalog synced"],
+          ["Facebook", "", "Catalog synced"]
+        ]
+      }
+    ]
+  },
+  "brands": {
+    "eyebrow": "Brands shipping on it",
+    "title": "Same rails. Their stories.",
+    "testimonials": [
+      { "quote": "From sample room to storefront on one rail. We stopped reconciling spreadsheets.", "brand": "LeAtelier", "role": "Founder" },
+      { "quote": "Our partners get tasks on their phones. Production lead time dropped 40%.", "brand": "Cici Label", "role": "Production lead" },
+      { "quote": "The product passport sells the garment for us. Buyers ask for the receipt.", "brand": "Atelier 03", "role": "Director" }
+    ]
+  },
+  "pricing": {
+    "eyebrow": "Pricing",
+    "title": "Pay once. Your client never does.",
+    "lead": "One price for the rails. Fair splits for the makers.",
+    "note": "Not for you? Email us and we'll sort it.",
+    "plans": [
+      {
+        "tag": "Maker",
+        "name": "For the atelier of one",
+        "price": "Free",
+        "period": "/ to start",
+        "desc": "Solo artisans and small studios. Pay as you sell.",
+        "features": [
+          "Storefront on your own domain",
+          "Mobile partner portal",
+          "Payments & payouts in your currency",
+          "Digital Product Passport per SKU"
+        ],
+        "cta": { "label": "Join the waitlist", "href": "#waitlist", "variant": "secondary" },
+        "featured": false
+      },
+      {
+        "tag": "Maison",
+        "name": "For brands & houses",
+        "price": "Custom",
+        "period": "/ per brand",
+        "desc": "Heritage houses and multi-atelier production.",
+        "features": [
+          "Everything in Maker",
+          "Multi-atelier routing",
+          "EU ESPR / DPP compliance by default",
+          "Dedicated onboarding"
+        ],
+        "cta": { "label": "Get a demo", "href": "#demo", "variant": "primary" },
+        "featured": true
+      }
+    ]
+  },
+  "capture": {
+    "eyebrow": "Be early",
+    "title": "First 100 get a fitting.",
+    "lead": "Join the waitlist and we'll pair you with an atelier and a piece — yours, made by name, made by hand.",
+    "placeholder": "you@somewhere.com",
+    "submitLabel": "Join →",
+    "note": "One email per quarter — no marketing slop."
+  },
+  "faq": {
+    "eyebrow": "FAQ",
+    "title": "Questions, answered.",
+    "items": [
+      { "q": "How is provenance actually verified?", "a": "Every piece carries a Digital Product Passport linking artisan, village, material lot and certification — auditable on the product page, EU ESPR-ready." },
+      { "q": "Do makers need a website?", "a": "No. Their storefront, payments and shipping are switched on day one, on their own domain, from a phone-first portal." },
+      { "q": "Who holds the margin?", "a": "The maker. Buyers deal direct — the platform takes a small commission, not a chain of agents." },
+      { "q": "Can I commission a custom piece?", "a": "Yes — describe it, pick an atelier, and track it from sketch to shipment." }
+    ]
+  },
+  "plate": {
+    "eyebrow": "Luna · since 2025",
+    "title": "Run your atelier.",
+    "body": "15+ happy customers, 3+ brands shipping. Tell us what you're making and we'll show you the platform live.",
+    "ctaPrimary": { "label": "Get a demo", "href": "#waitlist" },
+    "ctaSecondary": { "label": "See the platform", "href": "#how" }
+  }
+}

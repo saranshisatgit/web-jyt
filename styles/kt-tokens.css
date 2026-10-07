@@ -16,32 +16,32 @@
 }
 
 :root {
-  /* ---------------- COLOR · SKY ---------------- */
-  /* Sky gradient stops (periwinkle → cool haze → white) */
-  --sky-1:        #d9e1f5;   /* pale periwinkle — sky top */
-  --sky-2:        #e7ebf4;   /* blend */
-  --sky-3:        #eeeef0;   /* cool haze */
+  /* ---------------- COLOR · VESSA PAPER ---------------- */
+  /* Sky gradient stops — flattened to paper white (the /vessa look) */
+  --sky-1:        #ffffff;
+  --sky-2:        #ffffff;
+  --sky-3:        #f5f6f8;
   --sky-glow:     #ffffff;
 
   /* Surface — white / cool-grey haze */
   --bg:           #ffffff;   /* page background */
   --surface:      #ffffff;   /* card / panel surface */
-  --surface-tint: #eeeef0;   /* cool-grey panel */
+  --surface-tint: #f5f6f8;   /* cool-grey panel */
   --bg-deep:      var(--surface-tint);   /* legacy alias */
   --cream:        var(--surface);        /* legacy alias */
   --cream-warm:   var(--surface-tint);   /* legacy alias */
 
-  /* Ink — deep slate-blue (no near-black) */
-  --ink:          #425594;   /* primary text / headings */
-  --ink-soft:     #4e5d80;   /* secondary */
-  --ink-mute:     #596ca6;   /* tertiary blue */
-  --ink-grey:     #a5a5a6;   /* neutral labels */
-  --ink-dark:     #425594;   /* heading on light (legacy alias) */
+  /* Ink — vessa near-black (was slate-blue) */
+  --ink:          #101216;   /* primary text / headings */
+  --ink-soft:     #3f434b;   /* secondary */
+  --ink-mute:     #6a6e76;   /* tertiary */
+  --ink-grey:     #6a6e76;   /* neutral labels */
+  --ink-dark:     #101216;   /* heading on light (legacy alias) */
   --ink-dark-bg:  #1e2540;   /* deep slate panel surface */
 
-  /* Rules / borders */
-  --border:       #c2c2c3;
-  --border-soft:  #dcdce0;
+  /* Rules / borders — vessa hairlines */
+  --border:       #d3d7de;
+  --border-soft:  #e5e8ec;
   --rule:         var(--border);        /* legacy alias */
   --rule-soft:    var(--border-soft);   /* legacy alias */
   --rule-dark:    #34405f;

@@ -56,7 +56,7 @@ export function Footer() {
   ]
 
   return (
-    <footer className="kt-footer" ref={footerRef}>
+    <footer className="kt-footer kt-footer--vessa" ref={footerRef}>
       {/* Rising sky — a periwinkle dawn that lifts up behind the footer as you
           reach the bottom. Aurora blobs drift within it. Reduced-motion: static. */}
       <div className="kt-footer-sky-wrap" aria-hidden>

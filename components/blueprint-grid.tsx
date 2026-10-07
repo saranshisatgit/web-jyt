@@ -11,7 +11,17 @@
  * without visually competing with either.
  */
 
+'use client'
+
+import { usePathname } from 'next/navigation'
+
 export function BlueprintGrid() {
+  const pathname = usePathname()
+
+  // The vessa-style home (now the site's front page) and /vessa paint their
+  // own clean canvas — no graph-paper rails.
+  if (pathname === '/' || pathname?.startsWith('/vessa')) return null
+
   // Horizontal rails at fixed viewport-relative positions.
   // 12.5%, 37.5%, 62.5%, 87.5% — quarter ticks offset by half a quarter
   // so they don't clash with section centers.

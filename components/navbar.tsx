@@ -3,10 +3,10 @@
 import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import Link from 'next/link'
-import { useBrand } from '@/app/context/brand-context'
 import { useMode, type Mode } from '@/app/context/mode-context'
 import { useT } from '@/lib/i18n/use-t'
 import { ModeToggle } from './mode-toggle'
+import { VessaNavbar, type VessaNavItem } from './vessa-navbar'
 
 type NavLink = { href: string; key: string; children?: NavLink[] }
 
@@ -24,59 +24,20 @@ const NAV_LINKS: NavLink[] = [
   },
   { href: '/compare', key: 'nav.compare' },
   { href: '/blog', key: 'nav.journal' },
-  { href: '/about', key: 'nav.about' },
+  {
+    href: '/about',
+    key: 'nav.about',
+    children: [
+      { href: '/company', key: 'nav.company' },
+      { href: '/contact', key: 'nav.offices' },
+      { href: '/map', key: 'nav.map' },
+    ],
+  },
 ]
-
-/** Desktop nav item with an optional hover/focus dropdown of use-case sub-pages. */
-function NavItem({ item, t }: { item: NavLink; t: (key: string) => string }) {
-  const [open, setOpen] = useState(false)
-  if (!item.children) {
-    return <Link href={item.href}>{t(item.key)}</Link>
-  }
-  return (
-    <div
-      style={{ position: 'relative', display: 'inline-flex', alignItems: 'center' }}
-      onMouseEnter={() => setOpen(true)}
-      onMouseLeave={() => setOpen(false)}
-      onFocus={() => setOpen(true)}
-      onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget as Node)) setOpen(false) }}
-    >
-      <Link href={item.href} aria-haspopup="true" aria-expanded={open} style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
-        {t(item.key)}
-        <span aria-hidden style={{ fontSize: 8, opacity: 0.55, transform: open ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }}>▾</span>
-      </Link>
-      {open && (
-        <div style={{ position: 'absolute', top: '100%', left: 0, paddingTop: 12, zIndex: 60 }}>
-          <div
-            style={{
-              background: 'var(--bg)',
-              border: '1px solid var(--rule-soft)',
-              borderRadius: 'var(--r-md)',
-              boxShadow: '0 16px 44px -22px oklch(0 0 0 / 0.32)',
-              padding: 6,
-              minWidth: 200,
-            }}
-          >
-            {item.children.map((c) => (
-              <Link
-                key={c.href}
-                href={c.href}
-                style={{ display: 'block', padding: '9px 12px', borderRadius: 'var(--r-sm)', whiteSpace: 'nowrap', fontSize: 14, color: 'var(--ink)' }}
-              >
-                {t(c.key)}
-              </Link>
-            ))}
-          </div>
-        </div>
-      )}
-    </div>
-  )
-}
 
 const MODES: Mode[] = ['consumer', 'investor', 'platform']
 
 export function Navbar() {
-  const brand = useBrand()
   const { t } = useT()
   const { mode, setMode } = useMode()
   const [menuOpen, setMenuOpen] = useState(false)
@@ -104,6 +65,13 @@ export function Navbar() {
     setMode(m)
     setMenuOpen(false)
   }
+
+  // Desktop items — Solutions and About each open their own mega menu.
+  const items: VessaNavItem[] = NAV_LINKS.map(({ href, key, children }) => ({
+    href,
+    label: t(key),
+    mega: children ? (href === '/about' ? 'about' : 'solutions') : undefined,
+  }))
 
   // Drawer JSX — portalled to <body> so it escapes the ancestor
   // <main className="relative overflow-clip"> which was painting-clipping
@@ -161,37 +129,28 @@ export function Navbar() {
   )
 
   return (
-    <header className="kt-topbar">
-      <div className="container kt-topbar-inner">
-        <Link href="/" className="kt-brand" aria-label={`${brand.wordmark} home`}>
-          <span className="dot" aria-hidden />
-          <span>
-            <strong>{brand.shortName}</strong>
-          </span>
-        </Link>
-        <nav className="kt-nav" aria-label="Primary">
-          {NAV_LINKS.map((item) => (
-            <NavItem key={item.href} item={item} t={t} />
-          ))}
-        </nav>
-        <div className="kt-topbar-actions">
-          <ModeToggle />
-          <button
-            type="button"
-            className={menuOpen ? 'kt-hamburger is-open' : 'kt-hamburger'}
-            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
-            aria-expanded={menuOpen}
-            aria-controls="kt-mobile-drawer"
-            onClick={() => setMenuOpen((v) => !v)}
-          >
-            <span />
-            <span />
-            <span />
-          </button>
-        </div>
-
-        {mounted && createPortal(drawer, document.body)}
-      </div>
-    </header>
+    <>
+      <VessaNavbar
+        items={items}
+        right={
+          <>
+            <ModeToggle />
+            <button
+              type="button"
+              className={menuOpen ? 'kt-hamburger is-open' : 'kt-hamburger'}
+              aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+              aria-expanded={menuOpen}
+              aria-controls="kt-mobile-drawer"
+              onClick={() => setMenuOpen((v) => !v)}
+            >
+              <span />
+              <span />
+              <span />
+            </button>
+          </>
+        }
+      />
+      {mounted && createPortal(drawer, document.body)}
+    </>
   )
 }

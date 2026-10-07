@@ -70,14 +70,12 @@ export function Swatch({ h = 64, w, label, hue = 60 }: { h?: number; w?: number;
 
 export function Card({ children }: { children: ReactNode }) {
   return (
-    <div
-      style={{
-        background: 'var(--bg)',
-        border: '1px solid var(--rule-soft)',
-        borderRadius: 'var(--r-lg)',
-        boxShadow: '0 18px 50px -30px oklch(0 0 0 / 0.35)',
-      }}
-    >
+    <div className="vc-mock">
+      <div className="vc-mock-bar" aria-hidden>
+        <i />
+        <i />
+        <i />
+      </div>
       {children}
     </div>
   )
@@ -275,27 +273,20 @@ export function ScenePlayer({ scenes, holdMs = 3600 }: { scenes: Scene[]; holdMs
   return (
     <div>
       <div
+        className="vc-mock"
         style={{
           position: 'relative',
-          background: 'var(--cream)',
-          border: '1px solid var(--rule)',
-          borderRadius: 'var(--r-md)',
           padding: 'clamp(20px, 2.5vw, 32px)',
           height: 500,
           overflow: 'hidden',
           display: 'flex',
           alignItems: 'center',
-          boxShadow: '0 24px 60px -40px oklch(0 0 0 / 0.30)',
         }}
       >
-        {/* Soft periwinkle depth — drifting Sky aurora behind the cards. */}
-        {!reduce && (
-          <div className="aurora" aria-hidden style={{ opacity: 0.4 }}>
-            <span className="blob b1" />
-            <span className="blob b2" />
-            <span className="blob b3" />
-          </div>
-        )}
+        {/* Vessa moving gradient — a blurred conic wash that drifts behind
+            every scene (the how-glow philosophy, made continuous).
+            Reduced-motion: static. */}
+        {!reduce && <div className="vc-glow" aria-hidden />}
         <div style={{ position: 'relative', zIndex: 1, width: '100%', maxWidth: 560, margin: '0 auto' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
             <span style={{ fontFamily: 'var(--font-mono)', fontSize: 11, fontWeight: 500, letterSpacing: '0.1em', color: 'var(--accent-deep)' }}>

@@ -11,6 +11,7 @@
    below @theme + utility scales (navy-/orange-* remain available for blog prose). */
 @import './kt-tokens.css';
 @import './kt-components.css';
+@import './vessa-chrome.css';
 @import './motion.css';
 @import './medusa-ui-tokens.css';
 

@@ -35,18 +35,18 @@ const BRANDS: Record<BrandKey, BrandConfig> = {
   },
   jaalyantra: {
     key: "jaalyantra",
-    wordmark: "Jaal Yantra",
-    shortName: "JYT",
+    wordmark: "Luna",
+    shortName: "Luna",
     tagline: "Three surfaces. One source of truth.",
-    platformBrandName: "JaalYantra",
+    platformBrandName: "Luna",
     raise: { amount: "€500K", round: "Seed", year: 2026 },
     emails: { primary: "hi@jaalyantra.com", founder: "saransh@jaalyantra.com" },
     geographies: ["Florence", "Bagru", "Sydney"],
     seo: {
-      name: "Jaal Yantra Textiles",
+      name: "Luna",
       domain: "jaalyantra.com",
       description:
-        "A garment with provenance, made by hands you can name. JYT is the production OS for fashion — design, produce, and sell with verifiable traceability.",
+        "A garment with provenance, made by hands you can name. Luna is the production OS for fashion — design, produce, and sell with verifiable traceability.",
     },
   },
 };

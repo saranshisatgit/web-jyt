@@ -8,16 +8,16 @@
    ===================================================================== */
 :root {
   /* Primary button = Medusa `variant="primary"` uses --button-inverted.
-     Map to the Sky deep-blue pill fill. */
-  --button-inverted:          #425594;
-  --button-inverted-hover:    #3b4c86;
-  --button-inverted-pressed:  #354477;
+     Vessa ink-black pill fill — the filled CTA is near-black everywhere. */
+  --button-inverted:          #101216;
+  --button-inverted-hover:    #26282e;
+  --button-inverted-pressed:  #35373d;
 
   /* Contrast foreground on the inverted (primary) button stays white. */
   --contrast-fg-primary:      #ffffff;
 
-  /* Base foreground / interactive accents → Sky ink + brand. */
-  --fg-base:                  #425594;
+  /* Base foreground → vessa near-black ink; interactive accents stay brand. */
+  --fg-base:                  #101216;
   --fg-interactive:           #4670bc;
   --fg-interactive-hover:     #3b4c86;
   --border-interactive:       #4670bc;
