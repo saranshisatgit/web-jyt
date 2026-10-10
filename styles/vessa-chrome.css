@@ -7,18 +7,37 @@
    ===================================================================== */
 
 /* navbar — full-width sticky bar */
-.vc-header { position: sticky; top: 0; z-index: 100; width: 100%; }
+.vc-header {
+  position: sticky; top: 0; z-index: 100; width: 100%;
+  /* auto-hide: slides out of view while scrolling down, back in on up */
+  transition: transform .3s cubic-bezier(.4, 0, .2, 1);
+  will-change: transform;
+}
+.vc-header.is-hidden { transform: translateY(-100%); }
 .vc-header-inner {
   display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
   width: 100%; padding: 10px clamp(1.25rem, 4vw, 4rem);
   border-bottom: 1px solid var(--border);
+  background: transparent;
+  position: relative;
+  transition: box-shadow .25s ease;
+}
+/* The glass backdrop lives on its own composited layer (::before +
+   translate3d) so the blur doesn't re-rasterise — and visibly flicker —
+   every frame while the page scrolls underneath the sticky bar. */
+.vc-header-inner::before {
+  content: "";
+  position: absolute; inset: 0; z-index: -1;
   background: color-mix(in srgb, var(--bg) 82%, transparent);
-  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-  transition: background .25s ease, box-shadow .25s ease;
+  backdrop-filter: blur(10px);
+  transform: translate3d(0, 0, 0);
+  transition: background .25s ease;
 }
 .vc-header.scrolled .vc-header-inner {
-  background: color-mix(in srgb, var(--bg) 96%, transparent);
   box-shadow: 0 10px 30px -16px rgba(16, 18, 22, 0.28);
+}
+.vc-header.scrolled .vc-header-inner::before {
+  background: color-mix(in srgb, var(--bg) 96%, transparent);
 }
 .vc-brand { display: inline-flex; align-items: center; gap: 9px;
   font-weight: 600; letter-spacing: -0.02em; font-size: 15px;
@@ -73,9 +92,15 @@
   text-transform: uppercase; pointer-events: none; }
 
 @media (max-width: 760px) {
+  /* Nav is hidden here — with `1fr auto 1fr` the two 1fr tracks split
+     the leftover and leave the actions column floating mid-page. Pin
+     brand to the left corner and actions to the right corner instead. */
+  .vc-header-inner { grid-template-columns: auto 1fr auto; }
   .vc-nav { display: none; }
   .vc-mega-inner { grid-template-columns: 1fr; }
   .vc-mega-visual { display: none; }
+  /* actions that would crowd the bar next to the hamburger on phones */
+  .vc-hide-mobile { display: none; }
 }
 
 /* ---------------------------------------------------------------------
@@ -106,6 +131,7 @@
 @keyframes vc-glow-spin { to { transform: rotate(360deg); } }
 @media (prefers-reduced-motion: reduce) {
   .vc-glow { animation: none; }
+  .vc-header { transition: none; }
 }
 
 /* ---------------------------------------------------------------------

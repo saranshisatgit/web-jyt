@@ -12,6 +12,7 @@ import { Button } from '@medusajs/ui'
 import { ArrowRight, TriangleRightMini, CheckCircleMiniSolid } from '@medusajs/icons'
 import { JourneyPixelDraw } from '@/components/journey-pixel-draw'
 import { VessaNavbar, type VessaNavItem } from '@/components/vessa-navbar'
+import { MobileNavDrawer, type NavTreeItem } from '@/components/mobile-nav-drawer'
 import homeBlocks from '@/data/home-blocks.json'
 
 /**
@@ -65,6 +66,7 @@ export function VessaHome() {
   const traceHover = useRef(false)
   const [journeyIdx, setJourneyIdx] = useState(0)
   const journeyHover = useRef(false)
+  const [menuOpen, setMenuOpen] = useState(false)
 
   // navbar items for the home landing — Solutions scrolls to the how-it-works
   // section and opens the mega menu; Compare / Journal / About route to
@@ -74,6 +76,24 @@ export function VessaHome() {
     { href: '/compare', label: 'Compare' },
     { href: '/blog', label: 'Journal' },
     { href: '/about', label: 'About', mega: 'about' },
+  ]
+
+  // Mobile drawer tree — same entries with the mega-menu pages nested
+  // under Solutions / About, plus Sign in (hidden from the bar on phones).
+  const mobileItems: NavTreeItem[] = [
+    {
+      href: '#how',
+      label: 'Solutions',
+      children: homeBlocks.megaMenu.map((m) => ({ href: m.href, label: m.title })),
+    },
+    { href: '/compare', label: 'Compare' },
+    { href: '/blog', label: 'Journal' },
+    {
+      href: '/about',
+      label: 'About',
+      children: homeBlocks.aboutMenu.map((m) => ({ href: m.href, label: m.title })),
+    },
+    { href: '/login', label: 'Sign in' },
   ]
 
   // auto-cycle the who/where/how trace terms (pauses on hover)
@@ -133,15 +153,28 @@ export function VessaHome() {
         items={navItems}
         right={
           <>
-            <Button asChild variant="transparent" size="small">
+            <Button asChild variant="transparent" size="small" className="vc-hide-mobile">
               <Link href="/login">Sign in</Link>
             </Button>
             <Button asChild variant="primary" size="small">
               <Link href="#demo">Get a demo</Link>
             </Button>
+            <button
+              type="button"
+              className={menuOpen ? 'kt-hamburger is-open' : 'kt-hamburger'}
+              aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+              aria-expanded={menuOpen}
+              aria-controls="kt-mobile-drawer"
+              onClick={() => setMenuOpen((v) => !v)}
+            >
+              <span />
+              <span />
+              <span />
+            </button>
           </>
         }
       />
+      <MobileNavDrawer open={menuOpen} onClose={() => setMenuOpen(false)} items={mobileItems} />
 
       <div className="vh-main">
         {/* hero */}

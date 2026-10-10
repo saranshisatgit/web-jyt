@@ -1,12 +1,11 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import { createPortal } from 'react-dom'
-import Link from 'next/link'
+import { useState } from 'react'
 import { useMode, type Mode } from '@/app/context/mode-context'
 import { useT } from '@/lib/i18n/use-t'
 import { ModeToggle } from './mode-toggle'
 import { VessaNavbar, type VessaNavItem } from './vessa-navbar'
+import { MobileNavDrawer, type NavTreeItem } from './mobile-nav-drawer'
 
 type NavLink = { href: string; key: string; children?: NavLink[] }
 
@@ -41,25 +40,6 @@ export function Navbar() {
   const { t } = useT()
   const { mode, setMode } = useMode()
   const [menuOpen, setMenuOpen] = useState(false)
-  const [mounted, setMounted] = useState(false)
-
-  // Portal target only exists post-mount; defer rendering the drawer
-  // until then so SSR doesn't try to attach to document.body.
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  // Lock body scroll while the drawer is open so the page underneath
-  // doesn't jitter on touch. Unlocked on close + on unmount.
-  useEffect(() => {
-    if (menuOpen) {
-      const prev = document.body.style.overflow
-      document.body.style.overflow = 'hidden'
-      return () => {
-        document.body.style.overflow = prev
-      }
-    }
-  }, [menuOpen])
 
   const pickMode = (m: Mode) => {
     setMode(m)
@@ -73,60 +53,12 @@ export function Navbar() {
     mega: children ? (href === '/about' ? 'about' : 'solutions') : undefined,
   }))
 
-  // Drawer JSX — portalled to <body> so it escapes the ancestor
-  // <main className="relative overflow-clip"> which was painting-clipping
-  // the fixed drawer on small screens. Uses a plain class toggle
-  // ('is-open') rather than data-open to avoid any boolean stringification
-  // quirks in the production build.
-  const drawer = (
-    <div
-      id="kt-mobile-drawer"
-      className={menuOpen ? 'kt-mobile-drawer is-open' : 'kt-mobile-drawer'}
-      role="dialog"
-      aria-modal="true"
-      aria-hidden={!menuOpen}
-    >
-      <nav className="kt-mobile-nav" aria-label="Mobile primary">
-        {NAV_LINKS.map(({ href, key, children }) => (
-          <div key={href}>
-            <Link href={href} onClick={() => setMenuOpen(false)}>
-              {t(key)}
-            </Link>
-            {children && (
-              <div style={{ display: 'flex', flexDirection: 'column', paddingLeft: 18, marginTop: 4 }}>
-                {children.map((c) => (
-                  <Link
-                    key={c.href}
-                    href={c.href}
-                    onClick={() => setMenuOpen(false)}
-                    style={{ fontSize: 15, opacity: 0.7 }}
-                  >
-                    {t(c.key)}
-                  </Link>
-                ))}
-              </div>
-            )}
-          </div>
-        ))}
-      </nav>
-      <div className="kt-mobile-modes" aria-label="Audience mode">
-        <span className="kt-eyebrow">{t("mode.label")}</span>
-        <div className="kt-mobile-modes-list">
-          {MODES.map((m) => (
-            <button
-              key={m}
-              type="button"
-              onClick={() => pickMode(m)}
-              aria-pressed={mode === m}
-              className={mode === m ? 'is-current' : undefined}
-            >
-              {t("mode." + m)}
-            </button>
-          ))}
-        </div>
-      </div>
-    </div>
-  )
+  // Drawer items — the same tree, with subpages nested under their parent.
+  const drawerItems: NavTreeItem[] = NAV_LINKS.map(({ href, key, children }) => ({
+    href,
+    label: t(key),
+    children: children?.map((c) => ({ href: c.href, label: t(c.key) })),
+  }))
 
   return (
     <>
@@ -150,7 +82,29 @@ export function Navbar() {
           </>
         }
       />
-      {mounted && createPortal(drawer, document.body)}
+      <MobileNavDrawer
+        open={menuOpen}
+        onClose={() => setMenuOpen(false)}
+        items={drawerItems}
+        footer={
+          <div className="kt-mobile-modes" aria-label="Audience mode">
+            <span className="kt-eyebrow">{t("mode.label")}</span>
+            <div className="kt-mobile-modes-list">
+              {MODES.map((m) => (
+                <button
+                  key={m}
+                  type="button"
+                  onClick={() => pickMode(m)}
+                  aria-pressed={mode === m}
+                  className={mode === m ? 'is-current' : undefined}
+                >
+                  {t("mode." + m)}
+                </button>
+              ))}
+            </div>
+          </div>
+        }
+      />
     </>
   )
 }

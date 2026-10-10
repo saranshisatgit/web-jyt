@@ -857,6 +857,10 @@
   display: grid; grid-template-rows: auto 1fr auto;
   opacity: 0; pointer-events: none;
   transition: opacity 320ms ease;
+  /* The three cards exceed short viewports (phones + landscape tablets);
+     let the fixed panel scroll so every card stays reachable. */
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 .kt-fork[data-open="true"] { opacity: 1; pointer-events: auto; }
 .kt-fork-head {
@@ -1149,7 +1153,7 @@ body[data-mode="platform"] [data-aud="investor"] { display: none; }
    inset; opens via the .is-open class set by the navbar state. */
 .kt-mobile-drawer {
   position: fixed;
-  inset: 72px 0 0 0;
+  inset: var(--vc-header-h, 65px) 0 0 0;
   z-index: 110;
   background: var(--bg);
   border-top: 1px solid var(--rule);

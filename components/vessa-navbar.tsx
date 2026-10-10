@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, type ReactNode } from 'react'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
 import Link from 'next/link'
 import { useBrand } from '@/app/context/brand-context'
 import { PixelMosaic } from '@/components/journey-pixel-draw'
@@ -43,15 +43,49 @@ const megaKeys = Object.keys(MENUS) as MegaKey[]
 export function VessaNavbar({ items, right }: { items: VessaNavItem[]; right?: ReactNode }) {
   const brand = useBrand()
   const [scrolled, setScrolled] = useState(false)
+  const [hidden, setHidden] = useState(false)
   const [openMenu, setOpenMenu] = useState<MegaKey | null>(null)
   const [menuIdx, setMenuIdx] = useState(0)
+  const innerRef = useRef<HTMLDivElement>(null)
+  const lastY = useRef(0)
 
-  // solidify the bar once the page has scrolled
+  // Solidify the bar once scrolled (with hysteresis: >32 on, <=8 off so
+  // it can't flap around the threshold while wheel momentum settles —
+  // that read as flicker). And auto-hide: slide away when scrolling down
+  // past 64px, reveal when scrolling up (or near the top), with a 4px
+  // delta deadband so momentum noise doesn't jitter the bar.
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24)
+    const onScroll = () => {
+      const y = window.scrollY
+      const delta = y - lastY.current
+      setScrolled((prev) => (y > 32 ? true : y <= 8 ? false : prev))
+      if (y <= 8) {
+        setHidden(false)
+      } else if (delta > 4 && y > 64) {
+        setHidden(true)
+        setOpenMenu(null)
+      } else if (delta < -4) {
+        setHidden(false)
+      }
+      lastY.current = y
+    }
     onScroll()
     window.addEventListener('scroll', onScroll, { passive: true })
     return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
+  // Publish the real header height as --vc-header-h so the mobile drawer
+  // (fixed, portalled to <body>) can align itself under the sticky bar.
+  useEffect(() => {
+    const el = innerRef.current
+    if (!el) return
+    const update = () => {
+      document.documentElement.style.setProperty('--vc-header-h', `${el.offsetHeight}px`)
+    }
+    update()
+    const ro = new ResizeObserver(update)
+    ro.observe(el)
+    return () => ro.disconnect()
   }, [])
 
   // mega menu: close on Escape
@@ -73,13 +107,13 @@ export function VessaNavbar({ items, right }: { items: VessaNavItem[]; right?: R
 
   return (
     <header
-      className={`vc-header${scrolled ? ' scrolled' : ''}`}
+      className={`vc-header${scrolled ? ' scrolled' : ''}${hidden ? ' is-hidden' : ''}`}
       onMouseLeave={() => setOpenMenu(null)}
       onBlur={(e) => {
         if (!e.currentTarget.contains(e.relatedTarget as Node)) setOpenMenu(null)
       }}
     >
-      <div className="vc-header-inner">
+      <div className="vc-header-inner" ref={innerRef}>
         <Link href="/" className="vc-brand" aria-label={`${brand.wordmark} home`}>
           <span className="dot" aria-hidden />
           {brand.wordmark}
