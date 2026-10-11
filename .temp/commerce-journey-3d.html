@@ -1,0 +1,664 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Commerce Journey — Atelier → Indian cities → Sold (3D prototype)</title>
+<style>
+  :root {
+    --bg-deep: #0b0f1c;
+    --ink: #1e2540;
+    --periwinkle: #7e9bd6;
+    --periwinkle-mid: #5475b4;
+    --periwinkle-light: #b5c0d7;
+    --periwinkle-pale: #d9e1f5;
+    --gold: #f0d9a6;
+    --cream: #eef1f8;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg-deep);
+    color: var(--cream);
+    font-family: "Rethink Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  .serif { font-family: "PS Times", "Times New Roman", Georgia, serif; font-weight: 400; }
+  .mono { font-family: "JetBrains Mono", ui-monospace, "SF Mono", monospace; }
+
+  #track { position: relative; height: 620vh; background: var(--bg-deep); }
+  #pin { position: sticky; top: 0; height: 100vh; overflow: hidden; isolation: isolate; }
+  #canvas { position: absolute; inset: 0; z-index: 0; }
+  #canvas canvas { display: block; }
+
+  #scrim {
+    position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background:
+      radial-gradient(58% 46% at 50% 44%, rgba(4,7,16,0.40), transparent 72%),
+      linear-gradient(to top, rgba(4,7,16,0.58) 0%, transparent 40%),
+      linear-gradient(to right, rgba(4,7,16,0.42) 0%, transparent 44%);
+  }
+
+  #eyebrow {
+    position: absolute; top: clamp(24px, 6vh, 56px); left: 0; right: 0; z-index: 4;
+    display: flex; justify-content: center;
+  }
+  #eyebrow span {
+    font-family: "JetBrains Mono", monospace; font-size: 11px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--periwinkle-light);
+    padding: 6px 14px; border: 1px solid rgba(181,192,215,0.22); border-radius: 999px;
+    background: rgba(20,26,46,0.5);
+  }
+
+  #copy {
+    position: absolute; z-index: 2;
+    left: clamp(24px, 7vw, 96px); bottom: clamp(48px, 12vh, 120px);
+    max-width: min(460px, 82vw);
+  }
+  .beat { display: none; }
+  .beat.on { display: block; animation: beat-in 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); }
+  @keyframes beat-in {
+    from { opacity: 0; transform: translateY(20px); filter: blur(6px); }
+    to   { opacity: 1; transform: translateY(0);    filter: blur(0px); }
+  }
+  .beat-eyebrow {
+    display: block; font-family: "JetBrains Mono", monospace; font-size: 11px;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--periwinkle-light);
+    margin-bottom: 12px; text-shadow: 0 1px 10px rgba(4,7,16,0.5);
+  }
+  .beat-title {
+    font-family: "PS Times", serif; font-weight: 400;
+    font-size: clamp(30px, 4.4vw, 46px); line-height: 1.06;
+    color: var(--cream); margin: 0 0 14px; text-shadow: 0 2px 22px rgba(4,7,16,0.55);
+  }
+  .beat-title em { color: var(--periwinkle-light); font-style: normal; }
+  .beat-blurb {
+    font-size: 16px; line-height: 1.5; color: rgba(214,222,240,0.85); margin: 0;
+    text-shadow: 0 1px 14px rgba(4,7,16,0.5);
+  }
+  .beat-rows { display: grid; gap: 1px; background: rgba(181,192,215,0.14); border-radius: 10px; overflow: hidden; margin-top: 18px; }
+  .beat-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: rgba(20,26,46,0.5); }
+  .beat-row-k { font-size: 12px; color: rgba(181,192,215,0.7); }
+  .beat-row-v { font-family: "JetBrains Mono", monospace; font-size: 12px; color: #dde4f4; }
+
+  #rail {
+    position: absolute; right: clamp(20px, 4vw, 64px); top: 50%; transform: translateY(-50%);
+    z-index: 5; display: flex; align-items: center; gap: 16px;
+  }
+  #rail-track { position: relative; width: 2px; height: 220px; background: rgba(181,192,215,0.22); border-radius: 2px; overflow: hidden; }
+  #rail-fill { position: absolute; inset: 0; transform-origin: top; transform: scaleY(0); background: linear-gradient(180deg, var(--periwinkle), var(--periwinkle-light)); }
+  #rail-ticks { display: flex; flex-direction: column; justify-content: space-between; height: 220px; }
+  .tick { display: flex; align-items: center; gap: 10px; opacity: 0.5; transition: opacity 0.24s ease; }
+  .tick.active, .tick.done { opacity: 1; }
+  .tick-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--periwinkle-light); }
+  .tick.active .tick-dot { background: var(--periwinkle); box-shadow: 0 0 0 4px rgba(126,155,214,0.25); }
+  .tick-label { font-family: "JetBrains Mono", monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--periwinkle-light); }
+
+  #static { display: none; padding: 64px 24px; gap: 28px; }
+  .static-card { max-width: 620px; margin: 0 auto; padding: 28px 24px; border-radius: 12px; border: 1px solid rgba(181,192,215,0.18); background: rgba(20,26,46,0.5); }
+  body.reduced #track { height: auto; }
+  body.reduced #pin { position: relative; height: auto; overflow: visible; }
+  body.reduced #canvas, body.reduced #scrim, body.reduced #rail, body.reduced #eyebrow { display: none; }
+  body.reduced #static { display: grid; }
+
+  @media (max-width: 760px) {
+    #copy { left: 20px; right: 20px; max-width: none; bottom: 88px; }
+    #rail { right: 12px; gap: 8px; }
+    .tick-label { display: none; }
+  }
+</style>
+</head>
+<body>
+  <div id="track">
+    <div id="pin">
+      <div id="canvas"></div>
+      <div id="scrim" aria-hidden="true"></div>
+
+      <div id="eyebrow"><span>Commerce journey · atelier → Indian cities → sold</span></div>
+
+      <div id="copy" aria-live="polite">
+        <div class="beat" data-i="0">
+          <span class="beat-eyebrow">01 · The Atelier</span>
+          <h3 class="beat-title">It starts at the <em>loom</em>.</h3>
+          <p class="beat-blurb">A vetted weaver works the warp in a Bagru workshop — one pass, one thread. The system knows who made it from the very first pick.</p>
+          <div class="beat-rows">
+            <div class="beat-row"><span class="beat-row-k">Weaver</span><span class="beat-row-v">Rukmini · Bagru, IN</span></div>
+            <div class="beat-row"><span class="beat-row-k">Technique</span><span class="beat-row-v">Handloom · kani</span></div>
+          </div>
+        </div>
+
+        <div class="beat" data-i="1">
+          <span class="beat-eyebrow">02 · The Cloth</span>
+          <h3 class="beat-title">Locked into a <em>spec</em>.</h3>
+          <p class="beat-blurb">The finished cloth comes off the loom with its bill of materials, sizes and price resolved — a passport already attached.</p>
+          <div class="beat-rows">
+            <div class="beat-row"><span class="beat-row-k">BOM</span><span class="beat-row-v">Materials + costs</span></div>
+            <div class="beat-row"><span class="beat-row-k">Passport</span><span class="beat-row-v">DPP · EU ESPR</span></div>
+          </div>
+        </div>
+
+        <div class="beat" data-i="2">
+          <span class="beat-eyebrow">03 · Bagru → Delhi</span>
+          <h3 class="beat-title">Routed to <em>vetted hands</em>.</h3>
+          <p class="beat-blurb">The run leaves the village and travels north — accepted, started and tracked stitch by stitch on the partner's phone.</p>
+          <div class="beat-rows">
+            <div class="beat-row"><span class="beat-row-k">Run</span><span class="beat-row-v">RUN-0442 · ×12</span></div>
+            <div class="beat-row"><span class="beat-row-k">Status</span><span class="beat-row-v">Tracked per piece</span></div>
+          </div>
+        </div>
+
+        <div class="beat" data-i="3">
+          <span class="beat-eyebrow">04 · Delhi → Mumbai</span>
+          <h3 class="beat-title">Consolidated and <em>shipped</em>.</h3>
+          <p class="beat-blurb">Consigned in Delhi, moved west to Mumbai — every handoff stamped, every cost rolled up as it travels.</p>
+          <div class="beat-rows">
+            <div class="beat-row"><span class="beat-row-k">Leg</span><span class="beat-row-v">Delhi · Mumbai</span></div>
+            <div class="beat-row"><span class="beat-row-k">Mode</span><span class="beat-row-v">Surface · traceable</span></div>
+          </div>
+        </div>
+
+        <div class="beat" data-i="4">
+          <span class="beat-eyebrow">05 · Mumbai → Chennai</span>
+          <h3 class="beat-title">Made, passported, <em>on the move</em>.</h3>
+          <p class="beat-blurb">South to Bengaluru and on to Chennai — the piece leaves the country with its Digital Product Passport and lands at the door.</p>
+          <div class="beat-rows">
+            <div class="beat-row"><span class="beat-row-k">Route</span><span class="beat-row-v">Mumbai · Bengaluru · Chennai</span></div>
+            <div class="beat-row"><span class="beat-row-k">Delivery</span><span class="beat-row-v">Door · traceable</span></div>
+          </div>
+        </div>
+
+        <div class="beat" data-i="5">
+          <span class="beat-eyebrow">06 · Sold</span>
+          <h3 class="beat-title">Sold on their own <em>domain</em>.</h3>
+          <p class="beat-blurb">Live storefront, real buyer, fair payout — the maker keeps the lion's share and the receipt carries the provenance.</p>
+          <div class="beat-rows">
+            <div class="beat-row"><span class="beat-row-k">Storefront</span><span class="beat-row-v">cicilabel.com · live</span></div>
+            <div class="beat-row"><span class="beat-row-k">Payout</span><span class="beat-row-v">Maker keeps 90%</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="rail" aria-hidden="true">
+        <div id="rail-track"><div id="rail-fill"></div></div>
+        <div id="rail-ticks">
+          <div class="tick"><span class="tick-dot"></span><span class="tick-label">Atelier</span></div>
+          <div class="tick"><span class="tick-dot"></span><span class="tick-label">Cloth</span></div>
+          <div class="tick"><span class="tick-dot"></span><span class="tick-label">Bagru → Delhi</span></div>
+          <div class="tick"><span class="tick-dot"></span><span class="tick-label">Delhi → Mumbai</span></div>
+          <div class="tick"><span class="tick-dot"></span><span class="tick-label">Mumbai → Chennai</span></div>
+          <div class="tick"><span class="tick-dot"></span><span class="tick-label">Sold</span></div>
+        </div>
+      </div>
+
+      <div id="static" aria-label="Artisanal to shipment">
+        <div class="static-card"><span class="beat-eyebrow">01 · The Atelier</span><h3 class="beat-title">It starts at the loom.</h3></div>
+        <div class="static-card"><span class="beat-eyebrow">02 · The Cloth</span><h3 class="beat-title">Locked into a spec.</h3></div>
+        <div class="static-card"><span class="beat-eyebrow">03 · Bagru → Delhi</span><h3 class="beat-title">Routed to vetted hands.</h3></div>
+        <div class="static-card"><span class="beat-eyebrow">04 · Delhi → Mumbai</span><h3 class="beat-title">Consolidated and shipped.</h3></div>
+        <div class="static-card"><span class="beat-eyebrow">05 · Mumbai → Chennai</span><h3 class="beat-title">Made, passported, on the move.</h3></div>
+        <div class="static-card"><span class="beat-eyebrow">06 · Sold</span><h3 class="beat-title">Sold on their own domain.</h3></div>
+      </div>
+    </div>
+  </div>
+
+  <script type="importmap">
+  { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }
+  </script>
+  <script type="module">
+    import * as THREE from "three"
+
+    const BEATS = 6
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    if (reduced) document.body.classList.add("reduced")
+
+    /* ─── DOM: copy beats + rail ─────────────────────────────────────── */
+    const beats = [...document.querySelectorAll(".beat")]
+    const ticks = [...document.querySelectorAll(".tick")]
+    const railFill = document.getElementById("rail-fill")
+    const track = document.getElementById("track")
+
+    function rawProgress() {
+      const total = track.offsetHeight - window.innerHeight
+      const p = -track.getBoundingClientRect().top / total
+      return Math.max(0, Math.min(1, p))
+    }
+    let active = -1
+    function setBeat(i) {
+      if (i === active) return
+      active = i
+      beats.forEach((b, n) => b.classList.toggle("on", n === i))
+      ticks.forEach((t, n) => { t.classList.toggle("active", n === i); t.classList.toggle("done", n < i) })
+    }
+    function setRail(p) { railFill.style.transform = `scaleY(${p})` }
+
+    const pointer = { x: 0, y: 0 }
+    if (!reduced) {
+      window.addEventListener("pointermove", (e) => {
+        pointer.x = Math.max(-1, Math.min(1, (e.clientX - innerWidth / 2) / (innerWidth / 2)))
+        pointer.y = Math.max(-1, Math.min(1, (e.clientY - innerHeight / 2) / (innerHeight / 2)))
+      }, { passive: true })
+    }
+
+    /* ─── renderer / scene / camera / lights ─────────────────────────── */
+    const holder = document.getElementById("canvas")
+    const renderer = new THREE.WebGLRenderer({ antialias: true })
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 1.75))
+    renderer.setSize(holder.clientWidth, holder.clientHeight)
+    holder.appendChild(renderer.domElement)
+
+    const scene = new THREE.Scene()
+    scene.background = new THREE.Color("#0b0f1c")
+    scene.fog = new THREE.Fog("#0b0f1c", 14, 34)
+
+    const camera = new THREE.PerspectiveCamera(42, holder.clientWidth / holder.clientHeight, 0.1, 60)
+    camera.position.set(0.6, 1.7, 3.4)
+
+    scene.add(new THREE.AmbientLight(0xffffff, 0.55))
+    const warm = new THREE.PointLight(0xffd9a0, 0, 14, 1.8)
+    warm.position.set(0, 2.4, 1.8)
+    scene.add(warm)
+    const key = new THREE.DirectionalLight(0x9cbaea, 1.0)
+    key.position.set(4, 6, 5)
+    scene.add(key)
+    const mapLight = new THREE.PointLight(0x7e9bd6, 0, 18, 1.6)
+    mapLight.position.set(0, 6, 4)
+    scene.add(mapLight)
+
+    const smoothstep = (a, b, x) => { const t = Math.max(0, Math.min(1, (x - a) / (b - a))); return t * t * (3 - 2 * t) }
+    const fade = (a, b, x) => 1 - smoothstep(a, b, x)
+    const lerp = THREE.MathUtils.lerp
+    const rand = (i, salt) => { const v = Math.sin(i * salt) * 43758.5453; return v - Math.floor(v) }
+
+    const WOOD = 0x9a6b3f
+    const WOOD_DARK = 0x7a5230
+    const SKIN = 0xd9a066
+    const INDIGO = 0x425594
+    const CLOTH = 0x7e9bd6
+    const GOLD = 0xf0d9a6
+
+    /* ==================================================================
+       1 · WORKSHOP — weaver at a handloom (diorama)
+       ================================================================== */
+    const workshop = new THREE.Group()
+
+    // floor
+    const floor = new THREE.Mesh(
+      new THREE.PlaneGeometry(12, 12),
+      new THREE.MeshStandardMaterial({ color: WOOD_DARK, roughness: 0.9 })
+    )
+    floor.rotation.x = -Math.PI / 2
+    floor.position.y = -0.02
+    workshop.add(floor)
+
+    // back wall + a warm window glow
+    const wall = new THREE.Mesh(
+      new THREE.PlaneGeometry(12, 5),
+      new THREE.MeshStandardMaterial({ color: 0x2a2440, roughness: 1 })
+    )
+    wall.position.set(0, 2.4, -3.4)
+    workshop.add(wall)
+    const windowGlow = new THREE.Mesh(
+      new THREE.PlaneGeometry(1.8, 1.6),
+      new THREE.MeshBasicMaterial({ color: 0xffe9c4 })
+    )
+    windowGlow.position.set(-2.4, 2.5, -3.35)
+    workshop.add(windowGlow)
+
+    // ── the loom (wooden frame + warp threads + cloth) ──
+    const loom = new THREE.Group()
+    const woodMat = new THREE.MeshStandardMaterial({ color: WOOD, roughness: 0.7 })
+    const postGeo = new THREE.BoxGeometry(0.09, 1.5, 0.09)
+    const beamGeo = new THREE.BoxGeometry(2.1, 0.1, 0.1)
+    const postL = new THREE.Mesh(postGeo, woodMat); postL.position.set(-1.05, 0.75, 0)
+    const postR = new THREE.Mesh(postGeo, woodMat); postR.position.set(1.05, 0.75, 0)
+    const beamT = new THREE.Mesh(beamGeo, woodMat); beamT.position.set(0, 1.5, 0)
+    const beamB = new THREE.Mesh(beamGeo, woodMat); beamB.position.set(0, 0.08, 0)
+    loom.add(postL, postR, beamT, beamB)
+
+    // warp threads — vertical lines inside the frame
+    const WARP = 60, SEG = 10
+    const warpPos = []
+    const warpIdx = []
+    for (let i = 0; i < WARP; i++) {
+      const x = (i / (WARP - 1) - 0.5) * 1.9
+      for (let s = 0; s <= SEG; s++) {
+        const y = 0.14 + (s / SEG) * 1.3
+        warpPos.push(x, y, 0)
+      }
+      const b = i * (SEG + 1)
+      for (let s = 0; s < SEG; s++) warpIdx.push(b + s, b + s + 1)
+    }
+    const warpGeo = new THREE.BufferGeometry()
+    warpGeo.setAttribute("position", new THREE.Float32BufferAttribute(warpPos, 3))
+    warpGeo.setIndex(warpIdx)
+    const warpLines = new THREE.LineSegments(warpGeo, new THREE.LineBasicMaterial({ color: CLOTH, transparent: true, opacity: 0.55 }))
+    loom.add(warpLines)
+    const warpBase = warpPos.slice()
+
+    // woven cloth emerging from the loom, forward toward the weaver
+    const clothOut = new THREE.Mesh(
+      new THREE.PlaneGeometry(1.7, 0.9, 48, 24),
+      new THREE.MeshStandardMaterial({ color: CLOTH, roughness: 0.5, side: THREE.DoubleSide })
+    )
+    clothOut.rotation.x = -Math.PI / 2.6
+    clothOut.position.set(0, 0.02, 0.9)
+    clothOut.scale.y = 0.0001
+    loom.add(clothOut)
+
+    // shuttle — the little boat the hand pushes
+    const shuttle = new THREE.Mesh(
+      new THREE.BoxGeometry(0.55, 0.1, 0.14),
+      new THREE.MeshStandardMaterial({ color: GOLD, roughness: 0.5 })
+    )
+    shuttle.position.set(0, 1.1, 0)
+    loom.add(shuttle)
+
+    loom.position.set(0, 0, -0.6)
+    workshop.add(loom)
+
+    // ── the weaver (low-poly figure seated on a stool) ──
+    const figure = new THREE.Group()
+    const stool = new THREE.Mesh(new THREE.BoxGeometry(0.55, 0.42, 0.42), woodMat)
+    stool.position.y = 0.21
+    figure.add(stool)
+
+    const skin = new THREE.MeshStandardMaterial({ color: SKIN, roughness: 0.8 })
+    const head = new THREE.Mesh(new THREE.SphereGeometry(0.21, 24, 18), skin)
+    head.position.y = 1.62
+    figure.add(head)
+    const hair = new THREE.Mesh(new THREE.SphereGeometry(0.22, 20, 14), new THREE.MeshStandardMaterial({ color: 0x2a1a12, roughness: 0.9 }))
+    hair.position.set(0, 1.72, -0.04)
+    hair.scale.set(1, 0.62, 0.9)
+    figure.add(hair)
+
+    const garment = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.62, 0.34), new THREE.MeshStandardMaterial({ color: INDIGO, roughness: 0.7 }))
+    garment.position.y = 1.12
+    figure.add(garment)
+
+    // legs (seated, bent)
+    const legGeo = new THREE.BoxGeometry(0.16, 0.52, 0.16)
+    const legL = new THREE.Mesh(legGeo, new THREE.MeshStandardMaterial({ color: 0x6a5a4a, roughness: 0.8 }))
+    legL.position.set(-0.15, 0.5, 0.05)
+    legL.rotation.x = Math.PI / 2.4
+    const legR = legL.clone(); legR.position.x = 0.15
+    figure.add(legL, legR)
+
+    // arms — the right one weaves (pivots at the shoulder)
+    const armGeo = new THREE.BoxGeometry(0.13, 0.55, 0.13)
+    const armMat = new THREE.MeshStandardMaterial({ color: INDIGO, roughness: 0.7 })
+    const armL = new THREE.Mesh(armGeo, armMat)
+    armL.position.set(-0.32, 1.28, 0); armL.rotation.x = 0.5
+    figure.add(armL)
+
+    const armR = new THREE.Group()
+    armR.position.set(0.32, 1.42, 0)
+    const armRMesh = new THREE.Mesh(armGeo, armMat)
+    armRMesh.position.y = -0.28
+    armR.add(armRMesh)
+    figure.add(armR)
+
+    const handR = new THREE.Mesh(new THREE.SphereGeometry(0.07, 12, 10), skin)
+    handR.position.y = -0.56
+    armR.add(handR)
+
+    figure.position.set(0.15, 0, 1.5)
+    figure.rotation.y = 0.15
+    workshop.add(figure)
+
+    scene.add(workshop)
+
+    /* ==================================================================
+       2 · MAP — stylised India with city route
+       ================================================================== */
+    const map = new THREE.Group()
+    map.visible = false
+
+    // sea
+    const sea = new THREE.Mesh(
+      new THREE.PlaneGeometry(30, 30),
+      new THREE.MeshStandardMaterial({ color: 0x0d1226, roughness: 1 })
+    )
+    sea.rotation.x = -Math.PI / 2
+    sea.position.y = -0.12
+    map.add(sea)
+
+    // India outline (rough, low-poly) — lon/lat → x/z
+    const INDIA = [
+      [74, 35], [77, 35], [79, 34], [81, 34], [84, 33], [88, 32], [90, 31],
+      [94, 30], [97, 28], [96, 25], [93, 24], [89, 22], [87, 21], [85, 19],
+      [82, 17], [80, 13], [79, 10], [78, 8], [77, 8], [76, 10], [74, 14],
+      [72, 18], [70, 21], [69, 23], [68, 24], [70, 26], [72, 27], [73, 30], [74, 33],
+    ]
+    const SX = 0.28, SZ = 0.3
+    const toMap = (lon, lat) => ({ x: (lon - 79) * SX, z: (lat - 22) * SZ })
+    const shape = new THREE.Shape()
+    INDIA.forEach(([lon, lat], i) => {
+      const { x, z } = toMap(lon, lat)
+      if (i === 0) shape.moveTo(x, z); else shape.lineTo(x, z)
+    })
+    const land = new THREE.Mesh(
+      new THREE.ShapeGeometry(shape, 24),
+      new THREE.MeshStandardMaterial({ color: 0x243a63, roughness: 0.85, emissive: 0x101d38, emissiveIntensity: 0.5 })
+    )
+    land.rotation.x = -Math.PI / 2
+    land.position.y = 0.01
+    map.add(land)
+
+    const edge = new THREE.LineSegments(
+      new THREE.EdgesGeometry(land.geometry),
+      new THREE.LineBasicMaterial({ color: 0x7e9bd6, transparent: true, opacity: 0.55 })
+    )
+    edge.rotation.x = -Math.PI / 2
+    edge.position.y = 0.03
+    map.add(edge)
+
+    // city route
+    const CITIES = [
+      { name: "Bagru", sub: "the atelier", lon: 75.9, lat: 26.7 },
+      { name: "Jaipur", sub: "routed", lon: 75.8, lat: 26.9 },
+      { name: "Delhi", sub: "consolidated", lon: 77.2, lat: 28.6 },
+      { name: "Mumbai", sub: "shipped", lon: 72.9, lat: 19.1 },
+      { name: "Bengaluru", sub: "passported", lon: 77.6, lat: 12.97 },
+      { name: "Chennai", sub: "delivered", lon: 80.2, lat: 13.08 },
+    ]
+    const cityPts = CITIES.map((c) => { const p = toMap(c.lon, c.lat); return new THREE.Vector3(p.x, 0.05, p.z) })
+    const routeCurve = new THREE.CatmullRomCurve3(cityPts, false, "centripetal", 0.5)
+
+    // route line (dim) + animated head + parcel
+    const routeSamples = routeCurve.getPoints(240)
+    const routeLine = new THREE.Line(
+      new THREE.BufferGeometry().setFromPoints(routeSamples),
+      new THREE.LineBasicMaterial({ color: 0x7e9bd6, transparent: true, opacity: 0.25 })
+    )
+    map.add(routeLine)
+
+    const parcel = new THREE.Group()
+    const parcelBox = new THREE.Mesh(
+      new THREE.BoxGeometry(0.32, 0.2, 0.32),
+      new THREE.MeshStandardMaterial({ color: 0xe7ebf4, roughness: 0.5 })
+    )
+    const parcelTag = new THREE.Mesh(
+      new THREE.PlaneGeometry(0.2, 0.14),
+      new THREE.MeshBasicMaterial({ color: GOLD })
+    )
+    parcelTag.position.set(0.12, 0.06, 0.12)
+    parcel.add(parcelBox, parcelTag)
+    parcel.position.copy(cityPts[0])
+    map.add(parcel)
+
+    // city pins + labels
+    const pinGeoStem = new THREE.CylinderGeometry(0.02, 0.03, 0.5, 10)
+    const pinGeoHead = new THREE.SphereGeometry(0.07, 16, 12)
+    const cityNodes = CITIES.map((c, i) => {
+      const g = new THREE.Group()
+      const p = cityPts[i]
+      const stem = new THREE.Mesh(pinGeoStem, new THREE.MeshStandardMaterial({ color: 0x7e9bd6, roughness: 0.5 }))
+      stem.position.y = 0.27
+      const head = new THREE.Mesh(pinGeoHead, new THREE.MeshStandardMaterial({ color: 0x7e9bd6, roughness: 0.4 }))
+      head.position.y = 0.55
+      g.add(stem, head)
+      g.position.set(p.x, 0, p.z)
+      map.add(g)
+      return { g, head, name: c.name }
+    })
+
+    // label sprites
+    function makeLabel(text, sub) {
+      const cv = document.createElement("canvas")
+      cv.width = 256; cv.height = 96
+      const ctx = cv.getContext("2d")
+      ctx.font = "600 34px system-ui, sans-serif"
+      ctx.fillStyle = "#eef1f8"
+      ctx.textAlign = "center"
+      ctx.fillText(text, 128, 38)
+      if (sub) {
+        ctx.font = "400 20px ui-monospace, monospace"
+        ctx.fillStyle = "#b5c0d7"
+        ctx.fillText(sub.toUpperCase(), 128, 66)
+      }
+      const tex = new THREE.CanvasTexture(cv)
+      tex.minFilter = THREE.LinearFilter
+      const spr = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, transparent: true, depthWrite: false }))
+      spr.scale.set(1.6, 0.6, 1)
+      spr.position.y = 0.9
+      return spr
+    }
+    const labels = CITIES.map((c, i) => {
+      const spr = makeLabel(c.name, c.sub)
+      spr.position.set(cityPts[i].x, 0, cityPts[i].z)
+      spr.material.opacity = 0
+      map.add(spr)
+      return spr
+    })
+
+    // gold motes at the final city (sold)
+    const GOLD_COUNT = 140
+    const gold = (() => {
+      const pos = new Float32Array(GOLD_COUNT * 3)
+      const base = new Float32Array(GOLD_COUNT * 3)
+      const end = cityPts[cityPts.length - 1]
+      for (let i = 0; i < GOLD_COUNT; i++) {
+        const x = end.x + rand(i, 9.17) * 2.6 - 1.3
+        const z = end.z + rand(i, 22.71) * 2.6 - 1.3
+        base[i * 3 + 0] = x; base[i * 3 + 1] = rand(i, 5.31); base[i * 3 + 2] = z
+        pos[i * 3 + 0] = x; pos[i * 3 + 1] = 0; pos[i * 3 + 2] = z
+      }
+      const geo = new THREE.BufferGeometry()
+      geo.setAttribute("position", new THREE.BufferAttribute(pos, 3))
+      const mat = new THREE.PointsMaterial({ size: 0.09, color: GOLD, transparent: true, opacity: 0, sizeAttenuation: true, depthWrite: false, blending: THREE.AdditiveBlending })
+      return { points: new THREE.Points(geo, mat), geo, mat, base }
+    })()
+    map.add(gold.points)
+
+    scene.add(map)
+
+    /* ==================================================================
+       3 · camera rig + render loop
+       ================================================================== */
+    const eased = { x: 0, y: 0 }
+    let smooth = 0
+
+    const ATELIER_POS = new THREE.Vector3(0.9, 1.75, 3.6)
+    const ATELIER_LOOK = new THREE.Vector3(0, 1.15, -0.4)
+    const MAP_POS = new THREE.Vector3(0, 6.4, 7.4)
+    const MAP_LOOK = new THREE.Vector3(0, 0, 0)
+
+    const clock = new THREE.Clock()
+    function resize() {
+      camera.aspect = holder.clientWidth / holder.clientHeight
+      camera.updateProjectionMatrix()
+      renderer.setSize(holder.clientWidth, holder.clientHeight)
+    }
+    window.addEventListener("resize", resize)
+
+    function frame() {
+      requestAnimationFrame(frame)
+      const t = clock.getElapsedTime()
+      const p = rawProgress()
+      smooth = lerp(smooth, p, 0.12)
+      const beat = Math.floor(p * BEATS + 0.0001)
+      setBeat(Math.min(BEATS - 1, beat))
+      setRail(p)
+
+      // world crossfade: atelier (0→~0.28), map (~0.28→1)
+      const toMap = smoothstep(0.24, 0.36, p)
+      workshop.visible = true
+      map.visible = true
+      workshop.traverse((o) => { if (o.material && o.material.transparent !== undefined) { if (o.material._baseOp == null) o.material._baseOp = o.material.opacity } })
+      // simpler: toggle group visibility with a hard-ish cut is fine, but do a soft
+      // opacity sweep via a single "worldMix" that scales light intensity instead.
+
+      // weave animation (always run; only visible in atelier)
+      const weave = Math.sin(t * 2.4)
+      armR.rotation.x = -0.6 + weave * 0.5
+      shuttle.position.x = Math.sin(t * 2.4) * 0.85
+      shuttle.position.z = 0.08
+      // warp threads sway
+      const arr = warpGeo.attributes.position.array
+      for (let i = 0; i < WARP; i++) {
+        for (let s = 0; s <= SEG; s++) {
+          const o = (i * (SEG + 1) + s) * 3
+          arr[o + 0] = warpBase[o + 0] + Math.sin(t * 1.1 + warpBase[o + 1] * 2.2) * 0.03
+        }
+      }
+      warpGeo.attributes.position.needsUpdate = true
+      // cloth grows out of the loom during beat 1
+      clothOut.scale.y = 0.0001 + smoothstep(0.13, 0.26, p) * 1
+
+      // map journey: parcel moves Bagru → Chennai across beats 2..5
+      const u = smoothstep(0.36, 0.86, p)
+      const at = routeCurve.getPointAt(u)
+      parcel.position.set(at.x, 0.22 + Math.sin(t * 2) * 0.04, at.z)
+      parcel.rotation.y = t * 0.8
+
+      // city activation as the parcel passes
+      const uPerCity = 1 / (CITIES.length - 1)
+      cityNodes.forEach((n, i) => {
+        const reach = Math.max(0, Math.min(1, (u - i * uPerCity) / uPerCity))
+        const scale = 1 + reach * 0.5
+        n.g.scale.setScalar(scale)
+        n.head.material.color.setHex(reach > 0.5 ? GOLD : 0x7e9bd6)
+        n.head.material.emissive = reach > 0.5 ? new THREE.Color(GOLD) : new THREE.Color(0x000000)
+        n.head.material.emissiveIntensity = reach > 0.5 ? 0.5 : 0
+        labels[i].material.opacity = reach > 0.05 ? Math.min(1, reach * 1.4) : 0
+      })
+
+      // gold motes at the end
+      const rise = smoothstep(0.88, 1.0, p)
+      const gArr = gold.geo.attributes.position.array
+      for (let i = 0; i < GOLD_COUNT; i++) {
+        const o = i * 3
+        const seed = gold.base[o + 1]
+        const climb = ((t * (0.35 + seed * 0.5) + seed * 10) % 2.6)
+        gArr[o + 0] = gold.base[o + 0] + Math.sin(t * 0.8 + seed * 6) * 0.1
+        gArr[o + 1] = climb * rise * 1.6
+        gArr[o + 2] = gold.base[o + 2]
+      }
+      gold.geo.attributes.position.needsUpdate = true
+      gold.mat.opacity = 0.9 * rise
+
+      // lights — warm in the atelier, cool over the map
+      warm.intensity = 2.6 * fade(0.24, 0.4, p)
+      mapLight.intensity = 1.4 * smoothstep(0.28, 0.42, p)
+
+      // camera: blend atelier → map pose, then gentle parallax
+      const camMix = smoothstep(0.22, 0.4, smooth)
+      eased.x = lerp(eased.x, pointer.x, 0.06)
+      eased.y = lerp(eased.y, pointer.y, 0.06)
+      const cp = new THREE.Vector3().lerpVectors(ATELIER_POS, MAP_POS, camMix)
+      const cl = new THREE.Vector3().lerpVectors(ATELIER_LOOK, MAP_LOOK, camMix)
+      cp.x += eased.x * (0.4 + camMix * 1.2)
+      cp.y -= eased.y * (0.2 + camMix * 0.5)
+      // during the map, drift the look toward the parcel a little
+      if (camMix > 0.5) cl.lerp(new THREE.Vector3(at.x * 0.4, 0, at.z * 0.4), 0.35)
+      camera.position.set(cp.x, cp.y, cp.z)
+      camera.lookAt(cl.x, cl.y, cl.z)
+
+      renderer.render(scene, camera)
+    }
+
+    if (!reduced) { resize(); frame() }
+  </script>
+</body>
+</html>

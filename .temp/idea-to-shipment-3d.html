@@ -1,0 +1,582 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Idea → Kashmir → Factory → Ready to ship (3D prototype)</title>
+<style>
+  :root {
+    --periwinkle: #7e9bd6;
+    --periwinkle-light: #b5c0d7;
+    --gold: #f0d9a6;
+    --cream: #eef1f8;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: #10192e;
+    color: var(--cream);
+    font-family: "Rethink Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  #track { position: relative; height: 460vh; }
+  #pin { position: sticky; top: 0; height: 100vh; overflow: hidden; isolation: isolate; }
+  #canvas { position: absolute; inset: 0; z-index: 0; }
+  #canvas canvas { display: block; }
+
+  #scrim {
+    position: absolute; inset: 0; z-index: 1; pointer-events: none;
+    background:
+      radial-gradient(58% 46% at 50% 44%, rgba(4,7,16,0.38), transparent 72%),
+      linear-gradient(to top, rgba(4,7,16,0.58) 0%, transparent 40%),
+      linear-gradient(to right, rgba(4,7,16,0.42) 0%, transparent 44%);
+  }
+
+  #eyebrow {
+    position: absolute; top: clamp(24px, 6vh, 56px); left: 0; right: 0; z-index: 4;
+    display: flex; justify-content: center;
+  }
+  #eyebrow span {
+    font-family: "JetBrains Mono", monospace; font-size: 11px; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--periwinkle-light);
+    padding: 6px 14px; border: 1px solid rgba(181,192,215,0.22); border-radius: 999px;
+    background: rgba(20,26,46,0.5);
+  }
+
+  #copy { position: absolute; z-index: 2; left: clamp(24px, 7vw, 96px); bottom: clamp(48px, 12vh, 120px); max-width: min(460px, 82vw); }
+  .beat { display: none; }
+  .beat.on { display: block; animation: beat-in 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); }
+  @keyframes beat-in { from { opacity: 0; transform: translateY(20px); filter: blur(6px); } to { opacity: 1; transform: translateY(0); filter: blur(0px); } }
+  .beat-eyebrow { display: block; font-family: "JetBrains Mono", monospace; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--periwinkle-light); margin-bottom: 12px; text-shadow: 0 1px 10px rgba(4,7,16,0.5); }
+  .beat-title { font-family: "PS Times", serif; font-weight: 400; font-size: clamp(30px, 4.4vw, 46px); line-height: 1.06; color: var(--cream); margin: 0 0 14px; text-shadow: 0 2px 22px rgba(4,7,16,0.55); }
+  .beat-title em { color: var(--periwinkle-light); font-style: normal; }
+  .beat-blurb { font-size: 16px; line-height: 1.5; color: rgba(214,222,240,0.85); margin: 0; text-shadow: 0 1px 14px rgba(4,7,16,0.5); }
+  .beat-rows { display: grid; gap: 1px; background: rgba(181,192,215,0.14); border-radius: 10px; overflow: hidden; margin-top: 18px; }
+  .beat-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: rgba(20,26,46,0.5); }
+  .beat-row-k { font-size: 12px; color: rgba(181,192,215,0.7); }
+  .beat-row-v { font-family: "JetBrains Mono", monospace; font-size: 12px; color: #dde4f4; }
+
+  #rail { position: absolute; right: clamp(20px, 4vw, 64px); top: 50%; transform: translateY(-50%); z-index: 5; display: flex; align-items: center; gap: 16px; }
+  #rail-track { position: relative; width: 2px; height: 220px; background: rgba(181,192,215,0.22); border-radius: 2px; overflow: hidden; }
+  #rail-fill { position: absolute; inset: 0; transform-origin: top; transform: scaleY(0); background: linear-gradient(180deg, var(--periwinkle), var(--periwinkle-light)); }
+  #rail-ticks { display: flex; flex-direction: column; justify-content: space-between; height: 220px; }
+  .tick { display: flex; align-items: center; gap: 10px; opacity: 0.5; transition: opacity 0.24s ease; }
+  .tick.active, .tick.done { opacity: 1; }
+  .tick-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--periwinkle-light); }
+  .tick.active .tick-dot { background: var(--periwinkle); box-shadow: 0 0 0 4px rgba(126,155,214,0.25); }
+  .tick-label { font-family: "JetBrains Mono", monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--periwinkle-light); }
+
+  #static { display: none; padding: 64px 24px; gap: 28px; }
+  .static-card { max-width: 620px; margin: 0 auto; padding: 28px 24px; border-radius: 12px; border: 1px solid rgba(181,192,215,0.18); background: rgba(20,26,46,0.5); }
+  body.reduced #track { height: auto; }
+  body.reduced #pin { position: relative; height: auto; overflow: visible; }
+  body.reduced #canvas, body.reduced #scrim, body.reduced #rail, body.reduced #eyebrow { display: none; }
+  body.reduced #static { display: grid; }
+
+  @media (max-width: 760px) { #copy { left: 20px; right: 20px; max-width: none; bottom: 88px; } #rail { right: 12px; gap: 8px; } .tick-label { display: none; } }
+</style>
+</head>
+<body>
+  <div id="track">
+    <div id="pin">
+      <div id="canvas"></div>
+      <div id="scrim" aria-hidden="true"></div>
+      <div id="eyebrow"><span>Journey · idea → kashmir → factory → ready to ship</span></div>
+
+      <div id="copy" aria-live="polite">
+        <div class="beat" data-i="0">
+          <span class="beat-eyebrow">01 · Idea</span>
+          <h3 class="beat-title">You&rsquo;ve got an <em>idea</em>.</h3>
+          <p class="beat-blurb">A pashmina shirt — relaxed fit, natural indigo, hand-rolled. Notes first, product later.</p>
+          <div class="beat-rows">
+            <div class="beat-row"><span class="beat-row-k">Sketch</span><span class="beat-row-v">Pashmina shirt</span></div>
+            <div class="beat-row"><span class="beat-row-k">Fit</span><span class="beat-row-v">Relaxed · natural indigo</span></div>
+          </div>
+        </div>
+
+        <div class="beat" data-i="1">
+          <span class="beat-eyebrow">02 · Kashmir</span>
+          <h3 class="beat-title">It finds <em>Kashmir</em>.</h3>
+          <p class="beat-blurb">The design travels to the source — the scene turns to snow, and the right maker receives it.</p>
+          <div class="beat-rows">
+            <div class="beat-row"><span class="beat-row-k">Origin</span><span class="beat-row-v">Kashmir · 100% pashmina</span></div>
+            <div class="beat-row"><span class="beat-row-k">Received</span><span class="beat-row-v">New design accepted</span></div>
+          </div>
+        </div>
+
+        <div class="beat" data-i="2">
+          <span class="beat-eyebrow">03 · Factory</span>
+          <h3 class="beat-title">Received &amp; <em>producing</em>.</h3>
+          <p class="beat-blurb">The workshop switches on — looms run and the order is tracked stitch by stitch.</p>
+          <div class="beat-rows">
+            <div class="beat-row"><span class="beat-row-k">Run</span><span class="beat-row-v">RUN-0455 · ×8</span></div>
+            <div class="beat-row"><span class="beat-row-k">Status</span><span class="beat-row-v">Producing</span></div>
+          </div>
+        </div>
+
+        <div class="beat" data-i="3">
+          <span class="beat-eyebrow">04 · Ready to ship</span>
+          <h3 class="beat-title">Ready to <em>ship</em>.</h3>
+          <p class="beat-blurb">The finished shirt hangs, passported — from a sticky note to the last mile.</p>
+          <div class="beat-rows">
+            <div class="beat-row"><span class="beat-row-k">Passport</span><span class="beat-row-v">DPP · EU ESPR</span></div>
+            <div class="beat-row"><span class="beat-row-k">Status</span><span class="beat-row-v">Ready · traceable</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="rail" aria-hidden="true">
+        <div id="rail-track"><div id="rail-fill"></div></div>
+        <div id="rail-ticks">
+          <div class="tick"><span class="tick-dot"></span><span class="tick-label">Idea</span></div>
+          <div class="tick"><span class="tick-dot"></span><span class="tick-label">Kashmir</span></div>
+          <div class="tick"><span class="tick-dot"></span><span class="tick-label">Factory</span></div>
+          <div class="tick"><span class="tick-dot"></span><span class="tick-label">Ready</span></div>
+        </div>
+      </div>
+
+      <div id="static" aria-label="Idea to shipment">
+        <div class="static-card"><span class="beat-eyebrow">01 · Idea</span><h3 class="beat-title">You&rsquo;ve got an idea.</h3><p class="beat-blurb">A pashmina shirt.</p></div>
+        <div class="static-card"><span class="beat-eyebrow">02 · Kashmir</span><h3 class="beat-title">It finds Kashmir.</h3><p class="beat-blurb">The scene turns to snow.</p></div>
+        <div class="static-card"><span class="beat-eyebrow">03 · Factory</span><h3 class="beat-title">Received &amp; producing.</h3><p class="beat-blurb">The looms switch on.</p></div>
+        <div class="static-card"><span class="beat-eyebrow">04 · Ready to ship</span><h3 class="beat-title">Ready to ship.</h3><p class="beat-blurb">Passported, traceable.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <script type="importmap">
+  { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }
+  </script>
+  <script type="module">
+    import * as THREE from "three"
+
+    const BEATS = 4
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    if (reduced) document.body.classList.add("reduced")
+
+    const beats = [...document.querySelectorAll(".beat")]
+    const ticks = [...document.querySelectorAll(".tick")]
+    const railFill = document.getElementById("rail-fill")
+    const track = document.getElementById("track")
+
+    function rawProgress() {
+      const total = track.offsetHeight - window.innerHeight
+      const p = -track.getBoundingClientRect().top / total
+      return Math.max(0, Math.min(1, p))
+    }
+    let active = -1
+    function setBeat(i) {
+      if (i === active) return
+      active = i
+      beats.forEach((b, n) => b.classList.toggle("on", n === i))
+      ticks.forEach((t, n) => { t.classList.toggle("active", n === i); t.classList.toggle("done", n < i) })
+    }
+    function setRail(p) { railFill.style.transform = `scaleY(${p})` }
+
+    const pointer = { x: 0, y: 0 }
+    if (!reduced) {
+      window.addEventListener("pointermove", (e) => {
+        pointer.x = Math.max(-1, Math.min(1, (e.clientX - innerWidth / 2) / (innerWidth / 2)))
+        pointer.y = Math.max(-1, Math.min(1, (e.clientY - innerHeight / 2) / (innerHeight / 2)))
+      }, { passive: true })
+    }
+
+    const holder = document.getElementById("canvas")
+    const renderer = new THREE.WebGLRenderer({ antialias: true })
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 1.75))
+    renderer.setSize(holder.clientWidth, holder.clientHeight)
+    holder.appendChild(renderer.domElement)
+
+    const scene = new THREE.Scene()
+    const camera = new THREE.PerspectiveCamera(42, holder.clientWidth / holder.clientHeight, 0.1, 60)
+    camera.position.set(0, 1.6, 4.6)
+
+    scene.add(new THREE.AmbientLight(0xffffff, 0.6))
+    const key = new THREE.DirectionalLight(0xffffff, 1.1)
+    key.position.set(3, 5, 4)
+    scene.add(key)
+    const warm = new THREE.PointLight(0xffd9a0, 0, 12, 1.8)
+    warm.position.set(-1.5, 2.5, 2)
+    scene.add(warm)
+
+    const smoothstep = (a, b, x) => { const t = Math.max(0, Math.min(1, (x - a) / (b - a))); return t * t * (3 - 2 * t) }
+    const fade = (a, b, x) => 1 - smoothstep(a, b, x)
+    const lerp = THREE.MathUtils.lerp
+    const rand = (i, salt) => { const v = Math.sin(i * salt) * 43758.5453; return v - Math.floor(v) }
+    function easeOutBack(t) { const c1 = 1.70158, c3 = c1 + 1; return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2) }
+
+    const GOLD = 0xf0d9a6
+    const PERI = 0x7e9bd6
+
+    /* ─── palette — four scene moods, crossfaded on scroll ──────────── */
+    const moods = [
+      { p: 0.00, bg: 0xefe7d3, fog: 0xefe7d3, key: 0xffffff, warm: 0xffd9a0 },  // idea · warm paper
+      { p: 0.25, bg: 0xd7e4f0, fog: 0xd7e4f0, key: 0xffffff, warm: 0xffffff },  // kashmir · snow
+      { p: 0.50, bg: 0x10192e, fog: 0x10192e, key: 0x7e9bd6, warm: 0x7e9bd6 },  // factory · slate
+      { p: 0.75, bg: 0x241a0c, fog: 0x241a0c, key: 0xf0d9a6, warm: 0xf0d9a6 },  // ready · gold
+    ]
+    const tmpC = new THREE.Color()
+    function colorAt(p, field) {
+      const c = new THREE.Color()
+      for (let i = 0; i < moods.length - 1; i++) {
+        const a = moods[i], b = moods[i + 1]
+        if (p >= a.p && p <= b.p) {
+          const t = smoothstep(a.p, a.p + (b.p - a.p) * 0.22, p)
+          return c.setHex(a[field]).lerp(tmpC.setHex(b[field]), t)
+        }
+      }
+      return c.setHex(moods[moods.length - 1][field])
+    }
+    scene.background = colorAt(0, "bg")
+    scene.fog = new THREE.Fog(0xefe7d3, 6, 20)
+
+    /* ─── canvas helpers (sticky notes) ─────────────────────────────── */
+    function roundRectPath(ctx, x, y, w, h, r) {
+      ctx.beginPath()
+      ctx.moveTo(x + r, y)
+      ctx.arcTo(x + w, y, x + w, y + h, r)
+      ctx.arcTo(x + w, y + h, x, y + h, r)
+      ctx.arcTo(x, y + h, x, y, r)
+      ctx.arcTo(x, y, x + w, y, r)
+      ctx.closePath()
+    }
+    function shade(hex, amt) {
+      const r = Math.max(0, Math.min(255, ((hex >> 16) & 255) + amt))
+      const g = Math.max(0, Math.min(255, ((hex >> 8) & 255) + amt))
+      const b = Math.max(0, Math.min(255, (hex & 255) + amt))
+      return `rgb(${r},${g},${b})`
+    }
+    function wrapText(ctx, text, x, y, maxW, lh) {
+      const words = text.split(" ")
+      let line = ""
+      let cy = y
+      for (const w of words) {
+        const t = line ? line + " " + w : w
+        if (ctx.measureText(t).width > maxW && line) { ctx.fillText(line, x, cy); line = w; cy += lh }
+        else line = t
+      }
+      if (line) ctx.fillText(line, x, cy)
+    }
+    function noteTexture(hex, text) {
+      const cv = document.createElement("canvas")
+      cv.width = cv.height = 256
+      const ctx = cv.getContext("2d")
+      const bg = "#" + hex.toString(16).padStart(6, "0")
+      ctx.shadowColor = "rgba(0,0,0,0.28)"; ctx.shadowBlur = 16; ctx.shadowOffsetY = 6
+      roundRectPath(ctx, 10, 10, 236, 236, 20); ctx.fillStyle = bg; ctx.fill()
+      ctx.shadowColor = "transparent"
+      const f = 40
+      ctx.fillStyle = shade(hex, -22)
+      ctx.beginPath(); ctx.moveTo(246 - f, 246); ctx.lineTo(246, 246 - f); ctx.lineTo(246, 246); ctx.closePath(); ctx.fill()
+      ctx.fillStyle = "#2a2a33"
+      ctx.font = '600 26px "Comic Sans MS", "Segoe Print", "Bradley Hand", cursive, sans-serif'
+      ctx.textAlign = "left"
+      wrapText(ctx, text, 28, 52, 200, 34)
+      const tex = new THREE.CanvasTexture(cv)
+      tex.colorSpace = THREE.SRGBColorSpace
+      tex.anisotropy = 4
+      return tex
+    }
+    function sketchTexture() {
+      const cv = document.createElement("canvas")
+      cv.width = cv.height = 256
+      const ctx = cv.getContext("2d")
+      ctx.shadowColor = "rgba(0,0,0,0.28)"; ctx.shadowBlur = 16; ctx.shadowOffsetY = 6
+      roundRectPath(ctx, 10, 10, 236, 236, 20); ctx.fillStyle = "#f2d95c"; ctx.fill()
+      ctx.shadowColor = "transparent"
+      const f = 40
+      ctx.fillStyle = "#d9bd3c"
+      ctx.beginPath(); ctx.moveTo(246 - f, 246); ctx.lineTo(246, 246 - f); ctx.lineTo(246, 246); ctx.closePath(); ctx.fill()
+      // shirt sketch
+      ctx.strokeStyle = "#2a2a33"; ctx.lineWidth = 5; ctx.lineJoin = "round"; ctx.lineCap = "round"
+      roundRectPath(ctx, 78, 66, 100, 116, 12); ctx.stroke()
+      ctx.beginPath(); ctx.moveTo(78, 88); ctx.lineTo(48, 126); ctx.lineTo(48, 158); ctx.stroke()
+      ctx.beginPath(); ctx.moveTo(178, 88); ctx.lineTo(208, 126); ctx.lineTo(208, 158); ctx.stroke()
+      ctx.beginPath(); ctx.moveTo(116, 66); ctx.lineTo(128, 90); ctx.lineTo(140, 66); ctx.stroke()
+      ctx.fillStyle = "#2a2a33"
+      for (const y of [104, 124, 144]) { ctx.beginPath(); ctx.arc(128, y, 3, 0, Math.PI * 2); ctx.fill() }
+      ctx.font = '600 22px "Comic Sans MS", cursive, sans-serif'
+      ctx.fillText("Pashmina shirt", 40, 222)
+      const tex = new THREE.CanvasTexture(cv)
+      tex.colorSpace = THREE.SRGBColorSpace
+      return tex
+    }
+
+    function stickyNote(w, h, tex) {
+      const m = new THREE.Mesh(
+        new THREE.PlaneGeometry(w, h),
+        new THREE.MeshStandardMaterial({ map: tex, roughness: 0.9, side: THREE.DoubleSide })
+      )
+      m.scale.setScalar(0.0001)
+      return m
+    }
+
+    /* ==================================================================
+       SCENE 0 · IDEA — sticky notes pop up
+       ================================================================== */
+    const idea = new THREE.Group()
+    const ideaNotes = [
+      { mesh: stickyNote(1.5, 1.5, sketchTexture()), x: 0, y: 1.65, z: 0.1, rz: 0.02, t0: 0.02 },
+      { mesh: stickyNote(0.92, 0.92, noteTexture(0xf2a6c0, "relaxed fit")), x: -1.75, y: 1.4, z: 0.35, rz: 0.14, t0: 0.05 },
+      { mesh: stickyNote(0.96, 0.96, noteTexture(0xa6d0f2, "natural indigo")), x: 1.78, y: 1.35, z: 0.3, rz: -0.11, t0: 0.08 },
+      { mesh: stickyNote(1.0, 1.0, noteTexture(0xb8e6b8, "hand-rolled hem")), x: -1.35, y: 2.35, z: -0.2, rz: 0.06, t0: 0.11 },
+      { mesh: stickyNote(0.9, 0.9, noteTexture(0xd0b8f2, "Kashmir → you")), x: 1.4, y: 2.4, z: -0.3, rz: -0.08, t0: 0.14 },
+    ]
+    ideaNotes.forEach((n) => { n.mesh.position.set(n.x, n.y, n.z); n.mesh.rotation.z = n.rz; idea.add(n.mesh) })
+    scene.add(idea)
+
+    /* ==================================================================
+       SCENE 1 · KASHMIR — snowy peaks + falling snow
+       ================================================================== */
+    const kashmir = new THREE.Group()
+    const ground = new THREE.Mesh(new THREE.PlaneGeometry(14, 14), new THREE.MeshStandardMaterial({ color: 0xe8eef6, roughness: 1 }))
+    ground.rotation.x = -Math.PI / 2; ground.position.y = -0.05
+    kashmir.add(ground)
+    const peaks = [
+      [-3.2, -2.4, 2.6, 0.9, 0xf4f8fc], [-1.4, -3.0, 3.4, 1.1, 0xffffff],
+      [0.4, -2.6, 4.0, 1.2, 0xf4f8fc], [2.4, -2.8, 3.0, 1.0, 0xe4ecf6],
+      [3.6, -2.2, 2.4, 0.9, 0xf4f8fc],
+    ]
+    peaks.forEach(([x, z, h, r, c]) => {
+      const peak = new THREE.Mesh(new THREE.ConeGeometry(r, h, 4), new THREE.MeshStandardMaterial({ color: c, roughness: 0.9, flatShading: true }))
+      peak.position.set(x, h / 2 - 0.05, z)
+      kashmir.add(peak)
+    })
+    const SNOW = 260
+    const snow = (() => {
+      const pos = new Float32Array(SNOW * 3)
+      const base = new Float32Array(SNOW * 3)
+      for (let i = 0; i < SNOW; i++) {
+        base[i * 3 + 0] = rand(i, 12.9) * 12 - 6
+        base[i * 3 + 1] = rand(i, 78.2) * 6
+        base[i * 3 + 2] = rand(i, 37.7) * 8 - 4
+        pos[i * 3 + 0] = base[i * 3 + 0]; pos[i * 3 + 1] = base[i * 3 + 1]; pos[i * 3 + 2] = base[i * 3 + 2]
+      }
+      const geo = new THREE.BufferGeometry(); geo.setAttribute("position", new THREE.BufferAttribute(pos, 3))
+      const mat = new THREE.PointsMaterial({ size: 0.06, color: 0xffffff, transparent: true, opacity: 0.9, depthWrite: false })
+      return { points: new THREE.Points(geo, mat), geo, base }
+    })()
+    kashmir.add(snow.points)
+    // "received" note
+    const received = stickyNote(1.1, 1.1, noteTexture(0xb8e6b8, "Received ✓ new design"))
+    received.position.set(0, 1.9, 0.2)
+    kashmir.add(received)
+    scene.add(kashmir)
+
+    /* ==================================================================
+       SCENE 2 · FACTORY — looms running + conveyor
+       ================================================================== */
+    const factory = new THREE.Group()
+    const facFloor = new THREE.Mesh(new THREE.PlaneGeometry(14, 12), new THREE.MeshStandardMaterial({ color: 0x151d33, roughness: 0.9 }))
+    facFloor.rotation.x = -Math.PI / 2; facFloor.position.y = -0.05
+    factory.add(facFloor)
+
+    function buildLoom() {
+      const g = new THREE.Group()
+      const wood = new THREE.MeshStandardMaterial({ color: 0x8a5a30, roughness: 0.7 })
+      const post = new THREE.BoxGeometry(0.08, 1.1, 0.08)
+      const beam = new THREE.BoxGeometry(1.5, 0.08, 0.08)
+      const pl = new THREE.Mesh(post, wood); pl.position.set(-0.72, 0.55, 0)
+      const pr = new THREE.Mesh(post, wood); pr.position.set(0.72, 0.55, 0)
+      const bt = new THREE.Mesh(beam, wood); bt.position.set(0, 1.1, 0)
+      const bb = new THREE.Mesh(beam, wood); bb.position.set(0, 0.08, 0)
+      g.add(pl, pr, bt, bb)
+      const W = 40, S = 6
+      const pos = [], idx = []
+      for (let i = 0; i < W; i++) {
+        const x = (i / (W - 1) - 0.5) * 1.3
+        for (let s = 0; s <= S; s++) { pos.push(x, 0.12 + (s / S) * 0.9, 0) }
+        const b = i * (S + 1)
+        for (let s = 0; s < S; s++) idx.push(b + s, b + s + 1)
+      }
+      const wgeo = new THREE.BufferGeometry(); wgeo.setAttribute("position", new THREE.Float32BufferAttribute(pos, 3)); wgeo.setIndex(idx)
+      const warp = new THREE.LineSegments(wgeo, new THREE.LineBasicMaterial({ color: PERI, transparent: true, opacity: 0.5 }))
+      g.add(warp)
+      const shuttle = new THREE.Mesh(new THREE.BoxGeometry(0.4, 0.08, 0.1), new THREE.MeshStandardMaterial({ color: GOLD, roughness: 0.5 }))
+      shuttle.position.y = 0.9
+      g.add(shuttle)
+      return { g, warp, wgeo, base: pos.slice(), shuttle }
+    }
+    const looms = [-2.1, -0.7, 0.7, 2.1].map((x) => { const l = buildLoom(); l.g.position.set(x, 0, 0.2); factory.add(l.g); return l })
+
+    // conveyor belt + moving cloth patches
+    const belt = new THREE.Mesh(new THREE.BoxGeometry(6.5, 0.08, 0.7), new THREE.MeshStandardMaterial({ color: 0x22304f, roughness: 0.7 }))
+    belt.position.set(0, 0.05, -1.6)
+    factory.add(belt)
+    const patches = [-2.6, -1.3, 0, 1.3, 2.6].map((x, i) => {
+      const patch = new THREE.Mesh(new THREE.BoxGeometry(0.55, 0.1, 0.5), new THREE.MeshStandardMaterial({ color: i % 2 ? 0x7e9bd6 : 0x5475b4, roughness: 0.6 }))
+      patch.position.set(x, 0.14, -1.6)
+      factory.add(patch)
+      return patch
+    })
+    // hanging work lights
+    const lampMat = new THREE.MeshStandardMaterial({ color: 0xffe9b0, emissive: 0xffd9a0, emissiveIntensity: 1.2 })
+    ;[-1.8, 0, 1.8].forEach((x) => {
+      const lamp = new THREE.Mesh(new THREE.SphereGeometry(0.09, 16, 12), lampMat)
+      lamp.position.set(x, 2.6, 0.2)
+      factory.add(lamp)
+    })
+    scene.add(factory)
+
+    /* ==================================================================
+       SCENE 3 · READY TO SHIP — hanging pashmina shirt
+       ================================================================== */
+    const ready = new THREE.Group()
+    // rack
+    const bar = new THREE.Mesh(new THREE.BoxGeometry(1.6, 0.05, 0.05), new THREE.MeshStandardMaterial({ color: 0x55606f, metalness: 0.4, roughness: 0.5 }))
+    bar.position.y = 2.9
+    ready.add(bar)
+    // hanger + shirt
+    const hanger = new THREE.Group()
+    const hook = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 0.2, 8), new THREE.MeshStandardMaterial({ color: 0x55606f, metalness: 0.4, roughness: 0.4 }))
+    hook.position.y = 0.1
+    const h1 = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.03, 0.03), new THREE.MeshStandardMaterial({ color: 0x55606f, metalness: 0.4, roughness: 0.4 }))
+    h1.rotation.z = -0.28; h1.position.set(-0.22, -0.04, 0)
+    const h2 = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.03, 0.03), new THREE.MeshStandardMaterial({ color: 0x55606f, metalness: 0.4, roughness: 0.4 }))
+    h2.rotation.z = 0.28; h2.position.set(0.22, -0.04, 0)
+    hanger.add(hook, h1, h2)
+    hanger.position.y = 2.9
+    ready.add(hanger)
+
+    const shirt = new THREE.Group()
+    const shirtMat = new THREE.MeshStandardMaterial({ color: 0x9fc0ee, roughness: 0.55 })
+    const body = new THREE.Mesh(new THREE.BoxGeometry(0.62, 0.78, 0.14), shirtMat)
+    const sleeveL = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.5, 0.12), shirtMat)
+    sleeveL.position.set(-0.42, -0.08, 0); sleeveL.rotation.z = 0.6
+    const sleeveR = sleeveL.clone(); sleeveR.position.x = 0.42; sleeveR.rotation.z = -0.6
+    const collar = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.06, 0.16), new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.6 }))
+    collar.position.y = 0.4
+    shirt.add(body, sleeveL, sleeveR, collar)
+    shirt.position.y = 2.2
+    ready.add(shirt)
+
+    // gold motes
+    const GM = 120
+    const motes = (() => {
+      const pos = new Float32Array(GM * 3), base = new Float32Array(GM * 3)
+      for (let i = 0; i < GM; i++) {
+        const x = rand(i, 9.17) * 3 - 1.5, z = rand(i, 22.71) * 3 - 1.5
+        base[i * 3 + 0] = x; base[i * 3 + 1] = rand(i, 5.31); base[i * 3 + 2] = z
+        pos[i * 3 + 0] = x; pos[i * 3 + 1] = 1.6; pos[i * 3 + 2] = z
+      }
+      const geo = new THREE.BufferGeometry(); geo.setAttribute("position", new THREE.BufferAttribute(pos, 3))
+      const mat = new THREE.PointsMaterial({ size: 0.08, color: GOLD, transparent: true, opacity: 0, depthWrite: false, blending: THREE.AdditiveBlending })
+      return { points: new THREE.Points(geo, mat), geo, mat, base }
+    })()
+    ready.add(motes.points)
+    scene.add(ready)
+
+    /* ==================================================================
+       camera poses per scene + render loop
+       ================================================================== */
+    const CAM = [
+      { pos: new THREE.Vector3(0, 1.6, 4.7), look: new THREE.Vector3(0, 1.6, 0) },   // idea
+      { pos: new THREE.Vector3(0, 1.9, 6.4), look: new THREE.Vector3(0, 1.7, -2.2) }, // kashmir
+      { pos: new THREE.Vector3(0, 2.3, 6.6), look: new THREE.Vector3(0, 0.9, 0) },    // factory
+      { pos: new THREE.Vector3(0, 2.2, 4.6), look: new THREE.Vector3(0, 2.3, 0) },    // ready
+    ]
+    function camPoseAt(p) {
+      const x = p * (CAM.length - 1)
+      const i = Math.floor(x)
+      const f = x - i
+      const a = CAM[Math.min(i, CAM.length - 1)]
+      const b = CAM[Math.min(i + 1, CAM.length - 1)]
+      const t = smoothstep(0, 0.6, f)
+      return {
+        pos: new THREE.Vector3().lerpVectors(a.pos, b.pos, t),
+        look: new THREE.Vector3().lerpVectors(a.look, b.look, t),
+      }
+    }
+
+    const eased = { x: 0, y: 0 }
+    const clock = new THREE.Clock()
+    function resize() { camera.aspect = holder.clientWidth / holder.clientHeight; camera.updateProjectionMatrix(); renderer.setSize(holder.clientWidth, holder.clientHeight) }
+    window.addEventListener("resize", resize)
+
+    const sceneGroups = [idea, kashmir, factory, ready]
+    function frame() {
+      requestAnimationFrame(frame)
+      const t = clock.getElapsedTime()
+      const p = rawProgress()
+      const beat = Math.floor(p * BEATS + 0.0001)
+      setBeat(Math.min(BEATS - 1, beat))
+      setRail(p)
+
+      // scene colour
+      scene.background.copy(colorAt(p, "bg"))
+      scene.fog.color.copy(colorAt(p, "fog"))
+      key.color.copy(colorAt(p, "key"))
+      warm.color.copy(colorAt(p, "warm"))
+      warm.intensity = 1.2 * fade(0.62, 0.85, p) + 1.6 * smoothstep(0.78, 1.0, p)
+
+      // scene visibility + pop-in
+      const band = 1 / BEATS
+      sceneGroups.forEach((g, i) => {
+        const start = i * band
+        const on = p >= start - 0.001 && p < start + band
+        g.visible = on
+        if (on) g.scale.setScalar(easeOutBack(smoothstep(start, start + 0.06, p)))
+      })
+
+      // IDEA — sticky notes pop up one by one
+      ideaNotes.forEach((n) => {
+        n.mesh.scale.setScalar(easeOutBack(smoothstep(n.t0, n.t0 + 0.05, p)))
+      })
+
+      // KASHMIR — falling snow + received note pop
+      const sArr = snow.geo.attributes.position.array
+      for (let i = 0; i < SNOW; i++) {
+        const o = i * 3
+        let y = sArr[o + 1] - 0.006
+        if (y < 0) { y = 6; sArr[o + 0] = rand(i * 1.3, 12.9) * 12 - 6 }
+        sArr[o + 1] = y
+        sArr[o + 0] += Math.sin(t + i) * 0.0015
+      }
+      snow.geo.attributes.position.needsUpdate = true
+      received.scale.setScalar(easeOutBack(smoothstep(0.3, 0.36, p)))
+
+      // FACTORY — shuttles shuttle, warp sways, conveyor moves
+      looms.forEach((l, li) => {
+        l.shuttle.position.x = Math.sin(t * 2.6 + li * 1.1) * 0.6
+        const arr = l.wgeo.attributes.position.array
+        for (let i = 0; i < arr.length; i += 3) {
+          arr[i] = l.base[i] + Math.sin(t * 1.3 + l.base[i + 1] * 3) * 0.02
+        }
+        l.wgeo.attributes.position.needsUpdate = true
+      })
+      patches.forEach((patch, i) => {
+        patch.position.x = ((patch.position.x + 0.01 + 3.25) % 6.5) - 3.25
+      })
+
+      // READY — shirt rises + gold motes
+      const rp = smoothstep(0.78, 0.86, p)
+      shirt.position.y = 2.2 + rp * 0.3
+      shirt.rotation.y = Math.sin(t * 0.6) * 0.05
+      const mArr = motes.geo.attributes.position.array
+      const rise = smoothstep(0.84, 1.0, p)
+      for (let i = 0; i < GM; i++) {
+        const o = i * 3
+        const seed = motes.base[o + 1]
+        const climb = ((t * (0.35 + seed * 0.5) + seed * 10) % 2.6)
+        mArr[o + 0] = motes.base[o + 0] + Math.sin(t * 0.8 + seed * 6) * 0.1
+        mArr[o + 1] = 1.6 + climb * rise * 1.5
+        mArr[o + 2] = motes.base[o + 2]
+      }
+      motes.geo.attributes.position.needsUpdate = true
+      motes.mat.opacity = 0.9 * rise
+
+      // camera
+      eased.x = lerp(eased.x, pointer.x, 0.06)
+      eased.y = lerp(eased.y, pointer.y, 0.06)
+      const pose = camPoseAt(p)
+      camera.position.set(pose.pos.x + eased.x * 0.7, pose.pos.y - eased.y * 0.5, pose.pos.z)
+      camera.lookAt(pose.look.x, pose.look.y, pose.look.z)
+
+      renderer.render(scene, camera)
+    }
+
+    if (!reduced) { resize(); frame() }
+  </script>
+</body>
+</html>
