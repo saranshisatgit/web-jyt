@@ -331,5 +331,41 @@
   .vh .hero-pill .live { animation: none; }
 }
 
+/* ---------------------------------------------------------------------
+   MOON — decorative waxing moon rendered inside `.vh`. z-index -1 puts
+   it in the BACKGROUND: above the page paper but behind every other
+   element (sections, cards, header, footer), so it shows through only
+   where the page is transparent. Size/opacity/phase are scroll-driven
+   in the component.
+   --------------------------------------------------------------------- */
+.vc-moon {
+  position: fixed; top: 0; left: 0; z-index: -1;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+/* shimmering moonlight — a breathing, slowly turning halo behind the moon */
+.vc-moon-glow {
+  position: absolute;
+  inset: -45%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side,
+    rgba(214, 228, 255, 0.55),
+    rgba(180, 202, 244, 0.22) 52%,
+    transparent 74%);
+  filter: blur(14px);
+  animation: vc-moon-shimmer 5.5s ease-in-out infinite;
+}
+@keyframes vc-moon-shimmer {
+  0%, 100% { opacity: 0.55; transform: scale(1) rotate(0deg); }
+  50% { opacity: 1; transform: scale(1.18) rotate(10deg); }
+}
+.vc-moon-canvas {
+  display: block;
+  filter: drop-shadow(0 0 18px rgba(190, 205, 235, 0.4));
+}
+@media (prefers-reduced-motion: reduce) {
+  .vc-moon-glow { animation: none; }
+}
+
 /* navbar, mega menu and the vessa footer theme live in
    styles/vessa-chrome.css — global, shared with every route. */

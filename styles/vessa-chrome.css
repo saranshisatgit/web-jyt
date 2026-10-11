@@ -42,7 +42,10 @@
 .vc-brand { display: inline-flex; align-items: center; gap: 9px;
   font-weight: 600; letter-spacing: -0.02em; font-size: 15px;
   color: var(--ink); text-decoration: none; }
-.vc-brand .dot { width: 12px; height: 12px; border-radius: 3px; background: var(--brand); }
+/* the brand mark — a tiny real moon (Luna) */
+.vc-brand-moon { width: 22px; height: 22px; border-radius: 50%;
+  background: url('/images/moon.jpg') center / cover no-repeat;
+  box-shadow: 0 0 0 1px rgba(16, 18, 22, 0.08), 0 1px 4px rgba(16, 18, 22, 0.18); }
 
 /* nav links — color change + slim accent underline, no block fill */
 .vc-nav { display: flex; gap: 2px; justify-self: center; }

@@ -115,7 +115,7 @@ export function VessaNavbar({ items, right }: { items: VessaNavItem[]; right?: R
     >
       <div className="vc-header-inner" ref={innerRef}>
         <Link href="/" className="vc-brand" aria-label={`${brand.wordmark} home`}>
-          <span className="dot" aria-hidden />
+          <span className="vc-brand-moon" aria-hidden />
           {brand.wordmark}
         </Link>
         <nav className="vc-nav" aria-label="Primary">

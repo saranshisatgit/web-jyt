@@ -13,6 +13,7 @@ import { ArrowRight, TriangleRightMini, CheckCircleMiniSolid } from '@medusajs/i
 import { JourneyPixelDraw } from '@/components/journey-pixel-draw'
 import { VessaNavbar, type VessaNavItem } from '@/components/vessa-navbar'
 import { MobileNavDrawer, type NavTreeItem } from '@/components/mobile-nav-drawer'
+import { MoonPhase } from '@/components/moon-phase'
 import homeBlocks from '@/data/home-blocks.json'
 
 /**
@@ -147,6 +148,7 @@ export function VessaHome() {
   return (
     <div className="vh">
       <div className="top-glow" aria-hidden />
+      <MoonPhase />
 
       {/* header — the shared vessa chrome (bar + Solutions mega menu) */}
       <VessaNavbar

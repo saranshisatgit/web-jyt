@@ -498,6 +498,10 @@
   border-top: 1px solid var(--rule);
   overflow: hidden;
   isolation: isolate;
+  /* Paint below the page flow so fixed decorations (the moon) that are
+     scoped inside .vh can sit in front of the footer while still
+     staying behind the page content. */
+  z-index: -1;
 }
 .kt-footer > .container { position: relative; z-index: 1; }
 /* Rising sky layer */
