@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { useBrand } from '@/app/context/brand-context'
 import { useWebsites } from '@/lib/marketing-data'
 import { useLocale } from '@/app/context/locale-context'
@@ -10,6 +11,13 @@ import { useT } from '@/lib/i18n/use-t'
 import { LOCALES } from '@/lib/i18n/config'
 
 export function Footer() {
+  const pathname = usePathname()
+  // A signing link is a document to read and accept — no site footer under it.
+  if (pathname?.startsWith('/agreement')) return null
+  return <SiteFooter />
+}
+
+function SiteFooter() {
   const brand = useBrand()
   const { t } = useT()
   const { locale, setLocale: setAppLocale } = useLocale()

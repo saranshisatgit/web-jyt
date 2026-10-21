@@ -57,6 +57,8 @@ export function ForkOverlay() {
 
   // The home page is a single unified story — no audience gate there.
   if (pathname === '/') return null
+  // A signing link is a document, not a visit to the site — no audience gate.
+  if (pathname?.startsWith('/agreement')) return null
 
   const pick = (m: Mode) => {
     setMode(m)
