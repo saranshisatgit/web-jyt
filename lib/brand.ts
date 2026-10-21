@@ -35,7 +35,7 @@ const BRANDS: Record<BrandKey, BrandConfig> = {
   },
   jaalyantra: {
     key: "jaalyantra",
-    wordmark: "Luna",
+    wordmark: "Luna by JYT",
     shortName: "Luna",
     tagline: "Three surfaces. One source of truth.",
     platformBrandName: "Luna",
@@ -43,7 +43,7 @@ const BRANDS: Record<BrandKey, BrandConfig> = {
     emails: { primary: "hi@jaalyantra.com", founder: "saransh@jaalyantra.com" },
     geographies: ["Florence", "Bagru", "Sydney"],
     seo: {
-      name: "Luna",
+      name: "Luna by JYT",
       domain: "jaalyantra.com",
       description:
         "A garment with provenance, made by hands you can name. Luna is the production OS for fashion — design, produce, and sell with verifiable traceability.",
