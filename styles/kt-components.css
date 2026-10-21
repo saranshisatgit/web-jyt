@@ -498,10 +498,9 @@
   border-top: 1px solid var(--rule);
   overflow: hidden;
   isolation: isolate;
-  /* Paint below the page flow so fixed decorations (the moon) that are
-     scoped inside .vh can sit in front of the footer while still
-     staying behind the page content. */
-  z-index: -1;
+  /* No negative z-index: at -1 the footer painted under <body>'s own
+     background and vanished on every page. The moon already layers
+     inside .vh, and per vessa-home.css it sits behind the footer. */
 }
 .kt-footer > .container { position: relative; z-index: 1; }
 /* Rising sky layer */
