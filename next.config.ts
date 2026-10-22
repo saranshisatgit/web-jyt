@@ -43,6 +43,13 @@ const nextConfig: NextConfig = {
     ],
   },
   turbopack: {},
+  // Global Sourcing Expo Melbourne 2026 booklet. A redirect, not a rewrite: the static
+  // page loads its images and PDF by relative path, so the address must be /booklet/.
+  async redirects() {
+    return [
+      { source: "/melbourne", destination: "/booklet/melbourne-2026.html", permanent: false },
+    ]
+  },
   // Preserve canonical legal URLs while the routes live under /content/[slug].
   // Rewrites keep the address bar showing /privacy-policy and /terms-of-service
   // (no redirect chain, no SEO change). Adding a new CMS page is now just:

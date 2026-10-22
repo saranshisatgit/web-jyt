@@ -1,0 +1,628 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>House of Hands Booklet</title>
+<meta name="description" content="JYT at Global Sourcing Expo Melbourne, 17 to 19 November 2026. Source handmade textiles from many hands across India, with a price you can predict, line by line.">
+<meta property="og:title" content="House of Hands · JYT at Global Sourcing Expo Melbourne 2026">
+<meta property="og:description" content="Source handmade textiles from many hands across India, with a price you can predict, line by line.">
+<meta property="og:image" content="https://jaalyantra.com/booklet/house-of-hands.jpg">
+<meta property="og:url" content="https://jaalyantra.com/melbourne">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rethink+Sans:wght@400;500;600;700&family=Tiro+Devanagari+Hindi&display=swap" rel="stylesheet">
+<style>
+  /* Global Sourcing Expo Melbourne 2026 booklet. 8 pages, A5 portrait.
+     Print: node scripts/booklet-pdf.mjs  (writes melbourne-2026.pdf next to this file) */
+  @font-face {
+    font-family: "PS Times";
+    src: url("../fonts/PSTimesTrial-Regular.otf") format("opentype");
+    font-weight: 400;
+    font-style: normal;
+  }
+  @page { size: 148mm 210mm; margin: 0; }
+
+  :root {
+    --paper: #f6f3ec;
+    --paper-2: #ece7dc;
+    --ink: #15181d;
+    --ink-soft: #3f434b;
+    --ink-mute: #6a6e76;
+    --teal: #4f7f8c;
+    --teal-deep: #2f5560;
+    --teal-pale: #dbe6e8;
+    --poster: #6e97a2;
+    --rule: #cfc8b9;
+    --serif: "PS Times", "Times New Roman", serif;
+    --sans: "Rethink Sans", system-ui, sans-serif;
+    --deva: "Tiro Devanagari Hindi", serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body {
+    background: #8a8f96;
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 8.6pt;
+    line-height: 1.45;
+  }
+  @media screen {
+    body { padding: 24px 16px; }
+    .page { margin: 0 auto 24px; box-shadow: 0 6px 30px rgba(0,0,0,.25); }
+  }
+  @media print { body { background: none; } }
+
+  .page {
+    position: relative;
+    width: 148mm;
+    height: 210mm;
+    overflow: hidden;
+    background: var(--paper);
+    page-break-after: always;
+    break-after: page;
+    padding: 13mm 12mm 11mm;
+    display: flex;
+    flex-direction: column;
+  }
+  .page:last-child { page-break-after: auto; break-after: auto; }
+
+  /* running head + folio */
+  .head {
+    display: flex; justify-content: space-between; align-items: baseline;
+    font-size: 6.4pt; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-mute);
+    border-bottom: .3mm solid var(--rule); padding-bottom: 2mm; margin-bottom: 7mm;
+  }
+  .folio {
+    position: absolute; bottom: 6mm; left: 12mm; right: 12mm;
+    display: flex; justify-content: space-between;
+    font-size: 6.2pt; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-mute);
+  }
+
+  .kicker {
+    font-size: 6.6pt; letter-spacing: .16em; text-transform: uppercase;
+    color: var(--teal-deep); font-weight: 600; margin-bottom: 3mm;
+  }
+  h1, h2 { font-family: var(--serif); font-weight: 400; letter-spacing: -.01em; }
+  h2 { font-size: 22pt; line-height: 1.05; margin-bottom: 4mm; }
+  h2 .accent { color: var(--teal); }
+  h3 { font-size: 9.4pt; font-weight: 600; margin-bottom: 1mm; }
+  p + p { margin-top: 2.4mm; }
+  .lede { font-size: 10pt; line-height: 1.45; color: var(--ink-soft); }
+  .small { font-size: 7.2pt; color: var(--ink-mute); }
+  .deva { font-family: var(--deva); }
+  img.ill { display: block; width: 100%; height: auto; }
+
+  /* ---------- 1 · cover ---------- */
+  .cover { padding: 0; background: var(--poster); color: #fff; }
+  .cover img.poster { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .cover .top {
+    position: absolute; top: 10mm; left: 11mm; right: 11mm;
+    display: flex; justify-content: space-between; align-items: flex-start;
+    font-size: 6.8pt; letter-spacing: .16em; text-transform: uppercase;
+  }
+  .cover .top b { font-weight: 600; }
+  .cover .bottom {
+    position: absolute; left: 11mm; right: 11mm; bottom: 9mm;
+    display: flex; justify-content: space-between; align-items: flex-end; gap: 6mm;
+    font-size: 7pt; line-height: 1.4;
+  }
+  .cover .bottom .event { font-family: var(--serif); font-size: 12pt; line-height: 1.15; }
+  .cover .bottom .right { text-align: right; letter-spacing: .08em; text-transform: uppercase; font-size: 6.4pt; }
+
+  /* ---------- 2 · who we are ---------- */
+  .facts {
+    margin-top: auto;
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    border-top: .3mm solid var(--ink); padding-top: 3mm; gap: 4mm;
+  }
+  .facts .n { font-family: var(--serif); font-size: 22pt; line-height: 1; color: var(--teal-deep); }
+  .facts .l { font-size: 7pt; color: var(--ink-soft); margin-top: 1mm; }
+  .p2-art { width: 62%; margin: 2mm 0 0 auto; }
+
+  /* ---------- 3 · the hands ---------- */
+  .hands { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm 5mm; margin-top: 2mm; }
+  .hand {
+    border-top: .3mm solid var(--rule); padding-top: 2.6mm;
+  }
+  .hand .craft { font-family: var(--serif); font-size: 13pt; line-height: 1.05; color: var(--teal-deep); margin-bottom: 1.2mm; }
+  .hand .who { font-weight: 600; font-size: 8.4pt; }
+  .hand .where { font-size: 7pt; color: var(--ink-mute); margin-bottom: 1.2mm; }
+  .hand p { font-size: 7.6pt; color: var(--ink-soft); }
+  .hand.wide { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; }
+  .hoh-mark {
+    display: flex; align-items: center; gap: 4mm; margin-top: auto;
+    background: var(--poster); color: #fff; border-radius: 2mm; padding: 3.2mm 4mm; overflow: hidden;
+  }
+  .hoh-mark img { width: 15mm; height: 15mm; object-fit: cover; object-position: 50% 32%; border-radius: 1.4mm; }
+  .hoh-mark .t { font-family: var(--serif); font-size: 12pt; line-height: 1.1; }
+  .hoh-mark .d { font-size: 7pt; opacity: .9; }
+
+  /* ---------- 4 · more hands ---------- */
+  .p4 { background: var(--teal-deep); color: #fff; }
+  .p4 .head { color: rgba(255,255,255,.7); border-color: rgba(255,255,255,.25); }
+  .p4 .folio { color: rgba(255,255,255,.6); }
+  .p4 .kicker { color: var(--teal-pale); }
+  .p4 .lede { color: rgba(255,255,255,.85); }
+  .big {
+    font-family: var(--serif); font-size: 64pt; line-height: .9; letter-spacing: -.03em;
+    margin: 2mm 0 1mm;
+  }
+  .big small { font-size: 18pt; letter-spacing: 0; }
+  .ring { display: grid; grid-template-columns: 1fr 1fr; gap: 3mm; margin-top: 5mm; }
+  .ring div { border: .3mm solid rgba(255,255,255,.3); border-radius: 2mm; padding: 3mm; }
+  .ring .n { font-family: var(--serif); font-size: 20pt; line-height: 1; }
+  .ring .l { font-size: 7pt; color: rgba(255,255,255,.8); margin-top: 1mm; }
+  .p4-art { width: 54%; margin: auto 0 0 auto; background: var(--paper); border-radius: 2mm; padding: 2mm; }
+  .p4 .note { font-size: 6.6pt; color: rgba(255,255,255,.65); margin-top: 3mm; max-width: 70%; }
+
+  /* ---------- 5 · buyer flow ---------- */
+  .steps { list-style: none; counter-reset: s; display: flex; flex-direction: column; gap: 2.6mm; }
+  .steps li {
+    counter-increment: s; display: grid; grid-template-columns: 8mm 1fr; gap: 2mm;
+    border-top: .3mm solid var(--rule); padding-top: 2.2mm;
+  }
+  .steps li::before {
+    content: counter(s, decimal-leading-zero);
+    font-family: var(--serif); font-size: 13pt; color: var(--teal); line-height: 1;
+  }
+  .steps p { font-size: 7.8pt; color: var(--ink-soft); }
+  .art-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 3mm; align-items: end; margin-top: auto; }
+
+  /* ---------- 6 · your brand ---------- */
+  .p6 { background: var(--paper-2); }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 3mm 5mm; }
+  .two > div { border-top: .3mm solid var(--rule); padding-top: 2.2mm; }
+  .two p { font-size: 7.6pt; color: var(--ink-soft); }
+  .shot { margin-top: 4mm; border-radius: 2mm; overflow: hidden; border: .3mm solid var(--rule); background: #fff; }
+  .shot img { display: block; width: 100%; }
+  .shot figcaption { font-size: 6.6pt; color: var(--ink-mute); padding: 1.6mm 2.4mm; }
+  .p6-art { display: grid; grid-template-columns: 1fr 1fr; gap: 6mm; align-items: end; margin-top: auto; padding: 0 6mm; }
+
+  /* ---------- 7 · rails ---------- */
+  .rails { display: flex; flex-direction: column; gap: 0; margin-top: 1mm; }
+  .rail {
+    display: grid; grid-template-columns: 30mm 1fr; gap: 3mm;
+    border-top: .3mm solid var(--rule); padding: 2.2mm 0;
+  }
+  .rail .k { font-weight: 600; font-size: 8pt; }
+  .rail p { font-size: 7.6pt; color: var(--ink-soft); }
+  .rail:last-child { border-bottom: .3mm solid var(--rule); }
+  .p7-art { width: 70%; margin: auto auto 0; }
+
+  /* ---------- 8 · back ---------- */
+  .p8 { background: var(--teal-deep); color: #fff; }
+  .p8 h2 { font-size: 26pt; }
+  .p8 .lede { color: rgba(255,255,255,.85); }
+  .contact { display: grid; grid-template-columns: 1fr 30mm; gap: 6mm; align-items: end; margin-top: 6mm; }
+  .contact dl { display: grid; grid-template-columns: 17mm 1fr; gap: 1.6mm 3mm; font-size: 8pt; }
+  .contact dt { color: rgba(255,255,255,.6); font-size: 6.6pt; letter-spacing: .12em; text-transform: uppercase; padding-top: .6mm; }
+  .qr { background: var(--paper); border-radius: 2mm; padding: 2.4mm; }
+  .qr img { display: block; width: 100%; }
+  .qr span { display: block; color: var(--ink); text-align: center; font-size: 6.2pt; margin-top: 1.4mm; }
+  .p8-art { width: 46%; margin: 4mm 0 0; background: var(--paper); border-radius: 2mm; padding: 2mm; }
+  .entities {
+    margin-top: auto; border-top: .3mm solid rgba(255,255,255,.25); padding-top: 3mm;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; font-size: 6.8pt; color: rgba(255,255,255,.75);
+  }
+  .entities b { color: #fff; font-weight: 600; display: block; }
+
+  /* ---------- fit pass: illustrations sized by height so text never gets pushed off ---------- */
+  .page > * { flex-shrink: 0; }
+  .cover img.poster {
+    inset: auto; top: 0; left: 50%; transform: translateX(-50%);
+    width: 134mm; height: auto;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 7mm, #000 calc(100% - 7mm), transparent 100%);
+            mask-image: linear-gradient(90deg, transparent 0, #000 7mm, #000 calc(100% - 7mm), transparent 100%);
+  }
+  .cover .top, .cover .bottom { z-index: 1; }
+  .cover .bottom { border-top: .3mm solid rgba(255,255,255,.45); padding-top: 3mm; }
+  img.ill.p2-art { width: auto; height: 50mm; margin: 4mm 0 0 auto; }
+  .hands { gap: 6mm 5mm; margin-top: 3mm; }
+  .hand .craft { font-size: 15pt; }
+  .hand p { font-size: 8.2pt; }
+  .hoh-mark img { width: 22mm; height: 22mm; }
+  .ring div { border: 0; padding: 0; border-radius: 0; }
+  .ring > div { border: .3mm solid rgba(255,255,255,.3); border-radius: 2mm; padding: 3mm; }
+  img.ill.p4-art { width: auto; height: 44mm; margin: auto 0 0 auto; }
+  .p4 .note { margin: 3mm 0 4mm; max-width: 80%; }
+  .art-row { display: flex; justify-content: space-between; align-items: flex-end; padding-bottom: 3mm; }
+  .art-row img.ill { width: auto; height: 34mm; }
+  .shot img { height: 42mm; object-fit: cover; object-position: top; }
+  .p6-art { display: flex; justify-content: space-around; align-items: flex-end; padding: 0 0 3mm; }
+  .p6-art img.ill { width: auto; height: 44mm; }
+  img.ill.p7-art { width: auto; height: 50mm; margin: auto auto 3mm; }
+  /* page 4 · partner chain */
+  .p4 .big { font-size: 50pt; }
+  .mix-title { font-family: var(--serif); font-weight: 400; font-size: 15pt; margin: 6mm 0 1.6mm; border-top: .3mm solid rgba(255,255,255,.3); padding-top: 4mm; }
+  .chain { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2mm; margin: 3.4mm 0; }
+  .chain div { border: .3mm solid rgba(255,255,255,.35); border-radius: 2mm; padding: 2.4mm; position: relative; }
+  .chain div + div::before { content: "→"; position: absolute; left: -2.2mm; top: 50%; transform: translate(-50%, -50%); color: var(--teal-pale); font-size: 8pt; }
+  .chain span { display: block; font-size: 6.4pt; letter-spacing: .1em; text-transform: uppercase; color: var(--teal-pale); }
+  .chain b { display: block; font-family: var(--serif); font-weight: 400; font-size: 10.5pt; margin-top: .6mm; }
+  .p4 .note { margin-top: 3mm; }
+  img.ill.p4-art { height: 40mm; margin: auto 0 0 auto; }
+  .app img.ill { width: 100%; height: auto; }
+  /* page 7 · app callout */
+  .rail { grid-template-columns: 34mm 1fr; }
+  .app { margin-top: auto; display: grid; grid-template-columns: 44mm 1fr; gap: 4mm; align-items: center; background: var(--teal-pale); border-radius: 2mm; padding: 3.4mm 4mm; margin-bottom: 3mm; }
+  .app .t { font-family: var(--serif); font-size: 12pt; line-height: 1.1; margin-bottom: 1.4mm; color: var(--teal-deep); }
+  .app p { font-size: 7.6pt; color: var(--ink-soft); }
+  img.ill.p8-art { width: auto; height: 50mm; margin: 6mm auto 0; }
+
+  /* ---------- v3: cover shows the whole artwork, no flat colour over it ---------- */
+  .cover img.poster {
+    inset: 0; left: 0; transform: none; width: 100%; height: 100%;
+    object-fit: cover; object-position: 50% 100%;
+    -webkit-mask-image: none; mask-image: none;
+  }
+  .cover-foot { position: absolute; left: 11mm; right: 11mm; bottom: 6mm; z-index: 1; color: #fff; }
+  .cover-foot .event { font-family: var(--serif); font-size: 10.5pt; line-height: 1.2; margin-bottom: 1.2mm; }
+  .cover-foot .meta { display: flex; justify-content: space-between; font-size: 5.8pt; letter-spacing: .14em; text-transform: uppercase; opacity: .9; }
+
+  /* page 2 · the network */
+  .network { display: grid; grid-template-columns: 1fr 1fr; gap: 3mm 5mm; margin: 4mm 0 4mm; }
+  .network > div { border-top: .3mm solid var(--teal); padding-top: 2mm; }
+  .network h3 { color: var(--teal-deep); }
+  .network p { font-size: 7.6pt; color: var(--ink-soft); }
+  .facts .n { white-space: nowrap; }
+
+  /* page 4 · exchange */
+  .p4 h2 { color: #fff; }
+  .p4 .accent-l { color: var(--teal-pale); }
+  .exchange { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3mm; }
+  .exchange > div { border-top: .3mm solid rgba(255,255,255,.35); padding-top: 2mm; }
+  .exchange .x { display: block; font-family: var(--serif); font-size: 12pt; margin-bottom: 1mm; color: var(--teal-pale); }
+  .exchange p { font-size: 7.6pt; color: rgba(255,255,255,.85); }
+
+  /* page 5 · pills */
+  .pills { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.4mm; margin: 4mm 0 4mm; }
+  .pills > div { background: var(--teal-pale); border-radius: 2mm; padding: 2.4mm 2.8mm; }
+  .pills b { display: block; font-family: var(--serif); font-weight: 400; font-size: 11pt; color: var(--teal-deep); }
+  .pills span { font-size: 6.8pt; color: var(--ink-soft); }
+  .steps { gap: 2mm; }
+  .steps li { padding-top: 1.8mm; }
+  .steps p { font-size: 7.5pt; }
+
+  /* page 6 · case */
+  .p6 .shot { margin: 1mm 0 4mm; }
+  .p6 .shot img { height: 38mm; }
+  blockquote { font-family: var(--serif); font-size: 12pt; line-height: 1.25; color: var(--teal-deep); margin: 4mm 0 0; padding-left: 4mm; border-left: .6mm solid var(--teal); }
+  blockquote cite { display: block; font-family: var(--sans); font-style: normal; font-size: 7pt; color: var(--ink-mute); margin-top: 1.4mm; }
+  .yours { margin-top: auto; display: grid; grid-template-columns: 30mm 1fr; gap: 4mm; align-items: center; border-top: .3mm solid var(--rule); padding: 3mm 0 3mm; }
+  .yours img.ill { width: 100%; height: auto; max-height: 36mm; object-fit: contain; }
+  .yours p { font-size: 7.6pt; color: var(--ink-soft); }
+
+  /* page 7 · environment */
+  .env { margin-top: 3.4mm; border: .3mm solid var(--teal); border-radius: 2mm; padding: 3mm 4mm; }
+  .env .t { font-family: var(--serif); font-size: 12pt; color: var(--teal-deep); margin-bottom: 1mm; }
+  .env p { font-size: 7.6pt; color: var(--ink-soft); }
+  .env-row { display: flex; gap: 6mm; margin-top: 2mm; font-size: 7pt; color: var(--ink-mute); }
+  .env-row b { color: var(--teal-deep); font-weight: 600; }
+  .rail { padding: 1.2mm 0; }
+  .page .env { margin-top: 2.4mm; padding: 2.6mm 3.6mm; }
+  .page .app { margin-top: 2.4mm; margin-bottom: 5mm; padding: 2.4mm 3.6mm; grid-template-columns: 32mm 1fr; }
+  .page .app p { font-size: 7.2pt; }
+  table.cost { width: 100%; border-collapse: collapse; margin: 2mm 0 1.6mm; font-size: 7.2pt; }
+  table.cost th { text-align: left; font-weight: 600; font-size: 6.4pt; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-mute); border-bottom: .3mm solid var(--rule); padding: 0 0 1mm; }
+  table.cost td { border-bottom: .2mm solid var(--rule); padding: 1.1mm 0; color: var(--ink-soft); }
+  table.cost td:last-child, table.cost th:last-child { text-align: right; font-weight: 600; color: var(--teal-deep); }
+  .cost-note { font-size: 6.6pt !important; color: var(--ink-mute) !important; }
+  .app { margin-bottom: 2mm; }
+  img.ill.fill-art { width: auto; height: 42mm; margin: auto auto 3mm; }
+  .p4 .mix-title { margin-top: 4mm; padding-top: 3mm; }
+  .chain3 { grid-template-columns: repeat(3, 1fr); margin-bottom: 1.4mm; }
+  .chain i { display: block; font-style: normal; font-size: 6.4pt; color: rgba(255,255,255,.7); margin-top: .4mm; }
+  .chain-cap { font-size: 6.8pt; color: rgba(255,255,255,.7); margin-bottom: 1mm; }
+  .hubs { display: grid; grid-template-columns: 1fr 1fr; gap: 1.4mm 5mm; margin-top: 1mm; }
+  .hubs div { display: flex; justify-content: space-between; gap: 2mm; border-bottom: .2mm solid rgba(255,255,255,.2); padding-bottom: 1mm; font-size: 7pt; }
+  .hubs b { font-weight: 600; white-space: nowrap; }
+  .hubs span { color: var(--teal-pale); text-align: right; }
+  .p4 .note { margin-top: 0; }
+  .art-row img.ill { height: 20mm; }
+  .art-row { padding-top: 3mm; }
+
+  /* ---------- v4: predictable pricing ---------- */
+  .build { border-top: .3mm solid var(--ink); margin: 1mm 0 3.4mm; }
+  .build .row { display: grid; grid-template-columns: 20mm 1fr 20mm; gap: 2mm; align-items: baseline; padding: 1.5mm 0; border-bottom: .2mm solid var(--rule); }
+  .build .k { font-weight: 600; font-size: 8pt; }
+  .build .d { font-size: 7.2pt; color: var(--ink-soft); }
+  .build .v { text-align: right; font-size: 8.4pt; font-variant-numeric: tabular-nums; }
+  .build .sub { background: var(--paper-2); padding-left: 1.6mm; padding-right: 1.6mm; }
+  .build .total { border-bottom: .3mm solid var(--ink); }
+  .build .total .k, .build .total .v { font-family: var(--serif); font-weight: 400; font-size: 13pt; color: var(--teal-deep); }
+  .rules { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.4mm; margin-bottom: 3.6mm; }
+  .rules > div { background: var(--teal-pale); border-radius: 2mm; padding: 2.4mm 2.6mm; }
+  .rules b { display: block; font-family: var(--serif); font-weight: 400; font-size: 10.5pt; color: var(--teal-deep); margin-bottom: .6mm; }
+  .rules span { font-size: 6.8pt; color: var(--ink-soft); line-height: 1.4; display: block; }
+  .t2 { font-family: var(--serif); font-size: 12pt; color: var(--teal-deep); }
+  table.cost td { font-variant-numeric: tabular-nums; }
+  .safe { margin-top: 5mm; border-top: .3mm solid rgba(255,255,255,.3); padding-top: 3mm; }
+  .safe .t3 { font-family: var(--serif); font-size: 13pt; margin-bottom: 2mm; }
+  .safe > div:not(.t3) { display: grid; grid-template-columns: 36mm 1fr; gap: 3mm; padding: 1.3mm 0; border-bottom: .2mm solid rgba(255,255,255,.18); font-size: 7.4pt; }
+  .safe b { font-weight: 600; }
+  .safe span { color: rgba(255,255,255,.82); }
+  .page .app.app-dark { margin: 4mm 0 0; }
+  .p8 .contact { margin-top: 5mm; }
+
+  /* web view only: download bar, and each A5 page scaled to fit a phone. Never printed. */
+  .webbar { display: none; }
+  @media screen {
+    body { padding-top: 0; }
+    .webbar {
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px;
+      max-width: 148mm; margin: 0 auto 20px; padding: 16px 0 0;
+      font-family: var(--sans); font-size: 14px; color: #fff;
+    }
+    .webbar b { font-family: var(--serif); font-weight: 400; font-size: 20px; display: block; }
+    .webbar span { opacity: .85; }
+    .webbar a {
+      display: inline-block; padding: 10px 16px; border-radius: 999px;
+      background: var(--teal-deep); color: #fff; text-decoration: none; font-weight: 600;
+    }
+    .webbar a:hover, .webbar a:focus-visible { background: var(--ink); outline: 2px solid #fff; outline-offset: 2px; }
+    .page { zoom: var(--fit, 1); }
+  }
+</style>
+</head>
+<body>
+
+<header class="webbar">
+  <div><b>House of Hands</b><span>JYT at Global Sourcing Expo Melbourne · 17 to 19 November 2026</span></div>
+  <a href="melbourne-2026.pdf" download="JYT-House-of-Hands-Melbourne-2026.pdf">Download PDF</a>
+</header>
+
+<!-- 1 · COVER -->
+<section class="page cover">
+  <img class="poster" src="house-of-hands.jpg" alt="House of Hands, हाथ का काम">
+  <div class="cover-foot">
+    <div class="event">Global Sourcing Expo Melbourne · 17 to 19 November 2026</div>
+    <div class="meta"><span>JYT · Jaal Yantra Textiles · Luna by JYT</span><span>Handmade in India · Made to order</span></div>
+  </div>
+</section>
+
+<!-- 2 · WHO WE ARE -->
+<section class="page">
+  <div class="head"><span>Who we are</span><span>JYT · House of Hands</span></div>
+  <div class="kicker">Jaal Yantra Textiles</div>
+  <h2>We bring the makers <span class="accent">out of the back room.</span></h2>
+  <p class="lede">The people who make a cloth or a garment are usually lost somewhere between the workshop and the shop. Our work is to bring them out, so the person buying knows where it comes from and who made it.</p>
+  <p style="margin-top:3mm">We are a textile company from India and a member of the Handloom Export Promotion Council (HEPC). Melbourne is our first exhibition as members. It is not only weavers we work with, it is a network:</p>
+  <div class="network">
+    <div><h3>Weavers</h3><p>Handloom cloth by the metre, from cotton and linen to wool, silk and Pashmina.</p></div>
+    <div><h3>Designers</h3><p>Who turn a brief, a sketch or a mood into a garment that can be made.</p></div>
+    <div><h3>Tailors &amp; stitching units</h3><p>Many work on their own or in a small unit, cutting, stitching and finishing.</p></div>
+    <div><h3>Collectives</h3><p>Groups of artisans who make and sell together, like the ones in House of Hands.</p></div>
+  </div>
+  <p>Over time we have worked with each of them to build one streamlined way of sourcing, run on <b>Luna</b>, our production platform, where you can see who is doing what.</p>
+  <img class="ill fill-art" src="illustrations/team-desk.svg" alt="">
+  <div class="facts">
+    <div><div class="n">33</div><div class="l">partners producing on Luna today</div></div>
+    <div><div class="n">15</div><div class="l">online stores running on Luna</div></div>
+    <div><div class="n">3.5M+</div><div class="l">handloom weavers mapped from India's Handloom Census</div></div>
+  </div>
+  <div class="folio"><span>02</span><span>jaalyantra.com</span></div>
+</section>
+
+<!-- 3 · THE HANDS -->
+<section class="page">
+  <div class="head"><span>House of Hands</span><span class="deva">हाथ का काम</span></div>
+  <div class="kicker">The first artists</div>
+  <h2>The hands <span class="accent">behind the cloth.</span></h2>
+  <div class="hands">
+    <div class="hand">
+      <div class="craft">Kala cotton</div>
+      <div class="who">Haresh ji · HR Handloom</div>
+      <div class="where">Bhujodi, Kutch</div>
+      <p>Constant and persistent about keeping kala cotton alive, an old rain-fed cotton of Kutch.</p>
+    </div>
+    <div class="hand">
+      <div class="craft">Tangaliya</div>
+      <div class="who">Mukesh Bhai Parmar · Tangaliya House</div>
+      <div class="where">Surendranagar, Gujarat</div>
+      <p>The dotted Tangaliya weave, where each dot is a small twist of yarn worked into the warp by hand.</p>
+    </div>
+    <div class="hand">
+      <div class="craft">Pashmina</div>
+      <div class="who">Mustaq · Unique Pashmina</div>
+      <div class="where">Srinagar, Kashmir</div>
+      <p>Pashmina shawls and stoles, woven in Srinagar.</p>
+    </div>
+    <div class="hand">
+      <div class="craft">Handwoven wool</div>
+      <div class="who">Azmat Handloom</div>
+      <div class="where">Pulwama, Kashmir</div>
+      <p>Handwoven wool fabric, made on the loom by hand.</p>
+    </div>
+    <div class="hand wide">
+      <div>
+        <div class="craft">Linen, cotton &amp; silk</div>
+        <div class="who">GOF · Ghosh &amp; Organic Fashionary</div>
+        <div class="where">Murshidabad, West Bengal</div>
+      </div>
+      <p>Handloom linen, cotton and silk by the metre and as finished pieces. GOF also sells direct to customers made to order on their own Luna store, gof.asia.</p>
+    </div>
+  </div>
+  <div class="hoh-mark">
+    <img src="house-of-hands.jpg" alt="">
+    <div>
+      <div class="t">Meet them at the stand</div>
+      <div class="d">Fabrics and garments from these artists are on show in Melbourne.</div>
+    </div>
+  </div>
+  <div class="folio"><span>03</span><span>House of Hands</span></div>
+</section>
+
+<!-- 4 · MORE THAN ONE PARTNER -->
+<section class="page p4">
+  <div class="head"><span>More than one partner</span><span>How the hands exchange</span></div>
+  <div class="kicker">Not tied to one workshop</div>
+  <h2>Choose more than <span class="accent-l">one partner.</span></h2>
+  <p class="lede">You are not limited to what one workshop can make. One order can be split by stage, each with its own partner, so it never rests on a single workshop. If one is busy or falls short, another can take that stage and the rest carries on. Pick the partners yourself, or tell us what you need and we help you choose.</p>
+  <div class="chain chain3">
+    <div><span>Handloom denim</span><b>Shramdaan</b><i>Sagar</i></div>
+    <div><span>Embroidery</span><b>Embroprint</b><i>Dharamshala</i></div>
+    <div><span>Stitching</span><b>Sharlho</b><i>Dharamshala</i></div>
+  </div>
+  <p class="chain-cap">A real order from October 2026: an embroidered apron, made across three partners on Luna.</p>
+  <h3 class="mix-title">How the hands exchange</h3>
+  <div class="exchange">
+    <div><span class="x">Sent</span><p>The partner who finishes a stage sends the goods on with a booked, tracked courier.</p></div>
+    <div><span class="x">Counted in</span><p>The next partner counts what arrived in their app. Only then is it received.</p></div>
+    <div><span class="x">Paid</span><p>Each partner is paid for their own stage once it is recorded and approved.</p></div>
+  </div>
+  <p class="small" style="margin-top:2.4mm;color:rgba(255,255,255,.8)">Every hand-off is on record. If nobody on Luna makes what you need yet, we find weavers on the census map and bring them on board with their agreement.</p>
+  <h3 class="mix-title">Partners next to the weaving hubs</h3>
+  <div class="hubs">
+    <div><b>Bhujodi, Kutch</b><span>kala cotton</span></div>
+    <div><b>Surendranagar, Gujarat</b><span>Tangaliya weave</span></div>
+    <div><b>Balotara, Rajasthan</b><span>weaving in the desert</span></div>
+    <div><b>Srinagar &amp; Pulwama</b><span>Pashmina and wool</span></div>
+    <div><b>Kullu, Himachal</b><span>wool weaving cluster</span></div>
+    <div><b>Dharamshala, Himachal</b><span>Sharlho, Tibetan collective; embroidery</span></div>
+    <div><b>Sagar, Madhya Pradesh</b><span>Shramdaan workshop</span></div>
+    <div><b>Murshidabad &amp; Phulia</b><span>linen, cotton, silk, Jamdani</span></div>
+    <div><b>Bhagalpur, Bihar</b><span>silk</span></div>
+    <div><b>Bhubaneswar, Odisha</b><span>silk, linen, hand painting</span></div>
+  </div>
+  <div class="folio"><span>04</span><span>jaalyantra.com/map</span></div>
+</section>
+
+<!-- 5 · FOR B2B BUYERS -->
+<section class="page">
+  <div class="head"><span>For buyers</span><span>Sourcing with JYT</span></div>
+  <div class="kicker">Artisan, not mass made</div>
+  <h2>Start with one piece, <span class="accent">not a thousand.</span></h2>
+  <p class="lede">If you are looking for the cheapest product, we are not the right place. We source and make artisan pieces, and each one carries its own story, so there is no minimum order. You can start with a single piece.</p>
+  <div class="pills">
+    <div><b>No MOQ</b><span>start from one piece</span></div>
+    <div><b>Quality checked</b><span>you approve the sample, we review the finished work</span></div>
+    <div><b>Price first</b><span>a quote before anything is booked</span></div>
+  </div>
+  <ol class="steps">
+    <li><div><h3>Send a brief</h3><p>A sketch, a photo, a swatch or one line about what you want, and how many, even if it is one.</p></div></li>
+    <li><div><h3>Pick the cloth and the makers</h3><p>Fabric options with the name of who made each one. Choose the partners yourself or let us help you choose: one partner or several, a different one for each stage if you like.</p></div></li>
+    <li><div><h3>Know the cost before you book</h3><p>Customisation is part of the work: embroidery, construction and finish are written into the design. You get an estimate from real fabric prices with the making in it, as a quote link your buying team can accept. Nothing starts until you do.</p></div></li>
+    <li><div><h3>Approve a sample, then follow it live</h3><p>Every stage is a task in our partner app on the maker's phone, with photos as it goes. You follow the progress of your design and order live in your account.</p></div></li>
+    <li><div><h3>Receive it with its story</h3><p>Who wove it, who stitched it, which supplier the fabric came from, and the energy and water used to make it, where we measured it.</p></div></li>
+  </ol>
+  <div class="art-row">
+    <img class="ill" src="illustrations/deal.svg" alt="">
+    <img class="ill" src="illustrations/boxes-check.svg" alt="">
+    <img class="ill" src="illustrations/delivery.svg" alt="">
+  </div>
+  <div class="folio"><span>05</span><span>hi@jaalyantra.com</span></div>
+</section>
+
+<!-- 6 · E-COMMERCE CASE -->
+<section class="page p6">
+  <div class="head"><span>A case from Luna</span><span>Selling online</span></div>
+  <div class="kicker">From the loom to their own store</div>
+  <h2>GOF, weavers with <span class="accent">a shop of their own.</span></h2>
+  <p class="lede">Ghosh &amp; Organic Fashionary (GOF) is a handloom collective in Murshidabad, West Bengal. On Luna they run their own online store, gof.asia, and sell their cloth made to order, straight to the customer.</p>
+  <figure class="shot">
+    <img src="../storefront-previews/gof-asia.png" alt="gof.asia storefront">
+    <figcaption>gof.asia · built and run on Luna</figcaption>
+  </figure>
+  <div class="two">
+    <div><h3>What they sell</h3><p>Muslin, Bengal Jamdani, kala cotton, handwoven linen and cotton, handspun and mulberry silk, by the metre and in 12 m packs.</p></div>
+    <div><h3>How an order runs</h3><p>The customer pays on gof.asia, the order reaches GOF, they make it, book the courier from Luna and get paid.</p></div>
+  </div>
+  <blockquote>"The platform lets us sell directly to the customer with made-to-order, makes life easy."<cite>Founder, GOF</cite></blockquote>
+  <div class="yours">
+    <img class="ill" src="illustrations/online-shop.svg" alt="">
+    <div><h3>Your label, the same way</h3><p>Designers and labels can do the same: design on Luna, have it made by our partners, and sell it from your own store on your own domain. 15 stores already run this way.</p></div>
+  </div>
+  <div class="folio"><span>06</span><span>gof.asia</span></div>
+</section>
+
+<!-- 7 · PREDICTABLE PRICING -->
+<section class="page">
+  <div class="head"><span>Predictable pricing</span><span>Built from data, not guesses</span></div>
+  <div class="kicker">How a price is built</div>
+  <h2>A price you can predict, <span class="accent">line by line.</span></h2>
+  <p class="lede">Every quote is worked out from what the cloth and the making actually cost on real orders. Here is one, start to finish: a robe in GOF mulberry silk, made by Ksaman.</p>
+
+  <div class="build">
+    <div class="row"><span class="k">Fabric</span><span class="d">3.1 m × ₹1,275 per metre, GOF's purchase price</span><span class="v">A$59.49</span></div>
+    <div class="row"><span class="k">Making</span><span class="d">Ksaman's agreed price per robe, ₹1,000</span><span class="v">A$15.05</span></div>
+    <div class="row sub"><span class="k">Cost</span><span class="d">₹4,952.50 at the day's rate, A$1 = ₹66.45</span><span class="v">A$74.54</span></div>
+    <div class="row"><span class="k">JYT</span><span class="d">our standard 20%, shown on the quote</span><span class="v">A$14.91</span></div>
+    <div class="row total"><span class="k">Your price</span><span class="d">per robe, before tax and shipping</span><span class="v">A$89.45</span></div>
+  </div>
+
+  <div class="rules">
+    <div><b>No guesses</b><span>If a cost is only a guess, Luna will not turn it into a quote. We price it properly first.</span></div>
+    <div><b>Today's rate</b><span>Converted at the live rate on the day. If the rate cannot be fetched, no quote goes out.</span></div>
+    <div><b>Every line shown</b><span>Fabric, making and our share are on the quote, and its prices are fixed when it is issued.</span></div>
+  </div>
+
+  <div class="t2">What pieces have cost on real orders</div>
+  <table class="cost">
+    <thead><tr><th>Piece</th><th>Fabric</th><th>Making</th><th>Cost per piece</th></tr></thead>
+    <tbody>
+      <tr><td>Robe, kala cotton</td><td>3.1 m · A$13.30</td><td>A$15.05</td><td>A$28.35</td></tr>
+      <tr><td>Robe, handwoven linen</td><td>3.1 m · A$37.79</td><td>A$15.05</td><td>A$52.84</td></tr>
+      <tr><td>Robe, mulberry silk</td><td>3.1 m · A$59.49</td><td>A$15.05</td><td>A$74.54</td></tr>
+      <tr><td>Striped cotton top</td><td>1.75 m · A$6.49</td><td>A$12.79</td><td>A$19.28</td></tr>
+    </tbody>
+  </table>
+  <p class="cost-note">Robes: fabric from GOF, Murshidabad, made by Ksaman, Bhubaneswar. Top: made by Sharlho, Dharamshala, where the 9-piece run used 3.3 kWh of electricity per piece. Costs before JYT's 20%, tax and shipping. Converted at A$1 = ₹66.45 (ECB reference rate, 21 October 2026); your quote uses the rate on the day it is made.</p>
+  <div class="folio"><span>07</span><span>Luna by JYT</span></div>
+</section>
+
+<!-- 8 · BACK -->
+<section class="page p8">
+  <div class="kicker" style="color:var(--teal-pale)">Melbourne · 17 to 19 November 2026</div>
+  <h2>Let's make something together.</h2>
+  <p class="lede">Come and touch the cloth at the stand, or write to us. Tell us what you are looking for and we will tell you honestly who can make it.</p>
+
+  <div class="safe">
+    <div class="t3">Why it is safe to source with us</div>
+    <div><b>No single point of failure</b><span>Your order is split by stage across partners.</span></div>
+    <div><b>Price agreed first</b><span>You accept the quote before any work starts.</span></div>
+    <div><b>Quality checked</b><span>You approve the sample; finished work is reviewed before it is sent on.</span></div>
+    <div><b>Safe payments</b><span>Through Stripe and PayU. Partners are paid only for approved work.</span></div>
+    <div><b>Live progress</b><span>You follow every stage in your account as it happens.</span></div>
+    <div><b>Traceable to the hand</b><span>Each piece names its makers and fabric suppliers.</span></div>
+  </div>
+
+  <div class="app app-dark">
+    <img class="ill" src="illustrations/dashboard.svg" alt="">
+    <div>
+      <div class="t">Every partner works in the Luna partner app</div>
+      <p>On Android and iPhone, partners accept work, start and finish each stage, upload photos and video, book courier pickups and see what they are owed.</p>
+    </div>
+  </div>
+  <div class="contact">
+    <dl>
+      <dt>Email</dt><dd>hi@jaalyantra.com</dd>
+      <dt>Founder</dt><dd>Saransh Sharma · saransh@jaalyantra.com</dd>
+      <dt>Web</dt><dd>jaalyantra.com</dd>
+      <dt>Partners</dt><dd>partner.jaalyantra.com</dd>
+    </dl>
+    <div class="qr">
+      <img src="qr-jaalyantra.svg" alt="QR code to jaalyantra.com">
+      <span>Scan for jaalyantra.com</span>
+    </div>
+  </div>
+  <div class="entities">
+    <div><b>Jaal Yantra Textiles Private Limited</b>Dharamshala, Himachal Pradesh, India<br>Member, Handloom Export Promotion Council</div>
+    <div><b>Jaal Yantra Textiles SIA</b>Riga, Latvia<br><span class="deva">हाथ का काम</span> · House of Hands</div>
+  </div>
+</section>
+
+<script>
+  // Fit the 148 mm page to narrow screens (16px gutter each side); never upscale.
+  (function () {
+    function fit() {
+      var s = Math.min(1, (window.innerWidth - 32) / (148 * 96 / 25.4))
+      document.documentElement.style.setProperty("--fit", s.toFixed(4))
+    }
+    fit()
+    window.addEventListener("resize", fit)
+  })()
+</script>
+</body>
+</html>
