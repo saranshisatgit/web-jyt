@@ -1,0 +1,123 @@
+{
+  "_note": "Content for /purpose — the public record of the company purpose statement, published in fulfilment of B Corp Certification requirements (Compliance Criteria 1.1.1). Brand-specific values (permalink domain, governance contact email) are injected by the page from the active brand config in lib/brand.ts. The purpose statement was adopted by written resolution of the Board of Kind Health Tech SIA on 8 September 2025, signed by Saransh Sharma, Director — the signed resolution is kept on file (not published in this repo). The statement is adopted verbatim — changes require a fresh board resolution.",
+  "hero": {
+    "eyebrow": "Purpose",
+    "title": "Why Kind Health Tech exists",
+    "subtitle": "The public record of our purpose statement — the impact we intend on society and the environment, how it is inseparable from our business model, and the board resolution that adopted it.",
+    "pills": ["(a) Specific impact", "(b) Strategy-integrated", "(c) Publicly available", "(d) Board-approved"],
+    "side": [
+      { "label": "Artisans onboarded", "value": "150+", "animatedValue": { "start": 0, "end": 150 } },
+      { "label": "Brands shipping", "value": "3+", "animatedValue": { "start": 0, "end": 3 } },
+      { "label": "Live hubs", "value": "EU · IN · AU" },
+      { "label": "Criteria 1.1.1 satisfied", "value": "4 / 4" }
+    ]
+  },
+  "statement": {
+    "eyebrow": "The statement",
+    "criteriaPill": "(a) Specific positive impact",
+    "quote": "Kind Health Tech exists to return the value of handmade textiles to the hands that make them. We build and operate the commerce and production platform through which verified artisans around the world sell their handcrafted work directly to buyers — the maker's name on every piece, a fair and transparent share of every sale, and the heavy work of verification, quality control, logistics, payments and compliance carried by us, not by them. Through this we intend two specific impacts: craft livelihoods that endure because they are profitable, and garments that are traced, honest and low-waste — made in small batches from verified materials, with every claim auditable.",
+    "attribution": "Adopted by resolution of the Board of Directors of Kind Health Tech SIA"
+  },
+  "impact": {
+    "eyebrow": "What the purpose commits us to",
+    "criteriaPill": "(a) Specific positive impact",
+    "title": "Two impacts, kept specific.",
+    "lead": "The purpose is not aspiration — it names who benefits and how. These are the commitments the company holds itself to, and the practices already running on the platform.",
+    "society": {
+      "tag": "Society",
+      "items": [
+        {
+          "title": "Direct trade, fair share",
+          "body": "Artisans sell on storefronts we operate with them. Payout terms are published, settlements arrive in the artisan's own currency, and the layers of middlemen who historically captured their margin are designed out of the rails."
+        },
+        {
+          "title": "The maker's name on every piece",
+          "body": "Every garment is linked to the individual who made it — name, role and years on the loom travel with the product. Craft becomes credited, visible work rather than anonymous factory output."
+        },
+        {
+          "title": "Work routed to where craft lives",
+          "body": "Production is dispatched to vetted ateliers and handloom clusters — Bagru, Srinagar, Florence — with mobile-first tools, so artisans join global commerce without leaving their village or learning a portal. 150+ artisans onboarded to date."
+        },
+        {
+          "title": "Heritage that pays for itself",
+          "body": "Handloom weaving, hand-block printing and natural dyeing survive only if they earn. We route demand to these techniques so the next generation inherits working craft, not museum pieces."
+        }
+      ]
+    },
+    "environment": {
+      "tag": "Environment",
+      "items": [
+        {
+          "title": "Made to order, not to landfill",
+          "body": "Runs are produced in small batches matched to real demand, cutting the overproduction that makes fashion one of the world's most wasteful industries."
+        },
+        {
+          "title": "Provenance as fact",
+          "body": "Materials are traced to the lot, the loom and the village; certifications such as GOTS are verified on the platform; and every piece ships with a Digital Product Passport aligned to the EU ESPR — environmental claims become auditable facts, not storytelling."
+        },
+        {
+          "title": "Natural materials first",
+          "body": "We prioritise natural fibres and dyes — cashmere, silk, natural indigo — and log every dye, weave and finish step with timestamps."
+        },
+        {
+          "title": "Waste designed out",
+          "body": "Digitised inventory and step-level production tracking mean materials are ordered against real need, with reorder alerts firing before waste happens — not after."
+        }
+      ]
+    }
+  },
+  "strategy": {
+    "eyebrow": "Purpose in the business model",
+    "criteriaPill": "(b) Integrated into strategy",
+    "title": "The purpose is the product, not a programme.",
+    "lead": "Every line of revenue runs through the purpose: the company earns only when verified artisans sell directly. The impact and the business case are the same motion.",
+    "pillars": [
+      {
+        "pillar": "Verification is the product",
+        "practice": "Every artisan is vetted before they can sell on the platform, and we carry quality control, logistics, payments and compliance on their behalf.",
+        "relevance": "Buyers pay because unverified sellers cannot join — the core service the company monetises is the same service that protects makers and customers."
+      },
+      {
+        "pillar": "Provenance built into the rails",
+        "practice": "Maker IDs, lot-level material tracing and Digital Product Passports (EU ESPR) are built into the platform core — not bolted on as marketing.",
+        "relevance": "Transparency is a feature customers pay for and regulators increasingly require; it turns the artisan's story into a commercial advantage."
+      },
+      {
+        "pillar": "Storefronts with the maker's name",
+        "practice": "We run commerce end to end — storefronts on custom domains, marketplace and social channels, payments, fulfilment — with the maker credited on every product page.",
+        "relevance": "Revenue grows only when artisans sell directly, so the company's growth metric and its social impact are the same number."
+      },
+      {
+        "pillar": "Fair payout rails",
+        "practice": "Published commission, transparent payout terms and settlement in the artisan's currency are platform features, not charity programmes.",
+        "relevance": "Artisans stay because the economics are honest — retention is the business case for fairness."
+      }
+    ]
+  },
+  "governance": {
+    "eyebrow": "Approval by the board",
+    "criteriaPill": "(d) Approved by the board",
+    "title": "Adopted by our highest governing body.",
+    "lead": "The purpose statement above was adopted by resolution of the Board of Directors of Kind Health Tech SIA — the company's highest governing body — and binds company strategy to the impacts described on this page.",
+    "rows": [
+      { "key": "approvingBody", "label": "Approving body", "value": "Board of Directors — Kind Health Tech SIA (Latvia)" },
+      { "key": "resolutionDate", "label": "Resolution date", "value": "8 September 2025" },
+      { "key": "review", "label": "Review cadence", "value": "Reviewed annually by the Board, alongside company strategy" },
+      { "key": "integration", "label": "Integration", "value": "Embedded in company objectives, product roadmap and commercial terms" }
+    ]
+  },
+  "availability": {
+    "eyebrow": "Public record",
+    "criteriaPill": "(c) Publicly available",
+    "title": "This page is the public record.",
+    "lead": "Every sub-criterion of 1.1.1, mapped to where it is satisfied.",
+    "body": "This statement is permanently available at the permalink below — no login, no paywall — and is reachable from the About menu, the site footer and the sitemap.",
+    "criteriaMap": [
+      { "letter": "a", "requirement": "Sets out the specific, positive and meaningful impact the company intends to make on society and the environment", "where": "The statement · Impact commitments" },
+      { "letter": "b", "requirement": "Has business relevance and is integrated into the company's strategy", "where": "Purpose in the business model" },
+      { "letter": "c", "requirement": "Is publicly available on the company's webpage", "where": "This page — permalink below" },
+      { "letter": "d", "requirement": "Is approved by the company's highest governing body", "where": "Approval by the board" }
+    ]
+  },
+  "footnote": "Published in fulfilment of B Corp Certification requirements — Compliance Criteria 1.1.1. Kind Health Tech is a candidate for certification, not yet a Certified B Corporation."
+}

@@ -27,6 +27,7 @@ const NAV_LINKS: NavLink[] = [
     href: '/about',
     key: 'nav.about',
     children: [
+      { href: '/purpose', key: 'nav.purpose' },
       { href: '/company', key: 'nav.company' },
       { href: '/contact', key: 'nav.offices' },
       { href: '/map', key: 'nav.map' },

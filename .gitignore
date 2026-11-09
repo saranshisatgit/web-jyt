@@ -50,3 +50,6 @@ next-env.d.ts
 
 # booklet review renders (node scripts/booklet-pdf.mjs --png)
 /public/booklet/preview/
+
+# Board resolutions are governance records kept on file, not published in this repo.
+docs/board-resolution-purpose-statement-2025-09-08.pdf

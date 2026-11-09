@@ -39,7 +39,7 @@
       "registration": {
         "heading": "Registration Details",
         "fields": [
-          { "key": "companyName", "label": "Company Name", "value": "Jaal Yantra Textiles SIA" },
+          { "key": "companyName", "label": "Company Name", "value": "Kind Health Tech SIA" },
           { "key": "registrationNumber", "label": "Registration Number", "value": "LV40203XXXXXXXXX" },
           { "key": "incorporationDate", "label": "Date of Registration", "value": "20 March 2025" },
           { "key": "registeredAddress", "label": "Registered Office", "value": "Riga, LV-10XX, Latvia" },

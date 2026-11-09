@@ -55,6 +55,12 @@
   ],
   "aboutMenu": [
     {
+      "href": "/purpose",
+      "title": "Purpose",
+      "description": "Why we exist — the purpose statement, on the record.",
+      "image": "/company/3.jpg"
+    },
+    {
       "href": "/company",
       "title": "Company",
       "description": "The company behind the label — team, story, numbers.",
