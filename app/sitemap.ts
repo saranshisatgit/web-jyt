@@ -7,6 +7,7 @@ const staticPages: Array<{ path: string; priority: number; changeFrequency: 'mon
   { path: '', priority: 1.0, changeFrequency: 'monthly' },
   { path: '/about', priority: 0.8, changeFrequency: 'monthly' },
   { path: '/purpose', priority: 0.6, changeFrequency: 'yearly' },
+  { path: '/stakeholders', priority: 0.6, changeFrequency: 'yearly' },
   { path: '/blog', priority: 0.9, changeFrequency: 'weekly' },
   { path: '/contact', priority: 0.7, changeFrequency: 'yearly' },
   { path: '/map', priority: 0.6, changeFrequency: 'monthly' },

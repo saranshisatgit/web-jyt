@@ -1,0 +1,169 @@
+{
+  "_note": "Content for /stakeholders — the public record of stakeholder governance, published in fulfilment of B Corp Certification requirements (Purpose & Stakeholder Governance 2.1 — Criteria 2.1.1, 2.1.2, 2.1.3). Every engagement mechanism below was confirmed by the company as existing today; B Lab evaluators may verify any of them. Before publishing changes: mechanisms must match actual operating practice, and the interests/prioritization should be reviewed alongside the annual purpose review.",
+  "hero": {
+    "eyebrow": "Stakeholder governance",
+    "title": "Who we answer to.",
+    "subtitle": "The public record of our stakeholder governance under B Corp PSG 2.1 — the six groups we have identified and prioritized, how their interests enter our decisions, and the engagement mechanisms that keep every one of them represented.",
+    "pills": ["2.1.1 · Mapped & prioritized", "2.1.2 · Engaged in decisions", "2.1.3 · Mechanisms for every group"],
+    "side": [
+      { "label": "Stakeholder groups", "value": "6", "animatedValue": { "start": 0, "end": 6 } },
+      { "label": "Engagement mechanisms", "value": "23", "animatedValue": { "start": 0, "end": 23 } },
+      { "label": "Craft hubs", "value": "EU · IN · AU" },
+      { "label": "Criteria 2.1 satisfied", "value": "3 / 3" }
+    ]
+  },
+  "map": {
+    "criteriaTag": "Criteria 2.1.1",
+    "eyebrow": "Identified & prioritized",
+    "criteriaPill": "2.1.1 · Mapped & prioritized",
+    "title": "Six stakeholder groups, mapped and prioritized.",
+    "lead": "We identify stakeholders by three tests: how directly company decisions touch them, how dependent they are on the platform, and how much influence they hold over it. Workers, suppliers and customers come out primary — they are daily operating partners. Investors, community and environment are strategic — engaged through structured cycles rather than daily operations, with the environment represented through monitoring and verification rather than dialogue.",
+    "groups": [
+      {
+        "ref": "a",
+        "name": "Workers",
+        "priority": "Primary",
+        "who": "The founder-led team that builds and runs the platform — engineering, operations and hub presence across three regions.",
+        "interests": ["Fair and meaningful work", "Clarity of direction", "A voice in what gets built"]
+      },
+      {
+        "ref": "b",
+        "name": "Suppliers",
+        "priority": "Primary",
+        "who": "The 150+ artisans and ateliers across handloom clusters who make everything the platform sells.",
+        "interests": ["Steady, fairly-paid work", "Tools without barriers", "Craft credited by name"]
+      },
+      {
+        "ref": "c",
+        "name": "Customers",
+        "priority": "Primary",
+        "who": "The buyers and brands who purchase handcrafted goods on the platform's storefronts.",
+        "interests": ["Authenticity and quality", "Verifiable claims", "A fair price for what craft costs"]
+      },
+      {
+        "ref": "d",
+        "name": "Investors",
+        "priority": "Strategic",
+        "who": "Pre-seed and seed backers of the company's current raise.",
+        "interests": ["Durable growth", "Honest reporting", "Governance that holds"]
+      },
+      {
+        "ref": "e",
+        "name": "Community",
+        "priority": "Strategic",
+        "who": "The craft clusters and cities that host our hubs, offices and ateliers — Bagru, Srinagar, Florence, Sydney.",
+        "interests": ["Local livelihoods", "Craft heritage kept alive", "Low-impact operations"]
+      },
+      {
+        "ref": "f",
+        "name": "Environment",
+        "priority": "Strategic · represented",
+        "who": "The commons that absorbs production's footprint — engaged through monitoring, verification and review rather than dialogue.",
+        "interests": ["Low waste", "Verified materials", "Traceable production"]
+      }
+    ]
+  },
+  "decisions": {
+    "criteriaTag": "Criteria 2.1.2",
+    "eyebrow": "Engaged in decision-making",
+    "criteriaPill": "2.1.2 · Engaged in decisions",
+    "title": "Stakeholder interests don't just get heard — they get decided with.",
+    "lead": "Engagement is not a survey we file away. Interests raised through the mechanisms below change what we build, how we price, and what the board holds itself to.",
+    "cards": [
+      {
+        "area": "Product roadmap",
+        "body": "The partner portal is mobile-first with no portals to learn because that is what artisans could actually use. What gets built next starts with what artisans, buyers and the team can operate — not with what is elegant in a spec.",
+        "groups": ["b · Suppliers", "a · Workers", "c · Customers"]
+      },
+      {
+        "area": "Commercial terms",
+        "body": "Commission and payout terms are published and queryable. When artisans raise issues with settlements, that feedback goes directly into how terms policy is written — transparency is the default, not a concession.",
+        "groups": ["b · Suppliers"]
+      },
+      {
+        "area": "Purpose & governance",
+        "body": "The board-adopted purpose statement binds strategy to stakeholder outcomes, and its annual review covers what each group actually experienced — not what we intended.",
+        "groups": ["All groups"]
+      },
+      {
+        "area": "Buyer specs & quality",
+        "body": "Custom-order consults — measurements, fabric, fit — flow straight into techpacks and sizing standards. Buyer interests literally shape the product specification.",
+        "groups": ["c · Customers"]
+      }
+    ]
+  },
+  "mechanisms": {
+    "criteriaTag": "Criteria 2.1.3",
+    "eyebrow": "Engagement mechanisms",
+    "criteriaPill": "2.1.3 · Mechanisms for every group",
+    "title": "Every group, represented by mechanisms that exist today.",
+    "lead": "The full inventory of engagement mechanisms, per stakeholder group. Each one is live now — not planned, not aspirational.",
+    "groups": [
+      {
+        "ref": "a",
+        "name": "Workers of the company",
+        "items": [
+          "Weekly all-hands — direction, open decisions and results reviewed with the whole team",
+          "Direct founder access — every teammate has an open line to the CEO",
+          "Written feedback channels — concerns and suggestions logged and actioned"
+        ]
+      },
+      {
+        "ref": "b",
+        "name": "Suppliers",
+        "items": [
+          "Mobile production portal — runs, accept/decline and live progress chat on their phone",
+          "WhatsApp rails — updates and conversation on channels artisans already use",
+          "In-person hub visits — onboarding and atelierside visits in Bagru, Srinagar and Florence",
+          "Payout transparency — published commission, reviewable terms and settlement queries",
+          "Structured feedback — periodic surveys and interviews on tools, terms and rails"
+        ]
+      },
+      {
+        "ref": "c",
+        "name": "Customers",
+        "items": [
+          "Contact & demo flow — contact page, waitlist and demo conversations",
+          "Storefront reviews — reviews and testimonials collected at the storefronts",
+          "Social channels — Instagram and Facebook catalogs, DMs as feedback loops",
+          "Custom-order consults — measurements, fabric and fit feed directly into specs"
+        ]
+      },
+      {
+        "ref": "d",
+        "name": "Investors",
+        "items": [
+          "Digital investor room — the pre-seed round runs through the shared app at investors.jaalyantra.com",
+          "Public investor page — thesis, traction and raise in the open",
+          "Direct founder line — every investor talks to the CEO, not a proxy"
+        ]
+      },
+      {
+        "ref": "e",
+        "name": "Community",
+        "items": [
+          "On-the-ground presence — the team works from the hubs; atelier relationships are the community link",
+          "Local partnerships — Indian Handloom Council, Startup India, Startup Latvia",
+          "Community events — meetups, exhibitions and market visits in the clusters"
+        ]
+      },
+      {
+        "ref": "f",
+        "name": "The environment",
+        "items": [
+          "Per-run materials ledger — dye, weave and finish logged with quantities and timestamps",
+          "Verification gates — certifications such as GOTS checked on-platform before a lot can ship; a Digital Product Passport on every piece",
+          "Low-waste logistics — shipments consolidated through hubs; made-to-order means no deadstock",
+          "Water & dye practices — natural indigo vats and fibre washing governed by certification checks",
+          "Electricity consumption — monitored across the company's hubs and facilities"
+        ]
+      }
+    ]
+  },
+  "criteriaMap": [
+    { "ref": "2.1.1", "requirement": "The company identifies and prioritizes its stakeholders and maps the stakeholders listed in 2.1.3", "where": "Identified & prioritized" },
+    { "ref": "2.1.2", "requirement": "The company engages with its stakeholders and considers their interests in decision-making", "where": "Engaged in decision-making" },
+    { "ref": "2.1.3", "requirement": "The listed stakeholders — workers, suppliers, customers, investors, community, environment — are each represented with one or more engagement mechanisms", "where": "Engagement mechanisms, (a)–(f)" }
+  ],
+  "footnote": "Published in fulfilment of B Corp Certification requirements — Purpose & Stakeholder Governance 2.1 (Criteria 2.1.1, 2.1.2, 2.1.3). Kind Health Tech is a candidate for certification, not yet a Certified B Corporation."
+}

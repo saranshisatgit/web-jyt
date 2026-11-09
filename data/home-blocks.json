@@ -61,6 +61,12 @@
       "image": "/company/3.jpg"
     },
     {
+      "href": "/stakeholders",
+      "title": "Stakeholders",
+      "description": "The six groups we answer to — mapped, prioritized, engaged.",
+      "image": "/company/4.jpg"
+    },
+    {
       "href": "/company",
       "title": "Company",
       "description": "The company behind the label — team, story, numbers.",

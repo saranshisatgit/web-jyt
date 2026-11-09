@@ -2,11 +2,17 @@ import { Suspense } from 'react'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { headers } from 'next/headers'
-import { CheckCircleMiniSolid, CheckMini } from '@medusajs/icons'
+import { CheckMini } from '@medusajs/icons'
 import { Navbar } from '@/components/navbar'
 import { HeroArt } from '@/components/hero-art'
 import { SectionLoading } from '@/components/section-loading'
 import { AnimatedNumber } from '@/components/animated-number'
+import {
+  SectionHead,
+  SectionLede,
+  CriteriaMapCard,
+  ON_DARK_MUTE,
+} from '@/components/criteria-blocks'
 import { brandFromKey } from '@/lib/brand'
 import purpose from '@/data/purpose.json'
 
@@ -41,9 +47,6 @@ const governanceRows = purpose.governance.rows as GovernanceRow[]
 const heroSide = purpose.hero.side as SideStat[]
 const society = purpose.impact.society as ImpactGroup
 const environment = purpose.impact.environment as ImpactGroup
-
-// Muted text on the dark slate panels — matches .kt-card.dark / about page.
-const ON_DARK_MUTE = 'oklch(0.8 0.04 264)'
 
 export default async function PurposePage() {
   const h = await headers()
@@ -183,54 +186,6 @@ function PurposeStatement() {
         </div>
       </div>
     </section>
-  )
-}
-
-/* ---------------- SECTION HEAD — canonical 2-cell pattern ---------------- */
-
-function SectionHead({
-  eyebrow,
-  criteriaPill,
-  title,
-  onDark,
-}: {
-  eyebrow: string
-  criteriaPill: string
-  title: string
-  onDark?: boolean
-}) {
-  return (
-    <div className="kt-section-head">
-      <div>
-        <div className={`kt-eyebrow${onDark ? ' on-dark' : ''}`}>
-          <span className="dot" aria-hidden />
-          {eyebrow}
-        </div>
-        <div style={{ marginTop: 14 }}>
-          <span className="kt-pill accent">{criteriaPill}</span>
-        </div>
-      </div>
-      <h2 className="kt-display m" style={onDark ? { color: 'var(--cream)' } : undefined}>
-        {title}
-      </h2>
-    </div>
-  )
-}
-
-function SectionLede({ text, onDark }: { text: string; onDark?: boolean }) {
-  return (
-    <p
-      className={onDark ? undefined : 'muted'}
-      style={{
-        fontSize: 19,
-        maxWidth: 720,
-        lineHeight: 1.55,
-        margin: 0,
-        color: onDark ? ON_DARK_MUTE : undefined,
-      }}
-    >
-      {text}
-    </p>
   )
 }
 
@@ -398,65 +353,26 @@ function PublicRecord({ permalink, email }: { permalink: string; email: string }
         />
         <SectionLede text={availability.lead} />
 
-        <div className="kt-card accent" style={{ marginTop: 48, padding: '12px 32px 30px' }}>
-          {availability.criteriaMap.map((row, i) => (
-            <div
-              key={row.letter}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                flexWrap: 'wrap',
-                gap: 14,
-                padding: '20px 0',
-                borderBottom:
-                  i < availability.criteriaMap.length - 1
-                    ? '1px solid rgba(66, 85, 148, 0.22)'
-                    : 'none',
-              }}
-            >
-              <CheckCircleMiniSolid
+        <CriteriaMapCard
+          rows={availability.criteriaMap.map((row) => ({
+            ref: row.letter,
+            requirement: row.requirement,
+            where: row.where,
+          }))}
+          footer={
+            <>
+              <p
                 style={{
-                  width: 20,
-                  height: 20,
-                  color: 'var(--accent-deep)',
-                  flexShrink: 0,
+                  fontSize: 14,
+                  lineHeight: 1.55,
+                  color: 'var(--ink-soft)',
+                  margin: 0,
+                  maxWidth: 520,
                 }}
-              />
-              <span className="kt-pill solid" style={{ padding: '3px 12px' }}>
-                {row.letter}
-              </span>
-              <span
-                style={{ flex: '1 1 300px', fontSize: 15, lineHeight: 1.5, color: 'var(--ink)' }}
               >
-                {row.requirement}
-              </span>
-              <span className="kt-meta" style={{ color: 'var(--accent-deep)' }}>
-                {row.where}
-              </span>
-            </div>
-          ))}
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              flexWrap: 'wrap',
-              gap: 14,
-              paddingTop: 24,
-            }}
-          >
-            <p
-              style={{
-                fontSize: 14,
-                lineHeight: 1.55,
-                color: 'var(--ink-soft)',
-                margin: 0,
-                maxWidth: 520,
-              }}
-            >
-              {availability.body}
-            </p>
-            <code
+                {availability.body}
+              </p>
+              <code
               className="font-mono"
               style={{
                 display: 'inline-block',
@@ -470,8 +386,9 @@ function PublicRecord({ permalink, email }: { permalink: string; email: string }
             >
               {permalink}
             </code>
-          </div>
-        </div>
+            </>
+          }
+        />
 
         <div className="text-center" style={{ marginTop: 56 }}>
           <p
@@ -486,6 +403,9 @@ function PublicRecord({ permalink, email }: { permalink: string; email: string }
           >
             <Link href="/company" style={{ color: 'var(--accent-deep)' }}>
               Company &amp; registration →
+            </Link>
+            <Link href="/stakeholders" style={{ color: 'var(--accent-deep)' }}>
+              Stakeholder governance →
             </Link>
             <Link href="/about" style={{ color: 'var(--accent-deep)' }}>
               Mission &amp; team →
