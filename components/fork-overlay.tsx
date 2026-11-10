@@ -59,6 +59,9 @@ export function ForkOverlay() {
   if (pathname === '/') return null
   // A signing link is a document, not a visit to the site — no audience gate.
   if (pathname?.startsWith('/agreement')) return null
+  // A grievance form is a right, not a visit — nothing may stand between a
+  // stakeholder and raising a grievance (B Corp PSG 3.1.1, easy accessibility).
+  if (pathname?.startsWith('/stakeholders/grievance')) return null
 
   const pick = (m: Mode) => {
     setMode(m)

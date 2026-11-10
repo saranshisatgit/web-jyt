@@ -276,6 +276,9 @@ function CriteriaRecord({ email }: { email: string }) {
             <Link href="/purpose" style={{ color: 'var(--accent-deep)' }}>
               Purpose statement →
             </Link>
+            <Link href="/stakeholders/grievance" style={{ color: 'var(--accent-deep)' }}>
+              Raise a grievance →
+            </Link>
             <Link href="/company" style={{ color: 'var(--accent-deep)' }}>
               Company &amp; registration →
             </Link>

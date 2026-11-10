@@ -118,6 +118,7 @@ function SiteFooter() {
             <ul>
               <li><Link href="/purpose">{t("nav.purpose")}</Link></li>
               <li><Link href="/stakeholders">{t("nav.stakeholders")}</Link></li>
+              <li><Link href="/stakeholders/grievance">{t("nav.grievance")}</Link></li>
               <li><Link href="/about">{t("nav.about")}</Link></li>
               <li><Link href="/company">{t("footer.company")}</Link></li>
               <li><Link href="/contact">{t("footer.getADemo")}</Link></li>

@@ -1,0 +1,192 @@
+{
+  "_note": "Content for /stakeholders/grievance — the public grievance procedure of Kind Health Tech SIA, published in fulfilment of B Corp Certification requirements (Purpose & Stakeholder Governance 3.1 — Criteria 3.1.1, 3.1.2, 3.1.3, 3.1.4). The form posts to the backend forms API under the `grievance` handle (must be created in the Medusa backend like contact/waitlist). Deadlines and the grievance officer were confirmed by the company: acknowledge 5 business days, acceptance decision 10, resolution target 30 with updates every 10, appeal to the Board within 15. Grievance officer: Saransh Sharma (Director), escalating to the Board on conflict of interest.",
+  "hero": {
+    "eyebrow": "Grievance procedure",
+    "title": "Raise it safely. We will answer.",
+    "subtitle": "The public grievance procedure of Kind Health Tech SIA under B Corp PSG 3.1 — how any stakeholder can raise a grievance, exactly what happens next, and the protections that make raising one safe.",
+    "pills": ["3.1.1 · Form on this page", "3.1.2 · Grounds, steps, deadlines", "3.1.3 · Zero retaliation", "3.1.4 · Answered, always"],
+    "side": [
+      { "label": "Business days to acknowledge", "value": "5", "animatedValue": { "start": 0, "end": 5 } },
+      { "label": "Business days to accept / decline", "value": "10", "animatedValue": { "start": 0, "end": 10 } },
+      { "label": "Business days to resolve (target)", "value": "30", "animatedValue": { "start": 0, "end": 30 } },
+      { "label": "Criteria 3.1 satisfied", "value": "4 / 4" }
+    ]
+  },
+  "raise": {
+    "eyebrow": "How to raise one",
+    "criteriaPill": "3.1.1 · Easily accessible",
+    "title": "Six ways in — one per stakeholder group.",
+    "lead": "Each stakeholder group has its own grievance form, pre-tagged so the matter lands on the right review track. Prefer mail or post? Those work too.",
+    "channels": [
+      { "label": "Mail", "value": "grievances@kindhealth.com" },
+      { "label": "Post", "value": "Kind Health Tech SIA, Registered office, Riga, Latvia — mark it 'Grievance'" },
+      { "label": "Officer", "value": "Saransh Sharma, Director (Founder & CEO) — escalates to the Board where he has a conflict of interest" }
+    ]
+  },
+  "procedure": {
+    "eyebrow": "The procedure",
+    "criteriaPill": "3.1.2 · Grounds, steps, deadlines",
+    "title": "What we accept, and what happens next.",
+    "grounds": {
+      "title": "Grounds for accepting a grievance",
+      "lead": "We accept a grievance when the matter meets these tests. You do not need proof to raise one — a clear account is enough to start.",
+      "items": [
+        "It touches our purpose commitments or a stakeholder interest documented on this site",
+        "It concerns our conduct, the conduct of an atelier or partner acting for us, or claims made on our platform",
+        "It is something within our influence to review, remediate or change"
+      ]
+    },
+    "steps": {
+      "title": "Process steps and targeted deadlines",
+      "items": [
+        { "n": "01", "title": "Acknowledged", "deadline": "5 business days", "body": "Receipt is confirmed and a reference number is issued. Anonymous grievances are logged with the same reference discipline." },
+        { "n": "02", "title": "Assessed", "deadline": "10 business days", "body": "The grievance officer checks the matter against the grounds and accepts or declines it. A decline always comes with written reasons." },
+        { "n": "03", "title": "Resolved", "deadline": "30 business days (target)", "body": "The officer facilitates a resolution — remediation, mediation or a policy fix — with a status update at least every 10 business days while it stays open." },
+        { "n": "04", "title": "Closed & confirmed", "deadline": "At resolution", "body": "You receive the outcome in writing, the reason for it, and confirmation that the grievance is closed." },
+        { "n": "05", "title": "Appeal", "deadline": "15 business days", "body": "If you disagree with the outcome, the Board reviews it at its next meeting. The officer never adjudicates a grievance about himself." }
+      ]
+    },
+    "resolution": {
+      "title": "How a resolution is facilitated",
+      "lead": "Resolutions are chosen to fix the harm, not to close the ticket.",
+      "items": [
+        "Direct remediation — corrections, repayments, contract or listing fixes",
+        "Mediation — between the complainant and the affected party, where both must agree the fix",
+        "Policy change — where the grievance points at a rule, the rule gets reviewed",
+        "Board escalation — conflicts of interest, appeals, and anything touching the purpose go to the Board"
+      ],
+      "note": "Every grievance is logged. The log is reviewed quarterly by the Board and annually as part of the purpose review."
+    }
+  },
+  "protection": {
+    "eyebrow": "Protection from retaliation",
+    "criteriaPill": "3.1.3 · Zero retaliation",
+    "title": "Raising a grievance must never cost you anything.",
+    "lead": "These controls apply from the moment a grievance is raised — through the form, by mail, or by post.",
+    "items": [
+      { "title": "Zero tolerance", "body": "Retaliation is itself a grievable offense and triggers an immediate Board-level review." },
+      { "title": "Anonymous by design", "body": "The form works without a name or email; postal submissions need no return address." },
+      { "title": "Need-to-know identity", "body": "Where you identify yourself, only the grievance officer sees who you are." },
+      { "title": "No consequences", "body": "No impact on payouts, orders, contracts, listing or standing for raising a grievance in good faith." },
+      { "title": "Officer with a firewall", "body": "Grievances about the officer — or the founder — go straight to the Board." }
+    ]
+  },
+  "response": {
+    "eyebrow": "Our response commitment",
+    "criteriaPill": "3.1.4 · Answered, always",
+    "title": "Every grievance gets an answer.",
+    "accepted": {
+      "title": "If accepted — communicated at every step",
+      "items": [
+        "Acknowledgment with your reference number",
+        "The acceptance decision, in writing",
+        "A status update at least every 10 business days while the grievance is open",
+        "The outcome and the reason for it, with confirmation the grievance is closed"
+      ]
+    },
+    "declined": {
+      "title": "If not accepted — explained, in writing",
+      "body": "If we do not accept the issue as a grievance, you receive the reasons in writing within the same 10-business-day deadline — together with the route to have the Board look again."
+    }
+  },
+  "personas": [
+    {
+      "slug": "workers",
+      "ref": "a",
+      "name": "Workers",
+      "title": "Raise a grievance as a worker.",
+      "who": "Anyone who works for Kind Health Tech — employee or contractor, in any location.",
+      "blurb": "Pay, conditions, safety, credit for your work.",
+      "examples": [
+        "Pay, hours or working conditions",
+        "Harassment, discrimination or safety",
+        "Retaliation for raising a concern internally"
+      ]
+    },
+    {
+      "slug": "suppliers",
+      "ref": "b",
+      "name": "Suppliers",
+      "title": "Raise a grievance as a supplier.",
+      "who": "Artisans, ateliers and material suppliers on the platform.",
+      "blurb": "Payouts, terms, credit for your craft.",
+      "examples": [
+        "Payout or settlement disputes",
+        "Unfair or unclear commission and terms",
+        "Late payments",
+        "Craft credited wrongly or used without permission"
+      ]
+    },
+    {
+      "slug": "customers",
+      "ref": "c",
+      "name": "Customers",
+      "title": "Raise a grievance as a customer.",
+      "who": "Buyers and brands who purchase through the platform's storefronts.",
+      "blurb": "Claims, quality, pricing.",
+      "examples": [
+        "Product not matching its claims or provenance data",
+        "Quality or delivery disputes",
+        "Misleading sustainability claims",
+        "Pricing or deposit disputes"
+      ]
+    },
+    {
+      "slug": "investors",
+      "ref": "d",
+      "name": "Investors",
+      "title": "Raise a grievance as an investor.",
+      "who": "Current and prospective backers of the company.",
+      "blurb": "Reporting integrity, governance.",
+      "examples": [
+        "Reporting integrity or disclosure concerns",
+        "Governance concerns",
+        "Use-of-funds questions"
+      ]
+    },
+    {
+      "slug": "community",
+      "ref": "e",
+      "name": "Community",
+      "title": "Raise a grievance as a community member.",
+      "who": "Anyone in the places we operate — Bagru, Srinagar, Florence, Sydney, Riga, Dharamshala.",
+      "blurb": "Local impact, heritage, livelihoods.",
+      "examples": [
+        "Local environmental impact of operations — water, dyes, waste",
+        "Employment practices in the cluster",
+        "Impact on craft heritage and community life"
+      ]
+    },
+    {
+      "slug": "environment",
+      "ref": "f",
+      "name": "The environment",
+      "title": "Raise a grievance on behalf of the environment.",
+      "who": "Anyone who witnesses an environmental breach in our operations or our partners'.",
+      "blurb": "Practices, claims, materials.",
+      "examples": [
+        "Dye or water discharge at partner ateliers",
+        "Inaccurate environmental claims on any product",
+        "Materials misrepresentation",
+        "Waste handling violations"
+      ]
+    }
+  ],
+  "categories": [
+    "Payment or payout",
+    "Working conditions or safety",
+    "Retaliation",
+    "Product or claim accuracy",
+    "Environmental practice",
+    "Governance or reporting",
+    "Community impact",
+    "Other"
+  ],
+  "criteriaMap": [
+    { "ref": "3.1.1", "requirement": "The company publishes a grievance form on its webpage or has another easily accessible way for stakeholders to raise a grievance", "where": "Persona forms (a)–(f), below" },
+    { "ref": "3.1.2", "requirement": "The grievance procedure explains grounds for accepting a grievance, process steps and targeted deadlines, and how a resolution is facilitated", "where": "The procedure" },
+    { "ref": "3.1.3", "requirement": "The company describes the processes and controls protecting stakeholders who raise grievances from any form of retaliation", "where": "Protection from retaliation" },
+    { "ref": "3.1.4", "requirement": "The company responds to grievances by communicating each step and outcome to the complainant, or explains why it was not accepted", "where": "Our response commitment" }
+  ],
+  "footnote": "Published in fulfilment of B Corp Certification requirements — Purpose & Stakeholder Governance 3.1 (Criteria 3.1.1–3.1.4). Kind Health Tech is a candidate for certification, not yet a Certified B Corporation."
+}
