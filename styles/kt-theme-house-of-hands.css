@@ -74,3 +74,65 @@ h1 .serif.italic, h2 .serif.italic, h3 .serif.italic {
 .kt-fork-card.platform .kt-fork-eyebrow,
 .kt-fork-card.platform p,
 .kt-fork-card.platform h2 em { color: #dbe6e8; }
+
+/* ---------------------------------------------------------------------
+   HOME (.vh, styles/vessa-home.css) — same paper + teal, poster type.
+   vessa-home.css hardcodes its own white/periwinkle tokens, so the
+   :root retone above never reached it.
+   --------------------------------------------------------------------- */
+:root .vh {
+  --vh-ink: #15181d;
+  --vh-paper: #f6f3ec;
+  --vh-paper-2: #ece7dc;
+  --vh-surface: #efe9de;
+  --vh-surface-bright: #fbf9f4;
+  --vh-hairline: #cfc8b9;
+  --vh-accent: #4f7f8c;
+  --vh-accent-deep: #2f5560;
+  /* the purple-to-amber "dye" CTA becomes the poster's two teals */
+  --vh-cta-gradient: linear-gradient(120deg, #2f5560 0%, #4f7f8c 100%);
+}
+:root .vh a[class*="bg-ui-button"]:not([class*="bg-ui-button-inverted"]) { color: #15181d; }
+:root .vh [class*="bg-ui-button-inverted"]:hover { box-shadow: 0 10px 24px -10px rgba(47, 85, 96, .6), inset 0 1px 0 rgba(255, 255, 255, .18); }
+
+/* Poster type: Instrument Serif display, teal small-caps kicker */
+:root .vh .hero-title,
+:root .vh .h2,
+:root .vh .plate h2 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: .98;
+}
+:root .vh .hero-title { font-size: clamp(2.8rem, 7vw, 5.4rem); }
+:root .vh .h2 { font-size: clamp(2.3rem, 4.4vw, 3.6rem); }
+:root .vh .plate h2 { font-size: clamp(2.6rem, 6vw, 4.4rem); }
+:root .vh .eyebrow { letter-spacing: .16em; color: #2f5560; }
+
+/* Glows: indigo/violet/amber becomes teal-pale and paper */
+:root .vh .trace-glow {
+  background: conic-gradient(from 0deg at 50% 50%,
+    rgba(79, 127, 140, .22) 0deg, rgba(219, 230, 232, .5) 90deg,
+    rgba(246, 243, 236, .4) 150deg, rgba(110, 151, 162, .2) 210deg,
+    rgba(79, 127, 140, .22) 360deg);
+}
+:root .vh .how-glow {
+  background: conic-gradient(from 0deg at 68% 50%,
+    rgba(79, 127, 140, .16) 0deg, rgba(219, 230, 232, .4) 90deg,
+    rgba(246, 243, 236, .3) 150deg, rgba(110, 151, 162, .14) 210deg,
+    rgba(79, 127, 140, .16) 360deg);
+}
+:root .vh .trace-demo .mock { box-shadow: 0 24px 60px -32px rgba(47, 85, 96, .45); }
+:root .vh .how-windows .mock { box-shadow: 0 20px 50px -30px rgba(47, 85, 96, .4); }
+:root .vh .jstep.active .n { box-shadow: 0 8px 22px -8px rgba(47, 85, 96, .6); }
+:root .vh .jdraw-tag { background: rgba(251, 249, 244, .82); }
+:root .vh .chip.warn { background: #f1e6cf; color: #8a5a17; }
+
+/* Close plate: dark teal, like the poster CTA band */
+:root .vh .plate { background: #2f5560; }
+:root .vh .plate .eyebrow { color: #dbe6e8; }
+:root .vh .plate p { color: rgba(255, 255, 255, .84); }
+
+/* The moon's cool blue halo, warmed to the paper ground */
+:root .vc-moon-glow { background: radial-gradient(closest-side, rgba(219, 230, 232, .6), rgba(169, 196, 202, .22) 52%, transparent 74%); }
+:root .vc-moon-canvas { filter: drop-shadow(0 0 18px rgba(169, 196, 202, .4)); }

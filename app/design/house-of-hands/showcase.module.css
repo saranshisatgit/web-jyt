@@ -1,0 +1,11 @@
+/* Labels that name the component above each demo. Showcase only. */
+.page { padding-bottom: 64px; }
+.intro { padding: clamp(40px, 7vw, 88px) clamp(16px, 4vw, 40px) 24px; max-width: calc(1200px + 2 * clamp(16px, 4vw, 40px)); margin: 0 auto; }
+.label {
+  display: flex; flex-wrap: wrap; gap: .25rem 1rem; align-items: baseline;
+  max-width: calc(1200px + 2 * clamp(16px, 4vw, 40px)); margin: 0 auto; padding: 14px clamp(16px, 4vw, 40px);
+  font-family: var(--font-mono), ui-monospace, monospace; font-size: 12px; color: #6a6e76;
+  border-top: 1px dashed #cfc8b9;
+}
+.label b { color: #15181d; font-weight: 500; }
+.label code { overflow-wrap: anywhere; }

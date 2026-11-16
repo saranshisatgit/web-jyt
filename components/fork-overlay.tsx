@@ -64,6 +64,8 @@ export function ForkOverlay() {
   if (pathname?.startsWith('/stakeholders/grievance')) return null
   // The Melbourne stand posters are opened from a QR or a link at the stand — no gate.
   if (pathname?.startsWith('/melbourne')) return null
+  // The House of Hands kit showcase is an internal reference page.
+  if (pathname?.startsWith('/design')) return null
 
   const pick = (m: Mode) => {
     setMode(m)

@@ -14,6 +14,7 @@ import { JourneyPixelDraw } from '@/components/journey-pixel-draw'
 import { VessaNavbar, type VessaNavItem } from '@/components/vessa-navbar'
 import { MobileNavDrawer, type NavTreeItem } from '@/components/mobile-nav-drawer'
 import { MoonPhase } from '@/components/moon-phase'
+import { HomeOrderSteps } from '@/components/home-order-steps'
 import homeBlocks from '@/data/home-blocks.json'
 
 /**
@@ -282,6 +283,8 @@ export function VessaHome() {
         </section>
 
         {/* how it works (tabs) */}
+        <HomeOrderSteps />
+
         <section className="section wrap hairline" id="how">
           {/* footer links to /#how-it-works — same section, legacy anchor */}
           <span id="how-it-works" aria-hidden />
