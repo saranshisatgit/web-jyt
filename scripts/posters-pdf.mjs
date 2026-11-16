@@ -59,6 +59,10 @@ for (const p of POSTERS) {
 
   const pdf = path.join(outDir, `${p.out}.pdf`)
   await page.pdf({ path: pdf, preferCSSPageSize: true, printBackground: true, margin: { top: 0, right: 0, bottom: 0, left: 0 } })
+  // The preview needs a window wider than the A1 sheet (2245 px at 96 dpi), or the
+  // centred sheet overflows to the left and the screenshot loses its left edge.
+  await page.setViewportSize({ width: 2400, height: 3300 })
+  await page.waitForTimeout(300)
   await page.locator(".poster").screenshot({ path: path.join(outDir, `${p.out}.png`) })
   console.log("pdf:", pdf)
   await page.close()
