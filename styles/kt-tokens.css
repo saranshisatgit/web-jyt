@@ -2,18 +2,9 @@
    KIND THREAD — DESIGN TOKENS  ·  "SKY" RETONE
    The single source of truth for color, type, spacing, radii, motion.
    Palette: user-approved "Sky" (deep slate-blue ink + periwinkle sky).
-   Display serif = PS Times (self-hosted). Components = Medusa forms.
+   Display serif = Instrument Serif (OFL, via next/font). Components = Medusa forms.
    Approved spec: docs/sky-design-system.html
    ===================================================================== */
-
-/* PS Times — display serif (Regular only). Self-hosted from public/fonts. */
-@font-face {
-  font-family: "PS Times";
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url("/fonts/PSTimesTrial-Regular.otf") format("opentype");
-}
 
 :root {
   /* ---------------- COLOR · VESSA PAPER ---------------- */
@@ -86,7 +77,7 @@
 
   /* ---------------- TYPE ---------------- */
   --font-sans:    "Rethink Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-serif:   "PS Times", "Times New Roman", Georgia, serif;
+  --font-serif:   var(--font-instrument-serif), "Instrument Serif", "Times New Roman", Georgia, serif;
   --font-mono:    "JetBrains Mono", ui-monospace, "SF Mono", monospace;
 
   /* Type scale (display + body) */

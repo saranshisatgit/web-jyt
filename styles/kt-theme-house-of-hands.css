@@ -1,0 +1,76 @@
+/* =====================================================================
+   HOUSE OF HANDS — site retone from the Melbourne 2026 booklet + posters.
+   Paper ground, teal ink, Instrument Serif with a stitched accent word.
+   Overrides the "Sky" values in kt-tokens.css; delete the @import in
+   globals.css to go back.
+   ===================================================================== */
+
+:root {
+  /* Ground — warm paper instead of white */
+  --sky-1:        #f6f3ec;
+  --sky-2:        #f6f3ec;
+  --sky-3:        #ece7dc;
+  --sky-glow:     #f6f3ec;
+  --bg:           #f6f3ec;
+  --surface:      #fbf9f4;
+  --surface-tint: #ece7dc;
+
+  /* Ink */
+  --ink:          #15181d;
+  --ink-dark:     #15181d;
+  --ink-dark-bg:  #2f5560;   /* deep teal panel */
+
+  /* Rules */
+  --border:       #cfc8b9;
+  --border-soft:  #e2dccf;
+  --rule-dark:    #46707b;
+
+  /* Brand — teal */
+  --brand:        #4f7f8c;
+  --brand-deep:   #2f5560;
+  --brand-mid:    #5f8d99;
+  --brand-soft:   #a9c4ca;
+  --brand-pale:   #dbe6e8;
+  --accent-pale:  #dbe6e8;
+
+  --btn-fill:     #2f5560;
+
+  --ok:           #4f7f8c;
+  --ok-pale:      #dbe6e8;
+  --warn:         #4e6870;
+
+  --hero-ground: radial-gradient(90% 60% at 70% 0%, #dbe6e8 0%, transparent 60%),
+                 linear-gradient(180deg, var(--sky-1) 0%, var(--sky-2) 34%, var(--bg) 100%);
+
+  --shadow-card: 0 0 0 1px rgba(47,85,96,.08), 0 1px 2px -1px rgba(47,85,96,.10), 0 2px 4px rgba(47,85,96,.05);
+  --shadow-soft: 0 1px 2px rgba(47,85,96,.10), 0 0 0 1px rgba(47,85,96,.07);
+}
+
+html { background-color: var(--bg); }
+
+/* Accent word (the <em> in a display heading): real italic, coloured, with a
+   wavy "stitch" underline. Only in headings, never in body copy. */
+h1 em, h2 em, h3 em, .kt-display em,
+h1 .serif.italic, h2 .serif.italic, h3 .serif.italic {
+  /* !important beats kt-components.css, which forced the accent upright for PS Times */
+  font-style: italic !important;
+  text-decoration-line: underline;
+  text-decoration-style: wavy;
+  text-decoration-thickness: .045em;
+  text-underline-offset: .12em;
+  text-decoration-color: currentColor;
+  text-decoration-skip-ink: none;
+}
+
+/* Chooser cards (fork overlay): kt-components.css hardcodes slate-blue (hue 264).
+   Re-tone to the poster's two teals so the dark cards stay distinct. */
+.kt-fork-card.investor { background: #1f3a42; border-color: #1f3a42; }
+.kt-fork-card.investor:hover { background: #24444d; }
+.kt-fork-card.platform { background: #4f7f8c; border-color: #4f7f8c; }
+.kt-fork-card.platform:hover { background: #47737f; }
+.kt-fork-card.investor .kt-fork-eyebrow,
+.kt-fork-card.investor p { color: #a9c4ca; }
+.kt-fork-card.investor h2 em { color: #8fc1cc; }
+.kt-fork-card.platform .kt-fork-eyebrow,
+.kt-fork-card.platform p,
+.kt-fork-card.platform h2 em { color: #dbe6e8; }

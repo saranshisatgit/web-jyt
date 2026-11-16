@@ -14,6 +14,7 @@
 @import './vessa-chrome.css';
 @import './motion.css';
 @import './medusa-ui-tokens.css';
+@import './kt-theme-house-of-hands.css';
 
 @plugin "@tailwindcss/typography";
 
@@ -28,7 +29,7 @@
 @theme {
   --font-sans: 'Rethink Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-display: 'Rethink Sans', system-ui, sans-serif;
-  --font-serif: 'PS Times', ui-serif, Georgia, 'Times New Roman', serif;
+  --font-serif: var(--font-instrument-serif), 'Instrument Serif', ui-serif, Georgia, 'Times New Roman', serif;
   --font-mono: ui-monospace, 'JetBrains Mono', SFMono-Regular, Menlo, monospace;
 
   /* Slate blue-grey — modern art gallery neutral. Hue ~210. */
