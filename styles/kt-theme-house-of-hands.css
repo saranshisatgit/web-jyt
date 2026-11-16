@@ -136,3 +136,38 @@ h1 .serif.italic, h2 .serif.italic, h3 .serif.italic {
 /* The moon's cool blue halo, warmed to the paper ground */
 :root .vc-moon-glow { background: radial-gradient(closest-side, rgba(219, 230, 232, .6), rgba(169, 196, 202, .22) 52%, transparent 74%); }
 :root .vc-moon-canvas { filter: drop-shadow(0 0 18px rgba(169, 196, 202, .4)); }
+
+/* "Everything lives on one rail": the round-numbered rail becomes the
+   supply-line poster's row of step cards. The active step inverts to teal-deep
+   and still advances on its own (journeyIdx in vessa-home.tsx). */
+:root .vh .journey { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; align-items: stretch; }
+:root .vh .journey-rail { display: none; }
+:root .vh .jstep {
+  position: relative; text-align: left; padding: 18px 18px 20px;
+  background: #fbf9f4; border: 1px solid #cfc8b9; border-radius: 12px;
+  transition: background .35s ease, color .35s ease, border-color .35s ease, transform .35s ease;
+}
+:root .vh .jstep + .jstep::before {
+  content: "→"; position: absolute; left: -12px; top: 50%; transform: translate(-50%, -50%);
+  color: #4f7f8c; font-size: 14px;
+}
+:root .vh .jstep .jart { display: block; height: 72px; width: auto; max-width: 100%; margin: 0 0 10px; transition: filter .35s ease; }
+:root .vh .jstep .n {
+  width: auto; height: auto; margin: 0 0 6px; border: 0; border-radius: 0; background: none; display: block;
+  font-family: var(--font-serif); font-weight: 400; font-size: 34px; line-height: 1; color: #4f7f8c;
+  transform: none; box-shadow: none;
+}
+:root .vh .jstep.done .n, :root .vh .jstep.active .n { background: none; transform: none; box-shadow: none; }
+:root .vh .jstep.done .n { color: #4f7f8c; }
+:root .vh .jstep .l { opacity: 1; font-size: 15px; }
+:root .vh .jstep .s { opacity: 1; font-size: 13px; }
+:root .vh .jstep.done { border-color: #4f7f8c; }
+:root .vh .jstep.active { background: #2f5560; border-color: #2f5560; color: #fff; transform: translateY(-3px); }
+:root .vh .jstep.active .n { color: #dbe6e8; }
+:root .vh .jstep.active .l { color: #fff; }
+:root .vh .jstep.active .s { color: rgba(255, 255, 255, .82); }
+:root .vh .jstep.active .jart { filter: brightness(0) invert(1); }
+@media (max-width: 720px) {
+  :root .vh .journey { grid-template-columns: 1fr 1fr; }
+  :root .vh .jstep:nth-child(4)::before { display: none; } /* rail is child 1; step 3 starts row 2 */
+}
