@@ -309,7 +309,7 @@
           "EU ESPR / DPP compliance by default",
           "Dedicated onboarding"
         ],
-        "cta": { "label": "Get a demo", "href": "#demo", "variant": "primary" },
+        "cta": { "label": "Get a demo", "href": "/contact?prompt=I%27d%20like%20a%20demo%20of%20Luna.%20We%20make%3A%20&utm_source=home&utm_content=get-a-demo", "variant": "primary" },
         "featured": true
       }
     ]
@@ -336,7 +336,7 @@
     "eyebrow": "Luna · since 2025",
     "title": "Run your atelier.",
     "body": "15+ happy customers, 3+ brands shipping. Tell us what you're making and we'll show you the platform live.",
-    "ctaPrimary": { "label": "Get a demo", "href": "#waitlist" },
+    "ctaPrimary": { "label": "Get a demo", "href": "/contact?prompt=I%27d%20like%20a%20demo%20of%20Luna.%20We%20make%3A%20&utm_source=home&utm_content=get-a-demo" },
     "ctaSecondary": { "label": "See the platform", "href": "#how" }
   }
 }

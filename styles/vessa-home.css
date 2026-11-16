@@ -295,6 +295,8 @@
 .vh .capture-form input { width: min(22rem, 100%); height: 40px; padding: 0 16px; border: 1px solid var(--vh-hairline);
   border-radius: 8px; font-family: inherit; font-size: 15px; color: var(--vh-ink); background: var(--vh-surface-bright); }
 .vh .capture-form input:focus { outline: 2px solid var(--vh-accent); outline-offset: 1px; border-color: transparent; }
+.vh .capture-done { margin-top: 28px; font-size: 17px; color: var(--vh-accent-deep); }
+.vh .capture-error { margin-top: 12px; font-size: 14px; color: #9e2626; }
 .vh .capture-note { font-size: 13px; color: var(--vh-ink-mute); margin-top: 14px; }
 
 /* faq */

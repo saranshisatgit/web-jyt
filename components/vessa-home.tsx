@@ -5,7 +5,7 @@
 // imported it.
 import '@/styles/vessa-home.css'
 
-import { useEffect, useRef, useState, type CSSProperties } from 'react'
+import { useEffect, useRef, useState, type CSSProperties, type FormEvent } from 'react'
 import Link from 'next/link'
 import { useQuery } from '@tanstack/react-query'
 import { Button } from '@medusajs/ui'
@@ -57,8 +57,59 @@ const FAQ_BLOCK = homeBlocks.faq
 const FAQS = FAQ_BLOCK.items
 const PLATE = homeBlocks.plate
 
+// "Get a demo" opens the contact form with a demo brief (form `contact`, which
+// emails the team) instead of looping to the consumer waitlist.
+const DEMO_HREF =
+  '/contact?prompt=' +
+  encodeURIComponent("I'd like a demo of Luna. We make: ") +
+  '&utm_source=home&utm_content=get-a-demo'
+
+type CaptureState = 'idle' | 'sending' | 'done' | 'error'
+
+/** Waitlist email capture. Posts to /api/waitlist (backend form `waitlist`). */
+function CaptureForm() {
+  const [state, setState] = useState<CaptureState>('idle')
+  const [error, setError] = useState('')
+
+  async function onSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    const email = String(new FormData(e.currentTarget).get('email') || '').trim()
+    setState('sending')
+    setError('')
+    try {
+      const res = await fetch('/api/waitlist', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, mode: 'consumer' }),
+      })
+      if (!res.ok) throw new Error(res.status === 400 ? 'Please check the email address.' : 'Could not save that right now. Please try again.')
+      setState('done')
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Could not save that right now. Please try again.')
+      setState('error')
+    }
+  }
+
+  if (state === 'done') {
+    return <p className="capture-done center" role="status">You are on the list. We will write when your fitting is ready.</p>
+  }
+
+  return (
+    <>
+      <form className="capture-form" onSubmit={onSubmit}>
+        <input type="email" name="email" placeholder={CAPTURE.placeholder} required aria-label="Email" />
+        <Button type="submit" variant="primary" isLoading={state === 'sending'}>{CAPTURE.submitLabel}</Button>
+      </form>
+      {state === 'error' ? <p className="capture-error center" role="alert">{error}</p> : null}
+      <p className="capture-note center">{CAPTURE.note}</p>
+    </>
+  )
+}
+
 // Journey steps — the sketch → shipment strip, from the JSON blocks.
 const STEPS = homeBlocks.journey
+// Poster-style art for the four rail steps (House of Hands illustrations).
+const STEP_ART = ['designer', 'dashboard', 'team-desk', 'delivery'].map((n) => `/booklet/illustrations/${n}.svg`)
 
 // /vessa navbar CTAs live in the shared VessaNavbar's right slot.
 
@@ -160,7 +211,7 @@ export function VessaHome() {
               <Link href="/login">Sign in</Link>
             </Button>
             <Button asChild variant="primary" size="small">
-              <Link href="#demo">Get a demo</Link>
+              <Link href={DEMO_HREF}>Get a demo</Link>
             </Button>
             <button
               type="button"
@@ -362,7 +413,8 @@ export function VessaHome() {
                             onMouseEnter={() => { journeyHover.current = true; setJourneyIdx(i) }}
                             onMouseLeave={() => { journeyHover.current = false }}
                           >
-                            <div className="n">{i + 1}</div>
+                            <img className="jart" src={STEP_ART[i]} alt="" />
+                            <div className="n">{String(i + 1).padStart(2, '0')}</div>
                             <div className="l">{st.t.replace(/\.$/, '')}</div>
                             <div className="s">{st.b}</div>
                           </div>
@@ -462,11 +514,7 @@ export function VessaHome() {
               {CAPTURE.lead}
             </p>
           </div>
-          <form className="capture-form" onSubmit={(e) => e.preventDefault()}>
-            <input type="email" placeholder={CAPTURE.placeholder} required />
-            <Button type="submit" variant="primary">{CAPTURE.submitLabel}</Button>
-          </form>
-          <p className="capture-note center">{CAPTURE.note}</p>
+          <CaptureForm />
         </section>
 
         {/* faq */}
