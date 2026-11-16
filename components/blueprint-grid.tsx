@@ -23,6 +23,8 @@ export function BlueprintGrid() {
   if (pathname === '/' || pathname?.startsWith('/vessa')) return null
   // A signing link reads as a paper document; rails would cross the text.
   if (pathname?.startsWith('/agreement')) return null
+  // The Melbourne stand posters are print sheets; rails would print across them.
+  if (pathname?.startsWith('/melbourne')) return null
 
   // Horizontal rails at fixed viewport-relative positions.
   // 12.5%, 37.5%, 62.5%, 87.5% — quarter ticks offset by half a quarter

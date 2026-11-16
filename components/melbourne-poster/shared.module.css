@@ -1,0 +1,70 @@
+/* Melbourne stand posters — the A1 sheet, its on-screen frame and the parts every
+   poster shares. Ported from public/booklet/poster-*.html. Sizes are in mm so the
+   sheet prints at true A1 (594 x 841 mm); on screen it is scaled by --fit. */
+
+.root {
+  --serif: var(--p-serif), "Instrument Serif", "Times New Roman", serif;
+  --sans: var(--font-sans), "Rethink Sans", system-ui, sans-serif;
+  --deva: var(--p-deva), "Tiro Devanagari Hindi", serif;
+  --fit: 0.3;
+  min-height: 100vh;
+  background: #8a8f96;
+  font-family: var(--sans);
+  color: var(--ink);
+  line-height: normal;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+.root *, .root *::before, .root *::after { box-sizing: border-box; margin: 0; padding: 0; }
+.root img { max-width: none; }
+
+/* screen only: fit the A1 sheet to the window */
+.webbar {
+  position: sticky; top: 0; z-index: 10;
+  display: flex; gap: 16px; align-items: center; justify-content: space-between;
+  padding: 10px 16px; background: var(--teal-deep); color: #fff;
+  font-size: 13px; letter-spacing: .02em;
+}
+.webbar b { font-family: var(--serif); font-weight: 400; font-size: 18px; }
+.webbar label { display: flex; gap: 6px; align-items: center; cursor: pointer; }
+.webbar a { color: #fff; }
+.webbarLinks { display: flex; gap: 16px; align-items: center; }
+.stage { padding: 24px 16px 48px; display: flex; justify-content: center; }
+.frame { width: calc(594mm * var(--fit)); height: calc(841mm * var(--fit)); }
+.poster {
+  width: 594mm; height: 841mm;
+  transform: scale(var(--fit)); transform-origin: top left;
+  background: var(--paper);
+  display: flex; flex-direction: column;
+  box-shadow: 0 10px 40px rgba(0,0,0,.25);
+  overflow: hidden;
+}
+.trim .poster { outline: 3mm dashed rgba(200,40,40,.6); outline-offset: -10mm; }
+
+/* the head band and title, the same on every poster */
+.top { padding: 22mm 26mm 0; }
+.head {
+  display: flex; justify-content: space-between; align-items: baseline;
+  border-bottom: .8mm solid var(--ink); padding-bottom: 5mm;
+  font-size: 7.4mm; letter-spacing: .14em; text-transform: uppercase; font-weight: 600;
+}
+.stand { color: #fff; background: var(--teal-deep); padding: .6mm 2.6mm; border-radius: 1.2mm; font-weight: 700; }
+.deva { font-family: var(--deva); text-transform: none; letter-spacing: 0; font-weight: 400; font-size: 9mm; margin-left: 4mm; color: var(--teal-deep); }
+.kicker {
+  font-size: 7mm; letter-spacing: .16em; text-transform: uppercase;
+  color: var(--teal-deep); font-weight: 600;
+}
+.topKicker { margin-top: var(--kicker-gap, 14mm); }
+.h1 {
+  font-family: var(--serif); font-weight: 400; letter-spacing: -.01em;
+  font-size: var(--h1-size, 56mm); line-height: .96; margin-top: 5mm;
+}
+.accent { color: var(--teal); }
+
+@media print {
+  .root { background: none; min-height: 0; }
+  .webbar { display: none; }
+  .stage { padding: 0; }
+  .frame { width: auto; height: auto; }
+  .poster { transform: none; box-shadow: none; outline: none !important; }
+}

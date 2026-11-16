@@ -1,0 +1,79 @@
+/* Poster 3 — sell anywhere. Ported from public/booklet/poster-sell-anywhere-2026.html. */
+
+.lede { margin-top: 8mm; font-size: 9.2mm; line-height: 1.34; color: var(--ink-soft); max-width: 520mm; }
+.lede b { color: var(--ink); font-weight: 600; }
+.proof { margin-top: 6mm; display: flex; align-items: baseline; gap: 3mm; font-size: 7mm; color: var(--ink-soft); }
+.proof span { font-size: 5.4mm; letter-spacing: .14em; text-transform: uppercase; color: var(--teal-deep); font-weight: 600; margin-right: 4mm; }
+.proof b { color: var(--ink); font-family: var(--serif); font-weight: 400; font-size: 10mm; }
+.proof i { width: 1.6mm; height: 1.6mm; border-radius: 50%; background: var(--teal); margin: 0 4mm; align-self: center; }
+.h2 { font-family: var(--serif); font-weight: 400; font-size: 17mm; line-height: 1; letter-spacing: -.01em; }
+.secHead { display: flex; justify-content: space-between; align-items: baseline; gap: 10mm; }
+.paleKicker { color: var(--teal-pale); }
+
+/* everything covered */
+.covered { margin: 10mm 26mm 0; background: var(--teal-deep); color: #fff; border-radius: 4mm; padding: 10mm 11mm 10mm; display: grid; grid-template-columns: 1fr 196mm; gap: 11mm; }
+.covered .h2 { margin-top: 3mm; }
+.pillars { display: grid; grid-template-columns: 1fr 1fr; gap: 6mm 9mm; margin-top: 7mm; }
+.pillar { border-top: .5mm solid rgba(255,255,255,.35); padding-top: 3.5mm; }
+.pillar b { display: block; font-family: var(--serif); font-weight: 400; font-size: 12.5mm; line-height: 1; }
+.pillar span { display: block; font-size: 6.3mm; line-height: 1.38; color: rgba(255,255,255,.84); margin-top: 2.5mm; }
+.shot { background: var(--paper); border-radius: 3mm; padding: 3mm; }
+.shot img { width: 100%; display: block; border-radius: 1.5mm; }
+.shot figcaption { color: var(--ink-mute); font-size: 4.4mm; letter-spacing: .08em; text-transform: uppercase; padding: 2.5mm 1mm 0; }
+.quote { margin-top: 6mm; font-family: var(--serif); font-size: 9mm; line-height: 1.18; border-left: .8mm solid var(--teal-pale); padding-left: 5mm; }
+.quote cite { display: block; margin-top: 2.5mm; font-family: var(--sans); font-style: normal; font-size: 4.8mm; letter-spacing: .12em; text-transform: uppercase; color: var(--teal-pale); }
+
+/* range */
+.range { padding: 10mm 26mm 0; }
+.rangeGrid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4mm; margin-top: 6mm; }
+.rangeGrid figure { position: relative; }
+.rangeGrid img { width: 100%; height: 72mm; object-fit: cover; display: block; border-radius: 2mm; }
+.rangeGrid figcaption { font-size: 5.8mm; font-weight: 600; margin-top: 2.2mm; line-height: 1.2; }
+.rangeGrid figcaption span { display: block; font-weight: 400; font-size: 4.9mm; color: var(--ink-mute); }
+.also { margin-top: 4mm; font-size: 6.4mm; color: var(--ink-soft); }
+.also b { color: var(--ink); }
+
+/* real numbers */
+.facts3 { margin: 9mm 26mm 0; display: grid; grid-template-columns: 1.35fr 1fr .78fr; gap: 6mm; }
+.card { border-radius: 4mm; padding: 7mm 8mm; background: #fff; border: .4mm solid var(--rule); }
+.card h4 { font-family: var(--serif); font-weight: 400; font-size: 12mm; line-height: 1; margin-top: 2mm; }
+.prices table { width: 100%; border-collapse: collapse; margin-top: 4mm; font-size: 5.4mm; }
+.prices th { text-align: left; font-size: 4.2mm; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-mute); font-weight: 600; padding-bottom: 1.5mm; border-bottom: .4mm solid var(--ink); }
+.prices td { padding: 1.8mm 0; border-bottom: .3mm solid var(--rule); }
+.prices td:last-child, .prices th:last-child { text-align: right; }
+.prices td:last-child { font-family: var(--serif); font-size: 7.4mm; color: var(--teal-deep); }
+.fine { font-size: 4.2mm; color: var(--ink-mute); margin-top: 2.5mm; line-height: 1.3; }
+.duty { margin-top: 3mm; font-size: 5mm; line-height: 1.3; color: var(--ink-soft); background: var(--teal-pale); border-radius: 2mm; padding: 2.5mm 3.5mm; }
+.duty b { color: var(--teal-deep); }
+.climate { background: var(--teal-deep); border-color: var(--teal-deep); color: #fff; display: flex; flex-direction: column; }
+.climate p { font-size: 5.8mm; line-height: 1.38; color: rgba(255,255,255,.86); margin-top: 3mm; }
+.kwh { margin-top: auto; padding-top: 4mm; border-top: .4mm solid rgba(255,255,255,.3); }
+.kwh b { display: block; font-family: var(--serif); font-weight: 400; font-size: 17mm; line-height: 1; }
+.kwh span { display: block; font-size: 4.6mm; line-height: 1.32; color: var(--teal-pale); margin-top: 1.5mm; }
+.khadi { background: var(--paper-2); border-radius: 4mm; padding: 7mm 8mm; display: flex; flex-direction: column; justify-content: space-between; }
+.big { font-family: var(--serif); font-size: 30mm; line-height: .9; color: var(--teal-deep); margin-top: 4mm; }
+.big small { font-size: 13mm; }
+.khadi p { font-size: 5.8mm; line-height: 1.35; color: var(--ink-soft); margin-top: 2mm; }
+.khadi p b { color: var(--ink); }
+.looms { border-top: .5mm solid var(--rule); padding-top: 3mm; }
+.looms b { font-family: var(--serif); font-weight: 400; font-size: 17mm; line-height: 1; color: var(--ink); display: block; }
+.khadi .looms p { margin-top: 1mm; }
+
+/* blends */
+.blends { margin: 8mm 26mm 9mm; }
+.blends .h2 { font-size: 14mm; }
+.blendRow { display: grid; grid-template-columns: 300mm 1fr; gap: 8mm; align-items: start; margin-top: 4mm; }
+.swatches { display: grid; grid-template-columns: repeat(5, 1fr); gap: 2.5mm; }
+.swatches figure img { width: 100%; height: 34mm; object-fit: cover; display: block; border-radius: 2mm; }
+.swatches figcaption { font-size: 4.4mm; margin-top: 1.4mm; color: var(--ink-soft); }
+.chips { display: flex; flex-wrap: wrap; gap: 2mm; }
+.chips i { font-style: normal; font-size: 5mm; font-weight: 600; padding: 1.3mm 3.2mm; border-radius: 5mm; background: var(--teal-pale); color: var(--teal-deep); }
+
+/* call to action */
+.cta { margin-top: auto; background: var(--ink); color: #fff; padding: 9mm 26mm 10mm; display: grid; grid-template-columns: 1fr 62mm; gap: 14mm; align-items: center; }
+.cta .h2 { font-size: 22mm; margin-top: 3mm; }
+.cta p { font-size: 8.4mm; color: rgba(255,255,255,.82); margin-top: 4mm; }
+.cta p b { color: #fff; }
+.qr { background: var(--paper); border-radius: 3mm; padding: 5mm; text-align: center; color: var(--ink); }
+.qr img { width: 100%; display: block; }
+.qr span { display: block; margin-top: 2.5mm; font-size: 4.6mm; font-weight: 600; }

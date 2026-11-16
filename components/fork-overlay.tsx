@@ -19,7 +19,7 @@ const CARDS: ForkCard[] = [
     mode: 'consumer',
     variant: 'consumer',
     eyebrow: 'For people who wear it',
-    headline: <><em>Wearing</em><br />it.</>,
+    headline: <>Wearing<br /><em>it.</em></>,
     lede: 'Meet the hands behind your next garment. Custom clothing with a story you can verify, made by an atelier you can name.',
     arrow: 'Step inside the atelier',
   },
@@ -62,6 +62,8 @@ export function ForkOverlay() {
   // A grievance form is a right, not a visit — nothing may stand between a
   // stakeholder and raising a grievance (B Corp PSG 3.1.1, easy accessibility).
   if (pathname?.startsWith('/stakeholders/grievance')) return null
+  // The Melbourne stand posters are opened from a QR or a link at the stand — no gate.
+  if (pathname?.startsWith('/melbourne')) return null
 
   const pick = (m: Mode) => {
     setMode(m)

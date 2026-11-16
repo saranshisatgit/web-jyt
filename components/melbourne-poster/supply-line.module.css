@@ -1,0 +1,77 @@
+/* Poster 2 — the supply line. Ported from public/booklet/poster-supply-line-2026.html. */
+
+.intro { display: grid; grid-template-columns: 1fr 300mm; gap: 16mm; align-items: end; margin-top: 8mm; }
+.lede { font-size: 9mm; line-height: 1.34; color: var(--ink-soft); }
+.facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7mm; }
+.facts div { border-top: .8mm solid var(--ink); padding-top: 3mm; font-size: 5.4mm; line-height: 1.3; color: var(--ink-soft); }
+.facts b { display: block; font-family: var(--serif); font-weight: 400; font-size: 19mm; line-height: 1; color: var(--ink); margin-bottom: 1.5mm; }
+
+/* thread map */
+.map {
+  position: relative; margin: 10mm 26mm 0; height: 285.2mm; flex-shrink: 0;
+  background: var(--teal-deep); color: #fff; border-radius: 4mm; overflow: hidden;
+}
+.map svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.grid line { stroke: rgba(255,255,255,.08); stroke-width: .35; }
+.thread { fill: none; stroke: var(--teal-pale); stroke-width: .9; stroke-dasharray: 3.2 2.2; stroke-linecap: round; opacity: .85; }
+.threadOut { stroke: #fff; stroke-width: 1.1; opacity: 1; }
+.dot { position: absolute; z-index: 1; width: 5.6mm; height: 5.6mm; margin: -2.8mm 0 0 -2.8mm; border-radius: 50%; background: var(--paper); box-shadow: 0 0 0 1.6mm rgba(219,230,232,.22); }
+.home { width: 8.4mm; height: 8.4mm; margin: -4.2mm 0 0 -4.2mm; background: #fff; box-shadow: 0 0 0 2.4mm rgba(255,255,255,.25), 0 0 0 4.8mm rgba(255,255,255,.1); }
+.label { position: absolute; transform: translateY(-50%); white-space: nowrap; line-height: 1.15; text-shadow: 0 0 2mm var(--teal-deep), 0 0 1mm var(--teal-deep); z-index: 2; }
+.label b { display: block; font-size: 6.2mm; font-weight: 600; letter-spacing: .01em; }
+.label span { display: block; font-size: 4.9mm; color: var(--teal-pale); }
+.labelLeft { text-align: right; }
+.mapTitle { position: absolute; left: 12mm; top: 11mm; }
+.paleKicker { color: var(--teal-pale); }
+.mapTitle h2 { font-family: var(--serif); font-weight: 400; font-size: 17mm; line-height: 1.02; margin-top: 3mm; }
+.away { position: absolute; left: 12mm; width: 150mm; }
+.awayKicker { color: var(--teal-pale); font-size: 5.4mm; }
+.away h3 { font-family: var(--serif); font-weight: 400; font-size: 11.5mm; line-height: 1.05; margin-top: 2mm; }
+.away p { font-size: 5.2mm; line-height: 1.35; color: rgba(255,255,255,.82); margin-top: 2.5mm; }
+.pin { display: inline-block; width: 5.6mm; height: 5.6mm; border-radius: 50%; background: var(--paper); margin-right: 3mm; vertical-align: .3mm; box-shadow: 0 0 0 1.6mm rgba(219,230,232,.22); }
+.mapNote { position: absolute; right: 12mm; top: 11mm; font-size: 4.8mm; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.55); }
+
+/* how an order runs */
+.how { padding: 12mm 26mm 0; }
+.howHead { display: flex; justify-content: space-between; align-items: baseline; }
+.howHead h2 { font-family: var(--serif); font-weight: 400; font-size: 19mm; line-height: 1; }
+.steps { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5mm; margin-top: 7mm; list-style: none; }
+.steps li { background: #fff; border: .4mm solid var(--rule); border-radius: 3mm; padding: 6mm 6mm 7mm; position: relative; }
+.steps li + li::before { content: "→"; position: absolute; left: -5mm; width: 5mm; top: 30mm; text-align: center; color: var(--teal); font-size: 6mm; }
+.n { font-family: var(--serif); color: var(--teal); font-size: 12mm; line-height: 1; }
+.steps img { height: 42mm; display: block; margin: 4mm 0 4mm; }
+.steps b { display: block; font-size: 7.8mm; line-height: 1.12; }
+.stepText { display: block; font-size: 5.8mm; line-height: 1.38; color: var(--ink-soft); margin-top: 2mm; }
+.chips { display: flex; flex-wrap: wrap; gap: 1.6mm; margin-top: 3mm; }
+.chips i { font-style: normal; font-size: 4.8mm; font-weight: 600; padding: 1mm 2.4mm; border-radius: 4mm; background: var(--teal-pale); color: var(--teal-deep); }
+.steps li.last { background: var(--teal-deep); border-color: var(--teal-deep); color: #fff; }
+.steps li.last .n { color: var(--teal-pale); }
+.steps li.last .stepText { color: rgba(255,255,255,.85); }
+.steps li.last .chips i { background: rgba(255,255,255,.14); color: #fff; }
+.steps li.last img { filter: brightness(0) invert(1); opacity: .9; }
+
+.lead { display: grid; grid-template-columns: 52mm 1fr 1fr auto; gap: 8mm; align-items: baseline; margin-top: 5mm; padding-top: 4mm; border-top: .5mm solid var(--rule); font-size: 6mm; color: var(--ink-soft); }
+.lead b { font-size: 5.4mm; letter-spacing: .14em; text-transform: uppercase; color: var(--teal-deep); }
+.days { font-family: var(--serif); font-size: 11mm; color: var(--ink); margin-right: 2mm; }
+.fn { font-size: 4.4mm; color: var(--ink-mute); }
+
+.bottom { margin-top: auto; background: var(--teal-pale); padding: 9mm 26mm 11mm; display: grid; grid-template-columns: auto 1fr 70mm; gap: 11mm; align-items: center; }
+.phones { display: flex; gap: 5mm; }
+.phones figure { width: 44mm; }
+.phones img { width: 100%; display: block; border: 1.6mm solid var(--ink); border-radius: 5mm; background: #fff; }
+.phones figcaption { font-size: 4.4mm; margin-top: 2mm; line-height: 1.25; color: var(--ink-soft); }
+.phones figcaption b { display: block; font-size: 5.2mm; color: var(--ink); }
+.appCopy { font-size: 5.6mm; line-height: 1.38; color: var(--ink-soft); }
+.appCopy b { color: var(--ink); }
+.bottom h3 { font-size: 5.2mm; letter-spacing: .14em; text-transform: uppercase; color: var(--teal-deep); font-weight: 600; margin-bottom: 4mm; }
+.bottom h3.mt { margin-top: 6mm; }
+.chain { display: flex; align-items: stretch; gap: 0; }
+.chain div { flex: 1; border: .5mm solid var(--teal-deep); padding: 3mm 3.5mm; font-size: 4.6mm; line-height: 1.25; background: var(--paper); position: relative; }
+.chain div + div { margin-left: 5mm; }
+.chain div + div::before { content: "→"; position: absolute; left: -5mm; width: 5mm; text-align: center; top: 50%; transform: translateY(-50%); color: var(--teal-deep); font-size: 5mm; }
+.chain b { display: block; font-size: 5.4mm; }
+.cap { font-size: 4.4mm; color: var(--ink-soft); margin-top: 2.5mm; }
+.qr { background: var(--paper); border-radius: 3mm; padding: 5mm; text-align: center; }
+.qr img { width: 100%; display: block; }
+.qr span { display: block; margin-top: 2.5mm; font-size: 4.2mm; font-weight: 600; }
+.qr em { display: block; font-style: normal; margin-top: 2mm; font-size: 6mm; font-weight: 700; color: var(--teal-deep); }

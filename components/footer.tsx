@@ -14,6 +14,8 @@ export function Footer() {
   const pathname = usePathname()
   // A signing link is a document to read and accept — no site footer under it.
   if (pathname?.startsWith('/agreement')) return null
+  // The Melbourne stand posters are A1 print sheets — no site footer under them.
+  if (pathname?.startsWith('/melbourne')) return null
   return <SiteFooter />
 }
 
