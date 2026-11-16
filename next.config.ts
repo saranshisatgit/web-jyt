@@ -48,6 +48,11 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       { source: "/melbourne", destination: "/booklet/melbourne-2026.html", permanent: false },
+      // The three stand posters (A1), each viewable, with print PDFs in /booklet/print/.
+      { source: "/melbourne/posters", destination: "/booklet/posters.html", permanent: false },
+      { source: "/melbourne/poster-1", destination: "/booklet/poster-melbourne-2026.html", permanent: false },
+      { source: "/melbourne/poster-2", destination: "/booklet/poster-supply-line-2026.html", permanent: false },
+      { source: "/melbourne/poster-3", destination: "/booklet/poster-sell-anywhere-2026.html", permanent: false },
     ]
   },
   // Preserve canonical legal URLs while the routes live under /content/[slug].

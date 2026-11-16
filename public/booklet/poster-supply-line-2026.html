@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Supply Line Poster</title>
+<meta name="description" content="JYT at Global Sourcing Expo Melbourne, 17 to 19 November 2026. A1 stand poster: the supply line across India and Italy, and how an order runs on Luna.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Rethink+Sans:wght@400;500;600;700&family=Tiro+Devanagari+Hindi&display=swap" rel="stylesheet">
+<!--
+  House of Hands, second A1 stand poster (594 x 841 mm), companion to poster-melbourne-2026.html.
+  The map is a thread map: hubs placed by latitude and longitude, no drawn borders.
+  Hubs come from HUBS below (partner stock locations on Luna, booklet page 4 wording).
+-->
+<style>
+@page { size: 594mm 841mm; margin: 0; }
+:root {
+  --paper: #f6f3ec;
+  --paper-2: #ece7dc;
+  --ink: #15181d;
+  --ink-soft: #3f434b;
+  --ink-mute: #6a6e76;
+  --teal: #4f7f8c;
+  --teal-deep: #2f5560;
+  --teal-pale: #dbe6e8;
+  --poster: #6e97a2;
+  --rule: #cfc8b9;
+  --serif: "Instrument Serif", "Times New Roman", serif;
+  --sans: "Rethink Sans", system-ui, sans-serif;
+  --deva: "Tiro Devanagari Hindi", serif;
+  --fit: 1;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: #8a8f96; }
+body { font-family: var(--sans); color: var(--ink); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+.webbar {
+  position: sticky; top: 0; z-index: 10;
+  display: flex; gap: 16px; align-items: center; justify-content: space-between;
+  padding: 10px 16px; background: var(--teal-deep); color: #fff;
+  font-size: 13px; letter-spacing: .02em;
+}
+.webbar b { font-family: var(--serif); font-weight: 400; font-size: 18px; }
+.webbar label { display: flex; gap: 6px; align-items: center; cursor: pointer; }
+.stage { padding: 24px 16px 48px; display: flex; justify-content: center; }
+.frame { width: calc(594mm * var(--fit)); height: calc(841mm * var(--fit)); }
+.poster {
+  width: 594mm; height: 841mm;
+  transform: scale(var(--fit)); transform-origin: top left;
+  background: var(--paper);
+  display: flex; flex-direction: column;
+  box-shadow: 0 10px 40px rgba(0,0,0,.25);
+  overflow: hidden;
+}
+body.trim .poster { outline: 3mm dashed rgba(200,40,40,.6); outline-offset: -10mm; }
+
+.top { padding: 22mm 26mm 0; }
+.head {
+  display: flex; justify-content: space-between; align-items: baseline;
+  border-bottom: .8mm solid var(--ink); padding-bottom: 5mm;
+  font-size: 7.4mm; letter-spacing: .14em; text-transform: uppercase; font-weight: 600;
+}
+.head .stand { color: #fff; background: var(--teal-deep); padding: .6mm 2.6mm; border-radius: 1.2mm; font-weight: 700; }
+.head .deva { font-family: var(--deva); text-transform: none; letter-spacing: 0; font-weight: 400; font-size: 9mm; margin-left: 4mm; color: var(--teal-deep); }
+.kicker {
+  font-size: 7mm; letter-spacing: .16em; text-transform: uppercase;
+  color: var(--teal-deep); font-weight: 600;
+}
+.top .kicker { margin-top: 13mm; }
+h1 {
+  font-family: var(--serif); font-weight: 400; letter-spacing: -.01em;
+  font-size: 48mm; line-height: .96; margin-top: 5mm;
+}
+h1 .accent { color: var(--teal); }
+.intro { display: grid; grid-template-columns: 1fr 300mm; gap: 16mm; align-items: end; margin-top: 8mm; }
+.lede { font-size: 9mm; line-height: 1.34; color: var(--ink-soft); }
+.facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7mm; }
+.facts div { border-top: .8mm solid var(--ink); padding-top: 3mm; font-size: 5.4mm; line-height: 1.3; color: var(--ink-soft); }
+.facts b { display: block; font-family: var(--serif); font-weight: 400; font-size: 19mm; line-height: 1; color: var(--ink); margin-bottom: 1.5mm; }
+
+/* thread map */
+.map {
+  position: relative; margin: 10mm 26mm 0; height: 292mm;
+  background: var(--teal-deep); color: #fff; border-radius: 4mm; overflow: hidden;
+}
+.map svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.map .grid line { stroke: rgba(255,255,255,.08); stroke-width: .35; }
+.map .thread { fill: none; stroke: var(--teal-pale); stroke-width: .9; stroke-dasharray: 3.2 2.2; stroke-linecap: round; opacity: .85; }
+.map .thread.out { stroke: #fff; stroke-width: 1.1; opacity: 1; }
+.dot { position: absolute; z-index: 1; width: 5.6mm; height: 5.6mm; margin: -2.8mm 0 0 -2.8mm; border-radius: 50%; background: var(--paper); box-shadow: 0 0 0 1.6mm rgba(219,230,232,.22); }
+.dot.home { width: 8.4mm; height: 8.4mm; margin: -4.2mm 0 0 -4.2mm; background: #fff; box-shadow: 0 0 0 2.4mm rgba(255,255,255,.25), 0 0 0 4.8mm rgba(255,255,255,.1); }
+.label { position: absolute; transform: translateY(-50%); white-space: nowrap; line-height: 1.15; text-shadow: 0 0 2mm var(--teal-deep), 0 0 1mm var(--teal-deep); z-index: 2; }
+.label b { display: block; font-size: 6.2mm; font-weight: 600; letter-spacing: .01em; }
+.label span { display: block; font-size: 4.9mm; color: var(--teal-pale); }
+.label.left { text-align: right; }
+.map .title { position: absolute; left: 12mm; top: 11mm; }
+.map .title .kicker { color: var(--teal-pale); }
+.map .title h2 { font-family: var(--serif); font-weight: 400; font-size: 17mm; line-height: 1.02; margin-top: 3mm; }
+.away { position: absolute; left: 12mm; width: 150mm; }
+.away .kicker { color: var(--teal-pale); font-size: 5.4mm; }
+.away h3 { font-family: var(--serif); font-weight: 400; font-size: 11.5mm; line-height: 1.05; margin-top: 2mm; }
+.away p { font-size: 5.2mm; line-height: 1.35; color: rgba(255,255,255,.82); margin-top: 2.5mm; }
+.away .pin { display: inline-block; width: 5.6mm; height: 5.6mm; border-radius: 50%; background: var(--paper); margin-right: 3mm; vertical-align: .3mm; box-shadow: 0 0 0 1.6mm rgba(219,230,232,.22); }
+.map .note { position: absolute; right: 12mm; top: 11mm; font-size: 4.8mm; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,.55); }
+
+/* how an order runs */
+.how { padding: 12mm 26mm 0; }
+.how-head { display: flex; justify-content: space-between; align-items: baseline; }
+.how-head h2 { font-family: var(--serif); font-weight: 400; font-size: 19mm; line-height: 1; }
+.steps { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5mm; margin-top: 7mm; counter-reset: s; list-style: none; }
+.steps li { background: #fff; border: .4mm solid var(--rule); border-radius: 3mm; padding: 6mm 6mm 7mm; counter-increment: s; position: relative; }
+.steps li + li::before { content: "→"; position: absolute; left: -5mm; width: 5mm; top: 30mm; text-align: center; color: var(--teal); font-size: 6mm; }
+.steps .n { font-family: var(--serif); color: var(--teal); font-size: 12mm; line-height: 1; }
+.steps .n::before { content: counter(s, decimal-leading-zero); }
+.steps img { height: 42mm; display: block; margin: 4mm 0 4mm; }
+.steps b { display: block; font-size: 7.8mm; line-height: 1.12; }
+.steps span { display: block; font-size: 5.8mm; line-height: 1.38; color: var(--ink-soft); margin-top: 2mm; }
+.chips { display: flex; flex-wrap: wrap; gap: 1.6mm; margin-top: 3mm; }
+.chips i { font-style: normal; font-size: 4.8mm; font-weight: 600; padding: 1mm 2.4mm; border-radius: 4mm; background: var(--teal-pale); color: var(--teal-deep); }
+.steps li.last { background: var(--teal-deep); border-color: var(--teal-deep); color: #fff; }
+.steps li.last .n { color: var(--teal-pale); }
+.steps li.last span { color: rgba(255,255,255,.85); }
+.steps li.last .chips i { background: rgba(255,255,255,.14); color: #fff; }
+.steps li.last img { filter: brightness(0) invert(1); opacity: .9; }
+
+.lead { display: grid; grid-template-columns: 52mm 1fr 1fr auto; gap: 8mm; align-items: baseline; margin-top: 5mm; padding-top: 4mm; border-top: .5mm solid var(--rule); font-size: 6mm; color: var(--ink-soft); }
+.lead b { font-size: 5.4mm; letter-spacing: .14em; text-transform: uppercase; color: var(--teal-deep); }
+.lead .days { font-family: var(--serif); font-size: 11mm; color: var(--ink); margin-right: 2mm; }
+.lead .fn { font-size: 4.4mm; color: var(--ink-mute); }
+.bottom { margin-top: auto; background: var(--teal-pale); padding: 9mm 26mm 11mm; display: grid; grid-template-columns: auto 1fr 70mm; gap: 11mm; align-items: center; }
+.phones { display: flex; gap: 5mm; }
+.phones figure { width: 44mm; }
+.phones img { width: 100%; display: block; border: 1.6mm solid var(--ink); border-radius: 5mm; background: #fff; }
+.phones figcaption { font-size: 4.4mm; margin-top: 2mm; line-height: 1.25; color: var(--ink-soft); }
+.phones figcaption b { display: block; font-size: 5.2mm; color: var(--ink); }
+.app-copy { font-size: 5.6mm; line-height: 1.38; color: var(--ink-soft); }
+.app-copy b { color: var(--ink); }
+.bottom h3.mt { margin-top: 6mm; }
+.qr em { display: block; font-style: normal; margin-top: 2mm; font-size: 6mm; font-weight: 700; color: var(--teal-deep); }
+.bottom h3 { font-size: 5.2mm; letter-spacing: .14em; text-transform: uppercase; color: var(--teal-deep); font-weight: 600; margin-bottom: 4mm; }
+.chain { display: flex; align-items: stretch; gap: 0; }
+.chain div { flex: 1; border: .5mm solid var(--teal-deep); padding: 3mm 3.5mm; font-size: 4.6mm; line-height: 1.25; background: var(--paper); position: relative; }
+.chain div + div { margin-left: 5mm; }
+.chain div + div::before { content: "→"; position: absolute; left: -5mm; width: 5mm; text-align: center; top: 50%; transform: translateY(-50%); color: var(--teal-deep); font-size: 5mm; }
+.chain b { display: block; font-size: 5.4mm; }
+.cap { font-size: 4.4mm; color: var(--ink-soft); margin-top: 2.5mm; }
+.qr { background: var(--paper); border-radius: 3mm; padding: 5mm; text-align: center; }
+.qr img { width: 100%; display: block; }
+.qr span { display: block; margin-top: 2.5mm; font-size: 4.2mm; font-weight: 600; }
+
+@media print {
+  html, body { background: none; }
+  .webbar { display: none; }
+  .stage { padding: 0; }
+  .frame { width: auto; height: auto; }
+  .poster { transform: none; box-shadow: none; outline: none !important; }
+}
+</style>
+</head>
+<body>
+<div class="webbar">
+  <span><b>House of Hands</b> &nbsp; A1 stand poster 2 · the supply line · 594 × 841 mm</span>
+  <label><input type="checkbox" id="trim"> show 10 mm safe area</label>
+</div>
+
+<div class="stage"><div class="frame"><div class="poster">
+  <div class="top">
+    <div class="head">
+      <span>House of Hands<span class="deva">हाथ का काम</span></span>
+      <span>Global Sourcing Expo Melbourne · <b class="stand">Stand D14</b> · 17 to 19 November 2026</span>
+    </div>
+    <div class="kicker">Not tied to one workshop</div>
+    <h1>We bring the makers<br><span class="accent">out of the back room.</span></h1>
+    <div class="intro">
+      <p class="lede">One order can be split by stage, each with its own partner, so it never rests on a single workshop. Every hand-off is on record.</p>
+      <div class="facts">
+        <div><b>35</b>partners producing on Luna today</div>
+        <div><b>15</b>online stores running on Luna</div>
+        <div><b>3.5M+</b>handloom weavers mapped from India's Handloom Census</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="map" id="map">
+    <svg id="threads" xmlns="http://www.w3.org/2000/svg"></svg>
+    <div class="title">
+      <div class="kicker">The supply line</div>
+      <h2>Partners next to<br>the weaving hubs</h2>
+    </div>
+    <div class="away" id="italy">
+      <div class="kicker">Italy</div>
+      <h3><i class="pin"></i>Greve in Chianti, Tuscany</h3>
+      <p>Le Ciricotte · handwoven wool, made in their own shop</p>
+    </div>
+    <div class="away" id="australia">
+      <div class="kicker">Australia</div>
+      <h3><i class="pin"></i>Cobargo, New South Wales</h3>
+      <p>Woven Futures · a label with roots in the handweaving of India and Italy, making on Luna</p>
+    </div>
+    <div class="note">Hubs placed by latitude and longitude · not to scale outside India</div>
+  </div>
+
+  <div class="how">
+    <div class="how-head">
+      <h2>How an order runs on Luna</h2>
+      <div class="kicker">From a brief to a piece ready to sell</div>
+    </div>
+    <ol class="steps">
+      <li><div class="n"></div><img src="illustrations/designer.svg" alt=""><b>Send a brief</b><span>A sketch, a photo, a swatch or one line about what you want, and how many, even if it is one.</span></li>
+      <li><div class="n"></div><img src="illustrations/team-desk.svg" alt=""><b>Choose by role</b><span>Pick the cloth with the name of who made it, then the hands for each stage. One partner or several.</span>
+        <div class="chips"><i>Fabric</i><i>Designer</i><i>Weaver</i><i>Dyer</i><i>Embroidery</i><i>Stitching</i></div></li>
+      <li><div class="n"></div><img src="illustrations/payment.svg" alt=""><b>Get an instant quote</b><span>Real fabric prices with the making in it, every line shown, as a quote link your team can accept. Nothing starts until you do.</span></li>
+      <li><div class="n"></div><img src="illustrations/dashboard.svg" alt=""><b>Approve a sample, follow it live</b><span>Every stage is a task on the maker's phone, with photos as it goes. You follow it in your account.</span></li>
+      <li class="last"><div class="n"></div><img src="illustrations/unboxing.svg" alt=""><b>Receive it ready to sell</b><span>Every piece arrives with what you need to list it, its story and provenance attached.</span>
+        <div class="chips"><i>Makers</i><i>Fabric supplier</i><i>Craft story</i><i>Photos</i><i>Energy &amp; water*</i></div></li>
+    </ol>
+    <div class="lead">
+      <div><b>Typical lead time</b></div>
+      <div><span class="days">20 to 30 days</span> from sample approval when the cloth is ready</div>
+      <div><span class="days">30+ days</span> when the cloth is woven for your order</div>
+      <div class="fn">* where we measured it</div>
+    </div>
+  </div>
+
+  <div class="bottom">
+    <div class="phones">
+      <figure><img src="poster/app/1-list.png" alt="Partner app: the partner's orders"><figcaption><b>Every order</b>on the maker's phone</figcaption></figure>
+      <figure><img src="poster/app/5-shipment.png" alt="Partner app: book a courier"><figcaption><b>Sent</b>booked, tracked courier</figcaption></figure>
+      <figure><img src="poster/app/3-sheet.png" alt="Partner app: record a delivery"><figcaption><b>Counted in</b>by the next partner</figcaption></figure>
+    </div>
+    <div>
+      <h3>Every partner works in the Luna partner app</h3>
+      <p class="app-copy">On Android and iPhone, partners accept work, start and finish each stage, upload photos and video, book courier pickups and see what they are owed. Each partner is <b>paid for their own stage</b> once it is recorded and approved.</p>
+      <h3 class="mt">A real order, October 2026</h3>
+      <div class="chain">
+        <div><b>Shramdaan</b>handloom denim, Sagar</div>
+        <div><b>Embroprint</b>embroidery, Dharamshala</div>
+        <div><b>Sharlho</b>stitching, Dharamshala</div>
+      </div>
+      <p class="cap">An embroidered apron, made across three partners on Luna.</p>
+    </div>
+    <div class="qr">
+      <img src="qr-brief-poster-2.svg" alt="QR code to send JYT a brief">
+      <span>Scan to send us a brief</span>
+      <em>Stand D14</em>
+    </div>
+  </div>
+</div></div></div>
+
+<script>
+// Hubs: [lat, lon, place, craft and partners, label side, "home", label nudge in mm]
+const HUBS = [
+  [34.08, 74.80, "Srinagar & Pulwama", "Pashmina and wool", "right"],
+  [31.96, 77.11, "Kullu, Himachal", "wool weaving · Bhuttico", "right"],
+  [32.22, 76.32, "Dharamshala, Himachal", "embroidery, stitching · JYT home", "left", "home"],
+  [28.61, 77.21, "New Delhi", "JYT office", "right"],
+  [25.83, 72.24, "Balotara, Rajasthan", "weaving in the desert · Ielo craft", "left"],
+  [23.22, 69.73, "Bhujodi, Kutch", "kala cotton · HR Handloom", "left"],
+  [22.73, 71.64, "Surendranagar, Gujarat", "Tangaliya weave", "right", null, 5],
+  [23.84, 78.74, "Sagar, Madhya Pradesh", "handloom denim · Shramdaan", "left"],
+  [25.24, 86.97, "Bhagalpur, Bihar", "silk", "left"],
+  [23.70, 88.40, "Murshidabad & Phulia", "linen, cotton, silk, Jamdani", "left", null, 4],
+  [20.30, 85.82, "Bhubaneswar, Odisha", "silk, linen, hand painting", "right"],
+  [16.12, 80.93, "Challapalli, Andhra Pradesh", "handloom weaving", "right"],
+]
+
+const map = document.getElementById("map")
+const svg = document.getElementById("threads")
+const MM = 96 / 25.4
+// India window: lon 68.5 to 90.5, lat 14.5 to 35.5, equirectangular with a cos(23°) squeeze.
+const BOX = { lon: 68.5, lat: 35.5, x: 236, y: 16, s: 12.8 } // mm position of the window corner, mm per degree of latitude
+const px = (lon) => BOX.x + (lon - BOX.lon) * Math.cos((23 * Math.PI) / 180) * BOX.s
+const py = (lat) => BOX.y + (BOX.lat - lat) * BOX.s
+
+function draw() {
+  map.querySelectorAll(".dot, .label").forEach((n) => n.remove())
+  const W = map.offsetWidth / MM, H = map.offsetHeight / MM
+  svg.setAttribute("viewBox", `0 0 ${W} ${H}`)
+  let out = `<g class="grid">`
+  for (let lon = 70; lon <= 90; lon += 4) out += `<line x1="${px(lon)}" y1="${py(35.5)}" x2="${px(lon)}" y2="${py(14.5)}"/>`
+  for (let lat = 16; lat <= 34; lat += 4) out += `<line x1="${px(68.5)}" y1="${py(lat)}" x2="${px(90.5)}" y2="${py(lat)}"/>`
+  out += `</g>`
+
+  const home = HUBS.find((h) => h[5] === "home")
+  const hx = px(home[1]), hy = py(home[0])
+  const curve = (x1, y1, x2, y2, bend, cls = "thread") => {
+    const mx = (x1 + x2) / 2, my = (y1 + y2) / 2
+    const dx = x2 - x1, dy = y2 - y1
+    return `<path class="${cls}" d="M${x1} ${y1} Q${mx - dy * bend} ${my + dx * bend} ${x2} ${y2}"/>`
+  }
+  HUBS.forEach(([lat, lon, , , , kind]) => {
+    if (kind === "home") return
+    out += curve(px(lon), py(lat), hx, hy, 0.18)
+  })
+  // Away threads: Italy (top left) and Australia (bottom left) into Dharamshala.
+  const it = document.getElementById("italy"), au = document.getElementById("australia")
+  // Each away thread leaves from a knot just right of its heading.
+  const IT_TOP = 80, AU_TOP = H - 76
+  it.style.top = IT_TOP + "mm"
+  au.style.top = AU_TOP + "mm"
+  out += curve(140, IT_TOP + 13, hx, hy, -0.1, "thread out") + `<circle cx="140" cy="${IT_TOP + 13}" r="1.6" fill="#fff"/>`
+  out += curve(140, AU_TOP + 13, hx, hy, -0.22, "thread out") + `<circle cx="140" cy="${AU_TOP + 13}" r="1.6" fill="#fff"/>`
+  svg.innerHTML = out
+
+  HUBS.forEach(([lat, lon, place, craft, side, kind, nudge = 0]) => {
+    const x = px(lon), y = py(lat)
+    const d = document.createElement("i")
+    d.className = "dot" + (kind === "home" ? " home" : "")
+    d.style.left = x + "mm"; d.style.top = y + "mm"
+    map.appendChild(d)
+    const l = document.createElement("div")
+    l.className = "label " + side
+    l.innerHTML = `<b>${place}</b><span>${craft}</span>`
+    l.style.top = y + (nudge || 0) + "mm"
+    if (side === "left") l.style.right = W - x + 6 + "mm"
+    else l.style.left = x + 6 + "mm"
+    map.appendChild(l)
+  })
+}
+
+function fit() {
+  const s = Math.min((innerWidth - 32) / (594 * MM), (innerHeight - 110) / (841 * MM))
+  document.documentElement.style.setProperty("--fit", matchMedia("print").matches ? 1 : Math.min(1, s))
+}
+addEventListener("resize", fit)
+fit()
+draw()
+document.fonts.ready.then(draw)
+document.getElementById("trim").addEventListener("change", (e) => document.body.classList.toggle("trim", e.target.checked))
+</script>
+</body>
+</html>

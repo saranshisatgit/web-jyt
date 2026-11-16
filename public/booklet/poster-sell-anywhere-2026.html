@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sell Anywhere Poster</title>
+<meta name="description" content="JYT at Global Sourcing Expo Melbourne, 17 to 19 November 2026. A1 stand poster: design once, sell anywhere, with storefront, payments and infrastructure covered.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Rethink+Sans:wght@400;500;600;700&family=Tiro+Devanagari+Hindi&display=swap" rel="stylesheet">
+<!--
+  House of Hands, third A1 stand poster (594 x 841 mm), companion to
+  poster-melbourne-2026.html and poster-supply-line-2026.html.
+  Photos: partner capability samples and our shoots (media library), in poster/.
+-->
+<style>
+@page { size: 594mm 841mm; margin: 0; }
+:root {
+  --paper: #f6f3ec;
+  --paper-2: #ece7dc;
+  --ink: #15181d;
+  --ink-soft: #3f434b;
+  --ink-mute: #6a6e76;
+  --teal: #4f7f8c;
+  --teal-deep: #2f5560;
+  --teal-pale: #dbe6e8;
+  --poster: #6e97a2;
+  --rule: #cfc8b9;
+  --serif: "Instrument Serif", "Times New Roman", serif;
+  --sans: "Rethink Sans", system-ui, sans-serif;
+  --deva: "Tiro Devanagari Hindi", serif;
+  --fit: 1;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: #8a8f96; }
+body { font-family: var(--sans); color: var(--ink); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+.webbar {
+  position: sticky; top: 0; z-index: 10;
+  display: flex; gap: 16px; align-items: center; justify-content: space-between;
+  padding: 10px 16px; background: var(--teal-deep); color: #fff;
+  font-size: 13px; letter-spacing: .02em;
+}
+.webbar b { font-family: var(--serif); font-weight: 400; font-size: 18px; }
+.webbar label { display: flex; gap: 6px; align-items: center; cursor: pointer; }
+.stage { padding: 24px 16px 48px; display: flex; justify-content: center; }
+.frame { width: calc(594mm * var(--fit)); height: calc(841mm * var(--fit)); }
+.poster {
+  width: 594mm; height: 841mm;
+  transform: scale(var(--fit)); transform-origin: top left;
+  background: var(--paper);
+  display: flex; flex-direction: column;
+  box-shadow: 0 10px 40px rgba(0,0,0,.25);
+  overflow: hidden;
+}
+body.trim .poster { outline: 3mm dashed rgba(200,40,40,.6); outline-offset: -10mm; }
+
+.top { padding: 22mm 26mm 0; }
+.head {
+  display: flex; justify-content: space-between; align-items: baseline;
+  border-bottom: .8mm solid var(--ink); padding-bottom: 5mm;
+  font-size: 7.4mm; letter-spacing: .14em; text-transform: uppercase; font-weight: 600;
+}
+.head .stand { color: #fff; background: var(--teal-deep); padding: .6mm 2.6mm; border-radius: 1.2mm; font-weight: 700; }
+.head .deva { font-family: var(--deva); text-transform: none; letter-spacing: 0; font-weight: 400; font-size: 9mm; margin-left: 4mm; color: var(--teal-deep); }
+.kicker { font-size: 7mm; letter-spacing: .16em; text-transform: uppercase; color: var(--teal-deep); font-weight: 600; }
+.top .kicker { margin-top: 11mm; }
+h1 { font-family: var(--serif); font-weight: 400; letter-spacing: -.01em; font-size: 48mm; line-height: .96; margin-top: 5mm; }
+h1 .accent { color: var(--teal); }
+.lede { margin-top: 8mm; font-size: 9.2mm; line-height: 1.34; color: var(--ink-soft); max-width: 520mm; }
+.proof { margin-top: 6mm; display: flex; align-items: baseline; gap: 3mm; font-size: 7mm; color: var(--ink-soft); }
+.proof span { font-size: 5.4mm; letter-spacing: .14em; text-transform: uppercase; color: var(--teal-deep); font-weight: 600; margin-right: 4mm; }
+.proof b { color: var(--ink); font-family: var(--serif); font-weight: 400; font-size: 10mm; }
+.proof i { width: 1.6mm; height: 1.6mm; border-radius: 50%; background: var(--teal); margin: 0 4mm; align-self: center; }
+.lede b { color: var(--ink); font-weight: 600; }
+h2 { font-family: var(--serif); font-weight: 400; font-size: 17mm; line-height: 1; letter-spacing: -.01em; }
+.sec-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10mm; }
+
+/* everything covered */
+.covered { margin: 10mm 26mm 0; background: var(--teal-deep); color: #fff; border-radius: 4mm; padding: 10mm 11mm 10mm; display: grid; grid-template-columns: 1fr 196mm; gap: 11mm; }
+.covered .kicker { color: var(--teal-pale); }
+.covered h2 { margin-top: 3mm; }
+.pillars { display: grid; grid-template-columns: 1fr 1fr; gap: 6mm 9mm; margin-top: 7mm; }
+.pillar { border-top: .5mm solid rgba(255,255,255,.35); padding-top: 3.5mm; }
+.pillar b { display: block; font-family: var(--serif); font-weight: 400; font-size: 12.5mm; line-height: 1; }
+.pillar span { display: block; font-size: 6.3mm; line-height: 1.38; color: rgba(255,255,255,.84); margin-top: 2.5mm; }
+.shot { background: var(--paper); border-radius: 3mm; padding: 3mm; }
+.shot img { width: 100%; display: block; border-radius: 1.5mm; }
+.shot figcaption { color: var(--ink-mute); font-size: 4.4mm; letter-spacing: .08em; text-transform: uppercase; padding: 2.5mm 1mm 0; }
+blockquote { margin-top: 6mm; font-family: var(--serif); font-size: 9mm; line-height: 1.18; border-left: .8mm solid var(--teal-pale); padding-left: 5mm; }
+blockquote cite { display: block; margin-top: 2.5mm; font-family: var(--sans); font-style: normal; font-size: 4.8mm; letter-spacing: .12em; text-transform: uppercase; color: var(--teal-pale); }
+
+/* range */
+.range { padding: 10mm 26mm 0; }
+.range-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4mm; margin-top: 6mm; }
+.range-grid figure { position: relative; }
+.range-grid img { width: 100%; height: 72mm; object-fit: cover; display: block; border-radius: 2mm; }
+.range-grid figcaption { font-size: 5.8mm; font-weight: 600; margin-top: 2.2mm; line-height: 1.2; }
+.range-grid figcaption span { display: block; font-weight: 400; font-size: 4.9mm; color: var(--ink-mute); }
+.also { margin-top: 4mm; font-size: 6.4mm; color: var(--ink-soft); }
+.also b { color: var(--ink); }
+
+/* real numbers */
+.facts3 { margin: 9mm 26mm 0; display: grid; grid-template-columns: 1.35fr 1fr .78fr; gap: 6mm; }
+.card { border-radius: 4mm; padding: 7mm 8mm; background: #fff; border: .4mm solid var(--rule); }
+.card h4 { font-family: var(--serif); font-weight: 400; font-size: 12mm; line-height: 1; margin-top: 2mm; }
+.prices table { width: 100%; border-collapse: collapse; margin-top: 4mm; font-size: 5.4mm; }
+.prices th { text-align: left; font-size: 4.2mm; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-mute); font-weight: 600; padding-bottom: 1.5mm; border-bottom: .4mm solid var(--ink); }
+.prices td { padding: 1.8mm 0; border-bottom: .3mm solid var(--rule); }
+.prices td:last-child, .prices th:last-child { text-align: right; }
+.prices td:last-child { font-family: var(--serif); font-size: 7.4mm; color: var(--teal-deep); }
+.prices .fine { font-size: 4.2mm; color: var(--ink-mute); margin-top: 2.5mm; line-height: 1.3; }
+.prices .duty { margin-top: 3mm; font-size: 5mm; line-height: 1.3; color: var(--ink-soft); background: var(--teal-pale); border-radius: 2mm; padding: 2.5mm 3.5mm; }
+.prices .duty b { color: var(--teal-deep); }
+.climate { background: var(--teal-deep); border-color: var(--teal-deep); color: #fff; display: flex; flex-direction: column; }
+.climate .kicker { color: var(--teal-pale); }
+.climate p { font-size: 5.8mm; line-height: 1.38; color: rgba(255,255,255,.86); margin-top: 3mm; }
+.climate .kwh { margin-top: auto; padding-top: 4mm; border-top: .4mm solid rgba(255,255,255,.3); }
+.climate .kwh b { display: block; font-family: var(--serif); font-weight: 400; font-size: 17mm; line-height: 1; }
+.climate .kwh span { display: block; font-size: 4.6mm; line-height: 1.32; color: var(--teal-pale); margin-top: 1.5mm; }
+.khadi { background: var(--paper-2); border-radius: 4mm; padding: 7mm 8mm; display: flex; flex-direction: column; justify-content: space-between; }
+.khadi .big { font-family: var(--serif); font-size: 30mm; line-height: .9; color: var(--teal-deep); margin-top: 4mm; }
+.khadi .big small { font-size: 13mm; }
+.khadi p { font-size: 5.8mm; line-height: 1.35; color: var(--ink-soft); margin-top: 2mm; }
+.khadi p b { color: var(--ink); }
+.khadi .looms { border-top: .5mm solid var(--rule); padding-top: 3mm; }
+.khadi .looms b { font-family: var(--serif); font-weight: 400; font-size: 17mm; line-height: 1; color: var(--ink); display: block; }
+.khadi .looms p { margin-top: 1mm; }
+
+/* blends */
+.blends { margin: 8mm 26mm 9mm; }
+.blends h2 { font-size: 14mm; }
+.blend-row { display: grid; grid-template-columns: 300mm 1fr; gap: 8mm; align-items: start; margin-top: 4mm; }
+.swatches { display: grid; grid-template-columns: repeat(5, 1fr); gap: 2.5mm; }
+.swatches figure img { width: 100%; height: 34mm; object-fit: cover; display: block; border-radius: 2mm; }
+.swatches figcaption { font-size: 4.4mm; margin-top: 1.4mm; color: var(--ink-soft); }
+.chips { display: flex; flex-wrap: wrap; gap: 2mm; }
+.chips i { font-style: normal; font-size: 5mm; font-weight: 600; padding: 1.3mm 3.2mm; border-radius: 5mm; background: var(--teal-pale); color: var(--teal-deep); }
+
+/* call to action */
+.cta { margin-top: auto; background: var(--ink); color: #fff; padding: 9mm 26mm 10mm; display: grid; grid-template-columns: 1fr 62mm; gap: 14mm; align-items: center; }
+.cta .kicker { color: var(--teal-pale); }
+.cta h2 { font-size: 22mm; margin-top: 3mm; }
+.cta p { font-size: 8.4mm; color: rgba(255,255,255,.82); margin-top: 4mm; }
+.cta p b { color: #fff; }
+.qr { background: var(--paper); border-radius: 3mm; padding: 5mm; text-align: center; color: var(--ink); }
+.qr img { width: 100%; display: block; }
+.qr span { display: block; margin-top: 2.5mm; font-size: 4.6mm; font-weight: 600; }
+
+@media print {
+  html, body { background: none; }
+  .webbar { display: none; }
+  .stage { padding: 0; }
+  .frame { width: auto; height: auto; }
+  .poster { transform: none; box-shadow: none; outline: none !important; }
+}
+</style>
+</head>
+<body>
+<div class="webbar">
+  <span><b>House of Hands</b> &nbsp; A1 stand poster 3 · sell anywhere · 594 × 841 mm</span>
+  <label><input type="checkbox" id="trim"> show 10 mm safe area</label>
+</div>
+
+<div class="stage"><div class="frame"><div class="poster">
+  <div class="top">
+    <div class="head">
+      <span>House of Hands<span class="deva">हाथ का काम</span></span>
+      <span>Global Sourcing Expo Melbourne · <b class="stand">Stand D14</b> · 17 to 19 November 2026</span>
+    </div>
+    <div class="kicker">One window to the makers of India</div>
+    <h1>Design once.<br><span class="accent">Sell it anywhere.</span></h1>
+    <p class="lede">Join an ecosystem of artisans and craft producers through a <b>single window</b>. Every piece arrives <b>passport ready</b>, with its story and provenance attached, and we can run the store, the payments and the infrastructure to sell it.</p>
+    <p class="proof"><span>Already making for Australian labels</span><b>Oshen</b> Bermagui, NSW <i></i><b>Woven Futures</b> Cobargo, NSW</p>
+  </div>
+
+  <div class="covered">
+    <div>
+      <div class="kicker">Want to sell it? Everything is covered</div>
+      <h2>Your store, run on Luna</h2>
+      <div class="pillars">
+        <div class="pillar"><b>Storefront</b><span>Your own shop on your own domain, in your brand, built and run on Luna. 15 stores already run on it.</span></div>
+        <div class="pillar"><b>Payments</b><span>Checkout through Stripe and PayU. Partners are paid only for approved work.</span></div>
+        <div class="pillar"><b>Infrastructure</b><span>Hosting, catalogue, stock and orders run for you. No tech team needed.</span></div>
+        <div class="pillar"><b>Product passport</b><span>Each piece names its makers and fabric suppliers, with its craft story, ready to list.</span></div>
+      </div>
+    </div>
+    <div>
+      <figure class="shot">
+        <img src="../storefront-previews/gof-asia.png" alt="The gof.asia storefront">
+        <figcaption>gof.asia · built and run on Luna</figcaption>
+      </figure>
+      <blockquote>"The platform lets us sell directly to the customer with made-to-order, makes life easy."<cite>Founder, GOF</cite></blockquote>
+    </div>
+  </div>
+
+  <div class="range">
+    <div class="sec-head">
+      <h2>Craft anything, from home to garment</h2>
+      <div class="kicker">Made to order · from one piece</div>
+    </div>
+    <div class="range-grid">
+      <figure><img src="poster/range-coat.jpg" alt="" style="object-position:50% 30%"><figcaption>Coats &amp; jackets<span>handwoven, embroidered</span></figcaption></figure>
+      <figure><img src="poster/range-shirt.jpg" alt="" style="object-position:50% 25%"><figcaption>Shirts &amp; tops<span>khadi, linen, cotton</span></figcaption></figure>
+      <figure><img src="poster/range-saree.jpg" alt="" style="object-position:45% 40%"><figcaption>Sarees<span>handloom silk, cotton</span></figcaption></figure>
+      <figure><img src="poster/range-shawl.jpg" alt="" style="object-position:50% 50%"><figcaption>Shawls &amp; throws<span>wool, Pashmina</span></figcaption></figure>
+      <figure><img src="poster/range-pashmina.jpg" alt="" style="object-position:50% 30%"><figcaption>Embroidered stoles<span>hand embroidery</span></figcaption></figure>
+      <figure><img src="poster/range-cushion.jpg" alt="" style="object-position:48% 60%"><figcaption>Cushions<span>handwoven wool</span></figcaption></figure>
+      <figure><img src="poster/range-tea-towel.jpg" alt="" style="object-position:35% 50%"><figcaption>Tea towels<span>kitchen linen</span></figcaption></figure>
+    </div>
+    <p class="also">Also <b>robes, aprons, trousers, quilts, scarves</b> and cloth by the metre.</p>
+  </div>
+
+  <div class="facts3">
+    <div class="card prices">
+      <div class="kicker">Real orders, in AUD</div>
+      <h4>What pieces have cost</h4>
+      <table>
+        <tr><th>Piece</th><th>Fabric</th><th>Making</th><th>Per piece</th></tr>
+        <tr><td>Robe, kala cotton</td><td>A$13.30</td><td>A$15.05</td><td>A$28.35</td></tr>
+        <tr><td>Robe, handwoven linen</td><td>A$37.79</td><td>A$15.05</td><td>A$52.84</td></tr>
+        <tr><td>Robe, mulberry silk</td><td>A$59.49</td><td>A$15.05</td><td>A$74.54</td></tr>
+        <tr><td>Striped cotton top</td><td>A$6.49</td><td>A$12.79</td><td>A$19.28</td></tr>
+      </table>
+      <p class="fine">Before JYT's 20%, tax and shipping. A$1 = ₹66.45 (ECB, 21 October 2026); your quote uses the rate on the day.</p>
+      <p class="duty"><b>Duty free into Australia</b> under the India–Australia trade agreement (ECTA). Australian GST still applies.</p>
+    </div>
+    <div class="card climate">
+      <div class="kicker">Kala cotton · Bhujodi, Kutch</div>
+      <h4>The climate champion</h4>
+      <p>An old cotton native to Kutch, grown on rain alone with no irrigation, then handspun and handwoven by HR Handloom.</p>
+      <div class="kwh"><b>3.3 kWh</b><span>We measure the energy. Electricity per piece on a 9-piece run of cotton tops, Sharlho, Dharamshala.</span></div>
+    </div>
+    <div class="khadi">
+      <div class="kicker">Shramdaan · Sagar, MP</div>
+      <div>
+        <div class="big">15,000 <small>m</small></div>
+        <p>of <b>khadi a month</b>, woven by hand, for orders that need to grow.</p>
+      </div>
+      <div class="looms"><b>1,080+</b><p>handlooms in one partner</p></div>
+    </div>
+  </div>
+
+  <div class="blends">
+    <h2>We work at the loom, so you choose the blend</h2>
+    <div class="blend-row">
+      <div class="swatches">
+        <figure><img src="poster/cloth-khadi.jpg" alt=""><figcaption>Khadi stripe</figcaption></figure>
+        <figure><img src="poster/cloth-linen.jpg" alt=""><figcaption>Handwoven linen</figcaption></figure>
+        <figure><img src="poster/cloth-cotton.jpg" alt=""><figcaption>Cotton</figcaption></figure>
+        <figure><img src="poster/cloth-tangaliya.jpg" alt=""><figcaption>Tangaliya</figcaption></figure>
+        <figure><img src="poster/cloth-wool.jpg" alt=""><figcaption>Wool herringbone</figcaption></figure>
+      </div>
+      <div class="chips">
+        <i>Khadi</i><i>Kala cotton</i><i>Linen</i><i>Cotton linen</i><i>Cotton silk</i><i>Matka silk</i><i>Mulberry silk</i><i>Jamdani</i><i>Tangaliya</i><i>Handloom denim</i><i>Pashmina</i><i>Wool</i>
+      </div>
+    </div>
+  </div>
+
+  <div class="cta">
+    <div>
+      <div class="kicker">Stand D14 · Melbourne · 17 to 19 November 2026</div>
+      <h2>Bring a design. Leave with a supply line.</h2>
+      <p>Talk to us at <b>stand D14</b>, or write to <b>hi@jaalyantra.com</b></p>
+    </div>
+    <div class="qr">
+      <img src="qr-brief-poster-3.svg" alt="QR code to send JYT a brief">
+      <span>Scan to send us a brief</span>
+    </div>
+  </div>
+</div></div></div>
+
+<script>
+function fit() {
+  const mm = 96 / 25.4
+  const s = Math.min((innerWidth - 32) / (594 * mm), (innerHeight - 110) / (841 * mm))
+  document.documentElement.style.setProperty("--fit", matchMedia("print").matches ? 1 : Math.min(1, s))
+}
+addEventListener("resize", fit)
+fit()
+document.getElementById("trim").addEventListener("change", (e) => document.body.classList.toggle("trim", e.target.checked))
+</script>
+</body>
+</html>
