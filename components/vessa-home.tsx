@@ -10,7 +10,6 @@ import Link from 'next/link'
 import { useQuery } from '@tanstack/react-query'
 import { Button } from '@medusajs/ui'
 import { ArrowRight, TriangleRightMini, CheckCircleMiniSolid } from '@medusajs/icons'
-import { JourneyPixelDraw } from '@/components/journey-pixel-draw'
 import { VessaNavbar, type VessaNavItem } from '@/components/vessa-navbar'
 import { MobileNavDrawer, type NavTreeItem } from '@/components/mobile-nav-drawer'
 import { MoonPhase } from '@/components/moon-phase'
@@ -402,24 +401,37 @@ export function VessaHome() {
               <div className={`cell${cell.demo === 'journey' ? ' cell--wide' : ''}`} key={cell.demo}>
                 <div className="cell-demo">
                   {cell.demo === 'journey' && (
-                    <div className="jwrap">
-                      <JourneyPixelDraw step={journeyIdx} />
-                      <div className="journey" style={{ '--j-progress': journeyIdx / (STEPS.length - 1) } as CSSProperties} aria-hidden>
-                        <div className="journey-rail" />
+                    <div className="jstage" data-block="journey">
+                      {/* fanned deck: --d is each card's depth, 0 = the current step on top */}
+                      <div className="jdeck" aria-hidden>
+                        {STEPS.map((st, i) => {
+                          const d = (i - journeyIdx + STEPS.length) % STEPS.length
+                          return (
+                            <article className="jcard" data-d={d} style={{ '--d': d } as CSSProperties} key={st.n}>
+                              <img className="jcard-art" src={STEP_ART[i]} alt="" />
+                              <div className="jcard-n">{String(i + 1).padStart(2, '0')}</div>
+                              <h4 className="jcard-t">{st.t.replace(/\.$/, '')}</h4>
+                              <p className="jcard-b">{st.b}</p>
+                            </article>
+                          )
+                        })}
+                      </div>
+                      <ol className="jlist">
                         {STEPS.map((st, i) => (
-                          <div
-                            className={`jstep${i === journeyIdx ? ' active' : ''}${i < journeyIdx ? ' done' : ''}`}
+                          <li
+                            className={`jli${i === journeyIdx ? ' active' : ''}${i < journeyIdx ? ' done' : ''}`}
                             key={st.n}
                             onMouseEnter={() => { journeyHover.current = true; setJourneyIdx(i) }}
                             onMouseLeave={() => { journeyHover.current = false }}
+                            onClick={() => setJourneyIdx(i)}
                           >
-                            <img className="jart" src={STEP_ART[i]} alt="" />
-                            <div className="n">{String(i + 1).padStart(2, '0')}</div>
-                            <div className="l">{st.t.replace(/\.$/, '')}</div>
-                            <div className="s">{st.b}</div>
-                          </div>
+                            <span className="jli-n">{String(i + 1).padStart(2, '0')}</span>
+                            <span className="jli-t">{st.t.replace(/\.$/, '')}</span>
+                            <p className="jli-b">{st.b}</p>
+                            <span className="jli-bar"><i /></span>
+                          </li>
                         ))}
-                      </div>
+                      </ol>
                     </div>
                   )}
                   {cell.demo === 'passport' && cell.passport && (
