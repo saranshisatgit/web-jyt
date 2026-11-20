@@ -111,7 +111,57 @@
 .stepsCards .step:last-child { background: var(--hoh-teal-deep); border-color: var(--hoh-teal-deep); color: #fff; }
 .stepsCards .step:last-child .stepText { color: rgba(255,255,255,.84); }
 .stepsCards .step:last-child::before { color: var(--hoh-teal-pale); }
+/* line art on the inverted card: black strokes → white, white fills drop into the teal */
+.stepsCards .step:last-child .stepArt { filter: invert(1) hue-rotate(180deg); mix-blend-mode: screen; }
 .stepsCards .stepArt { order: -1; width: auto !important; height: 88px; max-width: 100%; object-fit: contain; object-position: left bottom; }
+
+/* thread variant: a dashed stitch waves across the row; each step's figure
+   stands on it and a garment tag hangs below on a short string. --lift drops
+   alternate steps to the wave's low points; the last tag is inverted. */
+.stepsThread {
+  --t-band: 200px; --t-y: 150px; position: relative; display: grid;
+  grid-template-columns: repeat(var(--cols, 5), minmax(0, 1fr)); gap: 1.25rem; margin-top: 1.5rem;
+}
+.tThread {
+  position: absolute; left: 0; right: 0; top: 0; width: 100%; height: var(--t-band);
+  overflow: visible; pointer-events: none;
+}
+.tThread path { fill: none; stroke: var(--hoh-teal); stroke-width: 2; stroke-dasharray: 7 6; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+.tStep { position: relative; display: flex; flex-direction: column; align-items: center; }
+.tFig { height: calc(var(--t-y) + var(--lift, 0px)); display: flex; align-items: flex-end; justify-content: center; width: 100%; }
+.tFig .tArt { width: auto !important; height: 120px; max-width: 100%; object-fit: contain; object-position: center bottom; margin-bottom: 1px; }
+.tString { width: 1.5px; height: calc(var(--t-band) - var(--t-y) - var(--lift, 0px) + 18px); background: var(--hoh-teal); }
+.tTag {
+  position: relative; width: 100%; padding: 1.75rem 1.125rem 1.25rem;
+  background: #fff; border: 1px solid var(--hoh-rule); border-radius: 8px 8px 14px 14px;
+  box-shadow: 0 18px 36px -28px rgba(47, 85, 96, .55);
+  transform: rotate(var(--tilt, 0deg)); transform-origin: 50% -18px;
+  transition: transform .5s cubic-bezier(.3, 1.6, .5, 1);
+}
+/* punched hole the string ties through */
+.tTag::before {
+  content: ''; position: absolute; top: 9px; left: 50%; width: 10px; height: 10px; margin-left: -5px;
+  border-radius: 50%; background: var(--hoh-paper-2); border: 1.5px solid var(--hoh-teal);
+}
+.tStep:hover .tTag { transform: rotate(calc(var(--tilt, 0deg) * -1.6)); }
+.tNum { display: block; font-family: var(--hoh-serif); font-size: 2.25rem; line-height: 1; color: var(--hoh-teal); }
+.tTag .stepTitle { margin-top: .5rem; font-size: 1rem; }
+.tTag .stepText { font-size: .875rem; }
+.tTag .chips span { font-size: .75rem; padding: .2rem .625rem; }
+.tStep:last-child .tTag { background: var(--hoh-teal-deep); border-color: var(--hoh-teal-deep); color: #fff; }
+.tStep:last-child .tTag::before { background: var(--hoh-teal-deep); border-color: var(--hoh-teal-pale); }
+.tStep:last-child .tNum { color: var(--hoh-teal-pale); }
+.tStep:last-child .stepText { color: rgba(255,255,255,.84); }
+/* scroll-driven: the stitch sews itself across, then figures and tags drop in one by one */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .tThread { animation: tSew linear both; animation-timeline: view(); animation-range: entry 20% cover 45%; }
+    .tFig, .tString, .tTag { animation: tDrop linear both; animation-timeline: view();
+      animation-range: entry calc(25% + var(--i) * 6%) cover calc(38% + var(--i) * 6%); }
+  }
+}
+@keyframes tSew { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+@keyframes tDrop { from { opacity: 0; translate: 0 -14px; } to { opacity: 1; translate: 0 0; } }
 
 /* ---------------- TileGrid ---------------- */
 .tiles { display: grid; grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr)); gap: .75rem; margin-top: 2rem; }
@@ -279,6 +329,11 @@
   .step { grid-template-columns: 2.75rem 1fr; }
   .step .stepArt { grid-column: 2; width: 88px; }
   .stepsCards .step .stepArt { grid-column: auto; }
+  .stepsThread { grid-template-columns: 1fr; gap: 2.5rem; }
+  .tThread { display: none; }
+  .tStep { --lift: 0px !important; --tilt: 0deg !important; }
+  .tFig { height: auto; border-bottom: 2px dashed var(--hoh-teal); padding-bottom: 2px; }
+  .tString { height: 18px; }
   .buildRow { grid-template-columns: 1fr auto; }
   .buildDetail { grid-column: 1 / -1; grid-row: 2; }
   .check { grid-template-columns: 1fr; gap: .25rem; }

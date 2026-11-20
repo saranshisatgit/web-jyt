@@ -15,7 +15,7 @@ export function HomeOrderSteps() {
         <Kicker>{HOW.kicker}</Kicker>
         <Heading lead="How an order runs" accent="on Luna" />
         <NumberedSteps
-          variant="cards"
+          variant="thread"
           steps={HOW.steps.map((st) => ({
             title: st.title,
             text: st.text,

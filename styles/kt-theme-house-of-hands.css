@@ -124,7 +124,6 @@ h1 .serif.italic, h2 .serif.italic, h3 .serif.italic {
 }
 :root .vh .trace-demo .mock { box-shadow: 0 24px 60px -32px rgba(47, 85, 96, .45); }
 :root .vh .how-windows .mock { box-shadow: 0 20px 50px -30px rgba(47, 85, 96, .4); }
-:root .vh .jstep.active .n { box-shadow: 0 8px 22px -8px rgba(47, 85, 96, .6); }
 :root .vh .jdraw-tag { background: rgba(251, 249, 244, .82); }
 :root .vh .chip.warn { background: #f1e6cf; color: #8a5a17; }
 
@@ -137,37 +136,78 @@ h1 .serif.italic, h2 .serif.italic, h3 .serif.italic {
 :root .vc-moon-glow { background: radial-gradient(closest-side, rgba(219, 230, 232, .6), rgba(169, 196, 202, .22) 52%, transparent 74%); }
 :root .vc-moon-canvas { filter: drop-shadow(0 0 18px rgba(169, 196, 202, .4)); }
 
-/* "Everything lives on one rail": the round-numbered rail becomes the
-   supply-line poster's row of step cards. The active step inverts to teal-deep
-   and still advances on its own (journeyIdx in vessa-home.tsx). */
-:root .vh .journey { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; align-items: stretch; }
-:root .vh .journey-rail { display: none; }
-:root .vh .jstep {
-  position: relative; text-align: left; padding: 18px 18px 20px;
-  background: #fbf9f4; border: 1px solid #cfc8b9; border-radius: 12px;
-  transition: background .35s ease, color .35s ease, border-color .35s ease, transform .35s ease;
+/* "Everything lives on one rail": a fanned deck of step cards beside a
+   numbered list. The current step is the paper card on top, its illustration
+   breaking out over the top edge; later steps peek out behind in deepening
+   teal. journeyIdx (vessa-home.tsx) still advances on its own; hovering a
+   list row jumps the deck to that step. --d is a card's depth: 0 = on top. */
+:root .vh .jstage {
+  width: 100%; display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: clamp(2rem, 5vw, 4.5rem); align-items: center; padding-top: 56px;
 }
-:root .vh .jstep + .jstep::before {
-  content: "→"; position: absolute; left: -12px; top: 50%; transform: translate(-50%, -50%);
-  color: #4f7f8c; font-size: 14px;
+:root .vh .jdeck { position: relative; width: min(100%, 440px); height: 300px; margin-inline: auto 0; margin-right: 66px; }
+:root .vh .jcard {
+  position: absolute; inset: 0; border-radius: 16px; padding: 30px 30px 28px;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  background: var(--jc-bg); border: 1px solid var(--jc-line);
+  z-index: calc(10 - var(--d));
+  transform: translate(calc(var(--d) * 22px), calc(var(--d) * -16px)) rotate(calc(var(--d) * 2.4deg)) scale(calc(1 - var(--d) * .035));
+  transform-origin: 50% 100%;
+  box-shadow: 0 22px 48px -30px rgba(47, 85, 96, .55);
+  transition: transform .6s cubic-bezier(.2, .8, .2, 1), background .45s ease, border-color .45s ease;
 }
-:root .vh .jstep .jart { display: block; height: 72px; width: auto; max-width: 100%; margin: 0 0 10px; transition: filter .35s ease; }
-:root .vh .jstep .n {
-  width: auto; height: auto; margin: 0 0 6px; border: 0; border-radius: 0; background: none; display: block;
-  font-family: var(--font-serif); font-weight: 400; font-size: 34px; line-height: 1; color: #4f7f8c;
-  transform: none; box-shadow: none;
+:root .vh .jcard[data-d="0"] { --jc-bg: #fbf9f4; --jc-line: #cfc8b9; }
+:root .vh .jcard[data-d="1"] { --jc-bg: #dbe6e8; --jc-line: #c3d4d7; }
+:root .vh .jcard[data-d="2"] { --jc-bg: #4f7f8c; --jc-line: #4f7f8c; }
+:root .vh .jcard[data-d="3"] { --jc-bg: #2f5560; --jc-line: #2f5560; animation: jtuck .75s cubic-bezier(.3, .7, .2, 1); }
+/* the card that just left the top swings out to the left, then tucks in at the back */
+@keyframes jtuck {
+  0% { transform: translate(0, 0) rotate(0deg) scale(1); z-index: 20; }
+  42% { transform: translate(-58%, 18px) rotate(-8deg) scale(.97); z-index: 20; }
+  43% { z-index: 0; }
+  100% { z-index: 0; }
 }
-:root .vh .jstep.done .n, :root .vh .jstep.active .n { background: none; transform: none; box-shadow: none; }
-:root .vh .jstep.done .n { color: #4f7f8c; }
-:root .vh .jstep .l { opacity: 1; font-size: 15px; }
-:root .vh .jstep .s { opacity: 1; font-size: 13px; }
-:root .vh .jstep.done { border-color: #4f7f8c; }
-:root .vh .jstep.active { background: #2f5560; border-color: #2f5560; color: #fff; transform: translateY(-3px); }
-:root .vh .jstep.active .n { color: #dbe6e8; }
-:root .vh .jstep.active .l { color: #fff; }
-:root .vh .jstep.active .s { color: rgba(255, 255, 255, .82); }
-:root .vh .jstep.active .jart { filter: brightness(0) invert(1); }
-@media (max-width: 720px) {
-  :root .vh .journey { grid-template-columns: 1fr 1fr; }
-  :root .vh .jstep:nth-child(4)::before { display: none; } /* rail is child 1; step 3 starts row 2 */
+:root .vh .jcard > * { opacity: 0; transition: opacity .25s ease; }
+:root .vh .jcard[data-d="0"] > * { opacity: 1; transition: opacity .45s ease .2s; }
+:root .vh .jcard-art {
+  position: absolute; top: -58px; right: 26px; height: 168px; width: auto; max-width: 62%;
+  object-fit: contain; object-position: right bottom; pointer-events: none;
+}
+:root .vh .jcard[data-d="0"] .jcard-art { animation: jrise .7s cubic-bezier(.2, .8, .2, 1) .1s both; }
+@keyframes jrise { from { transform: translateY(14px); opacity: 0; } to { transform: none; opacity: 1; } }
+:root .vh .jcard-n { font-family: var(--font-serif); font-size: 64px; line-height: .9; color: #4f7f8c; }
+:root .vh .jcard-t { margin: 14px 0 6px; font-size: 20px; font-weight: 600; letter-spacing: -0.015em; color: #15181d; }
+:root .vh .jcard-b { margin: 0; max-width: 34ch; font-size: 14.5px; line-height: 1.5; color: #3f434b; }
+
+:root .vh .jlist { list-style: none; margin: 0; padding: 0; display: grid; max-width: 420px; }
+:root .vh .jli {
+  display: grid; grid-template-columns: 52px 1fr; column-gap: 8px; align-items: baseline;
+  padding: 16px 0 14px; border-top: 1px solid #cfc8b9; cursor: pointer;
+}
+:root .vh .jli:last-child { border-bottom: 1px solid #cfc8b9; }
+:root .vh .jli-n { font-family: var(--font-serif); font-size: 30px; line-height: 1; color: #a9b9bd; transition: color .3s ease; }
+:root .vh .jli-t { font-size: 15.5px; font-weight: 600; color: #6a6e76; transition: color .3s ease; }
+:root .vh .jli-b {
+  grid-column: 2; margin: 0; font-size: 13.5px; line-height: 1.45; color: #3f434b;
+  max-height: 0; opacity: 0; overflow: hidden; transition: max-height .45s ease, opacity .35s ease, margin .45s ease;
+}
+:root .vh .jli-bar { grid-column: 1 / -1; height: 2px; margin-top: 12px; background: transparent; border-radius: 2px; overflow: hidden; }
+:root .vh .jli-bar i { display: block; height: 100%; width: 0; background: #2f5560; }
+:root .vh .jli.done .jli-n { color: #4f7f8c; }
+:root .vh .jli.done .jli-t { color: #15181d; }
+:root .vh .jli.active .jli-n { color: #2f5560; }
+:root .vh .jli.active .jli-t { color: #15181d; }
+:root .vh .jli.active .jli-b { max-height: 5em; opacity: 1; margin-top: 4px; }
+:root .vh .jli.active .jli-bar { background: #e2ddd1; }
+:root .vh .jli.active .jli-bar i { animation: jfill 2.6s linear both; }
+:root .vh .jlist:hover .jli-bar i { animation-play-state: paused; }
+@keyframes jfill { from { width: 0; } to { width: 100%; } }
+@media (prefers-reduced-motion: reduce) {
+  :root .vh .jcard, :root .vh .jcard > * { transition: none; }
+  :root .vh .jcard[data-d="3"], :root .vh .jcard-art { animation: none !important; }
+}
+@media (max-width: 860px) {
+  :root .vh .jstage { grid-template-columns: 1fr; gap: 2.5rem; }
+  :root .vh .jdeck { margin: 0 auto; width: calc(100% - 66px); max-width: 440px; margin-right: auto; }
+  :root .vh .jlist { max-width: none; }
 }
